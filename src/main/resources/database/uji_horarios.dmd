@@ -1,0 +1,9 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<OSDM_Design class="oracle.dbtools.crest.model.design.Design" name="uji_horarios" id="FE02FBE2-8058-F373-560C-7431F84A9487" version="3.41">
+   <createdBy>ferrerq</createdBy>
+   <createdTime>2012-04-26 10:42:41 UTC</createdTime>
+   <generatorID>Generado por el Usuario</generatorID>
+   <ownerDesignName>gestió de horaris</ownerDesignName>
+   <capitalNames>false</capitalNames>
+   <designId>FE02FBE2-8058-F373-560C-7431F84A9487</designId>
+</OSDM_Design>

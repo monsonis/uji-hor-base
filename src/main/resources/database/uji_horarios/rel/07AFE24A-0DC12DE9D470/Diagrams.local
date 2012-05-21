@@ -1,0 +1,4 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<oracle.dbtools.crest.model.design.relational.RelationalDesign>
+   <object objectType="main_view" objectID="BE2DC465-B7AD-A774-1F21-B1DC737F6BC6" name="uji_horarios" visible="true"/>
+</oracle.dbtools.crest.model.design.relational.RelationalDesign>

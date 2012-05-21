@@ -1,0 +1,91 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" id="A4C578AF-5907-9913-D1F2-04DE8F5C3494" directorySegmentName="seg_0" name="hor_tipos_cargos">
+   <createdBy>ferrerq</createdBy>
+   <createdTime>2012-05-02 15:48:42 UTC</createdTime>
+   <generatorID>Generado por el Usuario</generatorID>
+   <ownerDesignName>uji_horarios</ownerDesignName>
+   <engineerTo>
+      <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+   </engineerTo>
+   <schemaObject>C775E211-8012-663F-5C02-0375338C34CB</schemaObject>
+   <pkName>hor_tipos_cargos_PK</pkName>
+   <fonts>
+      <FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
+         <foType>Título</foType>
+         <fontStyle>1</fontStyle>
+         <colorRGB>-16776961</colorRGB>
+      </FontObject>
+      <FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
+         <foType>Columna</foType>
+         <colorRGB>-16777216</colorRGB>
+      </FontObject>
+      <FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
+         <foType>Tipo de Dato</foType>
+         <colorRGB>-16744448</colorRGB>
+      </FontObject>
+      <FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
+         <foType>Elemento de Clave Primaria</foType>
+         <colorRGB>-16776961</colorRGB>
+      </FontObject>
+      <FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
+         <foType>Elemento de Clave Ajena</foType>
+         <colorRGB>-16777216</colorRGB>
+      </FontObject>
+      <FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
+         <foType>Elemento de Clave Única</foType>
+         <colorRGB>-16776961</colorRGB>
+      </FontObject>
+      <FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
+         <foType>No Nulo</foType>
+         <colorRGB>-65536</colorRGB>
+      </FontObject>
+      <FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
+         <foType>Clave</foType>
+         <colorRGB>-16777216</colorRGB>
+      </FontObject>
+   </fonts>
+   <columns>
+      <Column class="oracle.dbtools.crest.model.design.relational.Column" name="id" id="D8430500-E552-8D7F-A40F-EAEC7419DE26">
+         <createdBy>ferrerq</createdBy>
+         <createdTime>2012-05-02 15:49:06 UTC</createdTime>
+         <generatorID>Generado por el Usuario</generatorID>
+         <ownerDesignName>uji_horarios</ownerDesignName>
+         <engineerTo>
+            <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+         </engineerTo>
+         <use>0</use>
+         <logicalDatatype>LOGDT019</logicalDatatype>
+         <domain>B784D6D2-343C-97AF-8447-8FE7645FA837</domain>
+         <autoIncrementCycle>false</autoIncrementCycle>
+      </Column>
+      <Column class="oracle.dbtools.crest.model.design.relational.Column" name="nombre" id="19F6C108-8A04-D9FE-F46C-F3A318B71087">
+         <createdBy>ferrerq</createdBy>
+         <createdTime>2012-05-02 15:49:06 UTC</createdTime>
+         <generatorID>Generado por el Usuario</generatorID>
+         <ownerDesignName>uji_horarios</ownerDesignName>
+         <engineerTo>
+            <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+         </engineerTo>
+         <use>0</use>
+         <logicalDatatype>LOGDT024</logicalDatatype>
+         <domain>CED887F4-B813-929D-A940-B429423E3FC9</domain>
+         <autoIncrementCycle>false</autoIncrementCycle>
+      </Column>
+   </columns>
+   <indexes>
+      <ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="7121AE00-B7EC-03EE-6678-8AC37B80FD1A" name="hor_tipos_cargos_PK">
+         <createdBy>ferrerq</createdBy>
+         <createdTime>2012-05-02 15:49:06 UTC</createdTime>
+         <generatorID>Generado por el Usuario</generatorID>
+         <ownerDesignName>uji_horarios</ownerDesignName>
+         <engineerTo>
+            <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+         </engineerTo>
+         <pk>true</pk>
+         <indexState>Primary Constraint</indexState>
+         <indexColumnUsage>
+            <colUsage columnID="D8430500-E552-8D7F-A40F-EAEC7419DE26"/>
+         </indexColumnUsage>
+      </ind_PK_UK>
+   </indexes>
+</Table>

@@ -1,0 +1,16 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" id="239EB50C-B298-7E0C-5AD0-9FA55D5C72A9" directorySegmentName="seg_0" name="hor_circuitos_grupos_FK">
+   <createdBy>ferrerq</createdBy>
+   <createdTime>2012-04-27 12:21:15 UTC</createdTime>
+   <generatorID>Generado por el Usuario</generatorID>
+   <ownerDesignName>uji_horarios</ownerDesignName>
+   <engineerTo>
+      <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+   </engineerTo>
+   <containerWithKeyObject>7FCDACEE-F660-D96B-FE98-507BCDC5F363</containerWithKeyObject>
+   <deleteRule>NO ACTION</deleteRule>
+   <localFKIndex>CEBCF0FF-3522-19AB-1291-C180EE825BC4</localFKIndex>
+   <keyObject>4388EB56-BB29-4BA6-11E2-88961085F5CC</keyObject>
+   <mandatory>true</mandatory>
+   <transferable>true</transferable>
+</FKIndexAssociation>

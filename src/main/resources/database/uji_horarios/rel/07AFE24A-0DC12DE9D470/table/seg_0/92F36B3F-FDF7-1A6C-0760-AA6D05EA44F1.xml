@@ -1,0 +1,196 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" id="92F36B3F-FDF7-1A6C-0760-AA6D05EA44F1" directorySegmentName="seg_0" name="hor_permisos_extra">
+   <createdBy>ferrerq</createdBy>
+   <createdTime>2012-05-02 15:53:38 UTC</createdTime>
+   <generatorID>Generado por el Usuario</generatorID>
+   <ownerDesignName>uji_horarios</ownerDesignName>
+   <engineerTo>
+      <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+   </engineerTo>
+   <schemaObject>C775E211-8012-663F-5C02-0375338C34CB</schemaObject>
+   <pkName>hor_permisos_extra_PK</pkName>
+   <fonts>
+      <FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
+         <foType>Título</foType>
+         <fontStyle>1</fontStyle>
+         <colorRGB>-16776961</colorRGB>
+      </FontObject>
+      <FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
+         <foType>Columna</foType>
+         <colorRGB>-16777216</colorRGB>
+      </FontObject>
+      <FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
+         <foType>Tipo de Dato</foType>
+         <colorRGB>-16744448</colorRGB>
+      </FontObject>
+      <FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
+         <foType>Elemento de Clave Primaria</foType>
+         <colorRGB>-16776961</colorRGB>
+      </FontObject>
+      <FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
+         <foType>Elemento de Clave Ajena</foType>
+         <colorRGB>-16777216</colorRGB>
+      </FontObject>
+      <FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
+         <foType>Elemento de Clave Única</foType>
+         <colorRGB>-16776961</colorRGB>
+      </FontObject>
+      <FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
+         <foType>No Nulo</foType>
+         <colorRGB>-65536</colorRGB>
+      </FontObject>
+      <FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
+         <foType>Clave</foType>
+         <colorRGB>-16777216</colorRGB>
+      </FontObject>
+   </fonts>
+   <columns>
+      <Column class="oracle.dbtools.crest.model.design.relational.Column" name="id" id="DC8F2C29-B97D-36AC-5F3D-BA9212E68324">
+         <createdBy>ferrerq</createdBy>
+         <createdTime>2012-05-02 15:54:50 UTC</createdTime>
+         <generatorID>Generado por el Usuario</generatorID>
+         <ownerDesignName>uji_horarios</ownerDesignName>
+         <engineerTo>
+            <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+         </engineerTo>
+         <use>0</use>
+         <logicalDatatype>LOGDT019</logicalDatatype>
+         <domain>B784D6D2-343C-97AF-8447-8FE7645FA837</domain>
+         <autoIncrementCycle>false</autoIncrementCycle>
+      </Column>
+      <Column class="oracle.dbtools.crest.model.design.relational.Column" name="persona_id" id="A605BC48-1C38-870D-52D7-3B45B124F048">
+         <createdBy>ferrerq</createdBy>
+         <createdTime>2012-05-02 15:54:50 UTC</createdTime>
+         <generatorID>Generado por el Usuario</generatorID>
+         <ownerDesignName>uji_horarios</ownerDesignName>
+         <engineerTo>
+            <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+         </engineerTo>
+         <use>0</use>
+         <logicalDatatype>LOGDT019</logicalDatatype>
+         <domain>B784D6D2-343C-97AF-8447-8FE7645FA837</domain>
+         <delegate>B3C8F227-F427-63EA-BFB1-9A97146E7FA8</delegate>
+         <autoIncrementCycle>false</autoIncrementCycle>
+         <associations>
+            <colAssociation fkAssociation="E7CAD208-CF52-5839-B40C-7650345F5D82" referredColumn="B3C8F227-F427-63EA-BFB1-9A97146E7FA8"/>
+         </associations>
+      </Column>
+      <Column class="oracle.dbtools.crest.model.design.relational.Column" name="tipo_cargo_id" id="D630DD33-63FE-D25A-333A-7785A34F7723">
+         <createdBy>ferrerq</createdBy>
+         <createdTime>2012-05-02 15:54:50 UTC</createdTime>
+         <generatorID>Generado por el Usuario</generatorID>
+         <ownerDesignName>uji_horarios</ownerDesignName>
+         <engineerTo>
+            <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+         </engineerTo>
+         <use>0</use>
+         <logicalDatatype>LOGDT019</logicalDatatype>
+         <domain>B784D6D2-343C-97AF-8447-8FE7645FA837</domain>
+         <delegate>D8430500-E552-8D7F-A40F-EAEC7419DE26</delegate>
+         <autoIncrementCycle>false</autoIncrementCycle>
+         <associations>
+            <colAssociation fkAssociation="88B61B74-1E80-52D5-A339-4551269A527C" referredColumn="D8430500-E552-8D7F-A40F-EAEC7419DE26"/>
+         </associations>
+      </Column>
+      <Column class="oracle.dbtools.crest.model.design.relational.Column" name="estudio_id" id="9AEC68A5-D938-AFEC-1CE7-2F64A0750C30">
+         <createdBy>ferrerq</createdBy>
+         <createdTime>2012-05-02 15:54:50 UTC</createdTime>
+         <generatorID>Generado por el Usuario</generatorID>
+         <ownerDesignName>uji_horarios</ownerDesignName>
+         <engineerTo>
+            <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+         </engineerTo>
+         <nullsAllowed>true</nullsAllowed>
+         <use>0</use>
+         <logicalDatatype>LOGDT019</logicalDatatype>
+         <domain>B784D6D2-343C-97AF-8447-8FE7645FA837</domain>
+         <delegate>3964E135-5000-E75F-F793-6D8CBC0A1DF9</delegate>
+         <autoIncrementCycle>false</autoIncrementCycle>
+         <associations>
+            <colAssociation fkAssociation="9D78C1D9-02D1-9777-E213-F5C87587D45A" referredColumn="3964E135-5000-E75F-F793-6D8CBC0A1DF9"/>
+         </associations>
+      </Column>
+      <Column class="oracle.dbtools.crest.model.design.relational.Column" name="departamento_id" id="078BB635-8EB8-4057-A8B2-81E22B5A5165">
+         <createdBy>ferrerq</createdBy>
+         <createdTime>2012-05-02 15:54:50 UTC</createdTime>
+         <generatorID>Generado por el Usuario</generatorID>
+         <ownerDesignName>uji_horarios</ownerDesignName>
+         <engineerTo>
+            <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+         </engineerTo>
+         <nullsAllowed>true</nullsAllowed>
+         <use>0</use>
+         <logicalDatatype>LOGDT019</logicalDatatype>
+         <domain>B784D6D2-343C-97AF-8447-8FE7645FA837</domain>
+         <delegate>A10765CA-5028-C6AF-8260-FCF8BF617529</delegate>
+         <autoIncrementCycle>false</autoIncrementCycle>
+         <associations>
+            <colAssociation fkAssociation="7C628D89-A1CA-E669-6981-659DE2EE0148" referredColumn="A10765CA-5028-C6AF-8260-FCF8BF617529"/>
+         </associations>
+      </Column>
+   </columns>
+   <indexes>
+      <ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="AD940735-6753-BAB5-1584-B6B65DCF4A84" name="hor_permisos_extra_PK">
+         <createdBy>ferrerq</createdBy>
+         <createdTime>2012-05-02 15:54:50 UTC</createdTime>
+         <generatorID>Generado por el Usuario</generatorID>
+         <ownerDesignName>uji_horarios</ownerDesignName>
+         <engineerTo>
+            <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+         </engineerTo>
+         <pk>true</pk>
+         <indexState>Primary Constraint</indexState>
+         <indexColumnUsage>
+            <colUsage columnID="DC8F2C29-B97D-36AC-5F3D-BA9212E68324"/>
+         </indexColumnUsage>
+      </ind_PK_UK>
+      <ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="33CF5BDB-4236-B5BB-8CB1-EFCEB23271F2" name="hor_perm_ext_per_FK">
+         <createdBy>ferrerq</createdBy>
+         <createdTime>2012-05-02 16:00:22 UTC</createdTime>
+         <generatorID>Generado por el Usuario</generatorID>
+         <ownerDesignName>uji_horarios</ownerDesignName>
+         <engineerTo>
+            <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+         </engineerTo>
+         <indexColumnUsage>
+            <colUsage columnID="A605BC48-1C38-870D-52D7-3B45B124F048"/>
+         </indexColumnUsage>
+      </ind_PK_UK>
+      <ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="6E088200-0B20-6C13-90F6-4B2D96D34852" name="hor_perm_ext_est_FK">
+         <createdBy>ferrerq</createdBy>
+         <createdTime>2012-05-02 16:01:06 UTC</createdTime>
+         <generatorID>Generado por el Usuario</generatorID>
+         <ownerDesignName>uji_horarios</ownerDesignName>
+         <engineerTo>
+            <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+         </engineerTo>
+         <indexColumnUsage>
+            <colUsage columnID="9AEC68A5-D938-AFEC-1CE7-2F64A0750C30"/>
+         </indexColumnUsage>
+      </ind_PK_UK>
+      <ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="7D22E95F-3B58-4C93-B876-DE157773D468" name="hor_perm_ext_dept_FK">
+         <createdBy>ferrerq</createdBy>
+         <createdTime>2012-05-02 16:01:06 UTC</createdTime>
+         <generatorID>Generado por el Usuario</generatorID>
+         <ownerDesignName>uji_horarios</ownerDesignName>
+         <engineerTo>
+            <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+         </engineerTo>
+         <indexColumnUsage>
+            <colUsage columnID="078BB635-8EB8-4057-A8B2-81E22B5A5165"/>
+         </indexColumnUsage>
+      </ind_PK_UK>
+      <ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="6BF73E7A-B519-7716-8FD4-E15C61F46C3A" name="hor_perm_ext_tip_car_FK">
+         <createdBy>ferrerq</createdBy>
+         <createdTime>2012-05-02 16:01:06 UTC</createdTime>
+         <generatorID>Generado por el Usuario</generatorID>
+         <ownerDesignName>uji_horarios</ownerDesignName>
+         <engineerTo>
+            <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+         </engineerTo>
+         <indexColumnUsage>
+            <colUsage columnID="D630DD33-63FE-D25A-333A-7785A34F7723"/>
+         </indexColumnUsage>
+      </ind_PK_UK>
+   </indexes>
+</Table>
