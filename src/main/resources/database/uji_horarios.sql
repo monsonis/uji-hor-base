@@ -1,5 +1,5 @@
 -- Generado por Oracle SQL Developer Data Modeler 3.1.0.687
---   en:        2012-05-21 13:36:10 CEST
+--   en:        2012-05-22 14:03:30 CEST
 --   sitio:      Oracle Database 11g
 --   tipo:      Oracle Database 11g
 
@@ -412,8 +412,8 @@ CREATE TABLE uji_horarios.hor_items_detalle
      id NUMBER  NOT NULL , 
      item_id NUMBER  NOT NULL , 
      dia DATE  NOT NULL , 
-     hora DATE  NOT NULL , 
-     duracion NUMBER  NOT NULL , 
+     hora_inicio DATE  NOT NULL , 
+     hora_fin DATE  NOT NULL , 
      descripcion VARCHAR2 (1000) 
     ) 
 ;

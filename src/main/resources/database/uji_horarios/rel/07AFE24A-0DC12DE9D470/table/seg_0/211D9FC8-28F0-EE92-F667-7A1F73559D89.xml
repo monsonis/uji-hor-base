@@ -88,7 +88,7 @@
          <domain>74012CB9-12FD-63B5-AE3B-B3A835E3B023</domain>
          <autoIncrementCycle>false</autoIncrementCycle>
       </Column>
-      <Column class="oracle.dbtools.crest.model.design.relational.Column" name="hora" id="0DB48BA1-F3CC-8862-52E0-27DD7DD25A59">
+      <Column class="oracle.dbtools.crest.model.design.relational.Column" name="hora_inicio" id="0DB48BA1-F3CC-8862-52E0-27DD7DD25A59">
          <createdBy>ferrerq</createdBy>
          <createdTime>2012-04-26 11:44:46 UTC</createdTime>
          <generatorID>Generado por el Usuario</generatorID>
@@ -101,7 +101,7 @@
          <domain>74012CB9-12FD-63B5-AE3B-B3A835E3B023</domain>
          <autoIncrementCycle>false</autoIncrementCycle>
       </Column>
-      <Column class="oracle.dbtools.crest.model.design.relational.Column" name="duracion" id="63E57CC2-08A4-4392-E407-874017399E85">
+      <Column class="oracle.dbtools.crest.model.design.relational.Column" name="hora_fin" id="63E57CC2-08A4-4392-E407-874017399E85">
          <createdBy>ferrerq</createdBy>
          <createdTime>2012-04-26 11:44:46 UTC</createdTime>
          <generatorID>Generado por el Usuario</generatorID>
@@ -110,8 +110,8 @@
             <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
          </engineerTo>
          <use>0</use>
-         <logicalDatatype>LOGDT019</logicalDatatype>
-         <domain>B784D6D2-343C-97AF-8447-8FE7645FA837</domain>
+         <logicalDatatype>LOGDT007</logicalDatatype>
+         <domain>74012CB9-12FD-63B5-AE3B-B3A835E3B023</domain>
          <autoIncrementCycle>false</autoIncrementCycle>
       </Column>
       <Column class="oracle.dbtools.crest.model.design.relational.Column" name="descripcion" id="249CDD91-94D5-1C81-F8D3-CE063CBC5436">
