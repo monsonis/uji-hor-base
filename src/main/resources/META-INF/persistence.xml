@@ -3,6 +3,36 @@
   <persistence-unit name="persistenceUnit" transaction-type="RESOURCE_LOCAL">
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
     
+    <class>es.uji.apps.hor.model.Area</class>
+    <class>es.uji.apps.hor.model.Asignatura</class>
+    <class>es.uji.apps.hor.model.AsignaturaArea</class>
+    <class>es.uji.apps.hor.model.Aula</class>
+    <class>es.uji.apps.hor.model.AulaEstudio</class>
+    <class>es.uji.apps.hor.model.AulaPlanificacion</class>
+    <class>es.uji.apps.hor.model.Caracter</class>
+    <class>es.uji.apps.hor.model.Centro</class>
+    <class>es.uji.apps.hor.model.Circuito</class>
+    <class>es.uji.apps.hor.model.Curso</class>
+    <class>es.uji.apps.hor.model.EstudioCurso</class>
+    <class>es.uji.apps.hor.model.Departamento</class>
+    <class>es.uji.apps.hor.model.DiaSemana</class>
+    <class>es.uji.apps.hor.model.Estudio</class>
+    <class>es.uji.apps.hor.model.Calendario</class>
+    <class>es.uji.apps.hor.model.CargoPersona</class>
+    <class>es.uji.apps.hor.model.Persona</class>
+    <class>es.uji.apps.hor.model.Grupo</class>
+    <class>es.uji.apps.hor.model.GrupoAsignatura</class>
+    <class>es.uji.apps.hor.model.Item</class>
+    <class>es.uji.apps.hor.model.DetalleItem</class>
+    <class>es.uji.apps.hor.model.PermisoExtra</class>
+    <class>es.uji.apps.hor.model.Profesor</class>
+    <class>es.uji.apps.hor.model.Semestre</class>
+    <class>es.uji.apps.hor.model.DetalleSemestre</class>
+    <class>es.uji.apps.hor.model.TipoAsignatura</class>
+    <class>es.uji.apps.hor.model.TipoCargo</class>
+    <class>es.uji.apps.hor.model.TipoEstudio</class>
+    <class>es.uji.apps.hor.model.TipoSubgrupo</class>
+    
     <class>es.uji.commons.sso.db.ApaAcceso</class>
     <class>es.uji.commons.sso.db.ApaAplicacione</class>
     <class>es.uji.commons.sso.db.ApaAplicacionesExtra</class>
@@ -28,6 +58,6 @@
     <class>es.uji.commons.sso.db.ApaVwPerfilesPer</class>
     <class>es.uji.commons.sso.db.ApaVwPersonasCuenta</class>
     <class>es.uji.commons.sso.db.ApaVwPersonasItems</class>
-    <class>es.uji.commons.sso.db.ApaVwPersonasPlaza</class>
+    <class>es.uji.commons.sso.db.ApaVwPersonasPlaza</class>    
   </persistence-unit>
 </persistence>
