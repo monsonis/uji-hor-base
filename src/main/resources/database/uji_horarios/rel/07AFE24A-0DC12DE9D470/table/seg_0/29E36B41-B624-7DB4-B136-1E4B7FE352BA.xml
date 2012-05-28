@@ -6,6 +6,7 @@
    <ownerDesignName>uji_horarios</ownerDesignName>
    <engineerTo>
       <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+      <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
    </engineerTo>
    <schemaObject>C775E211-8012-663F-5C02-0375338C34CB</schemaObject>
    <pkName>TABLE_1_PK</pkName>
@@ -52,6 +53,7 @@
          <ownerDesignName>uji_horarios</ownerDesignName>
          <engineerTo>
             <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
          </engineerTo>
          <use>0</use>
          <logicalDatatype>LOGDT019</logicalDatatype>
@@ -65,6 +67,7 @@
          <ownerDesignName>uji_horarios</ownerDesignName>
          <engineerTo>
             <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
          </engineerTo>
          <use>0</use>
          <logicalDatatype>LOGDT024</logicalDatatype>
@@ -82,6 +85,7 @@
          <ownerDesignName>uji_horarios</ownerDesignName>
          <engineerTo>
             <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
          </engineerTo>
          <use>0</use>
          <logicalDatatype>LOGDT019</logicalDatatype>
@@ -99,6 +103,7 @@
          <ownerDesignName>uji_horarios</ownerDesignName>
          <engineerTo>
             <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
          </engineerTo>
          <use>0</use>
          <logicalDatatype>LOGDT019</logicalDatatype>
@@ -116,6 +121,7 @@
          <ownerDesignName>uji_horarios</ownerDesignName>
          <engineerTo>
             <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
          </engineerTo>
          <use>0</use>
          <logicalDatatype>LOGDT024</logicalDatatype>
@@ -133,6 +139,7 @@
          <ownerDesignName>uji_horarios</ownerDesignName>
          <engineerTo>
             <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
          </engineerTo>
          <use>0</use>
          <logicalDatatype>LOGDT019</logicalDatatype>
@@ -150,6 +157,7 @@
          <ownerDesignName>uji_horarios</ownerDesignName>
          <engineerTo>
             <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
          </engineerTo>
          <nullsAllowed>true</nullsAllowed>
          <use>0</use>
@@ -168,6 +176,7 @@
          <ownerDesignName>uji_horarios</ownerDesignName>
          <engineerTo>
             <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
          </engineerTo>
          <nullsAllowed>true</nullsAllowed>
          <use>0</use>
@@ -186,6 +195,7 @@
          <ownerDesignName>uji_horarios</ownerDesignName>
          <engineerTo>
             <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
          </engineerTo>
          <nullsAllowed>true</nullsAllowed>
          <use>0</use>
@@ -204,6 +214,7 @@
          <ownerDesignName>uji_horarios</ownerDesignName>
          <engineerTo>
             <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
          </engineerTo>
          <defaultValue>0</defaultValue>
          <use>0</use>
@@ -218,6 +229,7 @@
          <ownerDesignName>uji_horarios</ownerDesignName>
          <engineerTo>
             <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
          </engineerTo>
          <use>0</use>
          <logicalDatatype>LOGDT024</logicalDatatype>
@@ -235,15 +247,27 @@
          <ownerDesignName>uji_horarios</ownerDesignName>
          <engineerTo>
             <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
          </engineerTo>
          <use>0</use>
          <logicalDatatype>LOGDT024</logicalDatatype>
          <domain>A4232D0A-6592-A0D0-A6DF-91817C0B6413</domain>
-         <delegate>36FB5A50-AF4D-5036-2E50-442120E7183B</delegate>
          <autoIncrementCycle>false</autoIncrementCycle>
-         <associations>
-            <colAssociation fkAssociation="A79DD47B-4146-F03E-36F3-113E6AF4809E" referredColumn="36FB5A50-AF4D-5036-2E50-442120E7183B"/>
-         </associations>
+      </Column>
+      <Column class="oracle.dbtools.crest.model.design.relational.Column" name="tipo_subgrupo" id="32916FF1-1BE7-C055-7017-3B0763EB29FE">
+         <createdBy>ferrerq</createdBy>
+         <createdTime>2012-05-28 12:46:13 UTC</createdTime>
+         <generatorID>Generado por el Usuario</generatorID>
+         <ownerDesignName>uji_horarios</ownerDesignName>
+         <engineerTo>
+            <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
+         </engineerTo>
+         <nullsAllowed>true</nullsAllowed>
+         <use>0</use>
+         <logicalDatatype>LOGDT024</logicalDatatype>
+         <domain>CED887F4-B813-929D-A940-B429423E3FC9</domain>
+         <autoIncrementCycle>false</autoIncrementCycle>
       </Column>
       <Column class="oracle.dbtools.crest.model.design.relational.Column" name="subgrupo_id" id="7BEE4D29-3E0E-BEC5-F35C-780E1EBD60B9">
          <createdBy>ferrerq</createdBy>
@@ -252,6 +276,7 @@
          <ownerDesignName>uji_horarios</ownerDesignName>
          <engineerTo>
             <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
          </engineerTo>
          <use>0</use>
          <logicalDatatype>LOGDT019</logicalDatatype>
@@ -265,6 +290,7 @@
          <ownerDesignName>uji_horarios</ownerDesignName>
          <engineerTo>
             <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
          </engineerTo>
          <nullsAllowed>true</nullsAllowed>
          <use>0</use>
@@ -283,6 +309,7 @@
          <ownerDesignName>uji_horarios</ownerDesignName>
          <engineerTo>
             <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
          </engineerTo>
          <nullsAllowed>true</nullsAllowed>
          <use>0</use>
@@ -297,6 +324,7 @@
          <ownerDesignName>uji_horarios</ownerDesignName>
          <engineerTo>
             <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
          </engineerTo>
          <nullsAllowed>true</nullsAllowed>
          <use>0</use>
@@ -311,6 +339,7 @@
          <ownerDesignName>uji_horarios</ownerDesignName>
          <engineerTo>
             <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
          </engineerTo>
          <nullsAllowed>true</nullsAllowed>
          <use>0</use>
@@ -325,6 +354,7 @@
          <ownerDesignName>uji_horarios</ownerDesignName>
          <engineerTo>
             <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
          </engineerTo>
          <nullsAllowed>true</nullsAllowed>
          <use>0</use>
@@ -339,6 +369,7 @@
          <ownerDesignName>uji_horarios</ownerDesignName>
          <engineerTo>
             <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
          </engineerTo>
          <defaultValue>N</defaultValue>
          <use>0</use>
@@ -355,6 +386,7 @@
          <ownerDesignName>uji_horarios</ownerDesignName>
          <engineerTo>
             <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
          </engineerTo>
          <pk>true</pk>
          <indexState>Primary Constraint</indexState>
@@ -369,21 +401,10 @@
          <ownerDesignName>uji_horarios</ownerDesignName>
          <engineerTo>
             <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
          </engineerTo>
          <indexColumnUsage>
             <colUsage columnID="EDF0F82A-7FCB-1051-11DF-14B16823D320"/>
-         </indexColumnUsage>
-      </ind_PK_UK>
-      <ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="DF51DB74-9F7A-5DC0-7AEC-CAC2DCEAFE9F" name="hor_items_tipos_sgrp_FK">
-         <createdBy>ferrerq</createdBy>
-         <createdTime>2012-04-26 11:29:23 UTC</createdTime>
-         <generatorID>Generado por el Usuario</generatorID>
-         <ownerDesignName>uji_horarios</ownerDesignName>
-         <engineerTo>
-            <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
-         </engineerTo>
-         <indexColumnUsage>
-            <colUsage columnID="CB791493-43BA-D237-F774-BCAFB569B26B"/>
          </indexColumnUsage>
       </ind_PK_UK>
       <ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="FF82F43E-0BCB-E56F-9CA8-8DF12C220C42" name="hor_items_hor_semestres_FK">
@@ -393,6 +414,7 @@
          <ownerDesignName>uji_horarios</ownerDesignName>
          <engineerTo>
             <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
          </engineerTo>
          <indexColumnUsage>
             <colUsage columnID="E85394FF-663B-37A7-0F1F-4DF4F7A956F9"/>
@@ -405,6 +427,7 @@
          <ownerDesignName>uji_horarios</ownerDesignName>
          <engineerTo>
             <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
          </engineerTo>
          <indexColumnUsage>
             <colUsage columnID="94929EF0-1C90-8167-DC2A-ED5E4B686DC8"/>
@@ -417,6 +440,7 @@
          <ownerDesignName>uji_horarios</ownerDesignName>
          <engineerTo>
             <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
          </engineerTo>
          <indexColumnUsage>
             <colUsage columnID="79E55C7D-F0DF-95E5-5BEF-1CFA78AE5C91"/>
@@ -429,6 +453,7 @@
          <ownerDesignName>uji_horarios</ownerDesignName>
          <engineerTo>
             <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
          </engineerTo>
          <indexColumnUsage>
             <colUsage columnID="F81A4A47-7EFF-2409-7032-C694EBD37634"/>
@@ -441,6 +466,7 @@
          <ownerDesignName>uji_horarios</ownerDesignName>
          <engineerTo>
             <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
          </engineerTo>
          <indexColumnUsage>
             <colUsage columnID="53F2A81D-4D2C-28BA-1F06-E69C74F65F7B"/>
@@ -453,6 +479,7 @@
          <ownerDesignName>uji_horarios</ownerDesignName>
          <engineerTo>
             <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
          </engineerTo>
          <indexColumnUsage>
             <colUsage columnID="5608A0B4-CF25-1BDD-18D1-1CD8A6933FC4"/>
@@ -465,6 +492,7 @@
          <ownerDesignName>uji_horarios</ownerDesignName>
          <engineerTo>
             <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
          </engineerTo>
          <indexColumnUsage>
             <colUsage columnID="9EE620FA-706C-2531-E6DB-1A802EE235A8"/>
@@ -477,6 +505,7 @@
          <ownerDesignName>uji_horarios</ownerDesignName>
          <engineerTo>
             <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
          </engineerTo>
          <indexColumnUsage>
             <colUsage columnID="3A8F533F-5385-CFD4-7535-ADFA06E03267"/>
@@ -489,6 +518,7 @@
          <ownerDesignName>uji_horarios</ownerDesignName>
          <engineerTo>
             <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
          </engineerTo>
          <indexColumnUsage>
             <colUsage columnID="447FA569-BCF5-D2B4-5F38-24297B0B9114"/>

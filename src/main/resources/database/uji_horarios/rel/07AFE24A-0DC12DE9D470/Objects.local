@@ -29,7 +29,6 @@
    <object objectType="Table" objectID="538C92EB-6A3D-D3B1-775F-3506FAB9A010" name="hor_tipos_asignaturas" seqName="seg_0"/>
    <object objectType="Table" objectID="A4C578AF-5907-9913-D1F2-04DE8F5C3494" name="hor_tipos_cargos" seqName="seg_0"/>
    <object objectType="Table" objectID="61A57E28-EE43-4B2C-DBBA-12ED2231BADA" name="hor_tipos_estudios" seqName="seg_0"/>
-   <object objectType="Table" objectID="AB74E85E-42CE-0D27-E4F3-94D9FBCA60C9" name="hor_tipos_subgrupo" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="8BD15045-E02D-9587-1255-7BEF8F0B80F4" name="hor_areas_hor_dep_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="857FC101-210D-7C7D-5ACD-78C05A38D226" name="hor_asi_area_hor_areas_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="DC5A0A6B-B786-33D7-3669-A8C17E7EF826" name="hor_asi_area_hor_asi_FK" seqName="seg_0"/>
@@ -67,7 +66,6 @@
    <object objectType="FKIndexAssociation" objectID="B3977515-E794-30FA-1353-4F74C2E5BBB6" name="hor_items_hor_grupos_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="41DD5D70-FC1E-A81B-FA09-77817E8106F3" name="hor_items_hor_profesores_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="FF66FEAA-2FFD-646A-B5BA-C6EC24F523BA" name="hor_items_hor_semestres_FK" seqName="seg_0"/>
-   <object objectType="FKIndexAssociation" objectID="A79DD47B-4146-F03E-36F3-113E6AF4809E" name="hor_items_tipos_sgrp_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="7C628D89-A1CA-E669-6981-659DE2EE0148" name="hor_perm_ext_dept_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="9D78C1D9-02D1-9777-E213-F5C87587D45A" name="hor_perm_ext_est_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="E7CAD208-CF52-5839-B40C-7650345F5D82" name="hor_perm_ext_per_FK" seqName="seg_0"/>
