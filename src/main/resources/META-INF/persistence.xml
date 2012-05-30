@@ -28,6 +28,28 @@
     <class>es.uji.commons.sso.db.ApaVwPerfilesPer</class>
     <class>es.uji.commons.sso.db.ApaVwPersonasCuenta</class>
     <class>es.uji.commons.sso.db.ApaVwPersonasItems</class>
-    <class>es.uji.commons.sso.db.ApaVwPersonasPlaza</class>    
+    <class>es.uji.commons.sso.db.ApaVwPersonasPlaza</class>
+    <class>es.uji.apps.hor.db.AreaDTO</class>
+    <class>es.uji.apps.hor.db.AulaDTO</class>
+    <class>es.uji.apps.hor.db.AulaEstudioDTO</class>
+    <class>es.uji.apps.hor.db.AulaPlanificacionDTO</class>
+    <class>es.uji.apps.hor.db.CentroDTO</class>
+    <class>es.uji.apps.hor.db.CircuitoDTO</class>
+    <class>es.uji.apps.hor.db.DepartamentoDTO</class>
+    <class>es.uji.apps.hor.db.DiaSemanaDTO</class>
+    <class>es.uji.apps.hor.db.EstudioDTO</class>
+    <class>es.uji.apps.hor.db.CalendarioDTO</class>
+    <class>es.uji.apps.hor.db.CargoPersonaDTO</class>
+    <class>es.uji.apps.hor.db.PersonaDTO</class>
+    <class>es.uji.apps.hor.db.ItemDTO</class>
+    <class>es.uji.apps.hor.db.DetalleItemDTO</class>
+    <class>es.uji.apps.hor.db.PermisoExtraDTO</class>
+    <class>es.uji.apps.hor.db.ProfesorDTO</class>
+    <class>es.uji.apps.hor.db.SemestreDTO</class>
+    <class>es.uji.apps.hor.db.DetalleSemestreDTO</class>
+    <class>es.uji.apps.hor.db.TipoCargoDTO</class>
+    <class>es.uji.apps.hor.db.TipoEstudioDTO</class>
+    <class>es.uji.apps.hor.db.CursoEstudioDTO</class>
+    <class>es.uji.apps.hor.db.GrupoEstudioDTO</class>    
   </persistence-unit>
 </persistence>
