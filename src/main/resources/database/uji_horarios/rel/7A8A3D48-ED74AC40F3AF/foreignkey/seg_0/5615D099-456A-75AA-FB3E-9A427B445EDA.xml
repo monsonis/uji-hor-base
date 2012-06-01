@@ -1,0 +1,17 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" id="5615D099-456A-75AA-FB3E-9A427B445EDA" directorySegmentName="seg_0" name="hor_aulas_estudio_est_FK">
+   <createdBy>ferrerq</createdBy>
+   <createdTime>2012-05-28 14:28:56 UTC</createdTime>
+   <generatorID>Generado por el Usuario</generatorID>
+   <ownerDesignName>uji_horarios</ownerDesignName>
+   <engineerTo>
+      <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
+      <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
+   </engineerTo>
+   <containerWithKeyObject>6640A72F-085A-021E-E3FC-20AB82DDF08F</containerWithKeyObject>
+   <deleteRule>NO ACTION</deleteRule>
+   <localFKIndex>F5114517-717B-EBFA-5CAC-A7458C5B701E</localFKIndex>
+   <keyObject>C082289F-A082-D07B-C82D-317FB710A43D</keyObject>
+   <mandatory>true</mandatory>
+   <transferable>true</transferable>
+</FKIndexAssociation>
