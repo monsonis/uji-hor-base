@@ -25,16 +25,16 @@ public class PersonaDTO implements Serializable {
 
 	private String nombre;
 
-	//bi-directional many-to-one association to CargoPersona
+	//bi-directional many-to-one association to CargoPersonaDTO
 	@OneToMany(mappedBy="horExtPersona")
 	private Set<CargoPersonaDTO> horExtCargosPers;
 
-	//bi-directional many-to-one association to Departamento
+	//bi-directional many-to-one association to DepartamentoDTO
     @ManyToOne
 	@JoinColumn(name="DEPARTAMENTO_ID")
 	private DepartamentoDTO horDepartamento;
 
-	//bi-directional many-to-one association to PermisoExtra
+	//bi-directional many-to-one association to PermisoExtraDTO
 	@OneToMany(mappedBy="horExtPersona")
 	private Set<PermisoExtraDTO> horPermisosExtras;
 

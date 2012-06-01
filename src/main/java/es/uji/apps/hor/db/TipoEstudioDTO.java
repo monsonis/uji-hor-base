@@ -23,11 +23,11 @@ public class TipoEstudioDTO implements Serializable {
 
 	private BigDecimal orden;
 
-	//bi-directional many-to-one association to Estudio
+	//bi-directional many-to-one association to EstudioDTO
 	@OneToMany(mappedBy="horTiposEstudio")
 	private Set<EstudioDTO> horEstudios;
 
-	//bi-directional many-to-one association to DetalleSemestre
+	//bi-directional many-to-one association to DetalleSemestreDTO
 	@OneToMany(mappedBy="horTiposEstudio")
 	private Set<DetalleSemestreDTO> horSemestresDetalles;
 

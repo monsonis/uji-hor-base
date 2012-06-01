@@ -17,8 +17,7 @@ public class AulaDTO implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="ID")
-	private Long Aula;
+	private Long id;
 
 	private String codigo;
 
@@ -28,28 +27,28 @@ public class AulaDTO implements Serializable {
 
 	private String tipo;
 
-	//bi-directional many-to-one association to Centro
+	//bi-directional many-to-one association to CentroDTO
     @ManyToOne
 	@JoinColumn(name="CENTRO_ID")
 	private CentroDTO horCentro;
 
-	//bi-directional many-to-one association to AulaEstudio
+	//bi-directional many-to-one association to AulaEstudioDTO
 	@OneToMany(mappedBy="horAula")
 	private Set<AulaEstudioDTO> horAulasEstudios;
 
-	//bi-directional many-to-one association to AulaPlanificacion
+	//bi-directional many-to-one association to AulaPlanificacionDTO
 	@OneToMany(mappedBy="horAula")
 	private Set<AulaPlanificacionDTO> horAulasPlanificacions;
 
     public AulaDTO() {
     }
 
-	public Long getAula() {
-		return this.Aula;
+	public Long getId() {
+		return this.id;
 	}
 
-	public void setAula(Long Aula) {
-		this.Aula = Aula;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getCodigo() {

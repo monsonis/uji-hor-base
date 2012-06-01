@@ -29,11 +29,11 @@ public class ProfesorDTO implements Serializable {
 	@Column(name="PENDIENTE_CONTRATACION")
 	private BigDecimal pendienteContratacion;
 
-	//bi-directional many-to-one association to Item
+	//bi-directional many-to-one association to ItemDTO
 	@OneToMany(mappedBy="horProfesore")
 	private Set<ItemDTO> horItems;
 
-	//bi-directional many-to-one association to Area
+	//bi-directional many-to-one association to AreaDTO
     @ManyToOne
 	@JoinColumn(name="AREA_ID")
 	private AreaDTO horArea;

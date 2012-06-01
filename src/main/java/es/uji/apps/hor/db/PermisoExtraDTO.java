@@ -17,22 +17,22 @@ public class PermisoExtraDTO implements Serializable {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 
-	//bi-directional many-to-one association to Departamento
+	//bi-directional many-to-one association to DepartamentoDTO
     @ManyToOne
 	@JoinColumn(name="DEPARTAMENTO_ID")
 	private DepartamentoDTO horDepartamento;
 
-	//bi-directional many-to-one association to Estudio
+	//bi-directional many-to-one association to EstudioDTO
     @ManyToOne
 	@JoinColumn(name="ESTUDIO_ID")
 	private EstudioDTO horEstudio;
 
-	//bi-directional many-to-one association to Persona
+	//bi-directional many-to-one association to PersonaDTO
     @ManyToOne
 	@JoinColumn(name="PERSONA_ID")
 	private PersonaDTO horExtPersona;
 
-	//bi-directional many-to-one association to TipoCargo
+	//bi-directional many-to-one association to TipoCargoDTO
     @ManyToOne
 	@JoinColumn(name="TIPO_CARGO_ID")
 	private TipoCargoDTO horTiposCargo;

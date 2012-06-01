@@ -11,7 +11,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name="HOR_ITEMS_DETALLE")
-public class DetalleItemDTO implements Serializable {
+public class ItemDetalleDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -20,23 +20,23 @@ public class DetalleItemDTO implements Serializable {
 
 	private String descripcion;
 
-    @Temporal( TemporalType.TIMESTAMP)
+    @Temporal( TemporalType.DATE)
 	private Date dia;
 
-    @Temporal( TemporalType.TIMESTAMP)
+    @Temporal( TemporalType.DATE)
 	@Column(name="HORA_FIN")
 	private Date horaFin;
 
-    @Temporal( TemporalType.TIMESTAMP)
+    @Temporal( TemporalType.DATE)
 	@Column(name="HORA_INICIO")
 	private Date horaInicio;
 
-	//bi-directional many-to-one association to Item
+	//bi-directional many-to-one association to ItemDTO
     @ManyToOne
 	@JoinColumn(name="ITEM_ID")
 	private ItemDTO horItem;
 
-    public DetalleItemDTO() {
+    public ItemDetalleDTO() {
     }
 
 	public Long getId() {

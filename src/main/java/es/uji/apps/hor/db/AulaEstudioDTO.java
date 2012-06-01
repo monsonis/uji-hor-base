@@ -19,12 +19,12 @@ public class AulaEstudioDTO implements Serializable {
 
 	private String descripcion;
 
-	//bi-directional many-to-one association to Aula
+	//bi-directional many-to-one association to AulaDTO
     @ManyToOne
 	@JoinColumn(name="AULA_ID")
 	private AulaDTO horAula;
 
-	//bi-directional many-to-one association to Estudio
+	//bi-directional many-to-one association to EstudioDTO
     @ManyToOne
 	@JoinColumn(name="ESTUDIO_ID")
 	private EstudioDTO horEstudio;

@@ -20,15 +20,15 @@ public class CentroDTO implements Serializable {
 
 	private String nombre;
 
-	//bi-directional many-to-one association to Aula
+	//bi-directional many-to-one association to AulaDTO
 	@OneToMany(mappedBy="horCentro")
 	private Set<AulaDTO> horAulas;
 
-	//bi-directional many-to-one association to Departamento
+	//bi-directional many-to-one association to DepartamentoDTO
 	@OneToMany(mappedBy="horCentro")
 	private Set<DepartamentoDTO> horDepartamentos;
 
-	//bi-directional many-to-one association to Estudio
+	//bi-directional many-to-one association to EstudioDTO
 	@OneToMany(mappedBy="horCentro")
 	private Set<EstudioDTO> horEstudios;
 

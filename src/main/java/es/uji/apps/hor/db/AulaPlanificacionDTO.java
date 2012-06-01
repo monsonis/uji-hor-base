@@ -30,12 +30,12 @@ public class AulaPlanificacionDTO implements Serializable {
 	@Column(name="SEMESTRE_ID")
 	private BigDecimal semestreId;
 
-	//bi-directional many-to-one association to Aula
+	//bi-directional many-to-one association to AulaDTO
     @ManyToOne
 	@JoinColumn(name="AULA_ID")
 	private AulaDTO horAula;
 
-	//bi-directional many-to-one association to Item
+	//bi-directional many-to-one association to ItemDTO
 	@OneToMany(mappedBy="horAulasPlanificacion")
 	private Set<ItemDTO> horItems;
 

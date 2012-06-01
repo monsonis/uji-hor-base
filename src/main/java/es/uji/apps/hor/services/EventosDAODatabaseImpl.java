@@ -11,11 +11,13 @@ import org.springframework.stereotype.Repository;
 import com.mysema.query.jpa.impl.JPAQuery;
 
 import es.uji.apps.hor.dao.EventosDAO;
-import es.uji.apps.hor.db.DetalleItemDTO;
-import es.uji.apps.hor.db.QDetalleItemDTO;
+import es.uji.apps.hor.db.ItemDTO;
+import es.uji.apps.hor.db.ItemDetalleDTO;
 import es.uji.apps.hor.db.QItemDTO;
+import es.uji.apps.hor.db.QItemDetalleDTO;
 import es.uji.apps.hor.model.Calendario;
 import es.uji.apps.hor.model.Evento;
+import es.uji.apps.hor.model.TipoSubgrupo;
 import es.uji.commons.db.BaseDAODatabaseImpl;
 
 @Repository
@@ -28,20 +30,19 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         JPAQuery query = new JPAQuery(entityManager);
 
         QItemDTO item = QItemDTO.itemDTO;
-        QDetalleItemDTO detalleItem = QDetalleItemDTO.detalleItemDTO;
+        QItemDetalleDTO detalleItem = QItemDetalleDTO.itemDetalleDTO;
 
-        List<DetalleItemDTO> listaItemsDTO = query
+        List<ItemDetalleDTO> listaItemsDTO = query
                 .from(detalleItem)
                 .join(detalleItem.horItem, item)
                 .where(item.horEstudio.id.eq(estudioId)
                         .and(item.cursoId.eq(new BigDecimal(cursoId)))
                         .and(detalleItem.dia.goe(rangoFechasInicio))
-                        .and(detalleItem.dia.loe(rangoFechasFin)))
-                .list(detalleItem);
+                        .and(detalleItem.dia.loe(rangoFechasFin))).list(detalleItem);
 
         List<Evento> eventos = new ArrayList<Evento>();
 
-        for (DetalleItemDTO itemDTO : listaItemsDTO)
+        for (ItemDetalleDTO itemDTO : listaItemsDTO)
         {
             eventos.add(creaEventoDesde(itemDTO));
         }
@@ -49,58 +50,35 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         return eventos;
     }
 
-    @SuppressWarnings("deprecation")
-    private Evento creaEventoDesde(DetalleItemDTO itemDTO)
+    private Evento creaEventoDesde(ItemDetalleDTO detalleItemDTO)
     {
-        String titulo = itemDTO.getHorItem().getAsignaturaId() + " - "
-                + itemDTO.getHorItem().getGrupoId() + " - "
-                + itemDTO.getHorItem().getTipoSubgrupoId() + itemDTO.getHorItem().getSubgrupoId();
-        
-        Calendario calendario = checkCalendarioFromTipoSubgrupo(itemDTO.getHorItem().getTipoSubgrupoId());
+        ItemDTO itemDTO = detalleItemDTO.getHorItem();
+        String titulo = itemDTO.toString();
 
-        Calendar inicio = Calendar.getInstance();
-        inicio.setTime(itemDTO.getDia());
-        inicio.set(Calendar.HOUR, itemDTO.getHoraInicio().getHours());
-        inicio.set(Calendar.MINUTE, itemDTO.getHoraInicio().getMinutes());
+        Calendario calendario = obtenerCalendarioAsociadoPorTipoSubgrupo(itemDTO);
 
-        Calendar fin = Calendar.getInstance();
-        fin.setTime(itemDTO.getDia());
-        fin.set(Calendar.HOUR, itemDTO.getHoraFin().getHours());
-        fin.set(Calendar.MINUTE, itemDTO.getHoraFin().getMinutes());
+        Calendar inicio = creaCalendarDesdeFechaHoraInicioYFin(detalleItemDTO.getDia(),
+                detalleItemDTO.getHoraInicio());
+        Calendar fin = creaCalendarDesdeFechaHoraInicioYFin(detalleItemDTO.getDia(),
+                detalleItemDTO.getHoraFin());
 
-        return new Evento(itemDTO.getHorItem().getId(), calendario, titulo, inicio.getTime(),
-                fin.getTime());
+        return new Evento(itemDTO.getId(), calendario, titulo, inicio.getTime(), fin.getTime());
     }
 
-    private Calendario checkCalendarioFromTipoSubgrupo(String tipoSubgrupoId)
+    @SuppressWarnings("deprecation")
+    private Calendar creaCalendarDesdeFechaHoraInicioYFin(Date dia, Date horaInicio)
     {
-        long calendarioId = 0L;
+        Calendar inicio = Calendar.getInstance();
+        inicio.setTime(dia);
+        inicio.set(Calendar.HOUR, horaInicio.getHours());
+        inicio.set(Calendar.MINUTE, horaInicio.getMinutes());
         
-        if ("TE".equals(tipoSubgrupoId))
-        {
-            calendarioId = 1L;
-        }
-        
-        if ("PR".equals(tipoSubgrupoId))
-        {
-            calendarioId = 2L;
-        }
+        return inicio;
+    }
 
-        if ("LA".equals(tipoSubgrupoId))
-        {
-            calendarioId = 3L;
-        }
-
-        if ("SE".equals(tipoSubgrupoId))
-        {
-            calendarioId = 4L;
-        }
-        
-        if ("TU".equals(tipoSubgrupoId))
-        {
-            calendarioId = 5L;
-        }        
-        
-        return new Calendario(calendarioId);
+    private Calendario obtenerCalendarioAsociadoPorTipoSubgrupo(ItemDTO itemDTO)
+    {
+        String tipoSubgrupoId = itemDTO.getTipoSubgrupoId();
+        return new Calendario(TipoSubgrupo.valueOf(tipoSubgrupoId).getCalendarioAsociado());
     }
 }

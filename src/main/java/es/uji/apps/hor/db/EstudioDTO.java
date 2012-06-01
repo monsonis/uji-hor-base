@@ -23,33 +23,33 @@ public class EstudioDTO implements Serializable {
 
 	private BigDecimal oficial;
 
-	//bi-directional many-to-one association to AulaEstudio
+	//bi-directional many-to-one association to AulaEstudioDTO
 	@OneToMany(mappedBy="horEstudio")
 	private Set<AulaEstudioDTO> horAulasEstudios;
 
-	//bi-directional many-to-one association to Circuito
+	//bi-directional many-to-one association to CircuitoDTO
 	@OneToMany(mappedBy="horEstudio")
 	private Set<CircuitoDTO> horCircuitos;
 
-	//bi-directional many-to-one association to Centro
+	//bi-directional many-to-one association to CentroDTO
     @ManyToOne
 	@JoinColumn(name="CENTRO_ID")
 	private CentroDTO horCentro;
 
-	//bi-directional many-to-one association to TipoEstudio
+	//bi-directional many-to-one association to TipoEstudioDTO
     @ManyToOne
 	@JoinColumn(name="TIPO_ID")
 	private TipoEstudioDTO horTiposEstudio;
 
-	//bi-directional many-to-one association to CargoPersona
+	//bi-directional many-to-one association to CargoPersonaDTO
 	@OneToMany(mappedBy="horEstudio")
 	private Set<CargoPersonaDTO> horExtCargosPers;
 
-	//bi-directional many-to-one association to Item
+	//bi-directional many-to-one association to ItemDTO
 	@OneToMany(mappedBy="horEstudio")
 	private Set<ItemDTO> horItems;
 
-	//bi-directional many-to-one association to PermisoExtra
+	//bi-directional many-to-one association to PermisoExtraDTO
 	@OneToMany(mappedBy="horEstudio")
 	private Set<PermisoExtraDTO> horPermisosExtras;
 

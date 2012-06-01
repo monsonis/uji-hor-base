@@ -20,11 +20,11 @@ public class SemestreDTO implements Serializable {
 
 	private String nombre;
 
-	//bi-directional many-to-one association to Item
+	//bi-directional many-to-one association to ItemDTO
 	@OneToMany(mappedBy="horSemestre")
 	private Set<ItemDTO> horItems;
 
-	//bi-directional many-to-one association to DetalleSemestre
+	//bi-directional many-to-one association to DetalleSemestreDTO
 	@OneToMany(mappedBy="horSemestre")
 	private Set<DetalleSemestreDTO> horSemestresDetalles;
 

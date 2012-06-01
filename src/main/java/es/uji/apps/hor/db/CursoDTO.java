@@ -2,41 +2,35 @@ package es.uji.apps.hor.db;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
 import java.math.BigDecimal;
 
 
 /**
- * The persistent class for the HOR_V_GRUPOS database table.
+ * The persistent class for the HOR_V_CURSOS database table.
  * 
  */
 @Entity
-@IdClass(GrupoEstudioIdDTO.class)
-@Table(name="HOR_V_GRUPOS")
-public class GrupoEstudioDTO implements Serializable {
+@Table(name="HOR_V_CURSOS")
+public class CursoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private String especial;
+	@Column(name="CURSO_ID")
+	private BigDecimal cursoId;
 
 	private String estudio;
 
-    @Id
 	@Column(name="ESTUDIO_ID")
 	private BigDecimal estudioId;
 
-    @Id
-	@Column(name="GRUPO_ID")
-	private String grupoId;
-
-    public GrupoEstudioDTO() {
+    public CursoDTO() {
     }
 
-	public String getEspecial() {
-		return this.especial;
+	public BigDecimal getCursoId() {
+		return this.cursoId;
 	}
 
-	public void setEspecial(String especial) {
-		this.especial = especial;
+	public void setCursoId(BigDecimal cursoId) {
+		this.cursoId = cursoId;
 	}
 
 	public String getEstudio() {
@@ -53,14 +47,6 @@ public class GrupoEstudioDTO implements Serializable {
 
 	public void setEstudioId(BigDecimal estudioId) {
 		this.estudioId = estudioId;
-	}
-
-	public String getGrupoId() {
-		return this.grupoId;
-	}
-
-	public void setGrupoId(String grupoId) {
-		this.grupoId = grupoId;
 	}
 
 }

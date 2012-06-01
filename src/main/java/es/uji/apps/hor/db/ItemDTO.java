@@ -38,7 +38,7 @@ public class ItemDTO implements Serializable {
     @Temporal( TemporalType.DATE)
 	@Column(name="DESDE_EL_DIA")
 	private Date desdeElDia;
-    
+
 	private String estudio;
 
 	@Column(name="GRUPO_ID")
@@ -83,39 +83,39 @@ public class ItemDTO implements Serializable {
 	@Column(name="TIPO_SUBGRUPO_ID")
 	private String tipoSubgrupoId;
 
-	//bi-directional many-to-one association to AulaPlanificacion
+	//bi-directional many-to-one association to AulaPlanificacionDTO
     @ManyToOne
 	@JoinColumn(name="AULA_PLANIFICACION_ID")
 	private AulaPlanificacionDTO horAulasPlanificacion;
 
-	//bi-directional many-to-one association to Circuito
+	//bi-directional many-to-one association to CircuitoDTO
     @ManyToOne
 	@JoinColumn(name="CIRCUITO_ID")
 	private CircuitoDTO horCircuito;
 
-	//bi-directional many-to-one association to DiaSemana
+	//bi-directional many-to-one association to DiaSemanaDTO
     @ManyToOne
 	@JoinColumn(name="DIA_SEMANA_ID")
 	private DiaSemanaDTO horDiasSemana;
 
-	//bi-directional many-to-one association to Estudio
+	//bi-directional many-to-one association to EstudioDTO
     @ManyToOne
 	@JoinColumn(name="ESTUDIO_ID")
 	private EstudioDTO horEstudio;
 
-	//bi-directional many-to-one association to Profesor
+	//bi-directional many-to-one association to ProfesorDTO
     @ManyToOne
 	@JoinColumn(name="PROFESOR_ID")
 	private ProfesorDTO horProfesore;
 
-	//bi-directional many-to-one association to Semestre
+	//bi-directional many-to-one association to SemestreDTO
     @ManyToOne
 	@JoinColumn(name="SEMESTRE_ID")
 	private SemestreDTO horSemestre;
 
-	//bi-directional many-to-one association to DetalleItem
+	//bi-directional many-to-one association to ItemDetalleDTO
 	@OneToMany(mappedBy="horItem")
-	private Set<DetalleItemDTO> horItemsDetalles;
+	private Set<ItemDetalleDTO> horItemsDetalles;
 
     public ItemDTO() {
     }
@@ -344,11 +344,11 @@ public class ItemDTO implements Serializable {
 		this.horSemestre = horSemestre;
 	}
 	
-	public Set<DetalleItemDTO> getHorItemsDetalles() {
+	public Set<ItemDetalleDTO> getHorItemsDetalles() {
 		return this.horItemsDetalles;
 	}
 
-	public void setHorItemsDetalles(Set<DetalleItemDTO> horItemsDetalles) {
+	public void setHorItemsDetalles(Set<ItemDetalleDTO> horItemsDetalles) {
 		this.horItemsDetalles = horItemsDetalles;
 	}
 	

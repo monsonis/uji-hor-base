@@ -23,12 +23,12 @@ public class AreaDTO implements Serializable {
 
 	private String nombre;
 
-	//bi-directional many-to-one association to Departamento
+	//bi-directional many-to-one association to DepartamentoDTO
     @ManyToOne
 	@JoinColumn(name="DEPARTAMENTO_ID")
 	private DepartamentoDTO horDepartamento;
 
-	//bi-directional many-to-one association to Profesor
+	//bi-directional many-to-one association to ProfesorDTO
 	@OneToMany(mappedBy="horArea")
 	private Set<ProfesorDTO> horProfesores;
 

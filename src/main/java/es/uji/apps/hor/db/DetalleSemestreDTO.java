@@ -38,12 +38,12 @@ public class DetalleSemestreDTO implements Serializable {
 	@Column(name="NUMERO_SEMANAS")
 	private BigDecimal numeroSemanas;
 
-	//bi-directional many-to-one association to Semestre
+	//bi-directional many-to-one association to SemestreDTO
     @ManyToOne
 	@JoinColumn(name="SEMESTRE_ID")
 	private SemestreDTO horSemestre;
 
-	//bi-directional many-to-one association to TipoEstudio
+	//bi-directional many-to-one association to TipoEstudioDTO
     @ManyToOne
 	@JoinColumn(name="TIPO_ESTUDIO_ID")
 	private TipoEstudioDTO horTiposEstudio;

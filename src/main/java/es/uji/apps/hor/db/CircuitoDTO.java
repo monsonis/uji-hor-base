@@ -29,12 +29,12 @@ public class CircuitoDTO implements Serializable {
 
 	private String nombre;
 
-	//bi-directional many-to-one association to Estudio
+	//bi-directional many-to-one association to EstudioDTO
     @ManyToOne
 	@JoinColumn(name="ESTUDIO_ID")
 	private EstudioDTO horEstudio;
 
-	//bi-directional many-to-one association to Item
+	//bi-directional many-to-one association to ItemDTO
 	@OneToMany(mappedBy="horCircuito")
 	private Set<ItemDTO> horItems;
 
