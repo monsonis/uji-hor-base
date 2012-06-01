@@ -81,7 +81,7 @@ order by 1
 
 ==> hor_circuitos
 
-select rownum id, id circuito_id, nombre, tit_id estudio_id, grp_id grupo_id, decode(grp_id,'Y',1,0) especial
+select rownum id, id id_circuito, nombre, tit_id estudio_id, grp_id grupo_id, decode(grp_id,'Y',1,0) especial
 from pod_circuitos_cab
 where curso_aca = 2011
 
@@ -204,29 +204,27 @@ and             ubicacion_id = u.id(+)
 
 ==> hor_items
 
---/* Formatted on 28/05/2012 16:24 (Formatter Plus v4.8.8) */
 select rownum id, asignatura_id, asignatura, estudio_id, estudio, tipo_estudio_id, te.nombre tipo_estudio, curso_id,
-       caracter_id, cr.nombre caracter, semestre_id, ubicacion_id aula_planificacion_id, circuito_id,
-       persona_id profesor_id, grupo_id, tipo_subgrupo_id, tsg.nombre tipo_subgrupo, subgrupo_id, dia_semana_id,
-       hora_inicio, hora_fin, null desde_el_dia, null hasta_el_dia, 'N' modifica_detalle, tipo_asignatura_id,
-       ta.nombre tipo_asignatura, comun, porcentaje_comun
+       caracter_id, cr.nombre caracter, semestre_id, ubicacion_id aula_planificacion_id, persona_id profesor_id,
+       grupo_id, tipo_subgrupo_id, tsg.nombre tipo_subgrupo, subgrupo_id, dia_semana_id, hora_inicio, hora_fin,
+       null desde_el_dia, null hasta_el_dia, 'N' modifica_detalle, tipo_asignatura_id, ta.nombre tipo_asignatura, comun,
+       porcentaje_comun, plazas
 from   (select 0 id, asit.tit_id estudio_id, t.nombre estudio, t.tipo_estudio tipo_estudio_id, cur_id curso_id,
                grp_asi_id asignatura_id, caracter caracter_id, grp_id grupo_id, to_number (semestre) semestre_id,
                grp_curso_aca curso_aca, s.tipo tipo_subgrupo_id, s.id subgrupo_id, null dia_semana_id, null hora_inicio,
-               null hora_fin, null persona_id, null ubicacion_id, null compartido, null circuito_id,
-               a.tipo tipo_asignatura_id, a.nombre asignatura,
-               (select decode (count (*), 0, 0, 1)
-                from   pod_comunes com,
-                       pod_grp_comunes gc
-                where  gc.id = com.gco_id
-                and    curso_aca = ac.curso_aca
-                and    asi_id = a.id) comun,
+               null hora_fin, null persona_id, null ubicacion_id, null compartido, a.tipo tipo_asignatura_id,
+               a.nombre asignatura, (select decode (count (*), 0, 0, 1)
+                                     from   pod_comunes com,
+                                            pod_grp_comunes gc
+                                     where  gc.id = com.gco_id
+                                     and    curso_aca = ac.curso_aca
+                                     and    asi_id = a.id) comun,
                (select porcentaje
                 from   pod_comunes com,
                        pod_grp_comunes gc
                 where  gc.id = com.gco_id
                 and    curso_aca = ac.curso_aca
-                and    asi_id = a.id) porcentaje_comun
+                and    asi_id = a.id) porcentaje_comun, s.limite_nuevos plazas
         from   pod_grupos g,
                pod_subgrupos s,
                pod_asignaturas_titulaciones asit,
@@ -260,7 +258,7 @@ from   (select 0 id, asit.tit_id estudio_id, t.nombre estudio, t.tipo_estudio ti
                to_number (semestre) semestre_id, sgr_grp_curso_aca curso_aca, sgr_tipo tipo_id, sgr_id subgrupo_id,
                dia_sem dia_semana, to_date ('1-1-1 ' || to_char (ini, 'hh24:mi'), 'dd-mm-yyyy hh24:mi') hora_inicio,
                to_date ('1-1-1 ' || to_char (fin, 'hh24:mi'), 'dd-mm-yyyy hh24:mi') hora_fin, per_id persona_id,
-               ubi_id ubicacion_id, compartido, cic_id circuito_id, a.tipo tipo_asignatura_id, a.nombre asignatura,
+               ubi_id ubicacion_id, compartido, a.tipo tipo_asignatura_id, a.nombre asignatura,
                (select decode (count (*), 0, 0, 1)
                 from   pod_comunes com,
                        pod_grp_comunes gc
@@ -272,12 +270,12 @@ from   (select 0 id, asit.tit_id estudio_id, t.nombre estudio, t.tipo_estudio ti
                        pod_grp_comunes gc
                 where  gc.id = com.gco_id
                 and    curso_aca = ac.curso_aca
-                and    asi_id = a.id) porcentaje_comun
+                and    asi_id = a.id) porcentaje_comun, s.limite_nuevos plazas
         from   pod_horarios h,
-               pod_circuitos_det cir,
                pod_asi_cursos ac,
                pod_asignaturas a,
-               pod_titulaciones t
+               pod_titulaciones t,
+               pod_subgrupos s
         where  sgr_grp_curso_aca = 2011
         --and    sgr_grp_asi_id = 'AE1008'
         --and    sgr_grp_id = 'A'
@@ -288,11 +286,11 @@ from   (select 0 id, asit.tit_id estudio_id, t.nombre estudio, t.tipo_estudio ti
         and    cur_tit_id between 201 and 9999
         and    cur_tit_id = t.id
         and    ac.asi_id = a.id
-        and    sgr_grp_curso_aca = sgd_sgr_grp_curso_aca(+)
-        and    sgr_grp_asi_id = sgd_sgr_grp_asi_id(+)
-        and    sgr_grp_id = SGD_SGR_GRP_ID(+)
-        and    sgr_tipo = SGD_SGR_TIPO(+)
-        and    sgr_id = SGD_SGR_ID(+)) i,
+        and    s.GRP_ASI_ID = h.sgr_grp_asi_id
+        and    s.GRP_ID = h.sgr_grp_id
+        and    s.GRP_CURSO_ACA = h.sgr_grp_curso_aca
+        and    s.ID = h.sgr_id
+        and    s.TIPO = h.sgr_tipo) i,
        (select 'AV' id, 'Avaluació' nombre, 7 orden
         from   dual
         union all
@@ -351,8 +349,6 @@ and    tipo_asignatura_id = ta.id
 and    caracter_id = cr.id
 and    tipo_estudio_id = te.id
 --and    asignatura_id = 'DR1001'
-
-                
 		
 ==> hor_ext_calendario
 
@@ -450,7 +446,24 @@ and    act_id = (select max (act_id)
    and    role_id = 1
    and    e.aplicacion_id = 4;
 
-         
+
+==> hor_ext_circuitos
+
+select rownum id, SGD_SGR_GRP_CURSO_ACA curso_aca, CIC_TIT_ID estudio_id, SGD_SGR_GRP_ASI_ID asignatura_id,
+       SGD_SGR_GRP_ID grupo_id, SGD_SGR_TIPO tipo, SGD_SGR_ID subgrupo_id, SGD_ID detalle_id, CIC_ID circuito_id,
+       limite plazas
+from   pod_circuitos_det c,
+       pod_subgrupos_det d
+where  sgd_sgr_grp_curso_aca = 2011
+--and    sgd_sgr_grp_asi_id = 'RL0908'
+and    c.SGD_SGR_GRP_CURSO_ACA = d.sgr_grp_curso_aca
+and    c.SGD_SGR_TIPO = d.sgr_tipo
+and    c.SGD_SGR_ID = d.sgr_id
+and    c.SGD_SGR_GRP_ID = d.sgr_grp_id
+and    c.SGD_SGR_GRP_ASI_ID = d.sgr_grp_asi_id
+and    c.SGD_ID = d.id
+
+
          
 ==> hor_items_detalles
 
@@ -474,18 +487,43 @@ begin
       v_aux := uji_horarios.hibernate_sequence.nextval;
 
       insert into hor_items_detalle
-                  (ID, ITEM_ID, DIA, HORA_INICIO, HORA_FIN, DESCRIPCION
+                  (ID, ITEM_ID,
+                   INICIO,
+                   FIN,
+                   DESCRIPCION
                   )
-      values      (v_aux, x.item_id, x.dia, x.hora_inicio, x.hora_fin, x.descripcion
+      values      (v_aux, x.item_id,
+                   to_date (to_char (x.dia, 'dd/mm/yyyy') || ' ' || to_char (x.hora_inicio, 'hh24:mi'),
+                            'dd/mm/yyyy hh24:mi'),
+                   to_date (to_char (x.dia, 'dd/mm/yyyy') || ' ' || to_char (x.hora_fin, 'hh24:mi'),
+                            'dd/mm/yyyy hh24:mi'),
+                   x.descripcion
                   );
 
       commit;
    end loop;
 end;
 
-
-
          
          
+==> hor_items_circuitos
+
+insert into hor_items_circuitos
+            (id, item_id, circuito_id, plazas)
+   select rownum id, i.id item_id, circuito_id, e.plazas
+   from   hor_ext_circuitos e,
+          hor_circuitos c,
+          hor_items i
+   where  e.estudio_id = c.estudio_id
+   and    e.circuito_id = c.id_circuito
+   and    e.asignatura_id = i.asignatura_id
+   and    e.estudio_id = i.estudio_id
+   and    e.grupo_id = i.grupo_id
+   and    e.tipo = i.tipo_subgrupo_id
+   and    e.subgrupo_id = i.subgrupo_id;
+   
+   
+
+
          		
 		
