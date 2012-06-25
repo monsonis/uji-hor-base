@@ -20,16 +20,11 @@ public class ItemDetalleDTO implements Serializable {
 
 	private String descripcion;
 
-    @Temporal( TemporalType.DATE)
-	private Date dia;
+    @Temporal( TemporalType.TIMESTAMP)
+	private Date fin;
 
-    @Temporal( TemporalType.DATE)
-	@Column(name="HORA_FIN")
-	private Date horaFin;
-
-    @Temporal( TemporalType.DATE)
-	@Column(name="HORA_INICIO")
-	private Date horaInicio;
+    @Temporal( TemporalType.TIMESTAMP)
+	private Date inicio;
 
 	//bi-directional many-to-one association to ItemDTO
     @ManyToOne
@@ -55,28 +50,20 @@ public class ItemDetalleDTO implements Serializable {
 		this.descripcion = descripcion;
 	}
 
-	public Date getDia() {
-		return this.dia;
+	public Date getFin() {
+		return this.fin;
 	}
 
-	public void setDia(Date dia) {
-		this.dia = dia;
+	public void setFin(Date fin) {
+		this.fin = fin;
 	}
 
-	public Date getHoraFin() {
-		return this.horaFin;
+	public Date getInicio() {
+		return this.inicio;
 	}
 
-	public void setHoraFin(Date horaFin) {
-		this.horaFin = horaFin;
-	}
-
-	public Date getHoraInicio() {
-		return this.horaInicio;
-	}
-
-	public void setHoraInicio(Date horaInicio) {
-		this.horaInicio = horaInicio;
+	public void setInicio(Date inicio) {
+		this.inicio = inicio;
 	}
 
 	public ItemDTO getHorItem() {

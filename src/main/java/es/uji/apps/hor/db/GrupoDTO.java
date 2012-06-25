@@ -1,8 +1,12 @@
 package es.uji.apps.hor.db;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.math.BigDecimal;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 
 /**
@@ -18,6 +22,7 @@ public class GrupoDTO implements Serializable {
 
 	private String estudio;
 
+	@Id
 	@Column(name="ESTUDIO_ID")
 	private BigDecimal estudioId;
 

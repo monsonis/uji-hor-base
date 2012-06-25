@@ -40,8 +40,10 @@
     <class>es.uji.apps.hor.db.EstudioDTO</class>
     <class>es.uji.apps.hor.db.CalendarioDTO</class>
     <class>es.uji.apps.hor.db.CargoPersonaDTO</class>
+    <class>es.uji.apps.hor.db.ExtCircuitoDTO</class>
     <class>es.uji.apps.hor.db.PersonaDTO</class>
     <class>es.uji.apps.hor.db.ItemDTO</class>
+    <class>es.uji.apps.hor.db.ItemCircuitoDTO</class>
     <class>es.uji.apps.hor.db.ItemDetalleDTO</class>
     <class>es.uji.apps.hor.db.PermisoExtraDTO</class>
     <class>es.uji.apps.hor.db.ProfesorDTO</class>

@@ -1,4 +1,4 @@
-package es.uji.apps.hor.services;
+package es.uji.apps.hor.dao;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import com.mysema.query.jpa.impl.JPAQuery;
 
-import es.uji.apps.hor.dao.EventosDAO;
 import es.uji.apps.hor.db.ItemDTO;
 import es.uji.apps.hor.db.ItemDetalleDTO;
 import es.uji.apps.hor.db.QItemDTO;
@@ -37,8 +36,8 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
                 .join(detalleItem.horItem, item)
                 .where(item.horEstudio.id.eq(estudioId)
                         .and(item.cursoId.eq(new BigDecimal(cursoId)))
-                        .and(detalleItem.dia.goe(rangoFechasInicio))
-                        .and(detalleItem.dia.loe(rangoFechasFin))).list(detalleItem);
+                        .and(detalleItem.inicio.goe(rangoFechasInicio))
+                        .and(detalleItem.fin.loe(rangoFechasFin))).list(detalleItem);
 
         List<Evento> eventos = new ArrayList<Evento>();
 
@@ -57,22 +56,18 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
 
         Calendario calendario = obtenerCalendarioAsociadoPorTipoSubgrupo(itemDTO);
 
-        Calendar inicio = creaCalendarDesdeFechaHoraInicioYFin(detalleItemDTO.getDia(),
-                detalleItemDTO.getHoraInicio());
-        Calendar fin = creaCalendarDesdeFechaHoraInicioYFin(detalleItemDTO.getDia(),
-                detalleItemDTO.getHoraFin());
+        Calendar inicio = creaCalendarDesdeFechaHoraInicioYFin(detalleItemDTO.getInicio());
+        Calendar fin = creaCalendarDesdeFechaHoraInicioYFin(detalleItemDTO.getFin());
 
         return new Evento(itemDTO.getId(), calendario, titulo, inicio.getTime(), fin.getTime());
     }
 
     @SuppressWarnings("deprecation")
-    private Calendar creaCalendarDesdeFechaHoraInicioYFin(Date dia, Date horaInicio)
+    private Calendar creaCalendarDesdeFechaHoraInicioYFin(Date fecha)
     {
         Calendar inicio = Calendar.getInstance();
-        inicio.setTime(dia);
-        inicio.set(Calendar.HOUR, horaInicio.getHours());
-        inicio.set(Calendar.MINUTE, horaInicio.getMinutes());
-        
+        inicio.setTime(fecha);
+
         return inicio;
     }
 

@@ -3,353 +3,429 @@ package es.uji.apps.hor.db;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.Set;
-
 
 /**
  * The persistent class for the HOR_ITEMS database table.
  * 
  */
 @Entity
-@Table(name="HOR_ITEMS")
-public class ItemDTO implements Serializable {
-	private static final long serialVersionUID = 1L;
+@Table(name = "HOR_ITEMS")
+public class ItemDTO implements Serializable
+{
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-	private String asignatura;
+    private String asignatura;
 
-	@Column(name="ASIGNATURA_ID")
-	private String asignaturaId;
+    @Column(name = "ASIGNATURA_ID")
+    private String asignaturaId;
 
-	private String caracter;
+    private String caracter;
 
-	@Column(name="CARACTER_ID")
-	private String caracterId;
+    @Column(name = "CARACTER_ID")
+    private String caracterId;
 
-	private BigDecimal comun;
+    private BigDecimal comun;
 
-	@Column(name="CURSO_ID")
-	private BigDecimal cursoId;
+    @Column(name = "CURSO_ID")
+    private BigDecimal cursoId;
 
-    @Temporal( TemporalType.DATE)
-	@Column(name="DESDE_EL_DIA")
-	private Date desdeElDia;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "DESDE_EL_DIA")
+    private Date desdeElDia;
 
-	private String estudio;
+    private String estudio;
 
-	@Column(name="GRUPO_ID")
-	private String grupoId;
+    @Column(name = "GRUPO_ID")
+    private String grupoId;
 
-    @Temporal( TemporalType.DATE)
-	@Column(name="HASTA_EL_DIA")
-	private Date hastaElDia;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "HASTA_EL_DIA")
+    private Date hastaElDia;
 
-    @Temporal( TemporalType.DATE)
-	@Column(name="HORA_FIN")
-	private Date horaFin;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "HORA_FIN")
+    private Date horaFin;
 
-    @Temporal( TemporalType.DATE)
-	@Column(name="HORA_INICIO")
-	private Date horaInicio;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "HORA_INICIO")
+    private Date horaInicio;
 
-	@Column(name="MODIFICA_DETALLE")
-	private String modificaDetalle;
+    @Column(name = "MODIFICA_DETALLE")
+    private String modificaDetalle;
 
-	@Column(name="PORCENTAJE_COMUN")
-	private BigDecimal porcentajeComun;
+    private BigDecimal plazas;
 
-	@Column(name="SUBGRUPO_ID")
-	private BigDecimal subgrupoId;
+    @Column(name = "PORCENTAJE_COMUN")
+    private BigDecimal porcentajeComun;
 
-	@Column(name="TIPO_ASIGNATURA")
-	private String tipoAsignatura;
+    @Column(name = "SUBGRUPO_ID")
+    private BigDecimal subgrupoId;
 
-	@Column(name="TIPO_ASIGNATURA_ID")
-	private String tipoAsignaturaId;
+    @Column(name = "TIPO_ASIGNATURA")
+    private String tipoAsignatura;
 
-	@Column(name="TIPO_ESTUDIO")
-	private String tipoEstudio;
+    @Column(name = "TIPO_ASIGNATURA_ID")
+    private String tipoAsignaturaId;
 
-	@Column(name="TIPO_ESTUDIO_ID")
-	private String tipoEstudioId;
+    @Column(name = "TIPO_ESTUDIO")
+    private String tipoEstudio;
 
-	@Column(name="TIPO_SUBGRUPO")
-	private String tipoSubgrupo;
+    @Column(name = "TIPO_ESTUDIO_ID")
+    private String tipoEstudioId;
 
-	@Column(name="TIPO_SUBGRUPO_ID")
-	private String tipoSubgrupoId;
+    @Column(name = "TIPO_SUBGRUPO")
+    private String tipoSubgrupo;
 
-	//bi-directional many-to-one association to AulaPlanificacionDTO
+    @Column(name = "TIPO_SUBGRUPO_ID")
+    private String tipoSubgrupoId;
+
+    // bi-directional many-to-one association to AulaPlanificacionDTO
     @ManyToOne
-	@JoinColumn(name="AULA_PLANIFICACION_ID")
-	private AulaPlanificacionDTO horAulasPlanificacion;
+    @JoinColumn(name = "AULA_PLANIFICACION_ID")
+    private AulaPlanificacionDTO horAulasPlanificacion;
 
-	//bi-directional many-to-one association to CircuitoDTO
+    // bi-directional many-to-one association to DiaSemanaDTO
     @ManyToOne
-	@JoinColumn(name="CIRCUITO_ID")
-	private CircuitoDTO horCircuito;
+    @JoinColumn(name = "DIA_SEMANA_ID")
+    private DiaSemanaDTO horDiasSemana;
 
-	//bi-directional many-to-one association to DiaSemanaDTO
+    // bi-directional many-to-one association to EstudioDTO
     @ManyToOne
-	@JoinColumn(name="DIA_SEMANA_ID")
-	private DiaSemanaDTO horDiasSemana;
+    @JoinColumn(name = "ESTUDIO_ID")
+    private EstudioDTO horEstudio;
 
-	//bi-directional many-to-one association to EstudioDTO
+    // bi-directional many-to-one association to ProfesorDTO
     @ManyToOne
-	@JoinColumn(name="ESTUDIO_ID")
-	private EstudioDTO horEstudio;
+    @JoinColumn(name = "PROFESOR_ID")
+    private ProfesorDTO horProfesore;
 
-	//bi-directional many-to-one association to ProfesorDTO
+    // bi-directional many-to-one association to SemestreDTO
     @ManyToOne
-	@JoinColumn(name="PROFESOR_ID")
-	private ProfesorDTO horProfesore;
+    @JoinColumn(name = "SEMESTRE_ID")
+    private SemestreDTO horSemestre;
 
-	//bi-directional many-to-one association to SemestreDTO
-    @ManyToOne
-	@JoinColumn(name="SEMESTRE_ID")
-	private SemestreDTO horSemestre;
+    // bi-directional many-to-one association to HorItemsCircuito
+    @OneToMany(mappedBy = "horItem")
+    private Set<ItemCircuitoDTO> horItemsCircuitos;
 
-	//bi-directional many-to-one association to ItemDetalleDTO
-	@OneToMany(mappedBy="horItem")
-	private Set<ItemDetalleDTO> horItemsDetalles;
+    // bi-directional many-to-one association to ItemDetalleDTO
+    @OneToMany(mappedBy = "horItem")
+    private Set<ItemDetalleDTO> horItemsDetalles;
 
-    public ItemDTO() {
+    public ItemDTO()
+    {
     }
 
-	public Long getId() {
-		return this.id;
-	}
+    public Long getId()
+    {
+        return this.id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id)
+    {
+        this.id = id;
+    }
 
-	public String getAsignatura() {
-		return this.asignatura;
-	}
+    public String getAsignatura()
+    {
+        return this.asignatura;
+    }
 
-	public void setAsignatura(String asignatura) {
-		this.asignatura = asignatura;
-	}
+    public void setAsignatura(String asignatura)
+    {
+        this.asignatura = asignatura;
+    }
 
-	public String getAsignaturaId() {
-		return this.asignaturaId;
-	}
+    public String getAsignaturaId()
+    {
+        return this.asignaturaId;
+    }
 
-	public void setAsignaturaId(String asignaturaId) {
-		this.asignaturaId = asignaturaId;
-	}
+    public void setAsignaturaId(String asignaturaId)
+    {
+        this.asignaturaId = asignaturaId;
+    }
 
-	public String getCaracter() {
-		return this.caracter;
-	}
+    public String getCaracter()
+    {
+        return this.caracter;
+    }
 
-	public void setCaracter(String caracter) {
-		this.caracter = caracter;
-	}
+    public void setCaracter(String caracter)
+    {
+        this.caracter = caracter;
+    }
 
-	public String getCaracterId() {
-		return this.caracterId;
-	}
+    public String getCaracterId()
+    {
+        return this.caracterId;
+    }
 
-	public void setCaracterId(String caracterId) {
-		this.caracterId = caracterId;
-	}
+    public void setCaracterId(String caracterId)
+    {
+        this.caracterId = caracterId;
+    }
 
-	public BigDecimal getComun() {
-		return this.comun;
-	}
+    public BigDecimal getComun()
+    {
+        return this.comun;
+    }
 
-	public void setComun(BigDecimal comun) {
-		this.comun = comun;
-	}
+    public void setComun(BigDecimal comun)
+    {
+        this.comun = comun;
+    }
 
-	public BigDecimal getCursoId() {
-		return this.cursoId;
-	}
+    public BigDecimal getCursoId()
+    {
+        return this.cursoId;
+    }
 
-	public void setCursoId(BigDecimal cursoId) {
-		this.cursoId = cursoId;
-	}
+    public void setCursoId(BigDecimal cursoId)
+    {
+        this.cursoId = cursoId;
+    }
 
-	public Date getDesdeElDia() {
-		return this.desdeElDia;
-	}
+    public Date getDesdeElDia()
+    {
+        return this.desdeElDia;
+    }
 
-	public void setDesdeElDia(Date desdeElDia) {
-		this.desdeElDia = desdeElDia;
-	}
+    public void setDesdeElDia(Date desdeElDia)
+    {
+        this.desdeElDia = desdeElDia;
+    }
 
-	public String getEstudio() {
-		return this.estudio;
-	}
+    public String getEstudio()
+    {
+        return this.estudio;
+    }
 
-	public void setEstudio(String estudio) {
-		this.estudio = estudio;
-	}
+    public void setEstudio(String estudio)
+    {
+        this.estudio = estudio;
+    }
 
-	public String getGrupoId() {
-		return this.grupoId;
-	}
+    public String getGrupoId()
+    {
+        return this.grupoId;
+    }
 
-	public void setGrupoId(String grupoId) {
-		this.grupoId = grupoId;
-	}
+    public void setGrupoId(String grupoId)
+    {
+        this.grupoId = grupoId;
+    }
 
-	public Date getHastaElDia() {
-		return this.hastaElDia;
-	}
+    public Date getHastaElDia()
+    {
+        return this.hastaElDia;
+    }
 
-	public void setHastaElDia(Date hastaElDia) {
-		this.hastaElDia = hastaElDia;
-	}
+    public void setHastaElDia(Date hastaElDia)
+    {
+        this.hastaElDia = hastaElDia;
+    }
 
-	public Date getHoraFin() {
-		return this.horaFin;
-	}
+    public Date getHoraFin()
+    {
+        return this.horaFin;
+    }
 
-	public void setHoraFin(Date horaFin) {
-		this.horaFin = horaFin;
-	}
+    public void setHoraFin(Date horaFin)
+    {
+        this.horaFin = horaFin;
+    }
 
-	public Date getHoraInicio() {
-		return this.horaInicio;
-	}
+    public Date getHoraInicio()
+    {
+        return this.horaInicio;
+    }
 
-	public void setHoraInicio(Date horaInicio) {
-		this.horaInicio = horaInicio;
-	}
+    public void setHoraInicio(Date horaInicio)
+    {
+        this.horaInicio = horaInicio;
+    }
 
-	public String getModificaDetalle() {
-		return this.modificaDetalle;
-	}
+    public String getModificaDetalle()
+    {
+        return this.modificaDetalle;
+    }
 
-	public void setModificaDetalle(String modificaDetalle) {
-		this.modificaDetalle = modificaDetalle;
-	}
+    public void setModificaDetalle(String modificaDetalle)
+    {
+        this.modificaDetalle = modificaDetalle;
+    }
 
-	public BigDecimal getPorcentajeComun() {
-		return this.porcentajeComun;
-	}
+    public BigDecimal getPlazas()
+    {
+        return this.plazas;
+    }
 
-	public void setPorcentajeComun(BigDecimal porcentajeComun) {
-		this.porcentajeComun = porcentajeComun;
-	}
+    public void setPlazas(BigDecimal plazas)
+    {
+        this.plazas = plazas;
+    }
 
-	public BigDecimal getSubgrupoId() {
-		return this.subgrupoId;
-	}
+    public BigDecimal getPorcentajeComun()
+    {
+        return this.porcentajeComun;
+    }
 
-	public void setSubgrupoId(BigDecimal subgrupoId) {
-		this.subgrupoId = subgrupoId;
-	}
+    public void setPorcentajeComun(BigDecimal porcentajeComun)
+    {
+        this.porcentajeComun = porcentajeComun;
+    }
 
-	public String getTipoAsignatura() {
-		return this.tipoAsignatura;
-	}
+    public BigDecimal getSubgrupoId()
+    {
+        return this.subgrupoId;
+    }
 
-	public void setTipoAsignatura(String tipoAsignatura) {
-		this.tipoAsignatura = tipoAsignatura;
-	}
+    public void setSubgrupoId(BigDecimal subgrupoId)
+    {
+        this.subgrupoId = subgrupoId;
+    }
 
-	public String getTipoAsignaturaId() {
-		return this.tipoAsignaturaId;
-	}
+    public String getTipoAsignatura()
+    {
+        return this.tipoAsignatura;
+    }
 
-	public void setTipoAsignaturaId(String tipoAsignaturaId) {
-		this.tipoAsignaturaId = tipoAsignaturaId;
-	}
+    public void setTipoAsignatura(String tipoAsignatura)
+    {
+        this.tipoAsignatura = tipoAsignatura;
+    }
 
-	public String getTipoEstudio() {
-		return this.tipoEstudio;
-	}
+    public String getTipoAsignaturaId()
+    {
+        return this.tipoAsignaturaId;
+    }
 
-	public void setTipoEstudio(String tipoEstudio) {
-		this.tipoEstudio = tipoEstudio;
-	}
+    public void setTipoAsignaturaId(String tipoAsignaturaId)
+    {
+        this.tipoAsignaturaId = tipoAsignaturaId;
+    }
 
-	public String getTipoEstudioId() {
-		return this.tipoEstudioId;
-	}
+    public String getTipoEstudio()
+    {
+        return this.tipoEstudio;
+    }
 
-	public void setTipoEstudioId(String tipoEstudioId) {
-		this.tipoEstudioId = tipoEstudioId;
-	}
+    public void setTipoEstudio(String tipoEstudio)
+    {
+        this.tipoEstudio = tipoEstudio;
+    }
 
-	public String getTipoSubgrupo() {
-		return this.tipoSubgrupo;
-	}
+    public String getTipoEstudioId()
+    {
+        return this.tipoEstudioId;
+    }
 
-	public void setTipoSubgrupo(String tipoSubgrupo) {
-		this.tipoSubgrupo = tipoSubgrupo;
-	}
+    public void setTipoEstudioId(String tipoEstudioId)
+    {
+        this.tipoEstudioId = tipoEstudioId;
+    }
 
-	public String getTipoSubgrupoId() {
-		return this.tipoSubgrupoId;
-	}
+    public String getTipoSubgrupo()
+    {
+        return this.tipoSubgrupo;
+    }
 
-	public void setTipoSubgrupoId(String tipoSubgrupoId) {
-		this.tipoSubgrupoId = tipoSubgrupoId;
-	}
+    public void setTipoSubgrupo(String tipoSubgrupo)
+    {
+        this.tipoSubgrupo = tipoSubgrupo;
+    }
 
-	public AulaPlanificacionDTO getHorAulasPlanificacion() {
-		return this.horAulasPlanificacion;
-	}
+    public String getTipoSubgrupoId()
+    {
+        return this.tipoSubgrupoId;
+    }
 
-	public void setHorAulasPlanificacion(AulaPlanificacionDTO horAulasPlanificacion) {
-		this.horAulasPlanificacion = horAulasPlanificacion;
-	}
-	
-	public CircuitoDTO getHorCircuito() {
-		return this.horCircuito;
-	}
+    public void setTipoSubgrupoId(String tipoSubgrupoId)
+    {
+        this.tipoSubgrupoId = tipoSubgrupoId;
+    }
 
-	public void setHorCircuito(CircuitoDTO horCircuito) {
-		this.horCircuito = horCircuito;
-	}
-	
-	public DiaSemanaDTO getHorDiasSemana() {
-		return this.horDiasSemana;
-	}
+    public AulaPlanificacionDTO getHorAulasPlanificacion()
+    {
+        return this.horAulasPlanificacion;
+    }
 
-	public void setHorDiasSemana(DiaSemanaDTO horDiasSemana) {
-		this.horDiasSemana = horDiasSemana;
-	}
-	
-	public EstudioDTO getHorEstudio() {
-		return this.horEstudio;
-	}
+    public void setHorAulasPlanificacion(AulaPlanificacionDTO horAulasPlanificacion)
+    {
+        this.horAulasPlanificacion = horAulasPlanificacion;
+    }
 
-	public void setHorEstudio(EstudioDTO horEstudio) {
-		this.horEstudio = horEstudio;
-	}
-	
-	public ProfesorDTO getHorProfesore() {
-		return this.horProfesore;
-	}
+    public DiaSemanaDTO getHorDiasSemana()
+    {
+        return this.horDiasSemana;
+    }
 
-	public void setHorProfesore(ProfesorDTO horProfesore) {
-		this.horProfesore = horProfesore;
-	}
-	
-	public SemestreDTO getHorSemestre() {
-		return this.horSemestre;
-	}
+    public void setHorDiasSemana(DiaSemanaDTO horDiasSemana)
+    {
+        this.horDiasSemana = horDiasSemana;
+    }
 
-	public void setHorSemestre(SemestreDTO horSemestre) {
-		this.horSemestre = horSemestre;
-	}
-	
-	public Set<ItemDetalleDTO> getHorItemsDetalles() {
-		return this.horItemsDetalles;
-	}
+    public EstudioDTO getHorEstudio()
+    {
+        return this.horEstudio;
+    }
 
-	public void setHorItemsDetalles(Set<ItemDetalleDTO> horItemsDetalles) {
-		this.horItemsDetalles = horItemsDetalles;
-	}
-	
+    public void setHorEstudio(EstudioDTO horEstudio)
+    {
+        this.horEstudio = horEstudio;
+    }
+
+    public ProfesorDTO getHorProfesore()
+    {
+        return this.horProfesore;
+    }
+
+    public void setHorProfesore(ProfesorDTO horProfesore)
+    {
+        this.horProfesore = horProfesore;
+    }
+
+    public SemestreDTO getHorSemestre()
+    {
+        return this.horSemestre;
+    }
+
+    public void setHorSemestre(SemestreDTO horSemestre)
+    {
+        this.horSemestre = horSemestre;
+    }
+
+    public Set<ItemCircuitoDTO> getHorItemsCircuitos()
+    {
+        return this.horItemsCircuitos;
+    }
+
+    public void setHorItemsCircuitos(Set<ItemCircuitoDTO> horItemsCircuitos)
+    {
+        this.horItemsCircuitos = horItemsCircuitos;
+    }
+
+    public Set<ItemDetalleDTO> getHorItemsDetalles()
+    {
+        return this.horItemsDetalles;
+    }
+
+    public void setHorItemsDetalles(Set<ItemDetalleDTO> horItemsDetalles)
+    {
+        this.horItemsDetalles = horItemsDetalles;
+    }
+
+    @Override
+    public String toString()
+    {
+        return MessageFormat.format("{0} - {1} - {2}{3}", asignaturaId, grupoId, tipoSubgrupoId, subgrupoId);
+    }
 }

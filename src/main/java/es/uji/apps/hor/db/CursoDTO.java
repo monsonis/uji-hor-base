@@ -1,8 +1,12 @@
 package es.uji.apps.hor.db;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.math.BigDecimal;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 
 /**
@@ -14,6 +18,7 @@ import java.math.BigDecimal;
 public class CursoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@Id
 	@Column(name="CURSO_ID")
 	private BigDecimal cursoId;
 
