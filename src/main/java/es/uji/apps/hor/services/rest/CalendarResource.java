@@ -97,7 +97,7 @@ public class CalendarResource
         {
             UIEntity calendar = new UIEntity();
             calendar.put("id", i);
-            calendar.put("title", "Evento " + i);
+            calendar.put("title", "Calendario " + i);
             calendar.put("color", 20 + i);
 
             calendars.add(calendar);
