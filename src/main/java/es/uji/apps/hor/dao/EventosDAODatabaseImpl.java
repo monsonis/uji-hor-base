@@ -62,7 +62,6 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         return new Evento(itemDTO.getId(), calendario, titulo, inicio.getTime(), fin.getTime());
     }
 
-    @SuppressWarnings("deprecation")
     private Calendar creaCalendarDesdeFechaHoraInicioYFin(Date fecha)
     {
         Calendar inicio = Calendar.getInstance();
