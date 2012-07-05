@@ -1,4 +1,4 @@
-Ext.define('APA.controller.ControllerDashboards', {
+Ext.define('HOR.controller.ControllerDashboards', {
 	extend : 'Ext.app.Controller',
 	views : [ 'dashboard.PanelDashboard' ],
 
