@@ -4,7 +4,7 @@ Ext.define('HOR.view.horarios.SelectorCalendarios',
     alias : 'widget.selectorCalendarios',
     title : 'Calendaris',
     padding : 5,
-    flex : 1,
+    height: 230,
     layout :
     {
         type : 'vbox',
@@ -14,12 +14,38 @@ Ext.define('HOR.view.horarios.SelectorCalendarios',
     {
         xtype : 'checkboxgroup',
         columns : 1,
-        padding : 10,
         vertical : true,
-        items : [ {
-            xtype: 'checkbox',
-            boxLabel: 'Calendario 1'
-        } ]
+        items : [
+        {
+            xtype : 'checkbox',
+            boxLabel : 'Teoria',
+            padding: '10 10 0 10'
+        },
+        {
+            xtype : 'checkbox',
+            boxLabel : 'Problemes',
+            padding: '10 10 0 10'
+        },
+        {
+            xtype : 'checkbox',
+            boxLabel : 'Laboratoris',
+            padding: '10 10 0 10'
+        },
+        {
+            xtype : 'checkbox',
+            boxLabel : 'Seminaris',
+            padding: '10 10 0 10'
+        },
+        {
+            xtype : 'checkbox',
+            boxLabel : 'Tutories',
+            padding: '10 10 0 10'
+        },
+        {
+            xtype : 'checkbox',
+            boxLabel : 'Avaluació',
+            padding: '10 10 0 10'
+        }, ]
     } ]
 
 });
