@@ -9,7 +9,7 @@ Ext.define('HOR.view.horarios.FiltroGrupos', {
    comboSemestre: null,
    comboGrupo: null,
    initComponent: function() {
-       this.callParent();
+       this.callParent(arguments);
        this.initUI();
        this.add(this.comboTitulacion);
        this.add(this.comboCurso);

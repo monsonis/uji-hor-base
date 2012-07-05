@@ -1,8 +1,7 @@
 Ext.define('HOR.store.StoreCalendarios',
 {
     extend: 'Extensible.calendar.data.MemoryCalendarStore',
-    model : 'HOR.model.Calendario',
-    autoLoad : true,
+    autoLoad : false,
     proxy :
     {
         type : 'ajax',

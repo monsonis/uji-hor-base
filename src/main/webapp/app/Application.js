@@ -1,11 +1,12 @@
 Ext.Loader.setConfig(
 {
-    enabled : true
+    enabled : true,
+    paths: {
+        'Ext.ux': '/hor/examples/ux',
+        'Ext.ux.uji': '/hor/Ext/ux/uji',
+        'Extensible': '/hor/extensible-1.5.1/src'
+    }
 });
-
-Ext.Loader.setPath('Ext.ux', '/hor/examples/ux');
-Ext.Loader.setPath('Ext.ux.uji', '/hor/Ext/ux/uji');
-Ext.Loader.setPath('Extensible', "/hor/extensible-1.5.1/src");
 
 Ext.require('Ext.data.proxy.Rest');
 Ext.require('Ext.data.reader.Xml');

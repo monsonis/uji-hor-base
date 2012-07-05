@@ -3,9 +3,8 @@ Ext.define('HOR.view.horarios.PanelCalendario',
     extend : 'Extensible.calendar.CalendarPanel',
     alias : 'widget.panelCalendario',
     region : 'center',
-    eventStore : 'StoreEventos',
-    calendarStore : 'StoreCalendarios',
     title : 'Calendari',
+    requires : [ 'HOR.store.StoreEventos', 'HOR.store.StoreCalendarios' ],
     editModal : true,
     flex : 1,
     padding : 5,
@@ -34,6 +33,19 @@ Ext.define('HOR.view.horarios.PanelCalendario',
     getMultiDayText : function()
     {
         return 'Setmana genèrica';
-    }
+    },
+    initComponent : function()
+    {
+        var ref = this;
+        var calendarStore = Ext.create('HOR.store.StoreCalendarios');
+        var eventStore = Ext.create('HOR.store.StoreEventos');
 
+        Ext.apply(ref, {
+            eventStore: eventStore,
+            calendarStore: calendarStore
+        });
+
+        this.callParent(arguments);
+
+    }
 });
