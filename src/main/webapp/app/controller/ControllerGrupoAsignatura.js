@@ -6,7 +6,7 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
     refs : [
     {
         selector : 'selectorGrupos',
-        ref : 'selectorGruposView'
+        ref : 'selectorGrupos'
     } ],
 
     init : function()
@@ -40,7 +40,7 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
 
     onGruposAsignaturasSinAsignarLoaded : function(gruposAsignaturas, request)
     {
-        var view = this.getSelectorGruposView();
+        var view = this.getSelectorGrupos();
         var store = this.getStoreGruposAsignaturasSinAsignarStore();
 
         store.each(function()

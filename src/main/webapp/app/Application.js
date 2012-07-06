@@ -1,10 +1,11 @@
 Ext.Loader.setConfig(
 {
     enabled : true,
-    paths: {
-        'Ext.ux': '/hor/examples/ux',
-        'Ext.ux.uji': '/hor/Ext/ux/uji',
-        'Extensible': '/hor/extensible-1.5.1/src'
+    paths :
+    {
+        'Ext.ux' : '/hor/examples/ux',
+        'Ext.ux.uji' : '/hor/Ext/ux/uji',
+        'Extensible' : '/hor/extensible-1.5.1/src'
     }
 });
 
@@ -38,8 +39,10 @@ Ext.application(
     appFolder : 'app',
     autoCreateViewport : false,
 
-    views : [ 'dashboard.PanelDashboard', 'horarios.PanelHorarios', 'horarios.FiltroGrupos', 'horarios.PanelCalendario' ],
-    controllers : [ 'ControllerDashboards', 'ControllerCalendario', 'ControllerGrupoAsignatura' ],
+    views : [ 'dashboard.PanelDashboard', 'horarios.PanelHorarios', 'horarios.FiltroGrupos',
+            'horarios.PanelCalendario' ],
+    controllers : [ 'ControllerDashboards', 'ControllerCalendario', 'ControllerGrupoAsignatura',
+            'ControllerFiltroGrupos' ],
 
     launch : function()
     {

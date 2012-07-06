@@ -27,53 +27,28 @@ Ext.define('HOR.view.horarios.FiltroGrupos', {
 
    buildComboTitulacion : function()
    {
-       var testStore = Ext.create("Ext.data.Store",
-       {
-           fields : [ "id", "name" ],
-           data : [
-           {
-               "id" : "A01",
-               "name" : "Ingenieria Informàtica"
-           },
-           {
-               "id" : "I02",
-               "name" : "Dret Civil"
-           } ]
-       });
-
        this.comboTitulacion = Ext.create("Ext.form.ComboBox",
        {
            fieldLabel : 'Titulació',
-           store : testStore,
+           store : 'StoreEstudios',
            queryModel : 'local',
-           displayField : 'name',
-           valueField : 'id'
+           displayField : 'nombre',
+           valueField : 'id',
+           width: 700,
+           itemId : 'titulaciones'
        });
    },
 
    buildComboCurso : function()
    {
-       var testStore = Ext.create("Ext.data.Store",
-       {
-           fields : [ "id", "name" ],
-           data : [
-           {
-               "id" : "A01",
-               "name" : "Ingenieria Informàtica"
-           },
-           {
-               "id" : "I02",
-               "name" : "Dret Civil"
-           } ]
-       });
-
        this.comboCurso = Ext.create("Ext.form.ComboBox",
        {
            fieldLabel : 'Curso',
-           store : testStore,
+           store : 'StoreCursos',
            queryModel : 'local',
-           displayField : 'name',
-           valueField : 'id'
+           displayField : 'curso',
+           valueField : 'curso',
+           itemId : 'cursos'
        });
    },
 
@@ -99,7 +74,8 @@ Ext.define('HOR.view.horarios.FiltroGrupos', {
            store : testStore,
            queryModel : 'local',
            displayField : 'name',
-           valueField : 'id'
+           valueField : 'id',
+           itemId : 'semestres'
        });
    },
 
@@ -125,7 +101,8 @@ Ext.define('HOR.view.horarios.FiltroGrupos', {
            store : testStore,
            queryModel : 'local',
            displayField : 'name',
-           valueField : 'id'
+           valueField : 'id',
+           itemId : 'grupos'
        });
    }
 });
