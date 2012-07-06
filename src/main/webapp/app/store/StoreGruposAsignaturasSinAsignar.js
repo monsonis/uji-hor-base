@@ -9,7 +9,7 @@ Ext.define('HOR.store.StoreGruposAsignaturasSinAsignar',
     proxy :
     {
         type : 'rest',
-        url : '/apa/rest/grupoAsignatura/sinAsignar',
+        url : '/hor/rest/grupoAsignatura/sinAsignar',
 
         reader :
         {
