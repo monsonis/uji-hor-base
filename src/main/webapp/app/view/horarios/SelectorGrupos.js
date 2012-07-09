@@ -8,20 +8,10 @@ Ext.define('HOR.view.horarios.SelectorGrupos',
     height : 30,
     flex : 1,
     autoScroll : true,
-    layout : 'fit',
-    items : [
+    layout :
     {
-        xtype : 'panel',
-        layout :
-        {
-            type : 'vbox',
-            align : 'stretch'
-        },
-        items : [
-        {
-            xtype : 'button',
-            text : 'Cargar grupos',
-            action : 'cargar'
-        } ]
-    } ]
+        type : 'vbox',
+        align : 'stretch',
+        margin : '20 0 20 0'
+    },
 });

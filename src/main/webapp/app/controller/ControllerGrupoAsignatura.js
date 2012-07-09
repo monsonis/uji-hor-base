@@ -7,32 +7,40 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
     {
         selector : 'selectorGrupos',
         ref : 'selectorGrupos'
+    },
+    {
+        selector : 'filtroGrupos',
+        ref : 'filtroGrupos'
     } ],
 
     init : function()
     {
         this.control(
         {
-            'selectorGrupos button[action=cargar]' :
+            'filtroGrupos > #grupos' :
             {
-                click : this.onFilterSelected
+                select : this.onFilterSelected
             }
         });
     },
 
-    onFilterSelected : function()
+    onFilterSelected : function(combo, records)
     {
         var store = this.getStoreGruposAsignaturasSinAsignarStore();
+
+        var estudio = this.getFiltroGrupos().down('#titulaciones').getValue();
+        var curso = this.getFiltroGrupos().down('#cursos').getValue();
+        var semestre = this.getFiltroGrupos().down('#semestres').getValue();
 
         store.load(
         {
             callback : this.onGruposAsignaturasSinAsignarLoaded,
             params :
             {
-                estudioId : '224',
-                cursoId : '1',
-                semestreId : '1',
-                grupoId : 'A'
+                estudioId : estudio,
+                cursoId : curso,
+                semestreId : semestre,
+                grupoId : records[0].data.grupo
             },
             scope : this
         });
@@ -41,20 +49,32 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
     onGruposAsignaturasSinAsignarLoaded : function(gruposAsignaturas, request)
     {
         var view = this.getSelectorGrupos();
-        var store = this.getStoreGruposAsignaturasSinAsignarStore();
 
-        store.each(function()
+        view.removeAll();
+
+        for ( var i = 0, len = gruposAsignaturas.length; i < len; i++)
         {
+            var margin = '5 30 0 30';
+
+            if (i == 0)
+            {
+                margin = '25 30 0 30';
+            }
+            else if (i == len - 1)
+            {
+                margin = '5 30 25 30';
+            }
+
             var button =
             {
                 xtype : 'button',
-                text : this.data.titulo,
+                text : gruposAsignaturas[i].data.titulo,
                 padding : 5,
-                margin : '5 30 0 30',
-                grupoAsignaturaId : this.data.id
+                margin : margin,
+                grupoAsignaturaId : gruposAsignaturas[i].data.id
             };
 
             view.add(button);
-        });
+        }
     }
 });
