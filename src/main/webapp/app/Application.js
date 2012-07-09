@@ -19,7 +19,6 @@ Ext.require('Ext.container.Viewport');
 Ext.require('Ext.layout.container.Border');
 Ext.require('Ext.tab.Panel');
 Ext.require('Ext.tree.Panel');
-Ext.require('Ext.tree.Panel');
 Ext.require('Ext.ux.TabCloseMenu');
 Ext.require('Ext.ux.uji.TabPanel');
 Ext.require('Ext.ux.uji.form.LookupComboBox');
@@ -52,4 +51,5 @@ Ext.application(
             tituloAplicacion : 'Gestión de horarios'
         });
     }
+
 });

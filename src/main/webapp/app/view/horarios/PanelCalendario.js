@@ -4,7 +4,23 @@ Ext.define('HOR.view.horarios.PanelCalendario',
     alias : 'widget.panelCalendario',
     region : 'center',
     title : 'Calendari',
-    requires : [ 'HOR.store.StoreEventos', 'HOR.store.StoreCalendarios' ],
+    calendarStore : Ext.create('Extensible.calendar.data.MemoryCalendarStore',
+    {
+        autoLoad : false,
+        proxy :
+        {
+            type : 'ajax',
+            url : '/hor/rest/calendario',
+            noCache : false,
+
+            reader :
+            {
+                type : 'json',
+                root : 'data'
+            }
+        }
+    }),
+
     editModal : true,
     flex : 1,
     padding : 5,
@@ -36,13 +52,13 @@ Ext.define('HOR.view.horarios.PanelCalendario',
     },
     initComponent : function()
     {
-        var ref = this;
-        var calendarStore = Ext.create('HOR.store.StoreCalendarios');
-        var eventStore = Ext.create('HOR.store.StoreEventos');
 
-        Ext.apply(ref, {
-            eventStore: eventStore,
-            calendarStore: calendarStore
+        var me = this;
+        var storeEventos = Ext.create('HOR.store.StoreEventos');
+
+        Ext.apply(me,
+        {
+            eventStore : storeEventos
         });
 
         this.callParent(arguments);

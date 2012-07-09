@@ -49,23 +49,9 @@ Ext.define('HOR.view.horarios.PanelHorarios',
             } ]
         },
         {
-            xtype : 'panel',
-            flex : 1,
-            title: 'Calendari',
-            padding: 5,
-            layout :
-            {
-                type : 'vbox',
-                align : 'stretch'
-            },
-
+            xtype : 'panelCalendario',
+            flex : 1
         } ]
-    },
-
-    // {
-    // xtype: 'panelCalendario',
-    // flex: 1
-    // }
-    ]
+    } ]
 
 });
