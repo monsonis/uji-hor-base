@@ -1,8 +1,8 @@
 Ext.define('HOR.controller.ControllerFiltroGrupos',
 {
     extend : 'Ext.app.Controller',
-    stores : [ 'StoreEstudios', 'StoreCursos' ],
-    model : [ 'Estudio', 'Curso' ],
+    stores : [ 'StoreEstudios', 'StoreCursos', 'StoreSemestres', 'StoreGrupos' ],
+    model : [ 'Estudio', 'Curso', 'Semestre', 'Grupo' ],
     refs : [
     {
         selector : 'filtroGrupos',
@@ -15,21 +15,29 @@ Ext.define('HOR.controller.ControllerFiltroGrupos',
         {
             'filtroGrupos > #titulaciones' :
             {
-                change : this.onTitulacionSelected
+                select : this.onTitulacionSelected,
             },
 
             'filtroGrupos > #cursos' :
             {
-                change : this.onCursoSelected
+                select : this.onCursoSelected,
+            },
+
+            'filtroGrupos > #semestres' :
+            {
+                select : this.onSemestreSelected
             }
         });
     },
 
-    onTitulacionSelected : function(field, value)
+    onTitulacionSelected : function(combo, records)
     {
-        this.getFiltroGrupos().down('#cursos').reset();
-        this.getFiltroGrupos().down('#semestres').reset();
-        this.getFiltroGrupos().down('#grupos').reset();
+        this.getFiltroGrupos().down('#cursos').clearValue();
+        this.getFiltroGrupos().down('#semestres').clearValue();
+        this.getFiltroGrupos().down('#grupos').clearValue();
+
+        this.getStoreSemestresStore().removeAll();
+        this.getStoreGruposStore().removeAll();
 
         var store = this.getStoreCursosStore();
 
@@ -37,14 +45,69 @@ Ext.define('HOR.controller.ControllerFiltroGrupos',
         {
             params :
             {
-                estudioId : value
+                estudioId : records[0].data.id
             },
             scope : this
         });
+
+        this.fixLoadMaskBug(store, this.getFiltroGrupos().down('#cursos'));
     },
 
-    onCursoSelected : function(field, value)
+    onCursoSelected : function(combo, records)
     {
-        console.log("Curso " + value);
+        this.getFiltroGrupos().down('#semestres').clearValue();
+        this.getFiltroGrupos().down('#grupos').clearValue();
+
+        this.getStoreGruposStore().removeAll();
+
+        var estudio = this.getFiltroGrupos().down('#titulaciones').getValue();
+
+        var store = this.getStoreSemestresStore();
+
+        store.load(
+        {
+            params :
+            {
+                estudioId : estudio,
+                cursoId : records[0].data.curso
+            },
+            scope : this
+        });
+
+        this.fixLoadMaskBug(store, this.getFiltroGrupos().down('#semestres'));
+    },
+
+    onSemestreSelected : function(combo, records)
+    {
+        this.getFiltroGrupos().down('#grupos').clearValue();
+
+        var estudio = this.getFiltroGrupos().down('#titulaciones').getValue();
+        var curso = this.getFiltroGrupos().down('#cursos').getValue();
+
+        var store = this.getStoreGruposStore();
+
+        store.load(
+        {
+            params :
+            {
+                estudioId : estudio,
+                cursoId : curso,
+                semestreId : records[0].data.semestre
+            },
+            scope : this
+        });
+
+        this.fixLoadMaskBug(store, this.getFiltroGrupos().down('#grupos'));
+    },
+
+    fixLoadMaskBug : function(store, combo)
+    {
+        store.on('load', function(store, records, successful, options)
+        {
+            if (successful && Ext.typeOf(combo.getPicker().loadMask) !== "boolean")
+            {
+                combo.getPicker().loadMask.hide();
+            }
+        });
     }
 });

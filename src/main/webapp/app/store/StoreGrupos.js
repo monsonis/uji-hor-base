@@ -1,12 +1,12 @@
-Ext.define('HOR.store.StoreCursos',
+Ext.define('HOR.store.StoreGrupos',
 {
     extend : 'Ext.data.Store',
-    model : 'HOR.model.Curso',
+    model : 'HOR.model.Grupo',
 
     proxy :
     {
         type : 'rest',
-        url : '/hor/rest/curso',
+        url : '/hor/rest/grupo',
 
         reader :
         {

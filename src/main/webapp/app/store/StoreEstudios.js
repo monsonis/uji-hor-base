@@ -3,9 +3,6 @@ Ext.define('HOR.store.StoreEstudios',
     extend : 'Ext.data.Store',
     model : 'HOR.model.Estudio',
 
-    autoLoad : true,
-    autoSync : true,
-
     proxy :
     {
         type : 'rest',

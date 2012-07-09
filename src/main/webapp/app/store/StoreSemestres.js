@@ -1,12 +1,12 @@
-Ext.define('HOR.store.StoreCursos',
+Ext.define('HOR.store.StoreSemestres',
 {
     extend : 'Ext.data.Store',
-    model : 'HOR.model.Curso',
+    model : 'HOR.model.Semestre',
 
     proxy :
     {
         type : 'rest',
-        url : '/hor/rest/curso',
+        url : '/hor/rest/semestre',
 
         reader :
         {
