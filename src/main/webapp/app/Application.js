@@ -38,17 +38,18 @@ Ext.application(
     appFolder : 'app',
     autoCreateViewport : false,
 
-    views : [ 'dashboard.PanelDashboard', 'horarios.PanelHorarios', 'horarios.FiltroGrupos',
-            'horarios.PanelCalendario' ],
-    controllers : [ 'ControllerDashboards', 'ControllerCalendario', 'ControllerGrupoAsignatura',
-            'ControllerFiltroGrupos' ],
+    views : [ 'dashboard.PanelDashboard', 'horarios.PanelHorarios', 'horarios.FiltroGrupos', 'horarios.PanelCalendario' ],
+    controllers : [ 'ControllerDashboards', 'ControllerCalendario', 'ControllerGrupoAsignatura', 'ControllerFiltroGrupos' ],
 
     launch : function()
     {
-        Ext.create('Ext.ux.uji.ApplicationViewport',
+        Ext.Loader.loadScriptFile('/hor/extensible-1.5.1/src/locale/extensible-lang-ca.js', function()
         {
-            codigoAplicacion : 'HOR',
-            tituloAplicacion : 'Gestión de horarios'
+            Ext.create('Ext.ux.uji.ApplicationViewport',
+            {
+                codigoAplicacion : 'HOR',
+                tituloAplicacion : 'Gestión de horarios'
+            });
         });
     }
 
