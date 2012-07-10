@@ -28,6 +28,7 @@ Ext.define('HOR.controller.ControllerCalendario',
         var cursos = this.getFiltroGrupos().down('#cursos');
         var semestres = this.getFiltroGrupos().down('#semestres');
         var storeEventos = this.getStoreEventosStore();
+        storeEventos.load();
 //        storeEventos.load(
 //        {
 //            params :

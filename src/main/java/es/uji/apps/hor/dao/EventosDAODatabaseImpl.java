@@ -105,27 +105,28 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
     private Evento creaEventoDesde(ItemDTO itemDTO)
     {
         String titulo = itemDTO.toString();
-
         Calendario calendario = obtenerCalendarioAsociadoPorTipoSubgrupo(itemDTO);
 
+        Calendar inicio = generaItemCalendarioSemanaGenerica(itemDTO.getDiasSemana().getId().intValue(), itemDTO.getHoraInicio());
+        Calendar fin = generaItemCalendarioSemanaGenerica(itemDTO.getDiasSemana().getId().intValue(), itemDTO.getHoraFin());
+        return new Evento(itemDTO.getId(), calendario, titulo, inicio.getTime(), fin.getTime());
+
+    }
+    
+    private Calendar generaItemCalendarioSemanaGenerica(Integer dia, Date fecha ) {
         Calendar base = Calendar.getInstance();
+        Calendar actual = Calendar.getInstance();
+        actual.setTime(fecha);
+
         base.setFirstDayOfWeek(Calendar.MONDAY);
         Integer dayOfWeek = base.get(Calendar.DAY_OF_WEEK);
-        base.set(Calendar.HOUR, 0);
-        base.set(Calendar.MINUTE, 0);
-        base.set(Calendar.SECOND, 0);
-        System.out.println(dayOfWeek);
-
         base.add(Calendar.DAY_OF_WEEK, Calendar.MONDAY - dayOfWeek );
+        actual.set(Calendar.YEAR, base.get(Calendar.YEAR));
+        actual.set(Calendar.MONTH, base.get(Calendar.MONTH));
+        actual.set(Calendar.DAY_OF_MONTH, base.get(Calendar.DAY_OF_MONTH));    
+        actual.add(Calendar.DAY_OF_WEEK, dia);
         
-        //base.add(Calendar., amount)
-        
-        System.out.println(base.getTime());
-        //Calendar inicio = creaCalendarDesdeFechaHoraInicioYFin(itemDTO.getInicio());
-        // Calendar fin = creaCalendarDesdeFechaHoraInicioYFin(itemDTO.getFin());
-
-        return new Evento(itemDTO.getId(), calendario, titulo, base.getTime(), base.getTime());
-
+        return actual;
     }
 
 }

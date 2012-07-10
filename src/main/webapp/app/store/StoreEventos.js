@@ -5,7 +5,7 @@ Ext.define('HOR.store.StoreEventos',
     proxy :
     {
         type : 'rest',
-        url : '/hor/rest/calendario/eventos',
+        url : '/hor/rest/calendario/eventos/generica',
         noCache : false,
 
         reader :
@@ -21,8 +21,10 @@ Ext.define('HOR.store.StoreEventos',
         },
         
         extraParams: {
-            estudioId: undefined,
-            cursoId: undefined
+            estudioId: 210,
+            cursoId: 1,
+            semestreId: 1,
+            grupoId: 'A'
         },
 
         listeners :
