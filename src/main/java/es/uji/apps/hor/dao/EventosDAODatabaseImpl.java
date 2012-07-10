@@ -124,7 +124,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         actual.set(Calendar.YEAR, base.get(Calendar.YEAR));
         actual.set(Calendar.MONTH, base.get(Calendar.MONTH));
         actual.set(Calendar.DAY_OF_MONTH, base.get(Calendar.DAY_OF_MONTH));    
-        actual.add(Calendar.DAY_OF_WEEK, dia);
+        actual.add(Calendar.DAY_OF_WEEK, dia - 1);
         
         return actual;
     }

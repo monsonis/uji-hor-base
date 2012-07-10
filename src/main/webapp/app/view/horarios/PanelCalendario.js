@@ -12,6 +12,7 @@ Ext.define('HOR.view.horarios.PanelCalendario',
     flex : 1,
     padding : 5,
     activeItem: 1,
+    showTodayText: false,
     weekViewCfg :
     {
         dayCount : 5,
