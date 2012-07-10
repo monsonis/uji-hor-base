@@ -11,5 +11,9 @@ Ext.define('HOR.view.horarios.SelectorGrupos',
     {
         type : 'vbox',
         align : 'stretch'
+    },
+    
+    limpiaGrupos: function() {
+        this.removeAll();
     }
 });

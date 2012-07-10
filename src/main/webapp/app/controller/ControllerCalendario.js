@@ -22,7 +22,6 @@ Ext.define('HOR.controller.ControllerCalendario',
                 select : this.onFilterSelected
             }
         });
-
     },
 
     onFilterSelected : function(combo, records)
