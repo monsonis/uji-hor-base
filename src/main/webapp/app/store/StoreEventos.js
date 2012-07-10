@@ -20,13 +20,13 @@ Ext.define('HOR.store.StoreEventos',
             nameProperty : 'mapping'
         },
         
-        extraParams: {
-            estudioId: 210,
-            cursoId: 1,
-            semestreId: 1,
-            grupoId: 'A'
-        },
-
+//        extraParams: {
+//            estudioId: 210,
+//            cursoId: 1,
+//            semestreId: 1,
+//            grupoId: 'A'
+//        },
+//
         listeners :
         {
             exception : function(proxy, response, operation, options)

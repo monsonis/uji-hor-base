@@ -29,13 +29,22 @@ Ext.define('HOR.view.horarios.PanelCalendario',
     },
     showMultiDayView : true,
     showMultiWeekView : false,
+    showNavJump: false,
+    showNavNextPrev: false,
     multiDayViewCfg :
     {
         dayCount : 5,
         startDay: 1,
         startDayIsStatic: true,
         viewStartHour : 8,
-        viewEndHour : 22
+        showTime: false,
+        viewEndHour : 22,
+        getStoreParams: function() {
+            var params = this.getStoreDateParams();
+            console.log(this.store.getProxy());
+            //params.estudioId = this.store.getExtraParam
+            return params;
+        }
     },
     getMultiDayText : function()
     {
@@ -46,5 +55,8 @@ Ext.define('HOR.view.horarios.PanelCalendario',
     {
         this.callParent(arguments);
 
+    },
+    getStoreParams: function() {
+        
     }
 });

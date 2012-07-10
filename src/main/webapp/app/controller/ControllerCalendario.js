@@ -7,6 +7,10 @@ Ext.define('HOR.controller.ControllerCalendario',
     {
         selector : 'filtroGrupos',
         ref : 'filtroGrupos'
+    },
+    {
+        selector : 'panelCalendario',
+        ref : 'panelCalendario'
     } ],
 
     init : function()
@@ -28,22 +32,30 @@ Ext.define('HOR.controller.ControllerCalendario',
         var cursos = this.getFiltroGrupos().down('#cursos');
         var semestres = this.getFiltroGrupos().down('#semestres');
         var storeEventos = this.getStoreEventosStore();
-        storeEventos.load({
-            callback: function() {
-                console.log("cargado");
-            }
-        });
-//        storeEventos.load(
-//        {
-//            params :
-//            {
-//                estudioId : titulaciones.getValue(),
-//                cursoId : cursos.getValue(),
-//                semestreId : semestres.getValue(),
-//                grupoId : grupo
-//            },
-//            scope : this
-//        });
+        storeEventos.getProxy().extraParams =
+        {
+            estudioId : titulaciones.getValue(),
+            cursoId : cursos.getValue(),
+            semestreId : semestres.getValue(),
+            grupoId : grupo
+        };
+        
+        this.getPanelCalendario().getActiveView().refresh(true);
+        /*
+         * storeEventos.load({ callback: function() {
+         * this.getPanelCalendario().getActiveView().refresh(); }, scope: this });
+         */
+        // storeEventos.load(
+        // {
+        // params :
+        // {
+        // estudioId : titulaciones.getValue(),
+        // cursoId : cursos.getValue(),
+        // semestreId : semestres.getValue(),
+        // grupoId : grupo
+        // },
+        // scope : this
+        // });
     }
 
 });
