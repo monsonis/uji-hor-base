@@ -1,7 +1,8 @@
 Ext.define('HOR.store.StoreEventos',
 {
-	extend: 'Extensible.calendar.data.EventStore',
+    extend : 'Extensible.calendar.data.EventStore',
     autoLoad : false,
+
     proxy :
     {
         type : 'rest',
@@ -13,20 +14,21 @@ Ext.define('HOR.store.StoreEventos',
             type : 'json',
             root : 'data'
         },
-
+        
+        extraParams  :
+        {
+            estudioId : 1,
+            cursoId : null,
+            semestreId : null,
+            grupoId : null
+        },
+        
         writer :
         {
             type : 'json',
             nameProperty : 'mapping'
         },
-        
-//        extraParams: {
-//            estudioId: 210,
-//            cursoId: 1,
-//            semestreId: 1,
-//            grupoId: 'A'
-//        },
-//
+
         listeners :
         {
             exception : function(proxy, response, operation, options)
@@ -36,7 +38,7 @@ Ext.define('HOR.store.StoreEventos',
             }
         }
     },
-    
+
     listeners :
     {
         'write' : function(store, operation)
@@ -55,5 +57,9 @@ Ext.define('HOR.store.StoreEventos',
                 break;
             }
         }
+    },
+    initComponent: function(cfg) {
+        this.initConfig(cfg);
+        this.callParent(arguments); 
     }
 });

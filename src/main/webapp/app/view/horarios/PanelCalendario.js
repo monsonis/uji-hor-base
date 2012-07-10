@@ -41,8 +41,10 @@ Ext.define('HOR.view.horarios.PanelCalendario',
         viewEndHour : 22,
         getStoreParams: function() {
             var params = this.getStoreDateParams();
-            console.log(this.store.getProxy());
-            //params.estudioId = this.store.getExtraParam
+            params.estudioId = this.store.getProxy().extraParams['estudioId'];
+            params.cursoId = this.store.getProxy().extraParams['cursoId'];
+            params.grupoId = this.store.getProxy().extraParams['grupoId'];
+            params.semestreId = this.store.getProxy().extraParams['semestreId'];
             return params;
         }
     },
@@ -58,5 +60,8 @@ Ext.define('HOR.view.horarios.PanelCalendario',
     },
     getStoreParams: function() {
         
+    },
+    limpiaCalendario: function() {
+        this.store.removeAll(false);
     }
 });

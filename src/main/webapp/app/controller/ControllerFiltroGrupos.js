@@ -1,7 +1,7 @@
 Ext.define('HOR.controller.ControllerFiltroGrupos',
 {
     extend : 'Ext.app.Controller',
-    stores : [ 'StoreEstudios', 'StoreCursos', 'StoreSemestres', 'StoreGrupos', 'StoreEventos' ],
+    stores : [ 'StoreEstudios', 'StoreCursos', 'StoreSemestres', 'StoreGrupos' ],
     model : [ 'Estudio', 'Curso', 'Semestre', 'Grupo' ],
     refs : [
     {
@@ -11,6 +11,10 @@ Ext.define('HOR.controller.ControllerFiltroGrupos',
     {
         selector: 'panelHorarios',
         ref: 'panelHorarios'
+    },
+    {
+        selector: 'panelCalendario',
+        ref: 'panelCalendario'
     }],
 
     init : function()
@@ -39,6 +43,7 @@ Ext.define('HOR.controller.ControllerFiltroGrupos',
         this.getFiltroGrupos().down('#cursos').clearValue();
         this.getFiltroGrupos().down('#semestres').clearValue();
         this.getFiltroGrupos().down('#grupos').clearValue();
+        this.getPanelCalendario().limpiaCalendario();
         
         this.getStoreSemestresStore().removeAll();
         this.getStoreGruposStore().removeAll();
@@ -61,6 +66,7 @@ Ext.define('HOR.controller.ControllerFiltroGrupos',
     {
         this.getFiltroGrupos().down('#semestres').clearValue();
         this.getFiltroGrupos().down('#grupos').clearValue();
+        this.getPanelCalendario().limpiaCalendario();
 
         this.getStoreGruposStore().removeAll();
 
@@ -84,6 +90,7 @@ Ext.define('HOR.controller.ControllerFiltroGrupos',
     onSemestreSelected : function(combo, records)
     {
         this.getFiltroGrupos().down('#grupos').clearValue();
+        this.getPanelCalendario().limpiaCalendario();
 
         var estudio = this.getFiltroGrupos().down('#titulaciones').getValue();
         var curso = this.getFiltroGrupos().down('#cursos').getValue();
