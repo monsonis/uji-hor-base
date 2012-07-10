@@ -80,6 +80,14 @@ public class CalendarResource
         return toUI(eventos);
     }
 
+    @PUT
+    @Path("eventos/generica/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<UIEntity> updateEventoSemanaGenerica(UIEntity evento)
+    {
+        return Collections.singletonList(evento);
+    }
+    
     private List<UIEntity> toUI(List<Evento> eventos)
     {
         List<UIEntity> eventosUI = new ArrayList<UIEntity>();

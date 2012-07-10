@@ -14,15 +14,15 @@ Ext.define('HOR.store.StoreEventos',
             type : 'json',
             root : 'data'
         },
-        
-        extraParams  :
+
+        extraParams :
         {
             estudioId : 1,
             cursoId : null,
             semestreId : null,
             grupoId : null
         },
-        
+
         writer :
         {
             type : 'json',
@@ -43,23 +43,11 @@ Ext.define('HOR.store.StoreEventos',
     {
         'write' : function(store, operation)
         {
-            var title = Ext.value(operation.records[0].data[Extensible.calendar.data.EventMappings.Title.name], '(No title)');
-            switch (operation.action)
-            {
-            case 'create':
-                Extensible.example.msg('Add', 'Added "' + title + '"');
-                break;
-            case 'update':
-                Extensible.example.msg('Update', 'Updated "' + title + '"');
-                break;
-            case 'destroy':
-                Extensible.example.msg('Delete', 'Deleted "' + title + '"');
-                break;
-            }
         }
     },
-    initComponent: function(cfg) {
+    initComponent : function(cfg)
+    {
         this.initConfig(cfg);
-        this.callParent(arguments); 
+        this.callParent(arguments);
     }
 });

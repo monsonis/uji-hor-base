@@ -20,6 +20,10 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
             'filtroGrupos > #grupos' :
             {
                 select : this.onFilterSelected
+            },
+            'selectorGrupos button' :
+            {
+                click : this.addEvento
             }
         });
     },
@@ -76,5 +80,15 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
 
             view.add(button);
         }
+    },
+    addEvento : function()
+    {
+        var rec = new Extensible.calendar.data.EventModel(
+        {
+            StartDate : '2101-01-12 12:00:00',
+            EndDate : '2101-01-12 13:30:00',
+            Title : 'My cool event',
+            Notes : 'Some notes'
+        });
     }
 });
