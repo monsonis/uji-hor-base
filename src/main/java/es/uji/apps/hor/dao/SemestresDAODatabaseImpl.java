@@ -26,14 +26,14 @@ public class SemestresDAODatabaseImpl extends BaseDAODatabaseImpl implements Sem
 
         List<Tuple> listaSemestresTuples = query
                 .from(item)
-                .where(item.horEstudio.id.eq(estudioId).and(item.cursoId.eq(new BigDecimal(curso))))
-                .orderBy(item.horSemestre.id.asc()).listDistinct(new QTuple(item.horSemestre.id));
+                .where(item.estudio.id.eq(estudioId).and(item.cursoId.eq(new BigDecimal(curso))))
+                .orderBy(item.semestre.id.asc()).listDistinct(new QTuple(item.semestre.id));
 
         List<Semestre> semestres = new ArrayList<Semestre>();
 
         for (Tuple tuple : listaSemestresTuples)
         {
-            semestres.add(new Semestre(tuple.get(item.horSemestre.id)));
+            semestres.add(new Semestre(tuple.get(item.semestre.id)));
         }
 
         return semestres;

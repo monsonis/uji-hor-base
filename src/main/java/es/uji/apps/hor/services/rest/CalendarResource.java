@@ -45,8 +45,8 @@ public class CalendarResource
             @QueryParam("cursoId") String cursoId, @QueryParam("startDate") String fechaInicio,
             @QueryParam("endDate") String fechaFin) throws ParseException
     {
-        //ParamUtils.checkNotNull(estudioId, cursoId);
-        
+        // ParamUtils.checkNotNull(estudioId, cursoId);
+
         estudioId = "224";
         cursoId = "1";
 
@@ -55,6 +55,24 @@ public class CalendarResource
 
         List<Evento> eventos = consultaEventos.eventosDeUnEstudio(ParamUtils.parseLong(estudioId),
                 ParamUtils.parseLong(cursoId), rangoFechasInicio, rangoFechasFin);
+
+        return toUI(eventos);
+    }
+
+    @GET
+    @Path("eventos/generica")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<UIEntity> getEventosGenerica(@QueryParam("estudioId") String estudioId,
+            @QueryParam("cursoId") String cursoId, @QueryParam("semestreId") String semestreId,
+            @QueryParam("grupoId") String grupoId) throws ParseException
+    {
+        // ParamUtils.checkNotNull(estudioId, cursoId);
+
+        estudioId = "224";
+        cursoId = "1";
+
+        List<Evento> eventos = consultaEventos.eventosSemanaGenericaDeUnEstudio(ParamUtils.parseLong(estudioId),
+                ParamUtils.parseLong(cursoId), ParamUtils.parseLong(semestreId), grupoId);
 
         return toUI(eventos);
     }

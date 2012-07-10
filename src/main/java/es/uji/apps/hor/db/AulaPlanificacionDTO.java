@@ -36,7 +36,7 @@ public class AulaPlanificacionDTO implements Serializable {
 	private AulaDTO horAula;
 
 	//bi-directional many-to-one association to ItemDTO
-	@OneToMany(mappedBy="horAulasPlanificacion")
+	@OneToMany(mappedBy="aulasPlanificacion")
 	private Set<ItemDTO> horItems;
 
     public AulaPlanificacionDTO() {

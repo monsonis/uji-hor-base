@@ -21,7 +21,7 @@ public class DiaSemanaDTO implements Serializable {
 	private String nombre;
 
 	//bi-directional many-to-one association to ItemDTO
-	@OneToMany(mappedBy="horDiasSemana")
+	@OneToMany(mappedBy="diasSemana")
 	private Set<ItemDTO> horItems;
 
     public DiaSemanaDTO() {

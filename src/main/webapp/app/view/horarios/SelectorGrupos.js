@@ -7,11 +7,9 @@ Ext.define('HOR.view.horarios.SelectorGrupos',
     padding : 5,
     height : 30,
     flex : 1,
-    autoScroll : true,
     layout :
     {
         type : 'vbox',
-        align : 'stretch',
-        margin : '20 0 20 0'
-    },
+        align : 'stretch'
+    }
 });

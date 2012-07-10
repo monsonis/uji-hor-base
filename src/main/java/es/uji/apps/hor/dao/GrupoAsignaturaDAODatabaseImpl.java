@@ -28,10 +28,10 @@ public class GrupoAsignaturaDAODatabaseImpl extends BaseDAODatabaseImpl implemen
 
         List<ItemDTO> listaItemsDTO = query
                 .from(item)
-                .where(item.horEstudio.id.eq(estudioId).and(
+                .where(item.estudio.id.eq(estudioId).and(
                         item.cursoId.eq(new BigDecimal(cursoId))
-                                .and(item.horSemestre.id.eq(semestreId))
-                                .and(item.grupoId.eq(grupoId)).and(item.horDiasSemana.isNull())))
+                                .and(item.semestre.id.eq(semestreId))
+                                .and(item.grupoId.eq(grupoId)).and(item.diasSemana.isNull())))
                 .list(item);
 
         List<GrupoAsignatura> gruposAsignaturas = new ArrayList<GrupoAsignatura>();

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import org.springframework.stereotype.Repository;
 
@@ -34,8 +36,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         List<ItemDetalleDTO> listaItemsDTO = query
                 .from(detalleItem)
                 .join(detalleItem.horItem, item)
-                .where(item.horEstudio.id.eq(estudioId)
-                        .and(item.cursoId.eq(new BigDecimal(cursoId)))
+                .where(item.estudio.id.eq(estudioId).and(item.cursoId.eq(new BigDecimal(cursoId)))
                         .and(detalleItem.inicio.goe(rangoFechasInicio))
                         .and(detalleItem.fin.loe(rangoFechasFin))).list(detalleItem);
 
@@ -75,4 +76,56 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         String tipoSubgrupoId = itemDTO.getTipoSubgrupoId();
         return new Calendario(TipoSubgrupo.valueOf(tipoSubgrupoId).getCalendarioAsociado());
     }
+
+    @Override
+    public List<Evento> getEventosSemanaGenerica(Long estudioId, Long cursoId, Long semestreId,
+            String grupoId)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+
+        QItemDTO item = QItemDTO.itemDTO;
+
+        List<ItemDTO> listaItemsDTO = query
+                .from(item)
+                .where(item.estudio.id.eq(estudioId).and(
+                        item.cursoId.eq(new BigDecimal(cursoId))
+                                .and(item.semestre.id.eq(semestreId)).and(item.grupoId.eq(grupoId))
+                                .and(item.diasSemana.isNotNull()))).list(item);
+
+        List<Evento> eventos = new ArrayList<Evento>();
+
+        for (ItemDTO itemDTO : listaItemsDTO)
+        {
+            eventos.add(creaEventoDesde(itemDTO));
+        }
+
+        return eventos;
+    }
+
+    private Evento creaEventoDesde(ItemDTO itemDTO)
+    {
+        String titulo = itemDTO.toString();
+
+        Calendario calendario = obtenerCalendarioAsociadoPorTipoSubgrupo(itemDTO);
+
+        Calendar base = Calendar.getInstance();
+        base.setFirstDayOfWeek(Calendar.MONDAY);
+        Integer dayOfWeek = base.get(Calendar.DAY_OF_WEEK);
+        base.set(Calendar.HOUR, 0);
+        base.set(Calendar.MINUTE, 0);
+        base.set(Calendar.SECOND, 0);
+        System.out.println(dayOfWeek);
+
+        base.add(Calendar.DAY_OF_WEEK, Calendar.MONDAY - dayOfWeek );
+        
+        //base.add(Calendar., amount)
+        
+        System.out.println(base.getTime());
+        //Calendar inicio = creaCalendarDesdeFechaHoraInicioYFin(itemDTO.getInicio());
+        // Calendar fin = creaCalendarDesdeFechaHoraInicioYFin(itemDTO.getFin());
+
+        return new Evento(itemDTO.getId(), calendario, titulo, base.getTime(), base.getTime());
+
+    }
+
 }

@@ -34,11 +34,11 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
             fieldLabel : 'Titulació',
             store : 'StoreEstudios',
             queryModel : 'local',
+            editable: false,
             displayField : 'nombre',
             valueField : 'id',
             width : 700,
             itemId : 'titulaciones',
-            editable : false,
         });
     },
 
@@ -49,10 +49,10 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
             fieldLabel : 'Curso',
             store : 'StoreCursos',
             queryModel : 'local',
+            editable: false,
             displayField : 'curso',
             valueField : 'curso',
             itemId : 'cursos',
-            editable : false,
             lastQuery : ''
         });
     },
@@ -64,10 +64,10 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
             fieldLabel : 'Semestre',
             store : 'StoreSemestres',
             queryModel : 'local',
+            editable: false,
             displayField : 'semestre',
             valueField : 'semestre',
             itemId : 'semestres',
-            editable : false,
             lastQuery : ''
         });
     },
@@ -79,10 +79,10 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
             fieldLabel : 'Grupo',
             store : 'StoreGrupos',
             queryModel : 'local',
+            editable: false,
             displayField : 'grupo',
             valueField : 'grupo',
             itemId : 'grupos',
-            editable : false,
             lastQuery : ''
         });
     }

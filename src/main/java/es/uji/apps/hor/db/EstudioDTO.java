@@ -46,7 +46,7 @@ public class EstudioDTO implements Serializable {
 	private Set<CargoPersonaDTO> horExtCargosPers;
 
 	//bi-directional many-to-one association to ItemDTO
-	@OneToMany(mappedBy="horEstudio")
+	@OneToMany(mappedBy="estudio")
 	private Set<ItemDTO> horItems;
 
 	//bi-directional many-to-one association to PermisoExtraDTO

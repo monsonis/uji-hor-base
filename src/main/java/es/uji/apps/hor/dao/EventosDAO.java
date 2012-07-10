@@ -10,4 +10,7 @@ public interface EventosDAO extends BaseDAO
 {
     List<Evento> getEventosByEstudioAndCurso(Long estudioId, Long cursoId, Date rangoFechasInicio,
             Date rangoFechasFin);
+
+    List<Evento> getEventosSemanaGenerica(Long estudioId, Long cursoId, Long semestreId,
+            String grupoId);
 }

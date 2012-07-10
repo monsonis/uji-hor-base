@@ -40,7 +40,8 @@ public class ItemDTO implements Serializable
     @Column(name = "DESDE_EL_DIA")
     private Date desdeElDia;
 
-    private String estudio;
+    @Column(name = "ESTUDIO")
+    private String estudioDesc;
 
     @Column(name = "GRUPO_ID")
     private String grupoId;
@@ -89,35 +90,35 @@ public class ItemDTO implements Serializable
     // bi-directional many-to-one association to AulaPlanificacionDTO
     @ManyToOne
     @JoinColumn(name = "AULA_PLANIFICACION_ID")
-    private AulaPlanificacionDTO horAulasPlanificacion;
+    private AulaPlanificacionDTO aulasPlanificacion;
 
     // bi-directional many-to-one association to DiaSemanaDTO
     @ManyToOne
     @JoinColumn(name = "DIA_SEMANA_ID")
-    private DiaSemanaDTO horDiasSemana;
+    private DiaSemanaDTO diasSemana;
 
     // bi-directional many-to-one association to EstudioDTO
     @ManyToOne
     @JoinColumn(name = "ESTUDIO_ID")
-    private EstudioDTO horEstudio;
+    private EstudioDTO estudio;
 
     // bi-directional many-to-one association to ProfesorDTO
     @ManyToOne
     @JoinColumn(name = "PROFESOR_ID")
-    private ProfesorDTO horProfesore;
+    private ProfesorDTO profesor;
 
     // bi-directional many-to-one association to SemestreDTO
     @ManyToOne
     @JoinColumn(name = "SEMESTRE_ID")
-    private SemestreDTO horSemestre;
+    private SemestreDTO semestre;
 
     // bi-directional many-to-one association to HorItemsCircuito
     @OneToMany(mappedBy = "horItem")
-    private Set<ItemCircuitoDTO> horItemsCircuitos;
+    private Set<ItemCircuitoDTO> itemsCircuitos;
 
     // bi-directional many-to-one association to ItemDetalleDTO
     @OneToMany(mappedBy = "horItem")
-    private Set<ItemDetalleDTO> horItemsDetalles;
+    private Set<ItemDetalleDTO> itemsDetalles;
 
     public ItemDTO()
     {
@@ -203,14 +204,14 @@ public class ItemDTO implements Serializable
         this.desdeElDia = desdeElDia;
     }
 
-    public String getEstudio()
+    public String getEstudioDesc()
     {
-        return this.estudio;
+        return this.estudioDesc;
     }
 
-    public void setEstudio(String estudio)
+    public void setEstudioDesc(String estudioDesc)
     {
-        this.estudio = estudio;
+        this.estudioDesc = estudioDesc;
     }
 
     public String getGrupoId()
@@ -353,74 +354,74 @@ public class ItemDTO implements Serializable
         this.tipoSubgrupoId = tipoSubgrupoId;
     }
 
-    public AulaPlanificacionDTO getHorAulasPlanificacion()
+    public AulaPlanificacionDTO getAulasPlanificacion()
     {
-        return this.horAulasPlanificacion;
+        return this.aulasPlanificacion;
     }
 
-    public void setHorAulasPlanificacion(AulaPlanificacionDTO horAulasPlanificacion)
+    public void setAulasPlanificacion(AulaPlanificacionDTO aulasPlanificacion)
     {
-        this.horAulasPlanificacion = horAulasPlanificacion;
+        this.aulasPlanificacion = aulasPlanificacion;
     }
 
-    public DiaSemanaDTO getHorDiasSemana()
+    public DiaSemanaDTO getDiasSemana()
     {
-        return this.horDiasSemana;
+        return this.diasSemana;
     }
 
-    public void setHorDiasSemana(DiaSemanaDTO horDiasSemana)
+    public void setDiasSemana(DiaSemanaDTO diasSemana)
     {
-        this.horDiasSemana = horDiasSemana;
+        this.diasSemana = diasSemana;
     }
 
-    public EstudioDTO getHorEstudio()
+    public EstudioDTO getEstudio()
     {
-        return this.horEstudio;
+        return this.estudio;
     }
 
-    public void setHorEstudio(EstudioDTO horEstudio)
+    public void setEstudio(EstudioDTO estudio)
     {
-        this.horEstudio = horEstudio;
+        this.estudio = estudio;
     }
 
-    public ProfesorDTO getHorProfesore()
+    public ProfesorDTO getProfesor()
     {
-        return this.horProfesore;
+        return this.profesor;
     }
 
-    public void setHorProfesore(ProfesorDTO horProfesore)
+    public void setProfesor(ProfesorDTO profesor)
     {
-        this.horProfesore = horProfesore;
+        this.profesor = profesor;
     }
 
-    public SemestreDTO getHorSemestre()
+    public SemestreDTO getSemestre()
     {
-        return this.horSemestre;
+        return this.semestre;
     }
 
-    public void setHorSemestre(SemestreDTO horSemestre)
+    public void setSemestre(SemestreDTO semestre)
     {
-        this.horSemestre = horSemestre;
+        this.semestre = semestre;
     }
 
-    public Set<ItemCircuitoDTO> getHorItemsCircuitos()
+    public Set<ItemCircuitoDTO> getItemsCircuitos()
     {
-        return this.horItemsCircuitos;
+        return this.itemsCircuitos;
     }
 
-    public void setHorItemsCircuitos(Set<ItemCircuitoDTO> horItemsCircuitos)
+    public void setItemsCircuitos(Set<ItemCircuitoDTO> itemsCircuitos)
     {
-        this.horItemsCircuitos = horItemsCircuitos;
+        this.itemsCircuitos = itemsCircuitos;
     }
 
-    public Set<ItemDetalleDTO> getHorItemsDetalles()
+    public Set<ItemDetalleDTO> getItemsDetalles()
     {
-        return this.horItemsDetalles;
+        return this.itemsDetalles;
     }
 
-    public void setHorItemsDetalles(Set<ItemDetalleDTO> horItemsDetalles)
+    public void setItemsDetalles(Set<ItemDetalleDTO> itemsDetalles)
     {
-        this.horItemsDetalles = horItemsDetalles;
+        this.itemsDetalles = itemsDetalles;
     }
 
     @Override

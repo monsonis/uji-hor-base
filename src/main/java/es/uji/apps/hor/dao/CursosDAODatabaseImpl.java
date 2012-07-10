@@ -24,7 +24,7 @@ public class CursosDAODatabaseImpl extends BaseDAODatabaseImpl implements Cursos
 
         QItemDTO item = QItemDTO.itemDTO;
 
-        List<Tuple> listaCursosTuples = query.from(item).where(item.horEstudio.id.eq(estudioId))
+        List<Tuple> listaCursosTuples = query.from(item).where(item.estudio.id.eq(estudioId))
                 .orderBy(item.cursoId.asc()).listDistinct(new QTuple(item.cursoId));
 
         List<Curso> cursos = new ArrayList<Curso>();

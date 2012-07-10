@@ -1,7 +1,6 @@
 Ext.define('HOR.store.StoreEventos',
 {
 	extend: 'Extensible.calendar.data.EventStore',
-	model: 'Extensible.calendar.data.EventModel',
     autoLoad : false,
     proxy :
     {
@@ -19,6 +18,11 @@ Ext.define('HOR.store.StoreEventos',
         {
             type : 'json',
             nameProperty : 'mapping'
+        },
+        
+        extraParams: {
+            estudioId: undefined,
+            cursoId: undefined
         },
 
         listeners :

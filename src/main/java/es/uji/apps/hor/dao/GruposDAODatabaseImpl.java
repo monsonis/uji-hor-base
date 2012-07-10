@@ -26,9 +26,9 @@ public class GruposDAODatabaseImpl extends BaseDAODatabaseImpl implements Grupos
 
         List<Tuple> listaGruposTuples = query
                 .from(item)
-                .where(item.horEstudio.id.eq(estudioId).and(
+                .where(item.estudio.id.eq(estudioId).and(
                         item.cursoId.eq(new BigDecimal(cursoId)).and(
-                                item.horSemestre.id.eq(semestreId)))).orderBy(item.grupoId.asc())
+                                item.semestre.id.eq(semestreId)))).orderBy(item.grupoId.asc())
                 .listDistinct(new QTuple(item.grupoId));
 
         List<Grupo> grupos = new ArrayList<Grupo>();

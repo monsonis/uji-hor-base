@@ -30,7 +30,7 @@ public class ProfesorDTO implements Serializable {
 	private BigDecimal pendienteContratacion;
 
 	//bi-directional many-to-one association to ItemDTO
-	@OneToMany(mappedBy="horProfesore")
+	@OneToMany(mappedBy="profesor")
 	private Set<ItemDTO> horItems;
 
 	//bi-directional many-to-one association to AreaDTO

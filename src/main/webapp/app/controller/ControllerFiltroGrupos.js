@@ -1,13 +1,17 @@
 Ext.define('HOR.controller.ControllerFiltroGrupos',
 {
     extend : 'Ext.app.Controller',
-    stores : [ 'StoreEstudios', 'StoreCursos', 'StoreSemestres', 'StoreGrupos' ],
+    stores : [ 'StoreEstudios', 'StoreCursos', 'StoreSemestres', 'StoreGrupos', 'StoreEventos' ],
     model : [ 'Estudio', 'Curso', 'Semestre', 'Grupo' ],
     refs : [
     {
         selector : 'filtroGrupos',
         ref : 'filtroGrupos'
-    } ],
+    },
+    {
+        selector: 'panelHorarios',
+        ref: 'panelHorarios'
+    }],
 
     init : function()
     {
@@ -35,7 +39,7 @@ Ext.define('HOR.controller.ControllerFiltroGrupos',
         this.getFiltroGrupos().down('#cursos').clearValue();
         this.getFiltroGrupos().down('#semestres').clearValue();
         this.getFiltroGrupos().down('#grupos').clearValue();
-
+        
         this.getStoreSemestresStore().removeAll();
         this.getStoreGruposStore().removeAll();
 

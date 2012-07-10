@@ -23,8 +23,8 @@ public class EstudiosDAODatabaseImpl extends BaseDAODatabaseImpl implements Estu
 
         QItemDTO item = QItemDTO.itemDTO;
 
-        List<Tuple> listaEstudiosTuples = query.from(item).orderBy(item.estudio.asc())
-                .listDistinct(new QTuple(item.estudio, item.horEstudio.id));
+        List<Tuple> listaEstudiosTuples = query.from(item).orderBy(item.estudioDesc.asc())
+                .listDistinct(new QTuple(item.estudioDesc, item.estudio.id));
 
         List<Estudio> estudios = new ArrayList<Estudio>();
 
@@ -38,7 +38,7 @@ public class EstudiosDAODatabaseImpl extends BaseDAODatabaseImpl implements Estu
 
     private Estudio creaEstudioDesde(Tuple tuple, QItemDTO item)
     {
-        Estudio estudio = new Estudio(tuple.get(item.horEstudio.id), tuple.get(item.estudio));
+        Estudio estudio = new Estudio(tuple.get(item.estudio.id), tuple.get(item.estudioDesc));
 
         return estudio;
     }
