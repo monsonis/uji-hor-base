@@ -18,7 +18,9 @@ import javax.ws.rs.core.MediaType;
 
 import com.sun.jersey.api.core.InjectParam;
 
+import es.uji.apps.hor.model.Calendario;
 import es.uji.apps.hor.model.Evento;
+import es.uji.apps.hor.services.ConsultaCalendariosService;
 import es.uji.apps.hor.services.ConsultaEventosService;
 import es.uji.commons.rest.ParamUtils;
 import es.uji.commons.rest.UIEntity;
@@ -28,6 +30,9 @@ public class CalendarResource
 {
     @InjectParam
     private ConsultaEventosService consultaEventos;
+
+    @InjectParam
+    private ConsultaCalendariosService consultaCalendarios;
 
     private SimpleDateFormat shortDateFormat;
     private SimpleDateFormat dateFormat;
@@ -66,13 +71,11 @@ public class CalendarResource
             @QueryParam("cursoId") String cursoId, @QueryParam("semestreId") String semestreId,
             @QueryParam("grupoId") String grupoId) throws ParseException
     {
-        // ParamUtils.checkNotNull(estudioId, cursoId);
+        ParamUtils.checkNotNull(estudioId, cursoId, semestreId, grupoId);
 
-        estudioId = "224";
-        cursoId = "1";
-
-        List<Evento> eventos = consultaEventos.eventosSemanaGenericaDeUnEstudio(ParamUtils.parseLong(estudioId),
-                ParamUtils.parseLong(cursoId), ParamUtils.parseLong(semestreId), grupoId);
+        List<Evento> eventos = consultaEventos.eventosSemanaGenericaDeUnEstudio(
+                ParamUtils.parseLong(estudioId), ParamUtils.parseLong(cursoId),
+                ParamUtils.parseLong(semestreId), grupoId);
 
         return toUI(eventos);
     }
@@ -111,14 +114,18 @@ public class CalendarResource
     {
         List<UIEntity> calendars = new ArrayList<UIEntity>();
 
-        for (int i = 1; i < 6; i++)
+        List<Calendario> calendarios = consultaCalendarios.getCalendarios();
+
+        int i = 1;
+        for (Calendario calendario : calendarios)
         {
             UIEntity calendar = new UIEntity();
-            calendar.put("id", i);
-            calendar.put("title", "Calendario " + i);
+            calendar.put("id", calendario.getId());
+            calendar.put("title", calendario.getNombre());
             calendar.put("color", 20 + i);
 
             calendars.add(calendar);
+            i++;
         }
 
         return calendars;

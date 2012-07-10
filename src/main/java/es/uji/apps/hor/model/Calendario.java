@@ -9,6 +9,12 @@ public class Calendario
     {
         this.id = id;
     }
+    
+    public Calendario(Long id, String nombre)
+    {
+        this.id = id;
+        this.nombre = nombre;
+    }
 
     public Long getId()
     {
