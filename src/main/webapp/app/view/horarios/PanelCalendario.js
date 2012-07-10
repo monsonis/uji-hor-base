@@ -63,5 +63,10 @@ Ext.define('HOR.view.horarios.PanelCalendario',
     },
     limpiaCalendario: function() {
         this.store.removeAll(false);
+    },
+    listeners: {
+        'dayclick': function() {
+            return false;  // disable click to add
+        },
     }
 });
