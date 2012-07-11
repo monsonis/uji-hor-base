@@ -1,7 +1,7 @@
 Ext.define('HOR.controller.ControllerGrupoAsignatura',
 {
     extend : 'Ext.app.Controller',
-    stores : [ 'StoreGruposAsignaturasSinAsignar' ],
+    stores : [ 'StoreGruposAsignaturasSinAsignar', 'StoreCalendarios' ],
     model : [ 'GrupoAsignatura' ],
     refs : [
     {
@@ -83,12 +83,14 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
     },
     addEvento : function()
     {
-        var rec = new Extensible.calendar.data.EventModel(
+        var evento = Ext.create('Extensible.calendar.data.EventModel',
         {
-            StartDate : '2101-01-12 12:00:00',
-            EndDate : '2101-01-12 13:30:00',
+            StartDate : '2012-07-10 17:00:00',
+            EndDate : '2012-07-10 18:30:00',
             Title : 'My cool event',
-            Notes : 'Some notes'
+            Notes : 'Some notes',
+            CalendarId : 5
         });
+        this.getStoreCalendariosStore().addEvento(evento);
     }
 });

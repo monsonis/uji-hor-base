@@ -11,8 +11,8 @@ Ext.define('HOR.view.horarios.PanelCalendario',
     editModal : true,
     flex : 1,
     padding : 5,
-    activeItem: 1,
-    showTodayText: false,
+    activeItem : 1,
+    showTodayText : false,
     weekViewCfg :
     {
         dayCount : 5,
@@ -29,17 +29,18 @@ Ext.define('HOR.view.horarios.PanelCalendario',
     },
     showMultiDayView : true,
     showMultiWeekView : false,
-    showNavJump: false,
-    showNavNextPrev: false,
+    showNavJump : false,
+    showNavNextPrev : false,
     multiDayViewCfg :
     {
         dayCount : 5,
-        startDay: 1,
-        startDayIsStatic: true,
+        startDay : 1,
+        startDayIsStatic : true,
         viewStartHour : 8,
-        showTime: false,
+        showTime : false,
         viewEndHour : 22,
-        getStoreParams: function() {
+        getStoreParams : function()
+        {
             var params = this.getStoreDateParams();
             params.estudioId = this.store.getProxy().extraParams['estudioId'];
             params.cursoId = this.store.getProxy().extraParams['cursoId'];
@@ -58,15 +59,81 @@ Ext.define('HOR.view.horarios.PanelCalendario',
         this.callParent(arguments);
 
     },
-    getStoreParams: function() {
-        
+    getStoreParams : function()
+    {
+
     },
-    limpiaCalendario: function() {
+    limpiaCalendario : function()
+    {
         this.store.removeAll(false);
     },
-    listeners: {
-        'dayclick': function() {
-            return false;  // disable click to add
+    listeners :
+    {
+        'dayclick' : function()
+        {
+            return false;
         },
+        'rangeselect' : function()
+        {
+            return false;
+        }
+    }
+});
+
+Extensible.calendar.menu.Event.override(
+{
+    buildMenu : function()
+    {
+        var me = this;
+
+        if (me.rendered)
+        {
+            return;
+        }
+        Ext.apply(me,
+        {
+            items : [
+            {
+
+                text : me.editDetailsText,
+                iconCls : 'extensible-cal-icon-evt-edit',
+                menu: me.dateMenu
+            }, {
+                text : 'Assignar aula',
+                iconCls : 'extensible-cal-icon-evt-edit',
+                menu: me.dateMenu
+
+            }, {
+                text : 'Assignar a circuit',
+                iconCls : 'extensible-cal-icon-evt-edit',
+                menu: me.copyMenu
+
+            }, '-',
+            {
+                text : 'Dividir',
+                iconCls : 'extensible-cal-icon-evt-copy',
+                scope : me,
+                handler : function()
+                {
+                    me.fireEvent('eventdelete', me, me.rec, me.ctxEl);
+                }
+            },
+            {
+                text : me.deleteText,
+                iconCls : 'extensible-cal-icon-evt-del',
+                scope : me,
+                handler : function()
+                {
+                    me.fireEvent('eventdelete', me, me.rec, me.ctxEl);
+                }
+            } ]
+        });
+    },
+    showForEvent : function(rec, el, xy)
+    {
+        var me = this;
+        me.rec = rec;
+        me.ctxEl = el;
+        me.showAt(xy);
     }
 });
