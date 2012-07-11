@@ -30,8 +30,6 @@ Ext.require('Extensible.calendar.data.MemoryCalendarStore');
 Ext.require('Extensible.calendar.data.EventStore');
 Ext.require('Extensible.calendar.CalendarPanel');
 
-var login = 'vrubert';
-
 Ext.application(
 {
     name : 'HOR',

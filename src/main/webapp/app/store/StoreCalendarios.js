@@ -13,9 +13,5 @@ Ext.define('HOR.store.StoreCalendarios',
             type : 'json',
             root : 'data'
         }
-    },
-    addEvento: function(evento) {
-        this.add(evento);
-        this.getPanelCalendario().getActiveView().refresh(true);
     }
 });

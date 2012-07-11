@@ -20,6 +20,10 @@ Ext.define('HOR.controller.ControllerCalendario',
             'filtroGrupos > #grupos' :
             {
                 select : this.onFilterSelected
+            },
+            'selectorGrupos button' :
+            {
+                click : this.addEvento
             }
         });
     },
@@ -36,6 +40,26 @@ Ext.define('HOR.controller.ControllerCalendario',
         storeEventos.getProxy().extraParams["semestreId"] = semestres.getValue();
         storeEventos.getProxy().extraParams["grupoId"] = grupo;
         this.getPanelCalendario().getActiveView().refresh(true);
+    },
+
+    addEvento : function()
+    {
+        var evento = Ext.create('Extensible.calendar.data.EventModel',
+        {
+            StartDate : '2012-07-10 17:00:00',
+            EndDate : '2012-07-10 18:30:00',
+            Title : 'My cool event',
+            Notes : 'Some notes',
+            CalendarId : 5
+        });
+        this.getStoreCalendariosStore().add(evento);
+        this.getStoreCalendariosStore().sync(
+        {
+            callback : function()
+            {
+                this.getPanelCalendario().getActiveView().refresh(true);
+            }
+        });
     }
 
 });
