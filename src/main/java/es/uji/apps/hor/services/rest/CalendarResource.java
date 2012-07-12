@@ -69,13 +69,31 @@ public class CalendarResource
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> getEventosGenerica(@QueryParam("estudioId") String estudioId,
             @QueryParam("cursoId") String cursoId, @QueryParam("semestreId") String semestreId,
-            @QueryParam("grupoId") String grupoId) throws ParseException
+            @QueryParam("grupoId") String grupoId,
+            @QueryParam("calendariosIds") String calendariosIds) throws ParseException
     {
         ParamUtils.checkNotNull(estudioId, cursoId, semestreId, grupoId);
 
-        List<Evento> eventos = consultaEventos.eventosSemanaGenericaDeUnEstudio(
-                ParamUtils.parseLong(estudioId), ParamUtils.parseLong(cursoId),
-                ParamUtils.parseLong(semestreId), grupoId);
+        String[] calendarios = calendariosIds.split(";");
+        List<Long> calendariosList = new ArrayList<Long>();
+
+        for (String calendario : calendarios)
+        {
+            calendario = calendario.trim();
+            if (!calendario.equals(""))
+            {
+                calendariosList.add(ParamUtils.parseLong(calendario));
+            }
+        }
+
+        List<Evento> eventos = new ArrayList<Evento>();
+
+        if (calendariosList.size() != 0)
+        {
+            eventos = consultaEventos.eventosSemanaGenericaDeUnEstudio(
+                    ParamUtils.parseLong(estudioId), ParamUtils.parseLong(cursoId),
+                    ParamUtils.parseLong(semestreId), grupoId, calendariosList);
+        }
 
         return toUI(eventos);
     }
@@ -87,7 +105,7 @@ public class CalendarResource
     {
         return Collections.singletonList(evento);
     }
-    
+
     private List<UIEntity> toUI(List<Evento> eventos)
     {
         List<UIEntity> eventosUI = new ArrayList<UIEntity>();

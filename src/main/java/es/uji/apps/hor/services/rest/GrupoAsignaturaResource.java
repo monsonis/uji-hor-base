@@ -27,17 +27,31 @@ public class GrupoAsignaturaResource
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> getGruposAsignaturasSinAsignar(@QueryParam("estudioId") String estudioId,
             @QueryParam("cursoId") String cursoId, @QueryParam("semestreId") String semestreId,
-            @QueryParam("grupoId") String grupoId)
+            @QueryParam("grupoId") String grupoId,
+            @QueryParam("calendariosIds") String calendariosIds)
     {
+        ParamUtils.checkNotNull(estudioId, cursoId, semestreId, grupoId);
+
+        String[] calendarios = calendariosIds.split(";");
+        List<Long> calendariosList = new ArrayList<Long>();
+
+        for (String calendario : calendarios)
+        {
+            calendario = calendario.trim();
+            if (!calendario.equals(""))
+            {
+                calendariosList.add(ParamUtils.parseLong(calendario));
+            }
+        }
+
         List<UIEntity> list = new ArrayList<UIEntity>();
 
-        if (ParamUtils.isNotNull(estudioId) && ParamUtils.isNotNull(cursoId)
-                && ParamUtils.isNotNull(semestreId) && ParamUtils.isNotNull(grupoId))
+        if (calendariosList.size() != 0)
         {
             List<GrupoAsignatura> gruposAsignaturas = consultaGruposAsignaturas
                     .gruposAsignaturasSinAsignar(ParamUtils.parseLong(estudioId),
                             ParamUtils.parseLong(cursoId), ParamUtils.parseLong(semestreId),
-                            grupoId);
+                            grupoId, calendariosList);
 
             list = UIEntity.toUI(gruposAsignaturas);
         }

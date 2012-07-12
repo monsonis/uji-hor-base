@@ -20,9 +20,9 @@ public class ConsultaGruposAsignaturasService
     }
 
     public List<GrupoAsignatura> gruposAsignaturasSinAsignar(Long estudioId, Long cursoId,
-            Long semestreId, String grupoId)
+            Long semestreId, String grupoId, List<Long> calendariosIds)
     {
         return grupoAsignaturaDAO.getGruposAsignaturasSinAsignar(estudioId, cursoId, semestreId,
-                grupoId);
+                grupoId, calendariosIds);
     }
 }

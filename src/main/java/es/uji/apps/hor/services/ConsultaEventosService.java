@@ -28,8 +28,9 @@ public class ConsultaEventosService
     }
 
     public List<Evento> eventosSemanaGenericaDeUnEstudio(Long estudioId, Long cursoId,
-            Long semestreId, String grupoId)
+            Long semestreId, String grupoId, List<Long> calendariosIds)
     {
-        return eventosDAO.getEventosSemanaGenerica(estudioId, cursoId, semestreId, grupoId);
+        return eventosDAO.getEventosSemanaGenerica(estudioId, cursoId, semestreId, grupoId,
+                calendariosIds);
     }
 }

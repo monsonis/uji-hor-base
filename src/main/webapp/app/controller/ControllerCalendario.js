@@ -11,6 +11,10 @@ Ext.define('HOR.controller.ControllerCalendario',
     {
         selector : 'panelCalendario',
         ref : 'panelCalendario'
+    },
+    {
+        selector : 'selectorCalendarios',
+        ref : 'selectorCalendarios'
     } ],
 
     init : function()
@@ -19,7 +23,11 @@ Ext.define('HOR.controller.ControllerCalendario',
         {
             'filtroGrupos > #grupos' :
             {
-                select : this.onFilterSelected
+                select : this.refreshCalendar
+            },
+            'selectorCalendarios checkbox' :
+            {
+                change : this.refreshCalendar
             },
             'selectorGrupos button' :
             {
@@ -28,18 +36,26 @@ Ext.define('HOR.controller.ControllerCalendario',
         });
     },
 
-    onFilterSelected : function(combo, records)
+    refreshCalendar : function()
     {
-        var grupo = records[0].get('grupo');
         var titulaciones = this.getFiltroGrupos().down('#titulaciones');
         var cursos = this.getFiltroGrupos().down('#cursos');
         var semestres = this.getFiltroGrupos().down('#semestres');
-        var storeEventos = this.getStoreEventosStore();
-        storeEventos.getProxy().extraParams["estudioId"] = titulaciones.getValue();
-        storeEventos.getProxy().extraParams["cursoId"] = cursos.getValue();
-        storeEventos.getProxy().extraParams["semestreId"] = semestres.getValue();
-        storeEventos.getProxy().extraParams["grupoId"] = grupo;
-        this.getPanelCalendario().getActiveView().refresh(true);
+        var grupos = this.getFiltroGrupos().down('#grupos');
+
+        if (grupos.getValue() != null)
+        {
+            var calendarios = this.getSelectorCalendarios().getCalendarsSelected();
+
+            var storeEventos = this.getStoreEventosStore();
+            storeEventos.getProxy().extraParams["estudioId"] = titulaciones.getValue();
+            storeEventos.getProxy().extraParams["cursoId"] = cursos.getValue();
+            storeEventos.getProxy().extraParams["semestreId"] = semestres.getValue();
+            storeEventos.getProxy().extraParams["grupoId"] = grupos.getValue();
+            storeEventos.getProxy().extraParams["calendariosIds"] = calendarios;
+
+            this.getPanelCalendario().getActiveView().refresh(true);
+        }
     },
 
     addEvento : function()

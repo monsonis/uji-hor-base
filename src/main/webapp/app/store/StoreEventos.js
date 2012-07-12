@@ -17,10 +17,11 @@ Ext.define('HOR.store.StoreEventos',
 
         extraParams :
         {
-            estudioId : 1,
+            estudioId : null,
             cursoId : null,
             semestreId : null,
-            grupoId : null
+            grupoId : null,
+            calendariosIds : null
         },
 
         writer :

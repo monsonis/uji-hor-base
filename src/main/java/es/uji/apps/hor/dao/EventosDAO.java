@@ -12,5 +12,5 @@ public interface EventosDAO extends BaseDAO
             Date rangoFechasFin);
 
     List<Evento> getEventosSemanaGenerica(Long estudioId, Long cursoId, Long semestreId,
-            String grupoId);
+            String grupoId, List<Long> calendariosIds);
 }

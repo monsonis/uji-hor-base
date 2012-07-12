@@ -11,6 +11,10 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
     {
         selector : 'filtroGrupos',
         ref : 'filtroGrupos'
+    },
+    {
+        selector : 'selectorCalendarios',
+        ref : 'selectorCalendarios'
     } ],
 
     init : function()
@@ -19,31 +23,43 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
         {
             'filtroGrupos > #grupos' :
             {
-                select : this.onFilterSelected
+                select : this.updateAsignaturasSinAsignar
+            },
+            'selectorCalendarios checkbox' :
+            {
+                change : this.updateAsignaturasSinAsignar
             }
         });
     },
 
-    onFilterSelected : function(combo, records)
+    updateAsignaturasSinAsignar : function()
     {
         var store = this.getStoreGruposAsignaturasSinAsignarStore();
 
         var estudio = this.getFiltroGrupos().down('#titulaciones').getValue();
         var curso = this.getFiltroGrupos().down('#cursos').getValue();
         var semestre = this.getFiltroGrupos().down('#semestres').getValue();
+        var grupo = this.getFiltroGrupos().down('#grupos').getValue();
 
-        store.load(
+        if (grupo != null)
         {
-            callback : this.onGruposAsignaturasSinAsignarLoaded,
-            params :
+            var calendarios = this.getSelectorCalendarios().getCalendarsSelected();
+
+            store.load(
             {
-                estudioId : estudio,
-                cursoId : curso,
-                semestreId : semestre,
-                grupoId : records[0].data.grupo
-            },
-            scope : this
-        });
+                callback : this.onGruposAsignaturasSinAsignarLoaded,
+                params :
+                {
+                    estudioId : estudio,
+                    cursoId : curso,
+                    semestreId : semestre,
+                    grupoId : grupo,
+                    calendariosIds : calendarios
+                },
+                scope : this
+            });
+
+        }
     },
 
     onGruposAsignaturasSinAsignarLoaded : function(gruposAsignaturas, request)
@@ -76,5 +92,6 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
 
             view.add(button);
         }
-    }
+    },
+
 });

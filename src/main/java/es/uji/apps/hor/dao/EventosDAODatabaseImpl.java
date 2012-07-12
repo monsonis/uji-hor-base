@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
 
 import org.springframework.stereotype.Repository;
 
@@ -79,18 +77,21 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
 
     @Override
     public List<Evento> getEventosSemanaGenerica(Long estudioId, Long cursoId, Long semestreId,
-            String grupoId)
+            String grupoId, List<Long> calendariosIds)
     {
         JPAQuery query = new JPAQuery(entityManager);
 
         QItemDTO item = QItemDTO.itemDTO;
+
+        List<String> tiposCalendarios = TipoSubgrupo.getTiposSubgrupos(calendariosIds);
 
         List<ItemDTO> listaItemsDTO = query
                 .from(item)
                 .where(item.estudio.id.eq(estudioId).and(
                         item.cursoId.eq(new BigDecimal(cursoId))
                                 .and(item.semestre.id.eq(semestreId)).and(item.grupoId.eq(grupoId))
-                                .and(item.diasSemana.isNotNull()))).list(item);
+                                .and(item.diasSemana.isNotNull())
+                                .and(item.tipoSubgrupoId.in(tiposCalendarios)))).list(item);
 
         List<Evento> eventos = new ArrayList<Evento>();
 
@@ -107,25 +108,28 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         String titulo = itemDTO.toString();
         Calendario calendario = obtenerCalendarioAsociadoPorTipoSubgrupo(itemDTO);
 
-        Calendar inicio = generaItemCalendarioSemanaGenerica(itemDTO.getDiasSemana().getId().intValue(), itemDTO.getHoraInicio());
-        Calendar fin = generaItemCalendarioSemanaGenerica(itemDTO.getDiasSemana().getId().intValue(), itemDTO.getHoraFin());
+        Calendar inicio = generaItemCalendarioSemanaGenerica(itemDTO.getDiasSemana().getId()
+                .intValue(), itemDTO.getHoraInicio());
+        Calendar fin = generaItemCalendarioSemanaGenerica(itemDTO.getDiasSemana().getId()
+                .intValue(), itemDTO.getHoraFin());
         return new Evento(itemDTO.getId(), calendario, titulo, inicio.getTime(), fin.getTime());
 
     }
-    
-    private Calendar generaItemCalendarioSemanaGenerica(Integer dia, Date fecha ) {
+
+    private Calendar generaItemCalendarioSemanaGenerica(Integer dia, Date fecha)
+    {
         Calendar base = Calendar.getInstance();
         Calendar actual = Calendar.getInstance();
         actual.setTime(fecha);
 
         base.setFirstDayOfWeek(Calendar.MONDAY);
         Integer dayOfWeek = base.get(Calendar.DAY_OF_WEEK);
-        base.add(Calendar.DAY_OF_WEEK, Calendar.MONDAY - dayOfWeek );
+        base.add(Calendar.DAY_OF_WEEK, Calendar.MONDAY - dayOfWeek);
         actual.set(Calendar.YEAR, base.get(Calendar.YEAR));
         actual.set(Calendar.MONTH, base.get(Calendar.MONTH));
-        actual.set(Calendar.DAY_OF_MONTH, base.get(Calendar.DAY_OF_MONTH));    
+        actual.set(Calendar.DAY_OF_MONTH, base.get(Calendar.DAY_OF_MONTH));
         actual.add(Calendar.DAY_OF_WEEK, dia - 1);
-        
+
         return actual;
     }
 
