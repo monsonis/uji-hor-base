@@ -1,5 +1,5 @@
 -- Generado por Oracle SQL Developer Data Modeler 3.1.0.687
---   en:        2012-05-28 17:48:24 CEST
+--   en:        2012-07-12 17:05:51 CEST
 --   sitio:      Oracle Database 11g
 --   tipo:      Oracle Database 11g
 
@@ -31,9 +31,13 @@ DROP TABLE uji_horarios.hor_ext_calendario CASCADE CONSTRAINTS
 ;
 DROP TABLE uji_horarios.hor_ext_cargos_per CASCADE CONSTRAINTS 
 ;
+DROP TABLE uji_horarios.hor_ext_circuitos CASCADE CONSTRAINTS 
+;
 DROP TABLE uji_horarios.hor_ext_personas CASCADE CONSTRAINTS 
 ;
 DROP TABLE uji_horarios.hor_items CASCADE CONSTRAINTS 
+;
+DROP TABLE uji_horarios.hor_items_circuitos CASCADE CONSTRAINTS 
 ;
 DROP TABLE uji_horarios.hor_items_detalle CASCADE CONSTRAINTS 
 ;
@@ -129,11 +133,11 @@ ALTER TABLE uji_horarios.hor_centros
 CREATE TABLE uji_horarios.hor_circuitos 
     ( 
      id NUMBER  NOT NULL , 
-     circuito_id NUMBER  NOT NULL , 
-     nombre VARCHAR2 (100)  NOT NULL , 
      estudio_id NUMBER  NOT NULL , 
-     especial NUMBER DEFAULT 0  NOT NULL CHECK ( especial IN (0, 1)) , 
-     grupo_id VARCHAR2 (10)  NOT NULL 
+     grupo_id VARCHAR2 (10)  NOT NULL , 
+     id_circuito NUMBER  NOT NULL , 
+     nombre VARCHAR2 (100)  NOT NULL , 
+     especial NUMBER DEFAULT 0  NOT NULL CHECK ( especial IN (0, 1)) 
     ) 
 ;
 
@@ -237,6 +241,27 @@ ALTER TABLE uji_horarios.hor_ext_cargos_per
     ADD CONSTRAINT hor_ext_cargos_per_PK PRIMARY KEY ( id ) ;
 
 
+CREATE TABLE uji_horarios.hor_ext_circuitos 
+    ( 
+     id NUMBER  NOT NULL , 
+     curso_aca NUMBER  NOT NULL , 
+     tipo VARCHAR2 (10)  NOT NULL , 
+     subgrupo_id NUMBER  NOT NULL , 
+     grupo_id VARCHAR2 (10)  NOT NULL , 
+     detalle_id NUMBER  NOT NULL , 
+     asignatura_id VARCHAR2 (10)  NOT NULL , 
+     circuito_id NUMBER  NOT NULL , 
+     estudio_id NUMBER  NOT NULL , 
+     plazas NUMBER  NOT NULL 
+    ) 
+;
+
+
+
+ALTER TABLE uji_horarios.hor_ext_circuitos 
+    ADD CONSTRAINT hor_ext_circuitos_PK PRIMARY KEY ( id ) ;
+
+
 CREATE TABLE uji_horarios.hor_ext_personas 
     ( 
      id NUMBER  NOT NULL , 
@@ -268,7 +293,6 @@ CREATE TABLE uji_horarios.hor_items
      caracter VARCHAR2 (100) , 
      semestre_id NUMBER  NOT NULL , 
      aula_planificacion_id NUMBER , 
-     circuito_id NUMBER , 
      profesor_id NUMBER , 
      comun NUMBER DEFAULT 0  NOT NULL CHECK ( comun IN (0, 1)) , 
      porcentaje_comun NUMBER , 
@@ -285,7 +309,8 @@ CREATE TABLE uji_horarios.hor_items
      tipo_asignatura_id VARCHAR2 (10) , 
      tipo_asignatura VARCHAR2 (100) , 
      tipo_estudio_id VARCHAR2 (10) , 
-     tipo_estudio VARCHAR2 (100) 
+     tipo_estudio VARCHAR2 (100) , 
+     plazas NUMBER 
     ) 
 ;
 
@@ -295,13 +320,27 @@ ALTER TABLE uji_horarios.hor_items
     ADD CONSTRAINT TABLE_1_PK PRIMARY KEY ( id ) ;
 
 
+CREATE TABLE uji_horarios.hor_items_circuitos 
+    ( 
+     id NUMBER  NOT NULL , 
+     item_id NUMBER  NOT NULL , 
+     circuito_id NUMBER  NOT NULL , 
+     plazas NUMBER 
+    ) 
+;
+
+
+
+ALTER TABLE uji_horarios.hor_items_circuitos 
+    ADD CONSTRAINT hor_items_circuitos_PK PRIMARY KEY ( id ) ;
+
+
 CREATE TABLE uji_horarios.hor_items_detalle 
     ( 
      id NUMBER  NOT NULL , 
      item_id NUMBER  NOT NULL , 
-     dia DATE  NOT NULL , 
-     hora_inicio DATE  NOT NULL , 
-     hora_fin DATE  NOT NULL , 
+     inicio DATE  NOT NULL , 
+     fin DATE  NOT NULL , 
      descripcion VARCHAR2 (1000) 
     ) 
 ;
@@ -576,6 +615,30 @@ ALTER TABLE uji_horarios.hor_ext_personas
 ;
 
 
+ALTER TABLE uji_horarios.hor_items_circuitos 
+    ADD CONSTRAINT hor_items_cir_cir_FK FOREIGN KEY 
+    ( 
+     circuito_id
+    ) 
+    REFERENCES uji_horarios.hor_circuitos 
+    ( 
+     id
+    ) 
+;
+
+
+ALTER TABLE uji_horarios.hor_items_circuitos 
+    ADD CONSTRAINT hor_items_cir_items_FK FOREIGN KEY 
+    ( 
+     item_id
+    ) 
+    REFERENCES uji_horarios.hor_items 
+    ( 
+     id
+    ) 
+;
+
+
 ALTER TABLE uji_horarios.hor_items_detalle 
     ADD CONSTRAINT hor_items_detalle_hor_items_FK FOREIGN KEY 
     ( 
@@ -594,18 +657,6 @@ ALTER TABLE uji_horarios.hor_items
      aula_planificacion_id
     ) 
     REFERENCES uji_horarios.hor_aulas_planificacion 
-    ( 
-     id
-    ) 
-;
-
-
-ALTER TABLE uji_horarios.hor_items 
-    ADD CONSTRAINT hor_items_hor_cir_est_FK FOREIGN KEY 
-    ( 
-     circuito_id
-    ) 
-    REFERENCES uji_horarios.hor_circuitos 
     ( 
      id
     ) 
@@ -784,11 +835,13 @@ FROM uji_horarios.hor_items ;
 
 
 
+
+
 -- Informe de Resumen de Oracle SQL Developer Data Modeler: 
 -- 
--- CREATE TABLE                            20
+-- CREATE TABLE                            22
 -- CREATE INDEX                             0
--- ALTER TABLE                             53
+-- ALTER TABLE                             56
 -- CREATE VIEW                              2
 -- CREATE PACKAGE                           0
 -- CREATE PACKAGE BODY                      0
