@@ -20,7 +20,7 @@ import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.hor.model.Calendario;
 import es.uji.apps.hor.model.Evento;
-import es.uji.apps.hor.services.ConsultaCalendariosService;
+import es.uji.apps.hor.services.CalendariosService;
 import es.uji.apps.hor.services.EventosService;
 import es.uji.commons.rest.ParamUtils;
 import es.uji.commons.rest.UIEntity;
@@ -32,7 +32,7 @@ public class CalendarResource
     private EventosService consultaEventos;
 
     @InjectParam
-    private ConsultaCalendariosService consultaCalendarios;
+    private CalendariosService consultaCalendarios;
 
     private SimpleDateFormat shortDateFormat;
     private SimpleDateFormat dateFormat;

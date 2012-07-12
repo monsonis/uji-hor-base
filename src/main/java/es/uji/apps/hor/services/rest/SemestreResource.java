@@ -11,7 +11,7 @@ import javax.ws.rs.core.MediaType;
 import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.hor.model.Semestre;
-import es.uji.apps.hor.services.ConsultaSemestresService;
+import es.uji.apps.hor.services.SemestresService;
 import es.uji.commons.rest.ParamUtils;
 import es.uji.commons.rest.UIEntity;
 
@@ -19,7 +19,7 @@ import es.uji.commons.rest.UIEntity;
 public class SemestreResource
 {
     @InjectParam
-    private ConsultaSemestresService consultaSemestres;
+    private SemestresService consultaSemestres;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

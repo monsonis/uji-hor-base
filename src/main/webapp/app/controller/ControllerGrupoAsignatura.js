@@ -74,7 +74,8 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
 
             if (i == 0)
             {
-                margin = '25 30 0 30';
+                margin = '25 30 0 30   ';
+                
             }
             else if (i == len - 1)
             {
@@ -85,7 +86,7 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
             {
                 xtype : 'button',
                 text : gruposAsignaturas[i].data.titulo,
-                padding : 5,
+                padding : '2 5 2 5',
                 margin : margin,
                 grupoAsignaturaId : gruposAsignaturas[i].data.id
             };

@@ -9,12 +9,12 @@ import es.uji.apps.hor.dao.GruposDAO;
 import es.uji.apps.hor.model.Grupo;
 
 @Service
-public class ConsultaGruposService
+public class GruposService
 {
     private final GruposDAO gruposDAO;
 
     @Autowired
-    public ConsultaGruposService(GruposDAO gruposDAO)
+    public GruposService(GruposDAO gruposDAO)
     {
         this.gruposDAO = gruposDAO;
     }

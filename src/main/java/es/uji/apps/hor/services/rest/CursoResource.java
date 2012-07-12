@@ -11,7 +11,7 @@ import javax.ws.rs.core.MediaType;
 import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.hor.model.Curso;
-import es.uji.apps.hor.services.ConsultaCursosService;
+import es.uji.apps.hor.services.CursosService;
 import es.uji.commons.rest.ParamUtils;
 import es.uji.commons.rest.UIEntity;
 
@@ -19,7 +19,7 @@ import es.uji.commons.rest.UIEntity;
 public class CursoResource
 {
     @InjectParam
-    private ConsultaCursosService consultaCursos;
+    private CursosService consultaCursos;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

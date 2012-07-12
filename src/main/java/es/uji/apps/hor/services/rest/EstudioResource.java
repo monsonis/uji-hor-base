@@ -10,14 +10,14 @@ import javax.ws.rs.core.MediaType;
 import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.hor.model.Estudio;
-import es.uji.apps.hor.services.ConsultaEstudiosService;
+import es.uji.apps.hor.services.EstudiosService;
 import es.uji.commons.rest.UIEntity;
 
 @Path("estudio")
 public class EstudioResource
 {
     @InjectParam
-    private ConsultaEstudiosService consultaEstudios;
+    private EstudiosService consultaEstudios;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

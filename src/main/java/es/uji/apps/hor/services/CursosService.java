@@ -9,12 +9,12 @@ import es.uji.apps.hor.dao.CursosDAO;
 import es.uji.apps.hor.model.Curso;
 
 @Service
-public class ConsultaCursosService
+public class CursosService
 {
     private final CursosDAO cursosDAO;
 
     @Autowired
-    public ConsultaCursosService(CursosDAO cursosDAO)
+    public CursosService(CursosDAO cursosDAO)
     {
         this.cursosDAO = cursosDAO;
     }

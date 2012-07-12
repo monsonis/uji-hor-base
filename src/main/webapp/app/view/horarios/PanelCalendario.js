@@ -13,6 +13,7 @@ Ext.define('HOR.view.horarios.PanelCalendario',
     padding : 5,
     activeItem : 1,
     showTodayText : false,
+    showNavToday : false,
     weekViewCfg :
     {
         dayCount : 5,
@@ -38,6 +39,7 @@ Ext.define('HOR.view.horarios.PanelCalendario',
         startDayIsStatic : true,
         viewStartHour : 8,
         showTime : false,
+        showMonth: false,
         viewEndHour : 22,
         getStoreParams : function()
         {
@@ -97,16 +99,18 @@ Extensible.calendar.menu.Event.override(
 
                 text : me.editDetailsText,
                 iconCls : 'extensible-cal-icon-evt-edit',
-                menu: me.dateMenu
-            }, {
+                menu : me.dateMenu
+            },
+            {
                 text : 'Assignar aula',
                 iconCls : 'extensible-cal-icon-evt-edit',
-                menu: me.dateMenu
+                menu : me.dateMenu
 
-            }, {
+            },
+            {
                 text : 'Assignar a circuit',
                 iconCls : 'extensible-cal-icon-evt-edit',
-                menu: me.copyMenu
+                menu : me.copyMenu
 
             }, '-',
             {
@@ -136,4 +140,10 @@ Extensible.calendar.menu.Event.override(
         me.ctxEl = el;
         me.showAt(xy);
     }
+});
+
+Extensible.calendar.template.BoxLayout.override(
+{
+    multiDayFirstDayFormat : 'l',
+    multiDayMonthStartFormat: 'l'
 });

@@ -9,12 +9,12 @@ import es.uji.apps.hor.dao.CalendariosDAO;
 import es.uji.apps.hor.model.Calendario;
 
 @Service
-public class ConsultaCalendariosService
+public class CalendariosService
 {
     private final CalendariosDAO calendariosDAO;
 
     @Autowired
-    public ConsultaCalendariosService(CalendariosDAO calendariosDAO)
+    public CalendariosService(CalendariosDAO calendariosDAO)
     {
         this.calendariosDAO = calendariosDAO;
     }

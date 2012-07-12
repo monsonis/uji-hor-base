@@ -55,7 +55,7 @@ Ext.define('HOR.controller.ControllerFiltroGrupos',
         {
             params :
             {
-                estudioId : records[0].data.id
+                estudioId : records[0].get('id')
             },
             scope : this
         });
