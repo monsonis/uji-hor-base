@@ -12,7 +12,7 @@ import javax.ws.rs.core.MediaType;
 import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.hor.model.GrupoAsignatura;
-import es.uji.apps.hor.services.ConsultaGruposAsignaturasService;
+import es.uji.apps.hor.services.GruposAsignaturasService;
 import es.uji.commons.rest.ParamUtils;
 import es.uji.commons.rest.UIEntity;
 
@@ -20,7 +20,7 @@ import es.uji.commons.rest.UIEntity;
 public class GrupoAsignaturaResource
 {
     @InjectParam
-    private ConsultaGruposAsignaturasService consultaGruposAsignaturas;
+    private GruposAsignaturasService consultaGruposAsignaturas;
 
     @GET
     @Path("sinAsignar")

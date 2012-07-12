@@ -9,12 +9,12 @@ import es.uji.apps.hor.dao.GrupoAsignaturaDAO;
 import es.uji.apps.hor.model.GrupoAsignatura;
 
 @Service
-public class ConsultaGruposAsignaturasService
+public class GruposAsignaturasService
 {
     private final GrupoAsignaturaDAO grupoAsignaturaDAO;
 
     @Autowired
-    public ConsultaGruposAsignaturasService(GrupoAsignaturaDAO grupoAsignaturaDAO)
+    public GruposAsignaturasService(GrupoAsignaturaDAO grupoAsignaturaDAO)
     {
         this.grupoAsignaturaDAO = grupoAsignaturaDAO;
     }

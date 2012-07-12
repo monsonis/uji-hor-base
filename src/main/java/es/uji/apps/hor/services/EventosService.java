@@ -10,12 +10,12 @@ import es.uji.apps.hor.dao.EventosDAO;
 import es.uji.apps.hor.model.Evento;
 
 @Service
-public class ConsultaEventosService
+public class EventosService
 {
     private final EventosDAO eventosDAO;
 
     @Autowired
-    public ConsultaEventosService(EventosDAO eventosDAO)
+    public EventosService(EventosDAO eventosDAO)
     {
         this.eventosDAO = eventosDAO;
     }
