@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import es.uji.apps.hor.dao.GrupoAsignaturaDAO;
 import es.uji.apps.hor.model.GrupoAsignatura;
+import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
 @Service
 public class GruposAsignaturasService
@@ -24,5 +25,14 @@ public class GruposAsignaturasService
     {
         return grupoAsignaturaDAO.getGruposAsignaturasSinAsignar(estudioId, cursoId, semestreId,
                 grupoId, calendariosIds);
+    }
+
+    public GrupoAsignatura asignaDiaYHoraPorDefecto(Long grupoAsignaturaId)
+            throws RegistroNoEncontradoException
+    {
+        GrupoAsignatura grupoAsignatura = grupoAsignaturaDAO
+                .asignaDiaYHoraPorDefecto(grupoAsignaturaId);
+        
+        return grupoAsignatura;
     }
 }

@@ -1,7 +1,7 @@
 Ext.define('HOR.controller.ControllerCalendario',
 {
     extend : 'Ext.app.Controller',
-    stores : [ 'StoreCalendarios', 'StoreEventos' ],
+    stores : [ 'StoreCalendarios', 'StoreEventos', 'StoreGruposAsignaturasSinAsignar' ],
     model : [ 'Calendario', 'Evento' ],
     refs : [
     {
@@ -58,24 +58,20 @@ Ext.define('HOR.controller.ControllerCalendario',
         }
     },
 
-    addEvento : function()
+    addEvento : function(button)
     {
-        var evento = Ext.create('Extensible.calendar.data.EventModel',
-        {
-            StartDate : '2012-07-10 17:00:00',
-            EndDate : '2012-07-10 18:30:00',
-            Title : 'My cool event',
-            Notes : 'Some notes',
-            CalendarId : 5
-        });
-        this.getStoreCalendariosStore().add(evento);
-        this.getStoreCalendariosStore().sync(
+        var grupoId = button.grupoAsignaturaId;
+        var storeGrupo = this.getStoreGruposAsignaturasSinAsignarStore();
+        var record = storeGrupo.getById(grupoId);
+        record.set('asignado', true);
+        var ref = this;
+        storeGrupo.sync(
         {
             callback : function()
             {
-                this.getPanelCalendario().getActiveView().refresh(true);
+                button.destroy();
+                ref.getPanelCalendario().getActiveView().refresh(true);
             }
         });
     }
-
 });

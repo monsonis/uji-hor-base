@@ -95,7 +95,7 @@ public class ItemDTO implements Serializable
     // bi-directional many-to-one association to DiaSemanaDTO
     @ManyToOne
     @JoinColumn(name = "DIA_SEMANA_ID")
-    private DiaSemanaDTO diasSemana;
+    private DiaSemanaDTO diaSemana;
 
     // bi-directional many-to-one association to EstudioDTO
     @ManyToOne
@@ -364,14 +364,14 @@ public class ItemDTO implements Serializable
         this.aulasPlanificacion = aulasPlanificacion;
     }
 
-    public DiaSemanaDTO getDiasSemana()
+    public DiaSemanaDTO getDiaSemana()
     {
-        return this.diasSemana;
+        return this.diaSemana;
     }
 
-    public void setDiasSemana(DiaSemanaDTO diasSemana)
+    public void setDiaSemana(DiaSemanaDTO diaSemana)
     {
-        this.diasSemana = diasSemana;
+        this.diaSemana = diaSemana;
     }
 
     public EstudioDTO getEstudio()

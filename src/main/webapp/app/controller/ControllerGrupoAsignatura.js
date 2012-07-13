@@ -70,17 +70,17 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
 
         for ( var i = 0, len = gruposAsignaturas.length; i < len; i++)
         {
-            var margin = '5 30 0 30';
+            var margin = '10 30 0 30';
 
-            if (i == 0)
-            {
-                margin = '25 30 0 30   ';
-                
-            }
-            else if (i == len - 1)
-            {
-                margin = '5 30 25 30';
-            }
+//            if (i == 0)
+//            {
+//                margin = '25 30 0 30   ';
+//                
+//            }
+//            else if (i == len - 1)
+//            {
+//                margin = '5 30 25 30';
+//            }
 
             var button =
             {
@@ -88,7 +88,7 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
                 text : gruposAsignaturas[i].data.titulo,
                 padding : '2 5 2 5',
                 margin : margin,
-                grupoAsignaturaId : gruposAsignaturas[i].data.id
+                grupoAsignaturaId : gruposAsignaturas[i].data.id,
             };
 
             view.add(button);

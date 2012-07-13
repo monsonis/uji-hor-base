@@ -20,7 +20,8 @@ Ext.define('HOR.store.StoreGruposAsignaturasSinAsignar',
 
         writer :
         {
-            type : 'json'
+            type : 'json',
+            successProperty : 'success'
         }
     }
 

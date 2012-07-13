@@ -9,4 +9,7 @@ public interface GrupoAsignaturaDAO extends BaseDAO
 {
     List<GrupoAsignatura> getGruposAsignaturasSinAsignar(Long estudioId, Long cursoId,
             Long semestreId, String grupoId, List<Long> calendariosIds);
+
+    GrupoAsignatura asignaDiaYHoraPorDefecto(Long grupoId);
+    
 }

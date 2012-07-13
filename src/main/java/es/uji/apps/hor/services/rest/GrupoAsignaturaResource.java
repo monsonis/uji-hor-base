@@ -1,9 +1,11 @@
 package es.uji.apps.hor.services.rest;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -15,12 +17,13 @@ import es.uji.apps.hor.model.GrupoAsignatura;
 import es.uji.apps.hor.services.GruposAsignaturasService;
 import es.uji.commons.rest.ParamUtils;
 import es.uji.commons.rest.UIEntity;
+import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
 @Path("grupoAsignatura")
 public class GrupoAsignaturaResource
 {
     @InjectParam
-    private GruposAsignaturasService consultaGruposAsignaturas;
+    private GruposAsignaturasService gruposAsignaturasService;
 
     @GET
     @Path("sinAsignar")
@@ -48,7 +51,7 @@ public class GrupoAsignaturaResource
 
         if (calendariosList.size() != 0)
         {
-            List<GrupoAsignatura> gruposAsignaturas = consultaGruposAsignaturas
+            List<GrupoAsignatura> gruposAsignaturas = gruposAsignaturasService
                     .gruposAsignaturasSinAsignar(ParamUtils.parseLong(estudioId),
                             ParamUtils.parseLong(cursoId), ParamUtils.parseLong(semestreId),
                             grupoId, calendariosList);
@@ -57,6 +60,16 @@ public class GrupoAsignaturaResource
         }
 
         return list;
+    }
+
+    @PUT
+    @Path("sinAsignar/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<UIEntity> updateGruposAsignaturasSinAsignar(UIEntity entity) throws RegistroNoEncontradoException, NumberFormatException
+    {
+        GrupoAsignatura grupoAsignatura = gruposAsignaturasService.asignaDiaYHoraPorDefecto(Long.parseLong(entity.get("id")));
+        return Collections.singletonList(UIEntity.toUI(grupoAsignatura));
+        
     }
 
 }

@@ -10,10 +10,9 @@ import java.util.Set;
  * 
  */
 @Entity
+@SuppressWarnings("serial")
 @Table(name="HOR_DIAS_SEMANA")
 public class DiaSemanaDTO implements Serializable {
-	private static final long serialVersionUID = 1L;
-
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
@@ -21,8 +20,8 @@ public class DiaSemanaDTO implements Serializable {
 	private String nombre;
 
 	//bi-directional many-to-one association to ItemDTO
-	@OneToMany(mappedBy="diasSemana")
-	private Set<ItemDTO> horItems;
+	@OneToMany(mappedBy="diaSemana")
+	private Set<ItemDTO> items;
 
     public DiaSemanaDTO() {
     }
@@ -43,12 +42,12 @@ public class DiaSemanaDTO implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public Set<ItemDTO> getHorItems() {
-		return this.horItems;
+	public Set<ItemDTO> getItems() {
+		return this.items;
 	}
 
-	public void setHorItems(Set<ItemDTO> horItems) {
-		this.horItems = horItems;
+	public void setItems(Set<ItemDTO> items) {
+		this.items = items;
 	}
 	
 }

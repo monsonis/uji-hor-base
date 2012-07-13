@@ -90,7 +90,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
                 .where(item.estudio.id.eq(estudioId).and(
                         item.cursoId.eq(new BigDecimal(cursoId))
                                 .and(item.semestre.id.eq(semestreId)).and(item.grupoId.eq(grupoId))
-                                .and(item.diasSemana.isNotNull())
+                                .and(item.diaSemana.isNotNull())
                                 .and(item.tipoSubgrupoId.in(tiposCalendarios)))).list(item);
 
         List<Evento> eventos = new ArrayList<Evento>();
@@ -108,9 +108,9 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         String titulo = itemDTO.toString();
         Calendario calendario = obtenerCalendarioAsociadoPorTipoSubgrupo(itemDTO);
 
-        Calendar inicio = generaItemCalendarioSemanaGenerica(itemDTO.getDiasSemana().getId()
+        Calendar inicio = generaItemCalendarioSemanaGenerica(itemDTO.getDiaSemana().getId()
                 .intValue(), itemDTO.getHoraInicio());
-        Calendar fin = generaItemCalendarioSemanaGenerica(itemDTO.getDiasSemana().getId()
+        Calendar fin = generaItemCalendarioSemanaGenerica(itemDTO.getDiaSemana().getId()
                 .intValue(), itemDTO.getHoraFin());
         return new Evento(itemDTO.getId(), calendario, titulo, inicio.getTime(), fin.getTime());
 
