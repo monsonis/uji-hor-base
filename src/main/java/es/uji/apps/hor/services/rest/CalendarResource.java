@@ -1,5 +1,6 @@
 package es.uji.apps.hor.services.rest;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import javax.ws.rs.core.MediaType;
 
 import com.sun.jersey.api.core.InjectParam;
 
+import es.uji.apps.hor.DuracionEventoIncorrectaException;
 import es.uji.apps.hor.model.Calendario;
 import es.uji.apps.hor.model.Evento;
 import es.uji.apps.hor.services.CalendariosService;
@@ -29,10 +31,10 @@ import es.uji.commons.rest.UIEntity;
 public class CalendarResource
 {
     @InjectParam
-    private EventosService consultaEventos;
+    private EventosService eventosService;
 
     @InjectParam
-    private CalendariosService consultaCalendarios;
+    private CalendariosService calendariosService;
 
     private SimpleDateFormat shortDateFormat;
     private SimpleDateFormat dateFormat;
@@ -58,7 +60,7 @@ public class CalendarResource
         Date rangoFechasInicio = shortDateFormat.parse(fechaInicio);
         Date rangoFechasFin = shortDateFormat.parse(fechaFin);
 
-        List<Evento> eventos = consultaEventos.eventosDeUnEstudio(ParamUtils.parseLong(estudioId),
+        List<Evento> eventos = eventosService.eventosDeUnEstudio(ParamUtils.parseLong(estudioId),
                 ParamUtils.parseLong(cursoId), rangoFechasInicio, rangoFechasFin);
 
         return toUI(eventos);
@@ -90,7 +92,7 @@ public class CalendarResource
 
         if (calendariosList.size() != 0)
         {
-            eventos = consultaEventos.eventosSemanaGenericaDeUnEstudio(
+            eventos = eventosService.eventosSemanaGenericaDeUnEstudio(
                     ParamUtils.parseLong(estudioId), ParamUtils.parseLong(cursoId),
                     ParamUtils.parseLong(semestreId), grupoId, calendariosList);
         }
@@ -101,9 +103,17 @@ public class CalendarResource
     @PUT
     @Path("eventos/generica/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UIEntity> updateEventoSemanaGenerica(UIEntity evento)
+    public List<UIEntity> updateEventoSemanaGenerica(UIEntity entity) throws ParseException,
+            DuracionEventoIncorrectaException
     {
-        return Collections.singletonList(evento);
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
+        Date inicio = formatter.parse(entity.get("start"));
+        Date fin = formatter.parse(entity.get("end"));
+
+        Evento evento = eventosService.modificaDiaYHoraGrupoAsignatura(
+                Long.parseLong(entity.get("id")), inicio, fin);
+        return Collections.singletonList(UIEntity.toUI(evento));
     }
 
     private List<UIEntity> toUI(List<Evento> eventos)
@@ -140,7 +150,7 @@ public class CalendarResource
     {
         List<UIEntity> calendars = new ArrayList<UIEntity>();
 
-        List<Calendario> calendarios = consultaCalendarios.getCalendarios();
+        List<Calendario> calendarios = calendariosService.getCalendarios();
 
         int i = 1;
         for (Calendario calendario : calendarios)

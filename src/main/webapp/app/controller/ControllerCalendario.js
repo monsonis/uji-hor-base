@@ -32,6 +32,18 @@ Ext.define('HOR.controller.ControllerCalendario',
             'selectorGrupos button' :
             {
                 click : this.addEvento
+            },
+            'panelCalendario' :
+            {
+                eventresize : this.updateEvento,
+                dayclick : function()
+                {
+                    return false;
+                },
+                rangeselect : function()
+                {
+                    return false;
+                }
             }
         });
     },
@@ -73,5 +85,15 @@ Ext.define('HOR.controller.ControllerCalendario',
                 ref.getPanelCalendario().getActiveView().refresh(true);
             }
         });
+    },
+
+    updateEvento : function(calendario, registro)
+    {
+        console.debug(registro);
+        console.debug(registro.get('EventId'));
+        var inicio = registro.get('StartDate');
+        var fin = registro.get('EndDate');
+        var storeEventos = this.getStoreEventosStore();
+        storeEventos.sync();
     }
 });

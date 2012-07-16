@@ -39,7 +39,7 @@ Ext.define('HOR.view.horarios.PanelCalendario',
         startDayIsStatic : true,
         viewStartHour : 8,
         showTime : false,
-        showMonth: false,
+        showMonth : false,
         viewEndHour : 22,
         getStoreParams : function()
         {
@@ -68,17 +68,6 @@ Ext.define('HOR.view.horarios.PanelCalendario',
     limpiaCalendario : function()
     {
         this.store.removeAll(false);
-    },
-    listeners :
-    {
-        'dayclick' : function()
-        {
-            return false;
-        },
-        'rangeselect' : function()
-        {
-            return false;
-        }
     }
 });
 
@@ -145,5 +134,5 @@ Extensible.calendar.menu.Event.override(
 Extensible.calendar.template.BoxLayout.override(
 {
     multiDayFirstDayFormat : 'l',
-    multiDayMonthStartFormat: 'l'
+    multiDayMonthStartFormat : 'l'
 });

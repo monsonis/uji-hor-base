@@ -13,4 +13,6 @@ public interface EventosDAO extends BaseDAO
 
     List<Evento> getEventosSemanaGenerica(Long estudioId, Long cursoId, Long semestreId,
             String grupoId, List<Long> calendariosIds);
+
+    Evento modificaDiaYHoraGrupoAsignatura(Long grupoAsignaturaId, Date inicio, Date fin);
 }
