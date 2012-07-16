@@ -43,12 +43,16 @@ Ext.application(
 
     launch : function()
     {
-        Ext.Loader.loadScriptFile('/hor/extensible-1.5.1/src/locale/extensible-lang-ca.js', function()
+        Ext.Loader.loadScriptFile('/hor/extensible-1.5.1/examples/calendar/ext-locales/ext-lang-ca.js', function()
         {
-            Ext.create('Ext.ux.uji.ApplicationViewport',
+
+            Ext.Loader.loadScriptFile('/hor/js/extensible-lang-ca.js', function()
             {
-                codigoAplicacion : 'HOR',
-                tituloAplicacion : 'Gestión de horarios'
+                Ext.create('Ext.ux.uji.ApplicationViewport',
+                {
+                    codigoAplicacion : 'HOR',
+                    tituloAplicacion : 'Gestión de horarios'
+                });
             });
         });
     }
