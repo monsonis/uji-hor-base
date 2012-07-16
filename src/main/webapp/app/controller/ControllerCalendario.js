@@ -15,10 +15,6 @@ Ext.define('HOR.controller.ControllerCalendario',
     {
         selector : 'selectorCalendarios',
         ref : 'selectorCalendarios'
-    },
-    {
-        selector : 'panelHorarios',
-        ref : 'panelHorarios'
     } ],
 
     init : function()
@@ -36,10 +32,6 @@ Ext.define('HOR.controller.ControllerCalendario',
             'selectorGrupos button' :
             {
                 click : this.addEvento
-            },
-            'filtroGrupos > #horarios' :
-            {
-                select : this.changeCalendarType
             }
         });
     },
@@ -81,58 +73,5 @@ Ext.define('HOR.controller.ControllerCalendario',
                 ref.getPanelCalendario().getActiveView().refresh(true);
             }
         });
-    },
-
-    changeCalendarType : function(combo, record)
-    {
-        var tipoHorario = combo.getValue();
-
-        switch (tipoHorario)
-        {
-        case 'Ma':
-            this.getPanelHorarios().down('#calendarioMi').hide();
-            this.getPanelHorarios().down('#calendarioTa').hide();
-            this.getPanelHorarios().down('#calendarioMa').show();
-            break;
-        case 'Ta':
-            this.getPanelHorarios().down('#calendarioMi').hide();
-            this.getPanelHorarios().down('#calendarioMa').hide();
-            this.getPanelHorarios().down('#calendarioTa').show();
-            break;
-        default:
-            this.getPanelHorarios().down('#calendarioMa').hide();
-            this.getPanelHorarios().down('#calendarioTa').hide();
-            this.getPanelHorarios().down('#calendarioMi').show();
-        }
-
-        if (this.getFiltroGrupos().down('#grupos').getValue() == null)
-        {
-            this.getPanelCalendario().limpiaCalendario();
-        }
-        else
-        {
-            this.getPanelCalendario().getActiveView().refresh(true);
-        }
-
-        /*
-         * var startHour = 8; var endHour = 22;
-         * 
-         * switch (tipoHorario) { case 'Ma': startHour = 8; endHour = 15; break; case 'Ta':
-         * startHour = 15; endHour = 22; break; }
-         * 
-         * this.getPanelHorarios().down('panelCalendario').destroy();
-         * 
-         * var panelCalendario = Ext.create('HOR.view.horarios.PanelCalendario', { multiDayViewCfg : {
-         * dayCount : 5, startDay : 1, startDayIsStatic : true, viewStartHour : startHour, showTime :
-         * false, showMonth : false, viewEndHour : endHour, getStoreParams : function() { var params =
-         * this.getStoreDateParams(); params.estudioId =
-         * this.store.getProxy().extraParams['estudioId']; params.cursoId =
-         * this.store.getProxy().extraParams['cursoId']; params.grupoId =
-         * this.store.getProxy().extraParams['grupoId']; params.semestreId =
-         * this.store.getProxy().extraParams['semestreId']; params.calendariosIds =
-         * this.store.getProxy().extraParams['calendariosIds']; return params; } } });
-         * 
-         * this.getPanelHorarios().items.items[1].add(panelCalendario);
-         */
     }
 });

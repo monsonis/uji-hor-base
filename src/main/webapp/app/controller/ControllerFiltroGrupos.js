@@ -9,13 +9,13 @@ Ext.define('HOR.controller.ControllerFiltroGrupos',
         ref : 'filtroGrupos'
     },
     {
-        selector : 'selectorGrupos',
-        ref : 'selectorGrupos'
+        selector: 'selectorGrupos',
+        ref: 'selectorGrupos'
     },
     {
-        selector : 'panelCalendario',
-        ref : 'panelCalendario'
-    } ],
+        selector: 'panelCalendario',
+        ref: 'panelCalendario'
+    }],
 
     init : function()
     {
@@ -45,7 +45,7 @@ Ext.define('HOR.controller.ControllerFiltroGrupos',
         this.getFiltroGrupos().down('#grupos').clearValue();
         this.getPanelCalendario().limpiaCalendario();
         this.getSelectorGrupos().limpiaGrupos();
-
+        
         this.getStoreSemestresStore().removeAll();
         this.getStoreGruposStore().removeAll();
 
