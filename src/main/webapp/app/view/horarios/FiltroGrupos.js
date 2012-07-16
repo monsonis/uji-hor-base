@@ -9,6 +9,7 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
     comboCurso : null,
     comboSemestre : null,
     comboGrupo : null,
+    comboTipoHorario : null,
     initComponent : function()
     {
         this.callParent(arguments);
@@ -17,6 +18,7 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
         this.add(this.comboCurso);
         this.add(this.comboSemestre);
         this.add(this.comboGrupo);
+        this.add(this.comboTipoHorario);
     },
 
     initUI : function()
@@ -25,6 +27,7 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
         this.buildComboCurso();
         this.buildComboSemestre();
         this.buildComboGrupo();
+        this.buildComboTipoHorario();
     },
 
     buildComboTitulacion : function()
@@ -33,7 +36,7 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
         {
             fieldLabel : 'Titulació',
             store : 'StoreEstudios',
-            editable: false,
+            editable : false,
             displayField : 'nombre',
             valueField : 'id',
             width : 700,
@@ -47,7 +50,7 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
         {
             fieldLabel : 'Curso',
             store : 'StoreCursos',
-            editable: false,
+            editable : false,
             displayField : 'curso',
             valueField : 'curso',
             itemId : 'cursos',
@@ -61,7 +64,7 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
         {
             fieldLabel : 'Semestre',
             store : 'StoreSemestres',
-            editable: false,
+            editable : false,
             displayField : 'semestre',
             valueField : 'semestre',
             itemId : 'semestres',
@@ -75,11 +78,49 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
         {
             fieldLabel : 'Grupo',
             store : 'StoreGrupos',
-            editable: false,
+            editable : false,
             displayField : 'grupo',
             valueField : 'grupo',
             itemId : 'grupos',
             lastQuery : ''
         });
+    },
+
+    buildComboTipoHorario : function()
+    {
+        var horariosStore = Ext.create("Ext.data.Store",
+        {
+            fields : [ "id", "horario" ],
+            data : [
+            {
+                "id" : "Ma",
+                "horario" : "Matí"
+            },
+            {
+                "id" : "Ta",
+                "horario" : "Vesprada"
+            },
+            {
+                "id" : "Mi",
+                "horario" : "Mixte"
+            } ]
+        });
+
+        this.comboTipoHorario = Ext.create("Ext.form.ComboBox",
+        {
+            fieldLabel : 'Horario',
+            store : horariosStore,
+            queryModel : 'local',
+            editable : false,
+            displayField : 'horario',
+            valueField : 'id',
+            itemId : 'horarios',
+            value : 'Mi'
+        });
+    },
+
+    getActiveCalendarType : function()
+    {
+        return this.down('#horarios').getValue();
     }
 });

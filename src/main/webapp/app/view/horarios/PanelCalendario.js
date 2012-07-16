@@ -39,7 +39,7 @@ Ext.define('HOR.view.horarios.PanelCalendario',
         startDayIsStatic : true,
         viewStartHour : 8,
         showTime : false,
-        showMonth: false,
+        showMonth : false,
         viewEndHour : 22,
         getStoreParams : function()
         {
@@ -48,6 +48,7 @@ Ext.define('HOR.view.horarios.PanelCalendario',
             params.cursoId = this.store.getProxy().extraParams['cursoId'];
             params.grupoId = this.store.getProxy().extraParams['grupoId'];
             params.semestreId = this.store.getProxy().extraParams['semestreId'];
+            params.calendariosIds = this.store.getProxy().extraParams['calendariosIds'];
             return params;
         }
     },
@@ -79,7 +80,8 @@ Ext.define('HOR.view.horarios.PanelCalendario',
         {
             return false;
         }
-    }
+    },
+
 });
 
 Extensible.calendar.menu.Event.override(
@@ -145,5 +147,5 @@ Extensible.calendar.menu.Event.override(
 Extensible.calendar.template.BoxLayout.override(
 {
     multiDayFirstDayFormat : 'l',
-    multiDayMonthStartFormat: 'l'
+    multiDayMonthStartFormat : 'l'
 });
