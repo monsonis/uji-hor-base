@@ -14,6 +14,7 @@
    <object objectType="Table" objectID="67914D25-F962-F455-FC93-F3EDCBADE52D" name="hor_ext_cargos_per" seqName="seg_0"/>
    <object objectType="Table" objectID="5E82BFC1-818F-F9E1-6837-B07303E35672" name="hor_ext_circuitos" seqName="seg_0"/>
    <object objectType="Table" objectID="FFA3C56E-FB86-4BB2-8D06-E54C5B48814A" name="hor_ext_personas" seqName="seg_0"/>
+   <object objectType="Table" objectID="F69AE47B-BEC1-E9BD-8096-DF6521F41BF7" name="hor_horarios_horas" seqName="seg_0"/>
    <object objectType="Table" objectID="7185EE22-E0F3-C3F6-15A8-A27E06438805" name="hor_items" seqName="seg_0"/>
    <object objectType="Table" objectID="E5F140A6-63CE-D20F-0640-4DAD03930FC5" name="hor_items_circuitos" seqName="seg_0"/>
    <object objectType="Table" objectID="C3F2E5BC-B942-639D-F47D-00C632CEE5DD" name="hor_items_detalle" seqName="seg_0"/>
@@ -39,6 +40,7 @@
    <object objectType="FKIndexAssociation" objectID="107A1700-355C-577A-9243-DB142AFAF91F" name="hor_ext_car_per_per_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="B1F692F3-257E-3447-ACA3-93A0CC0D4F61" name="hor_ext_car_per_tip_car_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="89A75572-DCFE-DBD5-C61A-43E7F08BADA6" name="hor_ext_per_dept_FK" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="C4054EB0-16A1-14CA-EECE-F32ACE3E11A2" name="hor_horarios_horas_est_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="FCA45D97-EFA8-153B-0E5C-6B93E9E87D69" name="hor_items_cir_cir_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="957AF0D7-B2C8-E9C0-D84F-6BFE545A6CA0" name="hor_items_cir_items_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="11686CC2-EA6A-0CF5-60AA-8AD1EA69E40E" name="hor_items_detalle_hor_items_FK" seqName="seg_0"/>
