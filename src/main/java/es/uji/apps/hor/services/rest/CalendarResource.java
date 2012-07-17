@@ -22,10 +22,13 @@ import com.sun.jersey.api.core.InjectParam;
 import es.uji.apps.hor.DuracionEventoIncorrectaException;
 import es.uji.apps.hor.model.Calendario;
 import es.uji.apps.hor.model.Evento;
+import es.uji.apps.hor.model.GrupoHorario;
 import es.uji.apps.hor.services.CalendariosService;
 import es.uji.apps.hor.services.EventosService;
+import es.uji.apps.hor.services.GrupoHorarioService;
 import es.uji.commons.rest.ParamUtils;
 import es.uji.commons.rest.UIEntity;
+import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
 @Path("calendario")
 public class CalendarResource
@@ -36,6 +39,9 @@ public class CalendarResource
     @InjectParam
     private CalendariosService calendariosService;
 
+    @InjectParam
+    private GrupoHorarioService grupoHorarioService;
+
     private SimpleDateFormat shortDateFormat;
     private SimpleDateFormat dateFormat;
 
@@ -44,6 +50,35 @@ public class CalendarResource
         shortDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     }
+
+    @GET
+    @Path("config")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<UIEntity> getConfiguracion(@QueryParam("grupoId") String grupoId) throws RegistroNoEncontradoException
+    {
+        // ParamUtils.checkNotNull(estudioId, cursoId);
+
+        ParamUtils.checkNotNull(grupoId);
+        GrupoHorario grupoHorario = grupoHorarioService.getHorarioById(grupoId);
+
+        return grupoHorarioToUI(grupoHorario);
+    }
+
+//    @POST
+//    @Path("config")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public List<UIEntity> guardaConfiguracion(UIEntity entity) throws ParseException
+//    {
+//        // ParamUtils.checkNotNull(estudioId, cursoId);
+//
+//        Date rangoFechasInicio = shortDateFormat.parse(fechaInicio);
+//        Date rangoFechasFin = shortDateFormat.parse(fechaFin);
+//
+//        List<Evento> eventos = eventosService.eventosDeUnEstudio(ParamUtils.parseLong(estudioId),
+//                ParamUtils.parseLong(cursoId), rangoFechasInicio, rangoFechasFin);
+//
+//        return toUI(eventos);
+//    }
 
     @GET
     @Path("eventos")
@@ -142,6 +177,16 @@ public class CalendarResource
         }
 
         return eventosUI;
+    }
+
+    private List<UIEntity> grupoHorarioToUI(GrupoHorario grupoHorario)
+    {
+        UIEntity grupoHorarioUI = new UIEntity();
+        grupoHorarioUI.put("id", grupoHorario.getId());
+        grupoHorarioUI.put("horaFin", grupoHorario.getHoraFin());
+        grupoHorarioUI.put("horaInicio", grupoHorario.getHoraInicio());
+
+        return Collections.singletonList(grupoHorarioUI);
     }
 
     @GET
