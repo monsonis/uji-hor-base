@@ -1,9 +1,9 @@
-Ext.define('HOR.view.horarios.PanelConfiguracion',
+Ext.define('HOR.view.configuracion.PanelConfiguracion',
 {
     extend : 'Ext.panel.Panel',
     title : 'Configuración',
     alias : 'widget.panelConfiguracion',
-    requires : [ 'HOR.view.horarios.FiltroGrupos', 'HOR.view.horarios.ConfiguracionHorario' ],
+    requires : [ 'HOR.view.commons.FiltroGrupos', 'HOR.view.configuracion.ConfiguracionHorario' ],
 
     closable : true,
     layout :

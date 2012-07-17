@@ -5,7 +5,7 @@ Ext.define('HOR.controller.ControllerCalendario',
     model : [ 'Calendario', 'Evento' ],
     refs : [
     {
-        selector : 'filtroGrupos',
+        selector : 'panelHorarios filtroGrupos',
         ref : 'filtroGrupos'
     },
     {
@@ -21,7 +21,7 @@ Ext.define('HOR.controller.ControllerCalendario',
     {
         this.control(
         {
-            'filtroGrupos > #grupos' :
+            'panelHorarios filtroGrupos combobox[name=grupo]' :
             {
                 select : this.refreshCalendar
             },
@@ -32,20 +32,6 @@ Ext.define('HOR.controller.ControllerCalendario',
             'selectorGrupos button' :
             {
                 click : this.addEvento
-            },
-            'filtroGrupos > #titulaciones' :
-            {
-                select : this.limpiaCalendario
-            },
-
-            'filtroGrupos > #cursos' :
-            {
-                select : this.limpiaCalendario
-            },
-
-            'filtroGrupos > #semestres' :
-            {
-                select : this.limpiaCalendario
             },
             'panelCalendario' :
             {
@@ -64,10 +50,10 @@ Ext.define('HOR.controller.ControllerCalendario',
 
     refreshCalendar : function()
     {
-        var titulaciones = this.getFiltroGrupos().down('#titulaciones');
-        var cursos = this.getFiltroGrupos().down('#cursos');
-        var semestres = this.getFiltroGrupos().down('#semestres');
-        var grupos = this.getFiltroGrupos().down('#grupos');
+        var titulaciones = this.getFiltroGrupos().down('combobox[name=estudio]');
+        var cursos = this.getFiltroGrupos().down('combobox[name=curso]');
+        var semestres = this.getFiltroGrupos().down('combobox[name=semestre]');
+        var grupos = this.getFiltroGrupos().down('combobox[name=grupo]');
 
         if (grupos.getValue() != null)
         {
@@ -103,16 +89,10 @@ Ext.define('HOR.controller.ControllerCalendario',
 
     updateEvento : function(calendario, registro)
     {
-        console.debug(registro);
-        console.debug(registro.get('EventId'));
         var inicio = registro.get('StartDate');
         var fin = registro.get('EndDate');
         var storeEventos = this.getStoreEventosStore();
         storeEventos.sync();
-    },
-    
-    limpiaCalendario : function()
-    {
-        this.getPanelCalendario().limpiaCalendario();
     }
+
 });

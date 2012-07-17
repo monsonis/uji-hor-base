@@ -9,7 +9,7 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
         ref : 'selectorGrupos'
     },
     {
-        selector : 'filtroGrupos',
+        selector : 'panelHorarios filtroGrupos',
         ref : 'filtroGrupos'
     },
     {
@@ -21,7 +21,7 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
     {
         this.control(
         {
-            'filtroGrupos > #grupos' :
+            'panelHorarios filtroGrupos combobox[name=grupo]' :
             {
                 select : this.updateAsignaturasSinAsignar
             },
@@ -29,20 +29,6 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
             {
                 change : this.updateAsignaturasSinAsignar
             },
-            'filtroGrupos > #titulaciones' :
-            {
-                select : this.limpiaGrupos
-            },
-
-            'filtroGrupos > #cursos' :
-            {
-                select : this.limpiaGrupos
-            },
-
-            'filtroGrupos > #semestres' :
-            {
-                select : this.limpiaGrupos
-            }
         });
     },
 
@@ -50,10 +36,10 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
     {
         var store = this.getStoreGruposAsignaturasSinAsignarStore();
 
-        var estudio = this.getFiltroGrupos().down('#titulaciones').getValue();
-        var curso = this.getFiltroGrupos().down('#cursos').getValue();
-        var semestre = this.getFiltroGrupos().down('#semestres').getValue();
-        var grupo = this.getFiltroGrupos().down('#grupos').getValue();
+        var estudio = this.getFiltroGrupos().down('combobox[name=estudio]').getValue();
+        var curso = this.getFiltroGrupos().down('combobox[name=curso]').getValue();
+        var semestre = this.getFiltroGrupos().down('combobox[name=semestre]').getValue();
+        var grupo = this.getFiltroGrupos().down('combobox[name=grupo]').getValue();
 
         if (grupo != null)
         {
@@ -107,11 +93,6 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
 
             view.add(button);
         }
-    },
-
-    limpiaGrupos : function()
-    {
-        this.getSelectorGrupos().limpiaGrupos();
     }
 
 });

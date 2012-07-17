@@ -1,4 +1,4 @@
-Ext.define('HOR.view.horarios.SelectorHoras',
+Ext.define('HOR.view.configuracion.SelectorHoras',
 {
     extend : 'Ext.panel.Panel',
     alias : 'widget.selectorHoras',
@@ -10,8 +10,31 @@ Ext.define('HOR.view.horarios.SelectorHoras',
         type : 'hbox',
         align : 'stretch'
     },
+    
+    items : [{
+        xtype : 'combobox',
+        fieldLabel : 'Hora inici',
+        store : 'StoreHoras',
+        queryModel : 'local',
+        editable : false,
+        displayField : 'name',
+        valueField : 'id',
+        padding : '10 5 10 5',
+        flex : 1,
+    }, {
+        xtype : 'combobox',
+        fieldLabel : 'Hora inici',
+        store : 'StoreHoras',
+        queryModel : 'local',
+        editable : false,
+        displayField : 'name',
+        valueField : 'id',
+        padding : '10 5 10 5',
+        flex : 1,
+    }],
+    
 
-    comboHoraInicio : null,
+    /*comboHoraInicio : null,
     comboHoraFin : null,
 
     initComponent : function()
@@ -32,19 +55,6 @@ Ext.define('HOR.view.horarios.SelectorHoras',
 
     buildHoursCombos : function()
     {
-        var data = new Array();
-
-        var j = 0;
-        for ( var i = 8; i <= 22; i++)
-        {
-            var name = i + ':00';
-            if ((i + '').length == 1)
-            {
-                name = '0' + name;
-            }
-            data[j++] = [ i, name ];
-        }
-
         var hoursStore = Ext.create("Ext.data.ArrayStore",
         {
             fields : [ "id", "name" ],
@@ -74,5 +84,18 @@ Ext.define('HOR.view.horarios.SelectorHoras',
             padding : '10 5 10 30',
             flex : 1,
         });
-    }
+    }*/
 });
+
+/*var data = new Array();
+
+var j = 0;
+for ( var i = 8; i <= 22; i++)
+{
+    var name = i + ':00';
+    if ((i + '').length == 1)
+    {
+        name = '0' + name;
+    }
+    data[j++] = [ i, name ];
+}*/

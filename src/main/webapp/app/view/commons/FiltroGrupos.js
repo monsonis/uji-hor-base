@@ -1,8 +1,8 @@
-Ext.define('HOR.view.horarios.FiltroGrupos',
+Ext.define('HOR.view.commons.FiltroGrupos',
 {
     extend : 'Ext.panel.Panel',
     alias : 'widget.filtroGrupos',
-    
+
     border : false,
     padding : 5,
     closable : false,
@@ -15,7 +15,7 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
         editable : false,
         displayField : 'nombre',
         valueField : 'id',
-        flex : 1
+        name : 'estudio',
     },
     {
         xtype : 'combobox',
@@ -24,7 +24,8 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
         editable : false,
         displayField : 'curso',
         valueField : 'curso',
-        lastQuery : ''
+        lastQuery : '',
+        name : 'curso'
     },
     {
         xtype : 'combobox',
@@ -33,7 +34,8 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
         editable : false,
         displayField : 'semestre',
         valueField : 'semestre',
-        lastQuery : ''
+        lastQuery : '',
+        name : 'semestre'
     },
     {
         xtype : 'combobox',
@@ -42,6 +44,7 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
         editable : false,
         displayField : 'grupo',
         valueField : 'grupo',
-        lastQuery : ''
+        lastQuery : '',
+        name : 'grupo'
     } ]
 });

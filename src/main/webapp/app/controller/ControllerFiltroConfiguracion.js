@@ -1,37 +1,29 @@
-Ext.define('HOR.controller.ControllerFiltroGrupos',
+Ext.define('HOR.controller.ControllerFiltroConfiguracion',
 {
     extend : 'Ext.app.Controller',
     stores : [ 'StoreEstudios', 'StoreCursos', 'StoreSemestres', 'StoreGrupos' ],
     model : [ 'Estudio', 'Curso', 'Semestre', 'Grupo' ],
     refs : [
     {
-        selector : 'filtroGrupos',
+        selector : 'panelConfiguracion filtroGrupos',
         ref : 'filtroGrupos'
-    },
-    {
-        selector: 'selectorGrupos',
-        ref: 'selectorGrupos'
-    },
-    {
-        selector: 'panelCalendario',
-        ref: 'panelCalendario'
-    }],
+    } ],
 
     init : function()
     {
         this.control(
         {
-            'filtroGrupos combobox[displayField=nombre]' :
+            'panelConfiguracion filtroGrupos combobox[name=estudio]' :
             {
                 select : this.onTitulacionSelected,
             },
 
-            'filtroGrupos > #cursos' :
+            'panelConfiguracion filtroGrupos combobox[name=curso]' :
             {
                 select : this.onCursoSelected,
             },
 
-            'filtroGrupos > #semestres' :
+            'panelConfiguracion filtroGrupos combobox[name=semestre]' :
             {
                 select : this.onSemestreSelected
             }
@@ -40,10 +32,10 @@ Ext.define('HOR.controller.ControllerFiltroGrupos',
 
     onTitulacionSelected : function(combo, records)
     {
-        this.getFiltroGrupos().down('combobox[displayField=curso]').clearValue();
-        this.getFiltroGrupos().down('combobox[displayField=semestre]').clearValue();
-        this.getFiltroGrupos().down('combobox[displayField=grupo]').clearValue();
-        
+        this.getFiltroGrupos().down('combobox[name=curso]').clearValue();
+        this.getFiltroGrupos().down('combobox[name=semestre]').clearValue();
+        this.getFiltroGrupos().down('combobox[name=grupo]').clearValue();
+
         this.getStoreSemestresStore().removeAll();
         this.getStoreGruposStore().removeAll();
 
@@ -58,17 +50,17 @@ Ext.define('HOR.controller.ControllerFiltroGrupos',
             scope : this
         });
 
-        this.fixLoadMaskBug(store, this.getFiltroGrupos().down('#cursos'));
+        this.fixLoadMaskBug(store, this.getFiltroGrupos().down('combobox[name=curso]'));
     },
 
     onCursoSelected : function(combo, records)
     {
-        this.getFiltroGrupos().down('#semestres').clearValue();
-        this.getFiltroGrupos().down('#grupos').clearValue();
+        this.getFiltroGrupos().down('combobox[name=semestre]').clearValue();
+        this.getFiltroGrupos().down('combobox[name=grupo]').clearValue();
 
         this.getStoreGruposStore().removeAll();
 
-        var estudio = this.getFiltroGrupos().down('#titulaciones').getValue();
+        var estudio = this.getFiltroGrupos().down('combobox[name=estudio]').getValue();
 
         var store = this.getStoreSemestresStore();
 
@@ -82,17 +74,15 @@ Ext.define('HOR.controller.ControllerFiltroGrupos',
             scope : this
         });
 
-        this.fixLoadMaskBug(store, this.getFiltroGrupos().down('#semestres'));
+        this.fixLoadMaskBug(store, this.getFiltroGrupos().down('combobox[name=semestre]'));
     },
 
     onSemestreSelected : function(combo, records)
     {
-        this.getFiltroGrupos().down('#grupos').clearValue();
+        this.getFiltroGrupos().down('combobox[name=grupo]').clearValue();
 
-        var estudio = this.getFiltroGrupos().down('#titulaciones').getValue();
-        var curso = this.getFiltroGrupos().down('#cursos').getValue();
-        
-        console.log(this.getFiltroGrupos().down('#cursos'));
+        var estudio = this.getFiltroGrupos().down('combobox[name=estudio]').getValue();
+        var curso = this.getFiltroGrupos().down('combobox[name=curso]').getValue();
 
         var store = this.getStoreGruposStore();
 
@@ -107,7 +97,7 @@ Ext.define('HOR.controller.ControllerFiltroGrupos',
             scope : this
         });
 
-        this.fixLoadMaskBug(store, this.getFiltroGrupos().down('#grupos'));
+        this.fixLoadMaskBug(store, this.getFiltroGrupos().down('combobox[name=grupo]'));
     },
 
     fixLoadMaskBug : function(store, combo)

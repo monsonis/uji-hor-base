@@ -69,22 +69,17 @@ Ext.define('HOR.view.horarios.SelectorCalendarios',
     getCalendarsSelected : function()
     {
         var checkboxes = this.down('checkboxgroup').items.items;
-        var calendarios = "";
+        var calendarios = [];
 
         for ( var i = 0, len = checkboxes.length; i < len; i++)
         {
             if (checkboxes[i].getValue())
             {
-                calendarios = calendarios + ";" + checkboxes[i].getSubmitValue();
+                calendarios.push(checkboxes[i].getSubmitValue());
             }
         }
 
-        if (calendarios != '')
-        {
-            calendarios = calendarios.substring(1, calendarios.length);
-        }
-
-        return calendarios;
+        return calendarios.join(';');
     }
 
 });

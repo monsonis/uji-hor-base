@@ -1,8 +1,8 @@
-Ext.define('HOR.view.horarios.ConfiguracionHorario',
+Ext.define('HOR.view.configuracion.ConfiguracionHorario',
 {
     extend : 'Ext.panel.Panel',
     alias : 'widget.configuracionHorario',
-    requires : [ 'HOR.view.horarios.SelectorHoras' ],
+    requires : [ 'HOR.view.configuracion.SelectorHoras' ],
 
     border : false,
     layout :
