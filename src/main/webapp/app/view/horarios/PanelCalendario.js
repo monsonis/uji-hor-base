@@ -133,5 +133,6 @@ Extensible.calendar.menu.Event.override(
 
 Extensible.calendar.template.BoxLayout.override(
 {
-    firstWeekDateFormat: 'l'
+    firstWeekDateFormat : 'l',
+    multiDayFirstDayFormat : 'l'
 });
