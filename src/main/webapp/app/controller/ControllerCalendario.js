@@ -33,6 +33,20 @@ Ext.define('HOR.controller.ControllerCalendario',
             {
                 click : this.addEvento
             },
+            'filtroGrupos > #titulaciones' :
+            {
+                select : this.limpiaCalendario
+            },
+
+            'filtroGrupos > #cursos' :
+            {
+                select : this.limpiaCalendario
+            },
+
+            'filtroGrupos > #semestres' :
+            {
+                select : this.limpiaCalendario
+            },
             'panelCalendario' :
             {
                 eventresize : this.updateEvento,
@@ -95,5 +109,10 @@ Ext.define('HOR.controller.ControllerCalendario',
         var fin = registro.get('EndDate');
         var storeEventos = this.getStoreEventosStore();
         storeEventos.sync();
+    },
+    
+    limpiaCalendario : function()
+    {
+        this.getPanelCalendario().limpiaCalendario();
     }
 });

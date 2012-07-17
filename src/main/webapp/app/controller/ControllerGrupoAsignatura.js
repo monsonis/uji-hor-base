@@ -28,6 +28,20 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
             'selectorCalendarios checkbox' :
             {
                 change : this.updateAsignaturasSinAsignar
+            },
+            'filtroGrupos > #titulaciones' :
+            {
+                select : this.limpiaGrupos
+            },
+
+            'filtroGrupos > #cursos' :
+            {
+                select : this.limpiaGrupos
+            },
+
+            'filtroGrupos > #semestres' :
+            {
+                select : this.limpiaGrupos
             }
         });
     },
@@ -72,15 +86,15 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
         {
             var margin = '10 30 0 30';
 
-//            if (i == 0)
-//            {
-//                margin = '25 30 0 30   ';
-//                
-//            }
-//            else if (i == len - 1)
-//            {
-//                margin = '5 30 25 30';
-//            }
+            if (i == 0)
+            {
+                margin = '25 30 0 30';
+
+            }
+            else if (i == len - 1)
+            {
+                margin = '5 30 25 30';
+            }
 
             var button =
             {
@@ -94,5 +108,10 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
             view.add(button);
         }
     },
+
+    limpiaGrupos : function()
+    {
+        this.getSelectorGrupos().limpiaGrupos();
+    }
 
 });

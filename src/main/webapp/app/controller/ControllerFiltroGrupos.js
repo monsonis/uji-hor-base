@@ -43,8 +43,6 @@ Ext.define('HOR.controller.ControllerFiltroGrupos',
         this.getFiltroGrupos().down('#cursos').clearValue();
         this.getFiltroGrupos().down('#semestres').clearValue();
         this.getFiltroGrupos().down('#grupos').clearValue();
-        this.getPanelCalendario().limpiaCalendario();
-        this.getSelectorGrupos().limpiaGrupos();
         
         this.getStoreSemestresStore().removeAll();
         this.getStoreGruposStore().removeAll();
@@ -67,8 +65,6 @@ Ext.define('HOR.controller.ControllerFiltroGrupos',
     {
         this.getFiltroGrupos().down('#semestres').clearValue();
         this.getFiltroGrupos().down('#grupos').clearValue();
-        this.getPanelCalendario().limpiaCalendario();
-        this.getSelectorGrupos().limpiaGrupos();
 
         this.getStoreGruposStore().removeAll();
 
@@ -92,11 +88,11 @@ Ext.define('HOR.controller.ControllerFiltroGrupos',
     onSemestreSelected : function(combo, records)
     {
         this.getFiltroGrupos().down('#grupos').clearValue();
-        this.getPanelCalendario().limpiaCalendario();
-        this.getSelectorGrupos().limpiaGrupos();
 
         var estudio = this.getFiltroGrupos().down('#titulaciones').getValue();
         var curso = this.getFiltroGrupos().down('#cursos').getValue();
+        
+        console.log(this.getFiltroGrupos().down('#cursos'));
 
         var store = this.getStoreGruposStore();
 
