@@ -21,7 +21,7 @@ Ext.define('HOR.controller.ControllerFiltroGrupos',
     {
         this.control(
         {
-            'filtroGrupos > #titulaciones' :
+            'filtroGrupos combobox[displayField=nombre]' :
             {
                 select : this.onTitulacionSelected,
             },
@@ -40,9 +40,9 @@ Ext.define('HOR.controller.ControllerFiltroGrupos',
 
     onTitulacionSelected : function(combo, records)
     {
-        this.getFiltroGrupos().down('#cursos').clearValue();
-        this.getFiltroGrupos().down('#semestres').clearValue();
-        this.getFiltroGrupos().down('#grupos').clearValue();
+        this.getFiltroGrupos().down('combobox[displayField=curso]').clearValue();
+        this.getFiltroGrupos().down('combobox[displayField=semestre]').clearValue();
+        this.getFiltroGrupos().down('combobox[displayField=grupo]').clearValue();
         
         this.getStoreSemestresStore().removeAll();
         this.getStoreGruposStore().removeAll();

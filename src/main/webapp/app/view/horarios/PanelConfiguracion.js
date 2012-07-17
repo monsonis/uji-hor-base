@@ -13,11 +13,6 @@ Ext.define('HOR.view.horarios.PanelConfiguracion',
         padding : 5
     },
 
-    initComponent : function()
-    {
-        this.callParent();
-    },
-
     items : [
     {
         xtype : 'filtroGrupos',
