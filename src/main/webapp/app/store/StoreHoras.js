@@ -8,7 +8,9 @@ for ( var i = 8; i <= 22; i++)
     {
         name = '0' + name;
     }
-    dataHoras[j++] = [ i, name ];
+    var id = "1/1/1 " + name;
+    
+    dataHoras[j++] = [ id, name ];
 }
 
 Ext.define('HOR.store.StoreHoras',

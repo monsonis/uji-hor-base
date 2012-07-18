@@ -3,6 +3,9 @@ Ext.define('HOR.store.StoreConfiguracion',
     extend : 'Ext.data.Store',
     model : 'HOR.model.Configuracion',
 
+    autoLoad : false,
+    autoSync : false,
+
     proxy :
     {
         type : 'rest',
@@ -17,8 +20,9 @@ Ext.define('HOR.store.StoreConfiguracion',
 
         writer :
         {
-            type : 'json'
-        }
+            type : 'json',
+            successProperty : 'success'
+        },
     }
 
 });
