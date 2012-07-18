@@ -1,23 +1,15 @@
 Ext.define('HOR.controller.ControllerConfiguracion',
 {
     extend : 'Ext.app.Controller',
-    stores : [ 'StoreHoras' ],
+    model: [ 'Configuracion'],
     ref : [
     {
         selector : 'panelConfiguracion',
         ref : 'panelConfiguracion'
     },
     {
-        selector : 'panelHorarios filtroGrupos',
+        selector : 'panelConfiguracion filtroGrupos',
         ref : 'filtroGrupos'
-    },
-    {
-        selector : 'panelCalendario',
-        ref : 'panelCalendario'
-    },
-    {
-        selector : 'selectorCalendarios',
-        ref : 'selectorCalendarios'
     } ],
 
     init : function()
@@ -42,7 +34,10 @@ Ext.define('HOR.controller.ControllerConfiguracion',
         var grupos = this.getFiltroGrupos().down('combobox[name=grupo]');
 
         var estudioId = titulaciones.getValue();
+        var cursoId = cursos.getValue();
+        var semestreId = semestres.getValue();
+        var grupoId = grupos.getValue();
 
-        console.log(estudioId);
+        console.log(estudioId, cursoId, semestreId, grupoId);
     }
 });
