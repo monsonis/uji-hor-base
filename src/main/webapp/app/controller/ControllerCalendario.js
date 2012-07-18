@@ -83,8 +83,18 @@ Ext.define('HOR.controller.ControllerCalendario',
                 {
                     if (success)
                     {
-                        console.log("hola");
-                        ref.getPanelCalendario().getActiveView().refresh(true);
+                        var record = records[0];
+                        var fechaInicio = record.get('horaInicio');
+                        var fechaFin = record.get('horaFin');
+                        
+                        console.log(fechaInicio);
+                        var inicio = Ext.Date.parse(fechaInicio, 'd/m/Y H:i:s', true);
+                        var fin = Ext.Date.parse(fechaFin, 'd/m/Y H:i:s', true);
+                        var horaInicio = Ext.Date.format(inicio, 'H:i');
+                        var horaFin = Ext.Date.format(fin, 'H:i');
+                        
+                        var panelCalendario = ref.getPanelCalendario();
+                        panelCalendario.destroy();
                     }
                 }
             });
