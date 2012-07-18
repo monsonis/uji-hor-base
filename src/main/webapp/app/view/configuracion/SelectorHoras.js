@@ -22,8 +22,8 @@ Ext.define('HOR.view.configuracion.SelectorHoras',
         displayField : 'name',
         valueField : 'id',
         padding : '10 5 10 5',
-        flex : 1,
-        name : 'horaInicio'
+        name : 'horaInicio',
+        flex : 2
     },
     {
         xtype : 'combobox',
@@ -34,8 +34,8 @@ Ext.define('HOR.view.configuracion.SelectorHoras',
         displayField : 'name',
         valueField : 'id',
         padding : '10 5 10 30',
-        flex : 1,
-        name : 'horaFin'
+        name : 'horaFin',
+        flex : 2
     } ],
 
 });

@@ -3,7 +3,7 @@ Ext.define('HOR.view.configuracion.PanelConfiguracion',
     extend : 'Ext.panel.Panel',
     title : 'Configuración',
     alias : 'widget.panelConfiguracion',
-    requires : [ 'HOR.view.commons.FiltroGrupos', 'HOR.view.configuracion.ConfiguracionHorario' ],
+    requires : [ 'HOR.view.commons.FiltroGrupos', 'HOR.view.configuracion.ConfiguracionCalendario' ],
 
     closable : true,
     layout :
@@ -19,7 +19,7 @@ Ext.define('HOR.view.configuracion.PanelConfiguracion',
         height : 120
     },
     {
-        xtype : 'configuracionHorario'
+        xtype : 'configuracionCalendario'
     } ]
 
 });
