@@ -47,12 +47,12 @@ public class GrupoHorarioDAODatabaseImpl extends BaseDAODatabaseImpl implements 
             Calendar fin = Calendar.getInstance();
 
             inicio.set(Calendar.AM_PM, Calendar.AM);
-            inicio.set(Calendar.HOUR, 8);
+            inicio.set(Calendar.HOUR, 9);
             inicio.set(Calendar.MINUTE, 0);
             inicio.set(Calendar.SECOND, 0);
 
             fin.set(Calendar.AM_PM, Calendar.PM);
-            fin.set(Calendar.HOUR, 10);
+            fin.set(Calendar.HOUR, 9);
             fin.set(Calendar.MINUTE, 0);
             fin.set(Calendar.SECOND, 0);
             grupoHorario.setHoraInicio(inicio.getTime());

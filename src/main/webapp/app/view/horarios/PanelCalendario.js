@@ -14,19 +14,17 @@ Ext.define('HOR.view.horarios.PanelCalendario',
     activeItem : 1,
     showTodayText : false,
     showNavToday : false,
+    viewConfig :
+    {
+        viewStartHour : 8,
+        viewEndHour : 22,
+    },
     weekViewCfg :
     {
         dayCount : 5,
         startDay : 1,
         startDayIsStatic : true,
-        viewStartHour : 8,
-        viewEndHour : 22,
     // hourHeight: 84
-    },
-    dayViewCfg :
-    {
-        viewStartHour : 8,
-        viewEndHour : 22
     },
     showMultiDayView : true,
     showMultiWeekView : false,
@@ -37,10 +35,8 @@ Ext.define('HOR.view.horarios.PanelCalendario',
         dayCount : 5,
         startDay : 1,
         startDayIsStatic : true,
-        viewStartHour : 8,
         showTime : false,
         showMonth : false,
-        viewEndHour : 22,
         getStoreParams : function()
         {
             var params = this.getStoreDateParams();

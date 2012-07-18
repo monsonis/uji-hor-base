@@ -7,6 +7,8 @@ Ext.define('HOR.view.commons.FiltroGrupos',
     padding : 5,
     closable : false,
 
+    layout: 'anchor',
+    
     items : [
     {
         xtype : 'combobox',
@@ -16,6 +18,7 @@ Ext.define('HOR.view.commons.FiltroGrupos',
         displayField : 'nombre',
         valueField : 'id',
         name : 'estudio',
+        anchor: '50%'
     },
     {
         xtype : 'combobox',
@@ -25,7 +28,8 @@ Ext.define('HOR.view.commons.FiltroGrupos',
         displayField : 'curso',
         valueField : 'curso',
         lastQuery : '',
-        name : 'curso'
+        name : 'curso',
+        anchor: '15%'
     },
     {
         xtype : 'combobox',
@@ -35,7 +39,8 @@ Ext.define('HOR.view.commons.FiltroGrupos',
         displayField : 'semestre',
         valueField : 'semestre',
         lastQuery : '',
-        name : 'semestre'
+        name : 'semestre',
+        anchor: '15%'
     },
     {
         xtype : 'combobox',
@@ -45,6 +50,7 @@ Ext.define('HOR.view.commons.FiltroGrupos',
         displayField : 'grupo',
         valueField : 'grupo',
         lastQuery : '',
-        name : 'grupo'
+        name : 'grupo',
+        anchor: '15%'
     } ]
 });

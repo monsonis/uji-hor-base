@@ -68,21 +68,21 @@ public class CalendarResource
         return grupoHorarioToUI(grupoHorario);
     }
 
-    // @POST
-    // @Path("config")
-    // @Produces(MediaType.APPLICATION_JSON)
-    // public List<UIEntity> guardaConfiguracion(UIEntity entity) throws ParseException
-    // {
-    // // ParamUtils.checkNotNull(estudioId, cursoId);
-    //
-    // Date rangoFechasInicio = shortDateFormat.parse(fechaInicio);
-    // Date rangoFechasFin = shortDateFormat.parse(fechaFin);
-    //
-    // List<Evento> eventos = eventosService.eventosDeUnEstudio(ParamUtils.parseLong(estudioId),
-    // ParamUtils.parseLong(cursoId), rangoFechasInicio, rangoFechasFin);
-    //
-    // return toUI(eventos);
-    // }
+    @POST
+    @Path("config")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<UIEntity> guardaConfiguracion(UIEntity entity) throws ParseException
+    {
+        Long estudioId = ParamUtils.parseLong(entity.get("estudioId"));
+        Long cursoId = ParamUtils.parseLong(entity.get("cursoId"));
+        Long semestreId = ParamUtils.parseLong(entity.get("semestreId"));
+        String grupoId = entity.get("grupoId");
+
+        GrupoHorario grupoHorario = grupoHorarioService.getHorarioById(estudioId, cursoId,
+                semestreId, grupoId);
+
+        return grupoHorarioToUI(grupoHorario);
+    }
 
     @GET
     @Path("eventos")

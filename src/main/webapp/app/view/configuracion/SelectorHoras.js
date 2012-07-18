@@ -1,10 +1,11 @@
 Ext.define('HOR.view.configuracion.SelectorHoras',
 {
-    extend : 'Ext.panel.Panel',
+    extend : 'Ext.form.FieldSet',
     alias : 'widget.selectorHoras',
     title : 'Hores del calendari',
     padding : 5,
 
+    width: 500,
     layout :
     {
         type : 'hbox',

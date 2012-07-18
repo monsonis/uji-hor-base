@@ -5,14 +5,15 @@ Ext.define('HOR.view.configuracion.ConfiguracionHorario',
     requires : [ 'HOR.view.configuracion.SelectorHoras' ],
 
     border : false,
-    layout :
-    {
-        type : 'vbox',
-        align : 'stretch',
-    },
+    layout : 'anchor',
 
     items : [
     {
-        xtype : 'selectorHoras'
+        xtype : 'selectorHoras',
+        anchor: '50%',
+            
+    }, {
+        xtype: 'button',
+        text: 'Guardar'
     } ]
 });
