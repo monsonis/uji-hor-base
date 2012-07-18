@@ -3,24 +3,15 @@ Ext.define('HOR.controller.ControllerConfiguracion',
     extend : 'Ext.app.Controller',
 
     stores : [ 'StoreHoras', 'StoreConfiguracion' ],
-    refs : [
-=======
     model: [ 'Configuracion'],
     ref : [
->>>>>>> .r9573
     {
         selector : 'panelConfiguracion',
         ref : 'panelConfiguracion'
     },
     {
-<<<<<<< .mine
         selector : 'configuracionCalendario',
         ref : 'configuracionCalendario'
-=======
-        selector : 'panelConfiguracion filtroGrupos',
-        ref : 'filtroGrupos'
->>>>>>> .r9573
-<<<<<<< .mine
     },
     {
         selector : 'panelConfiguracion filtroGrupos',
@@ -29,8 +20,6 @@ Ext.define('HOR.controller.ControllerConfiguracion',
     {
         selector : 'selectorHoras',
         ref : 'selectorHoras'
-=======
->>>>>>> .r9573
     } ],
 
     init : function()
