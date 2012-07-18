@@ -4,7 +4,7 @@ Ext.define('HOR.controller.ControllerConfiguracion',
 
     stores : [ 'StoreHoras', 'StoreConfiguracion' ],
     model: [ 'Configuracion'],
-    ref : [
+    refs : [
     {
         selector : 'panelConfiguracion',
         ref : 'panelConfiguracion'
