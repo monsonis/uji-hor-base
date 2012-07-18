@@ -96,19 +96,19 @@ Ext.define('HOR.controller.ControllerCalendario',
                         var panelCalendario = ref.getPanelCalendario();
                         var panelPadre = panelCalendario.up('panel');
 
-                        var calendario = Ext.create('Extensible.calendar.CalendarPanel',
-                        {
-                            viewCfg :
-                            {
-                                startHour : horaInicio,
-                                endHour : horaFin
-                            }
-                        });
-
-                        console.log(calendario);
-                        panelCalendario.destroy();
-
-                        panelPadre.add(calendario);
+//                        var calendario = Ext.create('Extensible.calendar.CalendarPanel',
+//                        {
+//                            viewCfg :
+//                            {
+//                                startHour : horaInicio,
+//                                endHour : horaFin
+//                            }
+//                        });
+//
+//                        console.log(calendario);
+//                        panelCalendario.destroy();
+//
+//                        panelPadre.add(calendario);
 
                     }
                 }
