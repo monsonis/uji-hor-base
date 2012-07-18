@@ -39,9 +39,9 @@ Ext.application(
     autoCreateViewport : false,
 
     views : [ 'dashboard.PanelDashboard', 'horarios.PanelHorarios', 'commons.FiltroGrupos',
-            'horarios.PanelCalendario' ],
+            'horarios.PanelCalendario', 'configuracion.PanelConfiguracion' ],
     controllers : [ 'ControllerDashboards', 'ControllerCalendario', 'ControllerGrupoAsignatura',
-            'ControllerFiltroConfiguracion', 'ControllerFiltroCalendario' ],
+            'ControllerFiltroConfiguracion', 'ControllerFiltroCalendario', 'ControllerConfiguracion' ],
 
     launch : function()
     {

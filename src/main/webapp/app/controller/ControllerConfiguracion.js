@@ -1,33 +1,24 @@
 Ext.define('HOR.controller.ControllerConfiguracion',
 {
     extend : 'Ext.app.Controller',
+    stores : [ 'StoreHoras' ],
     ref : [
     {
         selector : 'panelConfiguracion',
         ref : 'panelConfiguracion'
-    },
-    {
-        selector : 'panelCalendario',
-        ref : 'panelCalendario'
     } ],
 
     init : function()
     {
         this.control(
         {
-            'panelConfiguracion' :
+            /*'panelConfiguracion filtroGrupos combobox[name=grupo]' :
             {
-                show : this.cierraPanelCalendario
-            }
+                select : function()
+                {
+                    console.log(this.getStoreHorasStore());
+                }
+            }*/
         });
-    },
-
-    cierraPanelCalendario : function()
-    {
-        console.log('Entro???');
-        if (this.getPanelCalendario() !== undefined)
-        {
-            this.getPanelCalendario().up().remove(this.getPanelCalendario(), true);
-        }
     }
 });
