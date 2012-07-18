@@ -4,25 +4,20 @@ import java.util.Date;
 
 public class GrupoHorario
 {
-    private String id;
+    private Long estudioId;
+    private Long cursoId;
+    private Long semestreId;
+    private String grupoId;
     private Date horaInicio;
     private Date horaFin;
 
-    public GrupoHorario(String id)
-    {
-        this.id = id;
+    public GrupoHorario(Long estudioId, Long cursoId, Long semestreId, String grupoId) {
+        this.estudioId = estudioId;
+        this.cursoId = cursoId;
+        this.semestreId = semestreId;
+        this.grupoId = grupoId;
     }
-
-    public String getId()
-    {
-        return id;
-    }
-
-    public void setId(String id)
-    {
-        this.id = id;
-    }
-
+    
     public Date getHoraInicio()
     {
         return horaInicio;
@@ -41,6 +36,46 @@ public class GrupoHorario
     public void setHoraFin(Date horaFin)
     {
         this.horaFin = horaFin;
+    }
+
+    public Long getEstudioId()
+    {
+        return estudioId;
+    }
+
+    public void setEstudioId(Long estudioId)
+    {
+        this.estudioId = estudioId;
+    }
+
+    public Long getCursoId()
+    {
+        return cursoId;
+    }
+
+    public void setCursoId(Long cursoId)
+    {
+        this.cursoId = cursoId;
+    }
+
+    public Long getSemestreId()
+    {
+        return semestreId;
+    }
+
+    public void setSemestreId(Long semestreId)
+    {
+        this.semestreId = semestreId;
+    }
+
+    public String getGrupoId()
+    {
+        return grupoId;
+    }
+
+    public void setGrupoId(String grupoId)
+    {
+        this.grupoId = grupoId;
     }
 
 }

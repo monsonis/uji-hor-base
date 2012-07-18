@@ -1,8 +1,8 @@
 Ext.define('HOR.controller.ControllerCalendario',
 {
     extend : 'Ext.app.Controller',
-    stores : [ 'StoreCalendarios', 'StoreEventos', 'StoreGruposAsignaturasSinAsignar' ],
-    model : [ 'Calendario', 'Evento' ],
+    stores : [ 'StoreCalendarios', 'StoreEventos', 'StoreGruposAsignaturasSinAsignar', 'StoreConfiguracion' ],
+    model : [ 'Calendario', 'Evento', 'Configuracion' ],
     refs : [
     {
         selector : 'panelHorarios filtroGrupos',
@@ -66,7 +66,28 @@ Ext.define('HOR.controller.ControllerCalendario',
             storeEventos.getProxy().extraParams["grupoId"] = grupos.getValue();
             storeEventos.getProxy().extraParams["calendariosIds"] = calendarios;
 
-            this.getPanelCalendario().getActiveView().refresh(true);
+            var storeConfiguracion = this.getStoreConfiguracionStore();
+
+            var ref = this;
+            storeConfiguracion.load(
+            {
+                params :
+                {
+                    estudioId : titulaciones.getValue(),
+                    cursoId : cursos.getValue(),
+                    semestreId : semestres.getValue(),
+                    grupoId : grupos.getValue()
+                },
+                scope : this,
+                callback : function(records, operation, success)
+                {
+                    if (success)
+                    {
+                        console.log("hola");
+                        ref.getPanelCalendario().getActiveView().refresh(true);
+                    }
+                }
+            });
         }
     },
 

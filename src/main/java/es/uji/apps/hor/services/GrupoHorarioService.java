@@ -17,8 +17,8 @@ public class GrupoHorarioService
         this.grupoHorarioDAO = grupoHorarioDAO;
     }
 
-    public GrupoHorario getHorarioById(String grupoId)
+    public GrupoHorario getHorarioById(Long estudioId, Long cursoId, Long semestreId, String grupoId)
     {
-        return grupoHorarioDAO.getGrupoHorarioById(grupoId);
+        return grupoHorarioDAO.getGrupoHorarioById(estudioId, cursoId, semestreId, grupoId);
     }
 }

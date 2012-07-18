@@ -54,31 +54,35 @@ public class CalendarResource
     @GET
     @Path("config")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UIEntity> getConfiguracion(@QueryParam("grupoId") String grupoId) throws RegistroNoEncontradoException
+    public List<UIEntity> getConfiguracion(@QueryParam("estudioId") String estudioId,
+            @QueryParam("cursoId") String cursoId, @QueryParam("semestreId") String semestreId,
+            @QueryParam("grupoId") String grupoId) throws RegistroNoEncontradoException
     {
-        // ParamUtils.checkNotNull(estudioId, cursoId);
 
-        ParamUtils.checkNotNull(grupoId);
-        GrupoHorario grupoHorario = grupoHorarioService.getHorarioById(grupoId);
+        ParamUtils.checkNotNull(estudioId, cursoId, semestreId, grupoId);
+
+        GrupoHorario grupoHorario = grupoHorarioService.getHorarioById(
+                ParamUtils.parseLong(estudioId), ParamUtils.parseLong(cursoId),
+                ParamUtils.parseLong(semestreId), grupoId);
 
         return grupoHorarioToUI(grupoHorario);
     }
 
-//    @POST
-//    @Path("config")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public List<UIEntity> guardaConfiguracion(UIEntity entity) throws ParseException
-//    {
-//        // ParamUtils.checkNotNull(estudioId, cursoId);
-//
-//        Date rangoFechasInicio = shortDateFormat.parse(fechaInicio);
-//        Date rangoFechasFin = shortDateFormat.parse(fechaFin);
-//
-//        List<Evento> eventos = eventosService.eventosDeUnEstudio(ParamUtils.parseLong(estudioId),
-//                ParamUtils.parseLong(cursoId), rangoFechasInicio, rangoFechasFin);
-//
-//        return toUI(eventos);
-//    }
+    // @POST
+    // @Path("config")
+    // @Produces(MediaType.APPLICATION_JSON)
+    // public List<UIEntity> guardaConfiguracion(UIEntity entity) throws ParseException
+    // {
+    // // ParamUtils.checkNotNull(estudioId, cursoId);
+    //
+    // Date rangoFechasInicio = shortDateFormat.parse(fechaInicio);
+    // Date rangoFechasFin = shortDateFormat.parse(fechaFin);
+    //
+    // List<Evento> eventos = eventosService.eventosDeUnEstudio(ParamUtils.parseLong(estudioId),
+    // ParamUtils.parseLong(cursoId), rangoFechasInicio, rangoFechasFin);
+    //
+    // return toUI(eventos);
+    // }
 
     @GET
     @Path("eventos")
@@ -182,7 +186,10 @@ public class CalendarResource
     private List<UIEntity> grupoHorarioToUI(GrupoHorario grupoHorario)
     {
         UIEntity grupoHorarioUI = new UIEntity();
-        grupoHorarioUI.put("id", grupoHorario.getId());
+        grupoHorarioUI.put("estudioId", grupoHorario.getEstudioId());
+        grupoHorarioUI.put("cursoId", grupoHorario.getCursoId());
+        grupoHorarioUI.put("semestreId", grupoHorario.getSemestreId());
+        grupoHorarioUI.put("grupoId", grupoHorario.getGrupoId());
         grupoHorarioUI.put("horaFin", grupoHorario.getHoraFin());
         grupoHorarioUI.put("horaInicio", grupoHorario.getHoraInicio());
 
