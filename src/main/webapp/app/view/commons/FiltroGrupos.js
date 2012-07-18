@@ -28,8 +28,7 @@ Ext.define('HOR.view.commons.FiltroGrupos',
         displayField : 'curso',
         valueField : 'curso',
         lastQuery : '',
-        name : 'curso',
-        anchor: '15%'
+        name : 'curso'
     },
     {
         xtype : 'combobox',
@@ -39,8 +38,7 @@ Ext.define('HOR.view.commons.FiltroGrupos',
         displayField : 'semestre',
         valueField : 'semestre',
         lastQuery : '',
-        name : 'semestre',
-        anchor: '15%'
+        name : 'semestre'
     },
     {
         xtype : 'combobox',
@@ -50,7 +48,6 @@ Ext.define('HOR.view.commons.FiltroGrupos',
         displayField : 'grupo',
         valueField : 'grupo',
         lastQuery : '',
-        name : 'grupo',
-        anchor: '15%'
+        name : 'grupo'
     } ]
 });
