@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class GrupoHorario
 {
+    private Long id;
     private Long estudioId;
     private Long cursoId;
     private Long semestreId;
@@ -18,6 +19,11 @@ public class GrupoHorario
         this.grupoId = grupoId;
     }
     
+    public GrupoHorario()
+    {
+        // TODO Auto-generated constructor stub
+    }
+
     public Date getHoraInicio()
     {
         return horaInicio;
@@ -76,6 +82,16 @@ public class GrupoHorario
     public void setGrupoId(String grupoId)
     {
         this.grupoId = grupoId;
+    }
+
+    public Long getId()
+    {
+        return id;
+    }
+
+    public void setId(Long id)
+    {
+        this.id = id;
     }
 
 }

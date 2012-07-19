@@ -4,7 +4,7 @@ Ext.define('HOR.store.StoreConfiguracion',
     model : 'HOR.model.Configuracion',
 
     autoLoad : false,
-    autoSync : false,
+    autoSync : true,
 
     proxy :
     {

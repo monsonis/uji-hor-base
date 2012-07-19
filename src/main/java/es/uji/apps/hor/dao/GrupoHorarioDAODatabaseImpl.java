@@ -1,6 +1,7 @@
 package es.uji.apps.hor.dao;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -34,11 +35,7 @@ public class GrupoHorarioDAODatabaseImpl extends BaseDAODatabaseImpl implements 
         if (listaGrupoHorarioDTO.size() > 0)
         {
             GrupoHorarioDTO grupoHorarioDTO = listaGrupoHorarioDTO.get(0);
-            GrupoHorario grupoHorario = new GrupoHorario(estudioId, cursoId, semestreId, grupoId);
-            grupoHorario.setHoraFin(grupoHorarioDTO.getHoraFin());
-            grupoHorario.setHoraInicio(grupoHorarioDTO.getHoraInicio());
-
-            return grupoHorario;
+            return creaGrupoHorario(grupoHorarioDTO);
         }
         else
         {
@@ -58,8 +55,64 @@ public class GrupoHorarioDAODatabaseImpl extends BaseDAODatabaseImpl implements 
             grupoHorario.setHoraInicio(inicio.getTime());
             grupoHorario.setHoraFin(fin.getTime());
             return grupoHorario;
-            
+
         }
+    }
+
+    @Override
+    public GrupoHorario addHorario(Long estudioId, Long cursoId, Long semestreId, String grupoId,
+            Date horaInicio, Date horaFin)
+    {
+        GrupoHorarioDTO grupoHorarioDTO = new GrupoHorarioDTO();
+        grupoHorarioDTO.setCursoId(cursoId);
+        grupoHorarioDTO.setEstudioId(estudioId);
+        grupoHorarioDTO.setSemestreId(semestreId);
+        grupoHorarioDTO.setGrupoId(grupoId);
+        grupoHorarioDTO.setHoraFin(horaFin);
+        grupoHorarioDTO.setHoraInicio(horaInicio);
+
+        grupoHorarioDTO = insert(grupoHorarioDTO);
+
+        return creaGrupoHorario(grupoHorarioDTO);
+    }
+
+    private GrupoHorario creaGrupoHorario(GrupoHorarioDTO grupoHorarioDTO)
+    {
+        GrupoHorario grupoHorario = new GrupoHorario();
+
+        grupoHorario.setId(grupoHorarioDTO.getId());
+        grupoHorario.setCursoId(grupoHorarioDTO.getCursoId());
+        grupoHorario.setEstudioId(grupoHorarioDTO.getEstudioId());
+        grupoHorario.setSemestreId(grupoHorarioDTO.getSemestreId());
+        grupoHorario.setGrupoId(grupoHorarioDTO.getGrupoId());
+        grupoHorario.setHoraFin(grupoHorarioDTO.getHoraFin());
+        grupoHorario.setHoraInicio(grupoHorarioDTO.getHoraInicio());
+
+        return grupoHorario;
+    }
+
+    @Override
+    public GrupoHorario updateHorario(Long estudioId, Long cursoId, Long semestreId,
+            String grupoId, Date horaInicio, Date horaFin)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+
+        QGrupoHorarioDTO qGrupoHorarioDTO = QGrupoHorarioDTO.grupoHorarioDTO;
+
+        query.from(qGrupoHorarioDTO).where(
+                qGrupoHorarioDTO.estudioId.eq(estudioId).and(
+                        qGrupoHorarioDTO.cursoId.eq(cursoId).and(
+                                qGrupoHorarioDTO.semestreId.eq(semestreId).and(
+                                        qGrupoHorarioDTO.grupoId.eq(grupoId)))));
+        List<GrupoHorarioDTO> listaGrupoHorarioDTO = query.list(qGrupoHorarioDTO);
+
+        GrupoHorarioDTO grupoHorarioDTO = listaGrupoHorarioDTO.get(0);
+        grupoHorarioDTO.setHoraFin(horaFin);
+        grupoHorarioDTO.setHoraInicio(horaInicio);
+        grupoHorarioDTO = update(grupoHorarioDTO);
+
+        return creaGrupoHorario(grupoHorarioDTO);
+
     }
 
 }

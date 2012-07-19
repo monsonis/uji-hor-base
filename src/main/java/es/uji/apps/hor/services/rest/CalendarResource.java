@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -42,6 +43,7 @@ public class CalendarResource
     @InjectParam
     private GrupoHorarioService grupoHorarioService;
 
+    private SimpleDateFormat hourDateFormat;
     private SimpleDateFormat shortDateFormat;
     private SimpleDateFormat dateFormat;
 
@@ -78,12 +80,33 @@ public class CalendarResource
         Long semestreId = ParamUtils.parseLong(entity.get("semestreId"));
         String grupoId = entity.get("grupoId");
 
-        String fechaInicio = entity.get("fechaInicio");
-        String fechaFin = entity.get("fechaFin");
-        
+        Calendar inicio = Calendar.getInstance();
+        Calendar fin = Calendar.getInstance();
+
+        String horaInicio = entity.get("horaInicio");
+        String horaFin = entity.get("horaFin");
+
+        inicio.set(Calendar.AM_PM, Calendar.AM);
+        inicio.set(Calendar.HOUR, Integer.parseInt(horaInicio.split(":")[0]));
+        inicio.set(Calendar.MINUTE, Integer.parseInt(horaInicio.split(":")[1]));
+        fin.set(Calendar.AM_PM, Calendar.AM);
+        fin.set(Calendar.HOUR, Integer.parseInt(horaFin.split(":")[0]));
+        fin.set(Calendar.MINUTE, Integer.parseInt(horaFin.split(":")[1]));
+
         GrupoHorario grupoHorario = grupoHorarioService.getHorarioById(estudioId, cursoId,
                 semestreId, grupoId);
 
+        if (grupoHorario.getId() != null)
+        {
+            grupoHorario = grupoHorarioService.updateHorario(estudioId, cursoId, semestreId,
+                    grupoId, inicio.getTime(), fin.getTime());
+        }
+        else
+        {
+            grupoHorario = grupoHorarioService.addHorario(estudioId, cursoId, semestreId, grupoId,
+                    inicio.getTime(), fin.getTime());
+        }
+        
         return grupoHorarioToUI(grupoHorario);
     }
 

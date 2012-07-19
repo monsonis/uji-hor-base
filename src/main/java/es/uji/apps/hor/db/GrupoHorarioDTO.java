@@ -35,11 +35,11 @@ public class GrupoHorarioDTO implements Serializable {
 	@Column(name="GRUPO_ID")
 	private String grupoId;
 
-    @Temporal( TemporalType.DATE)
+    @Temporal( TemporalType.TIMESTAMP)
 	@Column(name="HORA_FIN")
 	private Date horaFin;
 
-    @Temporal( TemporalType.DATE)
+    @Temporal( TemporalType.TIMESTAMP)
 	@Column(name="HORA_INICIO")
 	private Date horaInicio;
 
