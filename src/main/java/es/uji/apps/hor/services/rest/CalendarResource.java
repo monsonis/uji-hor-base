@@ -78,6 +78,9 @@ public class CalendarResource
         Long semestreId = ParamUtils.parseLong(entity.get("semestreId"));
         String grupoId = entity.get("grupoId");
 
+        String fechaInicio = entity.get("fechaInicio");
+        String fechaFin = entity.get("fechaFin");
+        
         GrupoHorario grupoHorario = grupoHorarioService.getHorarioById(estudioId, cursoId,
                 semestreId, grupoId);
 

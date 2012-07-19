@@ -3,7 +3,7 @@ Ext.define('HOR.controller.ControllerConfiguracion',
     extend : 'Ext.app.Controller',
 
     stores : [ 'StoreHoras', 'StoreConfiguracion' ],
-    model: [ 'Configuracion'],
+    model : [ 'Configuracion' ],
     refs : [
     {
         selector : 'panelConfiguracion',
@@ -30,7 +30,7 @@ Ext.define('HOR.controller.ControllerConfiguracion',
             {
                 select : this.cargaConfiguracion
             },
-            'panelConfiguracion button[text=Guardar]' :
+            'panelConfiguracion button[action=save]' :
             {
                 click : this.guardarConfiguracion
             }
@@ -58,8 +58,8 @@ Ext.define('HOR.controller.ControllerConfiguracion',
             scope : this,
             callback : function(records, operation, success)
             {
-                var horaInicio = '1/1/1 ';
-                var horaFin = '1/1/1 ';
+                var horaInicio = '01/01/2001 ';
+                var horaFin = '01/01/2001 ';
 
                 if (success)
                 {
@@ -99,7 +99,25 @@ Ext.define('HOR.controller.ControllerConfiguracion',
         var cursoId = cursos.getValue();
         var semestreId = semestres.getValue();
         var grupoId = grupos.getValue();
+        var fechaInicio = this.getSelectorHoras().down('combobox[name=horaInicio]').getValue();
+        var fechaFin = this.getSelectorHoras().down('combobox[name=horaFin]').getValue();
+        
+        var inicio = Ext.Date.parse(fechaInicio, 'd/m/Y H:i', true);
+        var fin = Ext.Date.parse(fechaFin, 'd/m/Y H:i', true);
 
-        console.log(estudioId, cursoId, semestreId, grupoId);
+        var storeConfiguracion = this.getStoreConfiguracionStore();
+        
+        var record = Ext.create("HOR.model.Configuracion", {
+            estudioId: estudioId,
+            cursoId: cursoId,
+            semestreId: semestreId,
+            grupoId: grupoId,
+            fechaInicio: inicio,
+            fechaFin: fin
+        });
+        storeConfiguracion.add(record);
+        storeConfiguracion.sync();
     }
 });
+
+

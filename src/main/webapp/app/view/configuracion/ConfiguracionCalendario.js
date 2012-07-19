@@ -11,16 +11,13 @@ Ext.define('HOR.view.configuracion.ConfiguracionCalendario',
     items : [
     {
         xtype : 'selectorHoras',
-        anchor: '50%',
-    }, {
-        xtype: 'button',
-        text: 'Guardar',
-        action : 'save'
-    }],
+        anchor : '50%',
+    } ],
 
-    /*buttons : [
+    buttonAlign: 'left',
+    buttons : [
     {
         text : 'Guardar',
         action : 'save',
-    } ]*/
+    } ]
 });
