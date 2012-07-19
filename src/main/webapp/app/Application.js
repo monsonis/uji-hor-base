@@ -32,6 +32,17 @@ Ext.require('Extensible.calendar.CalendarPanel');
 
 var login = 'ferrerq';
 
+function fixLoadMaskBug(store, combo)
+{
+    store.on('load', function(store, records, successful, options)
+    {
+        if (successful && Ext.typeOf(combo.getPicker().loadMask) !== "boolean")
+        {
+            combo.getPicker().loadMask.hide();
+        }
+    });
+}
+
 Ext.application(
 {
     name : 'HOR',

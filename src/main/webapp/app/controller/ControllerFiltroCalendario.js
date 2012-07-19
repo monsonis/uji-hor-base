@@ -9,13 +9,13 @@ Ext.define('HOR.controller.ControllerFiltroCalendario',
         ref : 'filtroGrupos'
     },
     {
-        selector: 'selectorGrupos',
-        ref: 'selectorGrupos'
+        selector : 'selectorGrupos',
+        ref : 'selectorGrupos'
     },
     {
-        selector: 'panelCalendario',
-        ref: 'panelCalendario'
-    }],
+        selector : 'panelCalendario',
+        ref : 'panelCalendario'
+    } ],
 
     init : function()
     {
@@ -43,10 +43,10 @@ Ext.define('HOR.controller.ControllerFiltroCalendario',
         this.getFiltroGrupos().down('combobox[name=curso]').clearValue();
         this.getFiltroGrupos().down('combobox[name=semestre]').clearValue();
         this.getFiltroGrupos().down('combobox[name=grupo]').clearValue();
-        
+
         this.getPanelCalendario().limpiaCalendario();
         this.getSelectorGrupos().limpiaGrupos();
-        
+
         this.getStoreSemestresStore().removeAll();
         this.getStoreGruposStore().removeAll();
 
@@ -61,14 +61,14 @@ Ext.define('HOR.controller.ControllerFiltroCalendario',
             scope : this
         });
 
-        this.fixLoadMaskBug(store, this.getFiltroGrupos().down('combobox[name=curso]'));
+        fixLoadMaskBug(store, this.getFiltroGrupos().down('combobox[name=curso]'));
     },
 
     onCursoSelected : function(combo, records)
     {
         this.getFiltroGrupos().down('combobox[name=semestre]').clearValue();
         this.getFiltroGrupos().down('combobox[name=grupo]').clearValue();
-        
+
         this.getPanelCalendario().limpiaCalendario();
         this.getSelectorGrupos().limpiaGrupos();
 
@@ -88,13 +88,13 @@ Ext.define('HOR.controller.ControllerFiltroCalendario',
             scope : this
         });
 
-        this.fixLoadMaskBug(store, this.getFiltroGrupos().down('combobox[name=semestre]'));
+        fixLoadMaskBug(store, this.getFiltroGrupos().down('combobox[name=semestre]'));
     },
 
     onSemestreSelected : function(combo, records)
     {
         this.getFiltroGrupos().down('combobox[name=grupo]').clearValue();
-        
+
         this.getPanelCalendario().limpiaCalendario();
         this.getSelectorGrupos().limpiaGrupos();
 
@@ -114,17 +114,7 @@ Ext.define('HOR.controller.ControllerFiltroCalendario',
             scope : this
         });
 
-        this.fixLoadMaskBug(store, this.getFiltroGrupos().down('combobox[name=grupo]'));
+        fixLoadMaskBug(store, this.getFiltroGrupos().down('combobox[name=grupo]'));
     },
 
-    fixLoadMaskBug : function(store, combo)
-    {
-        store.on('load', function(store, records, successful, options)
-        {
-            if (successful && Ext.typeOf(combo.getPicker().loadMask) !== "boolean")
-            {
-                combo.getPicker().loadMask.hide();
-            }
-        });
-    }
 });

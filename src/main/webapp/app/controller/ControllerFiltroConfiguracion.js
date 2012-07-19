@@ -11,7 +11,7 @@ Ext.define('HOR.controller.ControllerFiltroConfiguracion',
     {
         selector : 'configuracionCalendario',
         ref : 'configuracionCalendario',
-    }],
+    } ],
 
     init : function()
     {
@@ -39,7 +39,7 @@ Ext.define('HOR.controller.ControllerFiltroConfiguracion',
         this.getFiltroGrupos().down('combobox[name=curso]').clearValue();
         this.getFiltroGrupos().down('combobox[name=semestre]').clearValue();
         this.getFiltroGrupos().down('combobox[name=grupo]').clearValue();
-        
+
         this.getConfiguracionCalendario().hide();
 
         this.getStoreSemestresStore().removeAll();
@@ -56,14 +56,14 @@ Ext.define('HOR.controller.ControllerFiltroConfiguracion',
             scope : this
         });
 
-        this.fixLoadMaskBug(store, this.getFiltroGrupos().down('combobox[name=curso]'));
+        fixLoadMaskBug(store, this.getFiltroGrupos().down('combobox[name=curso]'));
     },
 
     onCursoSelected : function(combo, records)
     {
         this.getFiltroGrupos().down('combobox[name=semestre]').clearValue();
         this.getFiltroGrupos().down('combobox[name=grupo]').clearValue();
-        
+
         this.getConfiguracionCalendario().hide();
 
         this.getStoreGruposStore().removeAll();
@@ -82,13 +82,13 @@ Ext.define('HOR.controller.ControllerFiltroConfiguracion',
             scope : this
         });
 
-        this.fixLoadMaskBug(store, this.getFiltroGrupos().down('combobox[name=semestre]'));
+        fixLoadMaskBug(store, this.getFiltroGrupos().down('combobox[name=semestre]'));
     },
 
     onSemestreSelected : function(combo, records)
     {
         this.getFiltroGrupos().down('combobox[name=grupo]').clearValue();
-        
+
         this.getConfiguracionCalendario().hide();
 
         var estudio = this.getFiltroGrupos().down('combobox[name=estudio]').getValue();
@@ -107,17 +107,7 @@ Ext.define('HOR.controller.ControllerFiltroConfiguracion',
             scope : this
         });
 
-        this.fixLoadMaskBug(store, this.getFiltroGrupos().down('combobox[name=grupo]'));
+        fixLoadMaskBug(store, this.getFiltroGrupos().down('combobox[name=grupo]'));
     },
 
-    fixLoadMaskBug : function(store, combo)
-    {
-        store.on('load', function(store, records, successful, options)
-        {
-            if (successful && Ext.typeOf(combo.getPicker().loadMask) !== "boolean")
-            {
-                combo.getPicker().loadMask.hide();
-            }
-        });
-    }
 });
