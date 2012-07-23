@@ -17,7 +17,7 @@ Ext.define('HOR.view.horarios.PanelHorarios',
     items : [
     {
         xtype : 'filtroGrupos',
-        height : 120
+        height : 80
     },
     {
         xtype : 'panel',
