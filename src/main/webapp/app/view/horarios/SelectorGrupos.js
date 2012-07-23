@@ -5,7 +5,6 @@ Ext.define('HOR.view.horarios.SelectorGrupos',
     title : 'Grups sense asignar',
     autoScroll : true,
     padding : 5,
-    height : 30,
     flex : 1,
     layout :
     {

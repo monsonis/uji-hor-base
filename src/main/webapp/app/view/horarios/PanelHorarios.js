@@ -30,7 +30,7 @@ Ext.define('HOR.view.horarios.PanelHorarios',
         },
         items : [
         {
-            width : 200,
+            width : 150,
             border : 0,
             layout :
             {
