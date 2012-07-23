@@ -4,7 +4,7 @@ Ext.define('HOR.store.StoreConfiguracion',
     model : 'HOR.model.Configuracion',
 
     autoLoad : false,
-    autoSync : true,
+    autoSync : false,
 
     proxy :
     {
@@ -23,6 +23,26 @@ Ext.define('HOR.store.StoreConfiguracion',
             type : 'json',
             successProperty : 'success'
         },
-    }
+        listeners :
+        {
+            exception : function(proxy, response, operation)
+            {
 
+                if (response.responseXML)
+                {
+                    var msgList = response.responseXML.getElementsByTagName("msg");
+
+                    if (msgList && msgList[0] && msgList[0].firstChild)
+                    {
+                        Ext.MessageBox.show({
+                            title: 'Server error',
+                            msg: msgList[0].firstChild.nodeValue,
+                            icon: Ext.MessageBox.ERROR,
+                            buttons: Ext.Msg.OK
+                        });
+                    }
+                }
+            }
+        }
+    }
 });

@@ -50,5 +50,4 @@ Ext.define('HOR.view.horarios.PanelHorarios',
             flex : 1
         } ]
     } ]
-
 });

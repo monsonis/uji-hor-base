@@ -72,14 +72,12 @@ public class GrupoAsignaturaDAODatabaseImpl extends BaseDAODatabaseImpl implemen
         item.setDiaSemana(lunes);
         Calendar inicio = Calendar.getInstance();
         Calendar fin = Calendar.getInstance();
-        inicio.set(Calendar.HOUR, 8);
+        inicio.set(Calendar.HOUR_OF_DAY, 8);
         inicio.set(Calendar.MINUTE, 0);
         inicio.set(Calendar.SECOND, 0);
-        inicio.set(Calendar.AM_PM, Calendar.AM);
-        fin.set(Calendar.HOUR, 10);
+        fin.set(Calendar.HOUR_OF_DAY, 10);
         fin.set(Calendar.MINUTE, 0);
         fin.set(Calendar.SECOND, 0);
-        fin.set(Calendar.AM_PM, Calendar.AM);
         item.setHoraInicio(inicio.getTime());
         item.setHoraFin(fin.getTime());
         update(item);

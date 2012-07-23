@@ -179,4 +179,28 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         return (String) semana.get(diaSemana);
 
     }
+
+    @Override
+    public List<Evento> getEventosDeUnCurso(Long estudioId, Long cursoId, Long semestreId,
+            String grupoId)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        QItemDTO item = QItemDTO.itemDTO;
+
+        List<ItemDTO> listaItemsDTO = query
+                .from(item)
+                .where(item.estudio.id.eq(estudioId).and(
+                        item.cursoId.eq(new BigDecimal(cursoId))
+                                .and(item.semestre.id.eq(semestreId)).and(item.grupoId.eq(grupoId))
+                                .and(item.diaSemana.isNotNull()))).list(item);
+
+        List<Evento> eventos = new ArrayList<Evento>();
+
+        for (ItemDTO itemDTO : listaItemsDTO)
+        {
+            eventos.add(creaEventoDesde(itemDTO));
+        }
+
+        return eventos;
+    }
 }

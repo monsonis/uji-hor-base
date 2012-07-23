@@ -7,6 +7,11 @@ Ext.define('HOR.view.horarios.PanelCalendario',
     depends : [ 'HOR.store.StoreCalendarios', 'HOR.store.StoreEventos' ],
     calendarStore : Ext.create('HOR.store.StoreCalendarios'),
     eventStore : Ext.create('HOR.store.StoreEventos'),
+    config :
+    {
+        startHour : 8,
+        endHour : 22
+    },
 
     editModal : true,
     flex : 1,
@@ -14,11 +19,7 @@ Ext.define('HOR.view.horarios.PanelCalendario',
     activeItem : 1,
     showTodayText : false,
     showNavToday : false,
-    viewConfig :
-    {
-        viewStartHour : 8,
-        viewEndHour : 22,
-    },
+
     weekViewCfg :
     {
         dayCount : 5,
@@ -54,9 +55,18 @@ Ext.define('HOR.view.horarios.PanelCalendario',
 
     initComponent : function()
     {
+        var me = this;
+        Ext.apply(me,
+        {
+            viewConfig :
+            {
+                viewStartHour : me.getStartHour(),
+                viewEndHour : me.getEndHour()
+            }
+        });
         this.callParent(arguments);
-
     },
+
     getStoreParams : function()
     {
 

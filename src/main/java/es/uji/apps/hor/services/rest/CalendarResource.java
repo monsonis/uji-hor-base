@@ -21,6 +21,7 @@ import javax.ws.rs.core.MediaType;
 import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.hor.DuracionEventoIncorrectaException;
+import es.uji.apps.hor.RangoHorarioFueradeLimites;
 import es.uji.apps.hor.model.Calendario;
 import es.uji.apps.hor.model.Evento;
 import es.uji.apps.hor.model.GrupoHorario;
@@ -73,7 +74,7 @@ public class CalendarResource
     @POST
     @Path("config")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UIEntity> guardaConfiguracion(UIEntity entity) throws ParseException
+    public List<UIEntity> guardaConfiguracion(UIEntity entity) throws ParseException, RangoHorarioFueradeLimites
     {
         Long estudioId = ParamUtils.parseLong(entity.get("estudioId"));
         Long cursoId = ParamUtils.parseLong(entity.get("cursoId"));
@@ -86,16 +87,17 @@ public class CalendarResource
         String horaInicio = entity.get("horaInicio");
         String horaFin = entity.get("horaFin");
 
-        inicio.set(Calendar.AM_PM, Calendar.AM);
-        inicio.set(Calendar.HOUR, Integer.parseInt(horaInicio.split(":")[0]));
+        inicio.set(Calendar.HOUR_OF_DAY, Integer.parseInt(horaInicio.split(":")[0]));
         inicio.set(Calendar.MINUTE, Integer.parseInt(horaInicio.split(":")[1]));
-        fin.set(Calendar.AM_PM, Calendar.AM);
-        fin.set(Calendar.HOUR, Integer.parseInt(horaFin.split(":")[0]));
+        fin.set(Calendar.HOUR_OF_DAY, Integer.parseInt(horaFin.split(":")[0]));
         fin.set(Calendar.MINUTE, Integer.parseInt(horaFin.split(":")[1]));
 
         GrupoHorario grupoHorario = grupoHorarioService.getHorarioById(estudioId, cursoId,
                 semestreId, grupoId);
 
+        grupoHorarioService.compruebaValidezRangoHorario(estudioId, cursoId, semestreId, grupoId,
+                inicio.getTime(), fin.getTime());
+        
         if (grupoHorario.getId() != null)
         {
             grupoHorario = grupoHorarioService.updateHorario(estudioId, cursoId, semestreId,
@@ -106,7 +108,7 @@ public class CalendarResource
             grupoHorario = grupoHorarioService.addHorario(estudioId, cursoId, semestreId, grupoId,
                     inicio.getTime(), fin.getTime());
         }
-        
+
         return grupoHorarioToUI(grupoHorario);
     }
 

@@ -48,6 +48,32 @@ Ext.define('HOR.controller.ControllerCalendario',
         });
     },
 
+    getViewInstance : function()
+    {
+        var self = this;
+
+        if (!this.viewInstance)
+        {
+            if (this.views && this.views.length)
+            {
+
+                var view = this.getView(this.views[0]);
+
+                this.viewInstance = view.create();
+
+                this.viewInstance.close = function()
+                {
+                    view.prototype.close.apply(this, arguments);
+                    self.viewInstance = null;
+                };
+
+            }
+        }
+        console.log("hola");
+        return this.viewInstance;
+
+    },
+
     refreshCalendar : function()
     {
         var titulaciones = this.getFiltroGrupos().down('combobox[name=estudio]');
@@ -87,7 +113,6 @@ Ext.define('HOR.controller.ControllerCalendario',
                         var fechaInicio = record.get('horaInicio');
                         var fechaFin = record.get('horaFin');
 
-                        console.log(fechaInicio);
                         var inicio = Ext.Date.parse(fechaInicio, 'd/m/Y H:i:s', true);
                         var fin = Ext.Date.parse(fechaFin, 'd/m/Y H:i:s', true);
                         var horaInicio = Ext.Date.format(inicio, 'H');
@@ -96,21 +121,16 @@ Ext.define('HOR.controller.ControllerCalendario',
                         var panelCalendario = ref.getPanelCalendario();
                         var panelPadre = panelCalendario.up('panel');
 
-                        // var calendario = Ext.create('Extensible.calendar.CalendarPanel',
-                        // {
-                        // viewCfg :
-                        // {
-                        // startHour : horaInicio,
-                        // endHour : horaFin
-                        // }
-                        // });
-                        //
-                        // console.log(calendario);
-                        // panelCalendario.destroy();
-                        //
-                        // panelPadre.add(calendario);
+                        panelCalendario.destroy();
 
-                        ref.getPanelCalendario().getActiveView().refresh(true);
+                        var calendario = Ext.widget('panelCalendario',
+                        {
+                            startHour : parseInt(horaInicio),
+                            endHour : parseInt(horaFin)
+                        });
+
+                        panelPadre.add(calendario);
+                        calendario.getActiveView().refresh(true);
                     }
                 }
             });

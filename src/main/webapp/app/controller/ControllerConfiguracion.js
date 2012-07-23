@@ -100,6 +100,12 @@ Ext.define('HOR.controller.ControllerConfiguracion',
             horaFin: horaFin
         });
         storeConfiguracion.add(record);
+        storeConfiguracion.sync({
+            failure: function() {
+                storeConfiguracion.remove(record);
+            }
+        });
+
     }
 });
 
