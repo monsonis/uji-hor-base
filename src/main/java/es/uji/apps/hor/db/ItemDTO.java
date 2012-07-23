@@ -427,6 +427,6 @@ public class ItemDTO implements Serializable
     @Override
     public String toString()
     {
-        return MessageFormat.format("{0} - {1} - {2}{3}", asignaturaId, grupoId, tipoSubgrupoId, subgrupoId);
+        return MessageFormat.format("{0} - {1}{2}", asignaturaId, tipoSubgrupoId, subgrupoId);
     }
 }
