@@ -1,6 +1,5 @@
 package es.uji.apps.hor.dao;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,4 +18,6 @@ public interface EventosDAO extends BaseDAO
 
     List<Evento> getEventosDeUnCurso(Long estudioId, Long cursoId, Long semestreId,
             String grupoId);
+    
+    void deleteEventoSemanaGenerica(Long eventoId);
 }

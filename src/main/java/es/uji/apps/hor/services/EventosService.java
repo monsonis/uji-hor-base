@@ -58,4 +58,10 @@ public class EventosService
             throw new DuracionEventoIncorrectaException();
         }
     }
+
+    public void deleteEventoSemanaGenerica(Long eventoId)
+    {
+        eventosDAO.deleteEventoSemanaGenerica(eventoId);
+    }
+
 }

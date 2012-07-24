@@ -145,15 +145,15 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
 
         query.from(qItem).where(qItem.id.eq(grupoAsignaturaId));
         ItemDTO item = query.list(qItem).get(0);
-        
+
         Calendar calInicio = Calendar.getInstance();
         Calendar calFin = Calendar.getInstance();
-        
+
         calInicio.setTime(inicio);
         calFin.setTime(fin);
 
         String diaSemana = getNombreDiaSemana(calInicio.get(Calendar.DAY_OF_WEEK));
-        
+
         QDiaSemanaDTO qDiaSemana = QDiaSemanaDTO.diaSemanaDTO;
         query2.from(qDiaSemana).where(qDiaSemana.nombre.eq(diaSemana));
         DiaSemanaDTO diaSemanaDTO = query2.list(qDiaSemana).get(0);
@@ -166,7 +166,8 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         return creaEventoDesde(item);
     }
 
-    private String getNombreDiaSemana(Integer diaSemana) {
+    private String getNombreDiaSemana(Integer diaSemana)
+    {
         HashMap semana = new HashMap();
         semana.put(Calendar.SUNDAY, "Diumenge");
         semana.put(Calendar.MONDAY, "Dilluns");
@@ -175,7 +176,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         semana.put(Calendar.THURSDAY, "Dijous");
         semana.put(Calendar.FRIDAY, "Divendres");
         semana.put(Calendar.SATURDAY, "Dissabte");
-        
+
         return (String) semana.get(diaSemana);
 
     }
@@ -202,5 +203,39 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         }
 
         return eventos;
+    }
+
+    @Override
+    public void deleteEventoSemanaGenerica(Long eventoId)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        QItemDTO item = QItemDTO.itemDTO;
+
+        ItemDTO evento = (ItemDTO) get(ItemDTO.class, eventoId);
+        if (evento != null)
+        {
+            List<ItemDTO> listaItemsDTO = query
+                    .from(item)
+                    .where(item.estudio.id.eq(evento.getEstudio().getId())
+                            .and(item.cursoId.eq(evento.getCursoId()))
+                            .and(item.semestre.id.eq(evento.getSemestre().getId()))
+                            .and(item.grupoId.eq(evento.getGrupoId()))
+                            .and(item.asignaturaId.eq(evento.getAsignaturaId()))
+                            .and(item.subgrupoId.eq(evento.getSubgrupoId()))
+                            .and(item.tipoSubgrupoId.eq(evento.getTipoSubgrupoId()))
+                            .and(item.id.ne(eventoId))).list(item);
+
+            if (listaItemsDTO.size() > 0) // Podemos borrar la clase
+            {
+                delete(ItemDTO.class, eventoId);
+            }
+            else
+            // Desasignamos la clase
+            {
+                evento.setDiaSemana(null);
+                update(evento);
+            }
+        }
+
     }
 }

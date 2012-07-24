@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -74,7 +75,8 @@ public class CalendarResource
     @POST
     @Path("config")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UIEntity> guardaConfiguracion(UIEntity entity) throws ParseException, RangoHorarioFueradeLimites
+    public List<UIEntity> guardaConfiguracion(UIEntity entity) throws ParseException,
+            RangoHorarioFueradeLimites
     {
         Long estudioId = ParamUtils.parseLong(entity.get("estudioId"));
         Long cursoId = ParamUtils.parseLong(entity.get("cursoId"));
@@ -97,7 +99,7 @@ public class CalendarResource
 
         grupoHorarioService.compruebaValidezRangoHorario(estudioId, cursoId, semestreId, grupoId,
                 inicio.getTime(), fin.getTime());
-        
+
         if (grupoHorario.getId() != null)
         {
             grupoHorario = grupoHorarioService.updateHorario(estudioId, cursoId, semestreId,
@@ -181,6 +183,13 @@ public class CalendarResource
         Evento evento = eventosService.modificaDiaYHoraGrupoAsignatura(
                 Long.parseLong(entity.get("id")), inicio, fin);
         return Collections.singletonList(UIEntity.toUI(evento));
+    }
+
+    @DELETE
+    @Path("eventos/generica/{id}")
+    public void deleteEventoSemanaGenerica(UIEntity entity)
+    {
+        eventosService.deleteEventoSemanaGenerica(Long.parseLong(entity.get("id")));
     }
 
     private List<UIEntity> toUI(List<Evento> eventos)
