@@ -48,32 +48,6 @@ Ext.define('HOR.controller.ControllerCalendario',
         });
     },
 
-    getViewInstance : function()
-    {
-        var self = this;
-
-        if (!this.viewInstance)
-        {
-            if (this.views && this.views.length)
-            {
-
-                var view = this.getView(this.views[0]);
-
-                this.viewInstance = view.create();
-
-                this.viewInstance.close = function()
-                {
-                    view.prototype.close.apply(this, arguments);
-                    self.viewInstance = null;
-                };
-
-            }
-        }
-        console.log("hola");
-        return this.viewInstance;
-
-    },
-
     refreshCalendar : function()
     {
         var titulaciones = this.getFiltroGrupos().down('combobox[name=estudio]');
@@ -125,12 +99,20 @@ Ext.define('HOR.controller.ControllerCalendario',
                             panel.hide();
                         });
                         
-                        //panelCalendario.hide();
-
-                        var calendario = Ext.widget('panelCalendario',
+                        var calendario = Ext.create('HOR.view.horarios.PanelCalendario',
                         {
-                            startHour : parseInt(horaInicio),
-                            endHour : parseInt(horaFin)
+                            activeItem : 1,
+                            showMultiDayView: true,
+                            multiDayViewCfg :
+                            {
+                                dayCount : 5,
+                                startDay : 1,
+                                startDayIsStatic : true,
+                                showTime : false,
+                                showMonth : false,
+                                viewStartHour: horaInicio,
+                                viewEndHour: horaFin
+                            },
                         });
 
                         panelPadre.add(calendario);
