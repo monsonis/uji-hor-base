@@ -34,9 +34,9 @@ Ext.define('HOR.view.commons.FiltroGrupos',
             xtype : 'combobox',
             editable : false,
             lastQuery : '',
+            width : 150,
+            labelAlign : 'left',
             margin : '0 20 0 0',
-            flex : 1,
-            labelAlign: 'right'
         },
         items : [
         {
@@ -44,8 +44,7 @@ Ext.define('HOR.view.commons.FiltroGrupos',
             store : 'StoreCursos',
             displayField : 'curso',
             valueField : 'curso',
-            name : 'curso',
-            labelAlign: 'left'
+            name : 'curso'
         },
         {
             fieldLabel : 'Semestre',
@@ -55,7 +54,6 @@ Ext.define('HOR.view.commons.FiltroGrupos',
             name : 'semestre'
         },
         {
-            margin : '0 0 0 0',
             fieldLabel : 'Grupo',
             store : 'StoreGrupos',
             displayField : 'grupo',
