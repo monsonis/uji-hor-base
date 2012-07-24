@@ -121,7 +121,11 @@ Ext.define('HOR.controller.ControllerCalendario',
                         var panelCalendario = ref.getPanelCalendario();
                         var panelPadre = panelCalendario.up('panel');
 
-                        panelCalendario.hide();
+                        Ext.Array.each(Ext.ComponentQuery.query('panelCalendario'), function(panel) {
+                            panel.hide();
+                        });
+                        
+                        //panelCalendario.hide();
 
                         var calendario = Ext.widget('panelCalendario',
                         {
