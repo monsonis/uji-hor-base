@@ -74,6 +74,15 @@ Ext.define('HOR.view.horarios.PanelCalendario',
     limpiaCalendario : function()
     {
         this.store.removeAll(false);
+    },
+    
+    listeners: {
+        destroy: function() {
+            this.calendarStore.rejectChanges();
+            this.eventStore.rejectChanges();
+            console.log("hola");
+            this.removeAll();
+        }
     }
 });
 

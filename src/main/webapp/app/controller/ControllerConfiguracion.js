@@ -102,7 +102,7 @@ Ext.define('HOR.controller.ControllerConfiguracion',
         storeConfiguracion.add(record);
         storeConfiguracion.sync({
             failure: function() {
-                storeConfiguracion.remove(record);
+                storeConfiguracion.rejectChanges();
             }
         });
 
