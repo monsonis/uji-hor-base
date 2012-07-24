@@ -211,7 +211,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         JPAQuery query = new JPAQuery(entityManager);
         QItemDTO item = QItemDTO.itemDTO;
 
-        ItemDTO evento = (ItemDTO) get(ItemDTO.class, eventoId);
+        ItemDTO evento = (ItemDTO) get(ItemDTO.class, eventoId).get(0);
         if (evento != null)
         {
             List<ItemDTO> listaItemsDTO = query
