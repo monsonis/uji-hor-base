@@ -113,11 +113,11 @@ public class ItemDTO implements Serializable
     private SemestreDTO semestre;
 
     // bi-directional many-to-one association to HorItemsCircuito
-    @OneToMany(mappedBy = "horItem")
+    @OneToMany(mappedBy = "item")
     private Set<ItemCircuitoDTO> itemsCircuitos;
 
     // bi-directional many-to-one association to ItemDetalleDTO
-    @OneToMany(mappedBy = "horItem")
+    @OneToMany(mappedBy = "item")
     private Set<ItemDetalleDTO> itemsDetalles;
 
     public ItemDTO()

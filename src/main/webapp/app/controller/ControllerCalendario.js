@@ -15,7 +15,7 @@ Ext.define('HOR.controller.ControllerCalendario',
     {
         selector : 'selectorCalendarios',
         ref : 'selectorCalendarios'
-    }],
+    } ],
 
     init : function()
     {
@@ -48,7 +48,8 @@ Ext.define('HOR.controller.ControllerCalendario',
                 rangeselect : function()
                 {
                     return false;
-                }
+                },
+                eventdelete : this.deleteEvento
             }
         });
     },
@@ -100,14 +101,16 @@ Ext.define('HOR.controller.ControllerCalendario',
                         var panelCalendario = ref.getPanelCalendario();
                         var panelPadre = panelCalendario.up('panel');
 
-                        Ext.Array.each(Ext.ComponentQuery.query('panelCalendario'), function(panel) {
+                        Ext.Array.each(Ext.ComponentQuery.query('panelCalendario'), function(panel)
+                        {
                             panel.hide();
                         });
-                        
-                        panelPadre.add({
+
+                        panelPadre.add(
+                        {
                             xtype : 'panelCalendario',
                             activeItem : 0,
-                            showMultiDayView: true,
+                            showMultiDayView : true,
                             multiDayViewCfg :
                             {
                                 dayCount : 5,
@@ -115,17 +118,19 @@ Ext.define('HOR.controller.ControllerCalendario',
                                 startDayIsStatic : true,
                                 showTime : false,
                                 showMonth : false,
-                                viewStartHour: horaInicio,
-                                viewEndHour: horaFin
+                                viewStartHour : horaInicio,
+                                viewEndHour : horaFin
                             },
-                            listeners : {
-                                'afterrender' : function() {
+                            listeners :
+                            {
+                                'afterrender' : function()
+                                {
                                     this.getActiveView().refresh(true);
                                 }
                             }
                         });
-                        
-                        //calendario.getActiveView().refresh(true);
+
+                        // calendario.getActiveView().refresh(true);
                     }
                 }
             });
@@ -154,8 +159,15 @@ Ext.define('HOR.controller.ControllerCalendario',
         var storeEventos = this.getStoreEventosStore();
         storeEventos.sync();
     },
-    
-    seleccionaIntervaloHorario: function() {
+
+    seleccionaIntervaloHorario : function()
+    {
         this.fireEvent("showIntervaloHorario");
+    },
+
+    deleteEvento : function(calendario, registro)
+    {
+        //this.getStoreGruposAsignaturasSinAsignarStore().reload();
     }
+
 });

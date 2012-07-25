@@ -12,9 +12,11 @@ import org.springframework.stereotype.Repository;
 import com.mysema.query.jpa.impl.JPAQuery;
 
 import es.uji.apps.hor.db.DiaSemanaDTO;
+import es.uji.apps.hor.db.ItemCircuitoDTO;
 import es.uji.apps.hor.db.ItemDTO;
 import es.uji.apps.hor.db.ItemDetalleDTO;
 import es.uji.apps.hor.db.QDiaSemanaDTO;
+import es.uji.apps.hor.db.QItemCircuitoDTO;
 import es.uji.apps.hor.db.QItemDTO;
 import es.uji.apps.hor.db.QItemDetalleDTO;
 import es.uji.apps.hor.model.Calendario;
@@ -37,7 +39,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
 
         List<ItemDetalleDTO> listaItemsDTO = query
                 .from(detalleItem)
-                .join(detalleItem.horItem, item)
+                .join(detalleItem.item, item)
                 .where(item.estudio.id.eq(estudioId).and(item.cursoId.eq(new BigDecimal(cursoId)))
                         .and(detalleItem.inicio.goe(rangoFechasInicio))
                         .and(detalleItem.fin.loe(rangoFechasFin))).list(detalleItem);
@@ -54,7 +56,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
 
     private Evento creaEventoDesde(ItemDetalleDTO detalleItemDTO)
     {
-        ItemDTO itemDTO = detalleItemDTO.getHorItem();
+        ItemDTO itemDTO = detalleItemDTO.getItem();
         String titulo = itemDTO.toString();
 
         Calendario calendario = obtenerCalendarioAsociadoPorTipoSubgrupo(itemDTO);
@@ -226,8 +228,29 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
                             .and(item.tipoSubgrupoId.eq(evento.getTipoSubgrupoId()))
                             .and(item.id.ne(eventoId))).list(item);
 
+            // Borramos los items detalle
+
+            QItemDetalleDTO itemDetalle = QItemDetalleDTO.itemDetalleDTO;
+
+            List<ItemDetalleDTO> listaItemsDetalleDTO = query.from(itemDetalle)
+                    .where(itemDetalle.item.id.eq(eventoId)).list(itemDetalle);
+
+            for (ItemDetalleDTO itemDetalleDTO : listaItemsDetalleDTO)
+            {
+                delete(ItemDetalleDTO.class, itemDetalleDTO.getId());
+            }
+
             if (listaItemsDTO.size() > 0) // Podemos borrar la clase
             {
+                QItemCircuitoDTO itemCircuito = QItemCircuitoDTO.itemCircuitoDTO;
+
+                List<ItemCircuitoDTO> listaItemsCircuitosDTO = query.from(itemCircuito)
+                        .where(itemCircuito.item.id.eq(eventoId)).list(itemCircuito);
+                if (listaItemsCircuitosDTO.size() > 0)
+                {
+                    delete(ItemCircuitoDTO.class, listaItemsCircuitosDTO.get(0).getId());
+                }
+
                 delete(ItemDTO.class, eventoId);
             }
             else

@@ -73,7 +73,6 @@ Extensible.calendar.menu.Event.override(
         {
             items : [
             {
-
                 text : me.editDetailsText,
                 iconCls : 'extensible-cal-icon-evt-edit',
                 menu : me.dateMenu

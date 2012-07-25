@@ -35,7 +35,7 @@ public class CircuitoDTO implements Serializable {
 	private EstudioDTO horEstudio;
 
 	//bi-directional many-to-one association to HorItemsCircuito
-	@OneToMany(mappedBy="horCircuito")
+	@OneToMany(mappedBy="circuito")
 	private Set<ItemCircuitoDTO> horItemsCircuitos;
 
     public CircuitoDTO() {
