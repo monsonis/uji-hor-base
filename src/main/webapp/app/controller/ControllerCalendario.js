@@ -9,6 +9,10 @@ Ext.define('HOR.controller.ControllerCalendario',
         ref : 'filtroGrupos'
     },
     {
+        selector: 'selectorGrupos',
+        ref: 'selectorGrupos'
+    },
+    {
         selector : 'panelCalendario',
         ref : 'panelCalendario'
     },
@@ -25,10 +29,6 @@ Ext.define('HOR.controller.ControllerCalendario',
             {
                 select : this.refreshCalendar
             },
-            'panelHorarios filtroGrupos button[name=intervaloHorario]' :
-            {
-                click : this.seleccionaIntervaloHorario
-            },
 
             'selectorCalendarios checkbox' :
             {
@@ -43,6 +43,10 @@ Ext.define('HOR.controller.ControllerCalendario',
                 eventresize : this.updateEvento,
                 dayclick : function()
                 {
+                    return false;
+                },
+                beforeeventdelete: function(cal, rec) {
+                    this.deleteEvento(cal, rec);
                     return false;
                 },
                 rangeselect : function()
@@ -160,14 +164,18 @@ Ext.define('HOR.controller.ControllerCalendario',
         storeEventos.sync();
     },
 
-    seleccionaIntervaloHorario : function()
-    {
-        this.fireEvent("showIntervaloHorario");
-    },
-
     deleteEvento : function(calendario, registro)
     {
-        //this.getStoreGruposAsignaturasSinAsignarStore().reload();
+        var calendario = this.getPanelCalendario();
+        var store = calendario.eventStore;
+        store.remove(registro);
+        
+        store.sync({
+            success: function() {
+                this.getSelectorGrupos().fireEvent("updateGrupos");
+            },
+            scope: this
+        });
     }
 
 });

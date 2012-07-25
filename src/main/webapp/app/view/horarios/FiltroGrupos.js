@@ -13,6 +13,7 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
     {
         xtype : 'combobox',
         fieldLabel : 'Titulació',
+        labelWidth: 75,
         store : 'StoreEstudios',
         editable : false,
         displayField : 'nombre',
@@ -34,9 +35,10 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
             xtype : 'combobox',
             editable : false,
             lastQuery : '',
+            width : 120,
+            labelWidth: 75,
+            labelAlign : 'left',
             margin : '0 20 0 0',
-            flex : 1,
-            labelAlign: 'right'
         },
         items : [
         {
@@ -44,8 +46,7 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
             store : 'StoreCursos',
             displayField : 'curso',
             valueField : 'curso',
-            name : 'curso',
-            labelAlign: 'left'
+            name : 'curso'
         },
         {
             fieldLabel : 'Semestre',

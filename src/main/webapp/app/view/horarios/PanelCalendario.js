@@ -13,9 +13,9 @@ Ext.define('HOR.view.horarios.PanelCalendario',
     activeItem : 1,
     showTodayText : false,
     showNavToday : false,
-    showDayView: false,
-    showWeekView: false,
-    showMonthView: false,
+    showDayView : false,
+    showWeekView : false,
+    showMonthView : false,
     weekViewCfg :
     {
         dayCount : 5,
@@ -102,7 +102,7 @@ Extensible.calendar.menu.Event.override(
                 text : me.deleteText,
                 iconCls : 'extensible-cal-icon-evt-del',
                 scope : me,
-                handler : function()
+                handler : function(item, event)
                 {
                     me.fireEvent('eventdelete', me, me.rec, me.ctxEl);
                 }
