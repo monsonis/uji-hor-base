@@ -21,6 +21,7 @@ import es.uji.apps.hor.model.Calendario;
 import es.uji.apps.hor.model.Evento;
 import es.uji.apps.hor.model.TipoSubgrupo;
 import es.uji.commons.db.BaseDAODatabaseImpl;
+import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
 @Repository
 public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements EventosDAO
@@ -206,7 +207,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
     }
 
     @Override
-    public void deleteEventoSemanaGenerica(Long eventoId)
+    public void deleteEventoSemanaGenerica(Long eventoId) throws RegistroNoEncontradoException
     {
         JPAQuery query = new JPAQuery(entityManager);
         QItemDTO item = QItemDTO.itemDTO;
@@ -236,6 +237,9 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
                 update(evento);
             }
         }
-
+        else
+        {
+            throw new RegistroNoEncontradoException();
+        }
     }
 }
