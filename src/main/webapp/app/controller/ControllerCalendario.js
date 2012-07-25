@@ -15,7 +15,7 @@ Ext.define('HOR.controller.ControllerCalendario',
     {
         selector : 'selectorCalendarios',
         ref : 'selectorCalendarios'
-    } ],
+    }],
 
     init : function()
     {
@@ -25,6 +25,11 @@ Ext.define('HOR.controller.ControllerCalendario',
             {
                 select : this.refreshCalendar
             },
+            'panelHorarios filtroGrupos button[name=intervaloHorario]' :
+            {
+                click : this.seleccionaIntervaloHorario
+            },
+
             'selectorCalendarios checkbox' :
             {
                 change : this.refreshCalendar
@@ -99,9 +104,9 @@ Ext.define('HOR.controller.ControllerCalendario',
                             panel.hide();
                         });
                         
-                        var calendario = Ext.create('HOR.view.horarios.PanelCalendario',
-                        {
-                            activeItem : 1,
+                        panelPadre.add({
+                            xtype : 'panelCalendario',
+                            activeItem : 0,
                             showMultiDayView: true,
                             multiDayViewCfg :
                             {
@@ -113,10 +118,14 @@ Ext.define('HOR.controller.ControllerCalendario',
                                 viewStartHour: horaInicio,
                                 viewEndHour: horaFin
                             },
+                            listeners : {
+                                'afterrender' : function() {
+                                    this.getActiveView().refresh(true);
+                                }
+                            }
                         });
-
-                        panelPadre.add(calendario);
-                        calendario.getActiveView().refresh(true);
+                        
+                        //calendario.getActiveView().refresh(true);
                     }
                 }
             });
@@ -142,10 +151,11 @@ Ext.define('HOR.controller.ControllerCalendario',
 
     updateEvento : function(calendario, registro)
     {
-        var inicio = registro.get('StartDate');
-        var fin = registro.get('EndDate');
         var storeEventos = this.getStoreEventosStore();
         storeEventos.sync();
+    },
+    
+    seleccionaIntervaloHorario: function() {
+        this.fireEvent("showIntervaloHorario");
     }
-
 });
