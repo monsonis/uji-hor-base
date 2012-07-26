@@ -29,7 +29,7 @@ public class ItemDetalleDTO implements Serializable {
 	//bi-directional many-to-one association to ItemDTO
     @ManyToOne
 	@JoinColumn(name="ITEM_ID")
-	private ItemDTO item;
+	private ItemDTO horItem;
 
     public ItemDetalleDTO() {
     }
@@ -66,12 +66,12 @@ public class ItemDetalleDTO implements Serializable {
 		this.inicio = inicio;
 	}
 
-	public ItemDTO getItem() {
-		return this.item;
+	public ItemDTO getHorItem() {
+		return this.horItem;
 	}
 
-	public void setItem(ItemDTO item) {
-		this.item = item;
+	public void setHorItem(ItemDTO horItem) {
+		this.horItem = horItem;
 	}
 	
 }

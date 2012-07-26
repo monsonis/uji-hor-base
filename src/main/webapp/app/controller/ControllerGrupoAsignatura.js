@@ -17,18 +17,10 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
         ref : 'selectorCalendarios'
     } ],
 
-    initComponent: function() {
-        this.addEvents('updateGrupos');
-        this.callParent(arguments); 
-    },
     init : function()
     {
         this.control(
         {
-            'selectorGrupos' :
-            {
-                updateGrupos : this.updateAsignaturasSinAsignar
-            },
             'panelHorarios filtroGrupos combobox[name=grupo]' :
             {
                 select : this.updateAsignaturasSinAsignar
