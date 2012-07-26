@@ -229,10 +229,10 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
                             .and(item.id.ne(eventoId))).list(item);
 
             // Borramos los items detalle
-
+            JPAQuery query2 = new JPAQuery(entityManager);
             QItemDetalleDTO itemDetalle = QItemDetalleDTO.itemDetalleDTO;
 
-            List<ItemDetalleDTO> listaItemsDetalleDTO = query.from(itemDetalle)
+            List<ItemDetalleDTO> listaItemsDetalleDTO = query2.from(itemDetalle)
                     .where(itemDetalle.item.id.eq(eventoId)).list(itemDetalle);
 
             for (ItemDetalleDTO itemDetalleDTO : listaItemsDetalleDTO)
@@ -242,13 +242,16 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
 
             if (listaItemsDTO.size() > 0) // Podemos borrar la clase
             {
+                // Borramos los items circuitos
+                JPAQuery query3 = new JPAQuery(entityManager);
                 QItemCircuitoDTO itemCircuito = QItemCircuitoDTO.itemCircuitoDTO;
 
-                List<ItemCircuitoDTO> listaItemsCircuitosDTO = query.from(itemCircuito)
+                List<ItemCircuitoDTO> listaItemsCircuitosDTO = query3.from(itemCircuito)
                         .where(itemCircuito.item.id.eq(eventoId)).list(itemCircuito);
-                if (listaItemsCircuitosDTO.size() > 0)
+
+                for (ItemCircuitoDTO itemCircuitoDTO : listaItemsCircuitosDTO)
                 {
-                    delete(ItemCircuitoDTO.class, listaItemsCircuitosDTO.get(0).getId());
+                    delete(ItemCircuitoDTO.class, itemCircuitoDTO.getId());
                 }
 
                 delete(ItemDTO.class, eventoId);
