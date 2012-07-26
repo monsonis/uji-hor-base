@@ -16,28 +16,28 @@ public class ItemCircuitoDTO implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private long id;
+	private Long id;
 
 	private BigDecimal plazas;
 
 	//bi-directional many-to-one association to CircuitoDTO
     @ManyToOne
 	@JoinColumn(name="CIRCUITO_ID")
-	private CircuitoDTO horCircuito;
+	private CircuitoDTO circuito;
 
 	//bi-directional many-to-one association to ItemDTO
     @ManyToOne
 	@JoinColumn(name="ITEM_ID")
-	private ItemDTO horItem;
+	private ItemDTO item;
 
     public ItemCircuitoDTO() {
     }
 
-	public long getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -49,20 +49,20 @@ public class ItemCircuitoDTO implements Serializable {
 		this.plazas = plazas;
 	}
 
-	public CircuitoDTO getHorCircuito() {
-		return this.horCircuito;
+	public CircuitoDTO getCircuito() {
+		return this.circuito;
 	}
 
-	public void setHorCircuito(CircuitoDTO horCircuito) {
-		this.horCircuito = horCircuito;
+	public void setCircuito(CircuitoDTO circuito) {
+		this.circuito = circuito;
 	}
 	
-	public ItemDTO getHorItem() {
-		return this.horItem;
+	public ItemDTO getItem() {
+		return this.item;
 	}
 
-	public void setHorItem(ItemDTO horItem) {
-		this.horItem = horItem;
+	public void setItem(ItemDTO item) {
+		this.item = item;
 	}
 	
 }

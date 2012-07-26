@@ -7,25 +7,20 @@ Ext.define('HOR.view.horarios.PanelCalendario',
     depends : [ 'HOR.store.StoreCalendarios', 'HOR.store.StoreEventos' ],
     calendarStore : Ext.create('HOR.store.StoreCalendarios'),
     eventStore : Ext.create('HOR.store.StoreEventos'),
-    config :
-    {
-        startHour : 8,
-        endHour : 22
-    },
-
     editModal : true,
     flex : 1,
     padding : 5,
     activeItem : 1,
     showTodayText : false,
     showNavToday : false,
-
+    showDayView : false,
+    showWeekView : false,
+    showMonthView : false,
     weekViewCfg :
     {
         dayCount : 5,
         startDay : 1,
         startDayIsStatic : true,
-    // hourHeight: 84
     },
     showMultiDayView : true,
     showMultiWeekView : false,
@@ -55,34 +50,12 @@ Ext.define('HOR.view.horarios.PanelCalendario',
 
     initComponent : function()
     {
-        var me = this;
-        Ext.apply(me,
-        {
-            viewConfig :
-            {
-                viewStartHour : me.getStartHour(),
-                viewEndHour : me.getEndHour()
-            }
-        });
         this.callParent(arguments);
     },
 
-    getStoreParams : function()
-    {
-
-    },
     limpiaCalendario : function()
     {
         this.store.removeAll(false);
-    },
-    
-    listeners: {
-        destroy: function() {
-            this.calendarStore.rejectChanges();
-            this.eventStore.rejectChanges();
-            console.log("hola");
-            this.removeAll();
-        }
     }
 });
 
@@ -100,7 +73,6 @@ Extensible.calendar.menu.Event.override(
         {
             items : [
             {
-
                 text : me.editDetailsText,
                 iconCls : 'extensible-cal-icon-evt-edit',
                 menu : me.dateMenu
@@ -123,20 +95,21 @@ Extensible.calendar.menu.Event.override(
                 scope : me,
                 handler : function()
                 {
-                    me.fireEvent('eventdelete', me, me.rec, me.ctxEl);
+                    me.fireEvent('eventdivide', me, me.rec, me.ctxEl);
                 }
             },
             {
                 text : me.deleteText,
                 iconCls : 'extensible-cal-icon-evt-del',
                 scope : me,
-                handler : function()
+                handler : function(item, event)
                 {
                     me.fireEvent('eventdelete', me, me.rec, me.ctxEl);
                 }
             } ]
         });
     },
+
     showForEvent : function(rec, el, xy)
     {
         var me = this;

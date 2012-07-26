@@ -1,11 +1,11 @@
 package es.uji.apps.hor.dao;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import es.uji.apps.hor.model.Evento;
 import es.uji.commons.db.BaseDAO;
+import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
 public interface EventosDAO extends BaseDAO
 {
@@ -19,4 +19,6 @@ public interface EventosDAO extends BaseDAO
 
     List<Evento> getEventosDeUnCurso(Long estudioId, Long cursoId, Long semestreId,
             String grupoId);
+    
+    void deleteEventoSemanaGenerica(Long eventoId) throws RegistroNoEncontradoException;
 }

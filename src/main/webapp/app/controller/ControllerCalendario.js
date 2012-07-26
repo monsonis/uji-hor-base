@@ -9,6 +9,10 @@ Ext.define('HOR.controller.ControllerCalendario',
         ref : 'filtroGrupos'
     },
     {
+        selector: 'selectorGrupos',
+        ref: 'selectorGrupos'
+    },
+    {
         selector : 'panelCalendario',
         ref : 'panelCalendario'
     },
@@ -25,6 +29,7 @@ Ext.define('HOR.controller.ControllerCalendario',
             {
                 select : this.refreshCalendar
             },
+
             'selectorCalendarios checkbox' :
             {
                 change : this.refreshCalendar
@@ -40,38 +45,17 @@ Ext.define('HOR.controller.ControllerCalendario',
                 {
                     return false;
                 },
+                beforeeventdelete: function(cal, rec) {
+                    this.deleteEvento(cal, rec);
+                    return false;
+                },
                 rangeselect : function()
                 {
                     return false;
-                }
+                },
+                eventdelete : this.deleteEvento
             }
         });
-    },
-
-    getViewInstance : function()
-    {
-        var self = this;
-
-        if (!this.viewInstance)
-        {
-            if (this.views && this.views.length)
-            {
-
-                var view = this.getView(this.views[0]);
-
-                this.viewInstance = view.create();
-
-                this.viewInstance.close = function()
-                {
-                    view.prototype.close.apply(this, arguments);
-                    self.viewInstance = null;
-                };
-
-            }
-        }
-        console.log("hola");
-        return this.viewInstance;
-
     },
 
     refreshCalendar : function()
@@ -121,20 +105,36 @@ Ext.define('HOR.controller.ControllerCalendario',
                         var panelCalendario = ref.getPanelCalendario();
                         var panelPadre = panelCalendario.up('panel');
 
-                        Ext.Array.each(Ext.ComponentQuery.query('panelCalendario'), function(panel) {
+                        Ext.Array.each(Ext.ComponentQuery.query('panelCalendario'), function(panel)
+                        {
                             panel.hide();
                         });
-                        
-                        //panelCalendario.hide();
 
-                        var calendario = Ext.widget('panelCalendario',
+                        panelPadre.add(
                         {
-                            startHour : parseInt(horaInicio),
-                            endHour : parseInt(horaFin)
+                            xtype : 'panelCalendario',
+                            activeItem : 0,
+                            showMultiDayView : true,
+                            multiDayViewCfg :
+                            {
+                                dayCount : 5,
+                                startDay : 1,
+                                startDayIsStatic : true,
+                                showTime : false,
+                                showMonth : false,
+                                viewStartHour : horaInicio,
+                                viewEndHour : horaFin
+                            },
+                            listeners :
+                            {
+                                'afterrender' : function()
+                                {
+                                    this.getActiveView().refresh(true);
+                                }
+                            }
                         });
 
-                        panelPadre.add(calendario);
-                        calendario.getActiveView().refresh(true);
+                        // calendario.getActiveView().refresh(true);
                     }
                 }
             });
@@ -160,10 +160,22 @@ Ext.define('HOR.controller.ControllerCalendario',
 
     updateEvento : function(calendario, registro)
     {
-        var inicio = registro.get('StartDate');
-        var fin = registro.get('EndDate');
         var storeEventos = this.getStoreEventosStore();
         storeEventos.sync();
+    },
+
+    deleteEvento : function(calendario, registro)
+    {
+        var calendario = this.getPanelCalendario();
+        var store = calendario.eventStore;
+        store.remove(registro);
+        
+        store.sync({
+            success: function() {
+                this.getSelectorGrupos().fireEvent("updateGrupos");
+            },
+            scope: this
+        });
     }
 
 });

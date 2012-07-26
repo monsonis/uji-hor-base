@@ -43,10 +43,11 @@ Ext.define('HOR.controller.ControllerFiltroCalendario',
         this.getFiltroGrupos().down('combobox[name=curso]').clearValue();
         this.getFiltroGrupos().down('combobox[name=semestre]').clearValue();
         this.getFiltroGrupos().down('combobox[name=grupo]').clearValue();
-
+        this.getFiltroGrupos().down('button[name=intervaloHorario]').hide();
+        
         this.getPanelCalendario().limpiaCalendario();
         this.getSelectorGrupos().limpiaGrupos();
-
+        
         this.getStoreSemestresStore().removeAll();
         this.getStoreGruposStore().removeAll();
 
@@ -68,6 +69,7 @@ Ext.define('HOR.controller.ControllerFiltroCalendario',
     {
         this.getFiltroGrupos().down('combobox[name=semestre]').clearValue();
         this.getFiltroGrupos().down('combobox[name=grupo]').clearValue();
+        this.getFiltroGrupos().down('button[name=intervaloHorario]').hide();
 
         this.getPanelCalendario().limpiaCalendario();
         this.getSelectorGrupos().limpiaGrupos();
@@ -94,6 +96,7 @@ Ext.define('HOR.controller.ControllerFiltroCalendario',
     onSemestreSelected : function(combo, records)
     {
         this.getFiltroGrupos().down('combobox[name=grupo]').clearValue();
+        this.getFiltroGrupos().down('button[name=intervaloHorario]').hide();
 
         this.getPanelCalendario().limpiaCalendario();
         this.getSelectorGrupos().limpiaGrupos();

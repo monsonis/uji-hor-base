@@ -10,13 +10,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import com.sun.jersey.api.core.InjectParam;
 
@@ -74,7 +77,8 @@ public class CalendarResource
     @POST
     @Path("config")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UIEntity> guardaConfiguracion(UIEntity entity) throws ParseException, RangoHorarioFueradeLimites
+    public List<UIEntity> guardaConfiguracion(UIEntity entity) throws ParseException,
+            RangoHorarioFueradeLimites
     {
         Long estudioId = ParamUtils.parseLong(entity.get("estudioId"));
         Long cursoId = ParamUtils.parseLong(entity.get("cursoId"));
@@ -97,7 +101,7 @@ public class CalendarResource
 
         grupoHorarioService.compruebaValidezRangoHorario(estudioId, cursoId, semestreId, grupoId,
                 inicio.getTime(), fin.getTime());
-        
+
         if (grupoHorario.getId() != null)
         {
             grupoHorario = grupoHorarioService.updateHorario(estudioId, cursoId, semestreId,
@@ -181,6 +185,15 @@ public class CalendarResource
         Evento evento = eventosService.modificaDiaYHoraGrupoAsignatura(
                 Long.parseLong(entity.get("id")), inicio, fin);
         return Collections.singletonList(UIEntity.toUI(evento));
+    }
+
+    @DELETE
+    @Path("eventos/generica/{id}")
+    public Response deleteEventoSemanaGenerica(@PathParam("id") String eventoId)
+            throws RegistroNoEncontradoException
+    {
+        eventosService.deleteEventoSemanaGenerica(Long.parseLong(eventoId));
+        return Response.ok().build();
     }
 
     private List<UIEntity> toUI(List<Evento> eventos)

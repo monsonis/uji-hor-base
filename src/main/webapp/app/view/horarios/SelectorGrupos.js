@@ -2,7 +2,7 @@ Ext.define('HOR.view.horarios.SelectorGrupos',
 {
     extend : 'Ext.panel.Panel',
     alias : 'widget.selectorGrupos',
-    title : 'Grups sense asignar',
+    title : 'Grups no asignats',
     autoScroll : true,
     padding : 5,
     flex : 1,

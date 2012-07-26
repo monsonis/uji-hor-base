@@ -1,4 +1,4 @@
-Ext.define('HOR.view.commons.FiltroGrupos',
+Ext.define('HOR.view.horarios.FiltroGrupos',
 {
     extend : 'Ext.panel.Panel',
     alias : 'widget.filtroGrupos',
@@ -13,6 +13,7 @@ Ext.define('HOR.view.commons.FiltroGrupos',
     {
         xtype : 'combobox',
         fieldLabel : 'Titulació',
+        labelWidth: 75,
         store : 'StoreEstudios',
         editable : false,
         displayField : 'nombre',
@@ -34,9 +35,10 @@ Ext.define('HOR.view.commons.FiltroGrupos',
             xtype : 'combobox',
             editable : false,
             lastQuery : '',
+            width : 120,
+            labelWidth: 75,
+            labelAlign : 'left',
             margin : '0 20 0 0',
-            flex : 1,
-            labelAlign: 'right'
         },
         items : [
         {
@@ -44,8 +46,7 @@ Ext.define('HOR.view.commons.FiltroGrupos',
             store : 'StoreCursos',
             displayField : 'curso',
             valueField : 'curso',
-            name : 'curso',
-            labelAlign: 'left'
+            name : 'curso'
         },
         {
             fieldLabel : 'Semestre',
@@ -55,12 +56,20 @@ Ext.define('HOR.view.commons.FiltroGrupos',
             name : 'semestre'
         },
         {
-            margin : '0 0 0 0',
             fieldLabel : 'Grupo',
             store : 'StoreGrupos',
             displayField : 'grupo',
             valueField : 'grupo',
             name : 'grupo'
+        },
+        {
+            margin : '0 0 0 0',
+            name: 'intervaloHorario',
+            xtype: 'button',
+            hidden: true,
+            width: '40',
+            flex: 0,
+            text : 'Interval horari...',
         } ]
     } ]
 });

@@ -1,48 +1,85 @@
 Ext.define('HOR.controller.ControllerConfiguracion',
 {
     extend : 'Ext.app.Controller',
-
-    stores : [ 'StoreHoras', 'StoreConfiguracion' ],
+    stores : [ 'StoreConfiguracion', 'StoreHoras' ],
     model : [ 'Configuracion' ],
     refs : [
     {
-        selector : 'panelConfiguracion',
-        ref : 'panelConfiguracion'
-    },
-    {
-        selector : 'configuracionCalendario',
-        ref : 'configuracionCalendario'
-    },
-    {
-        selector : 'panelConfiguracion filtroGrupos',
+        selector : 'panelHorarios filtroGrupos',
         ref : 'filtroGrupos'
     },
     {
-        selector : 'selectorHoras',
-        ref : 'selectorHoras'
-    } ],
-
+        selector: 'selectorIntervaloHorario',
+        ref: 'selectorIntervaloHorario'
+    }],
     init : function()
     {
         this.control(
         {
-            'panelConfiguracion filtroGrupos combobox[name=grupo]' :
+            'panelHorarios filtroGrupos button[name=intervaloHorario]' :
             {
-                select : this.cargaConfiguracion
+                click : this.showIntervaloHorario
             },
-            'panelConfiguracion button[action=save]' :
+            'selectorIntervaloHorario button[action=save]' :
             {
                 click : this.guardarConfiguracion
+            },
+            'selectorIntervaloHorario button[action=cancel]' :
+            {
+                click : function(button)
+                {
+                    button.up("selectorIntervaloHorario").destroy();
+                }
+            },
+            'panelHorarios filtroGrupos combobox[name=grupo]' :
+            {
+                select : function(combo) {
+                    combo.up('filtroGrupos').down('button[name=intervaloHorario]').setVisible(true);
+                }
             }
         });
     },
 
-    cargaConfiguracion : function(combo, records)
+    guardarConfiguracion : function()
     {
+        var estudioId = this.getFiltroGrupos().down('combobox[name=estudio]').getValue();
+        var cursoId = this.getFiltroGrupos().down('combobox[name=curso]').getValue();
+        var semestreId = this.getFiltroGrupos().down('combobox[name=semestre]').getValue();
+        var grupoId = this.getFiltroGrupos().down('combobox[name=grupo]').getValue();
+        var horaInicio = this.getSelectorIntervaloHorario().down('combobox[name=horaInicio]').getValue();
+        var horaFin = this.getSelectorIntervaloHorario().down('combobox[name=horaFin]').getValue();
+
+        var storeConfiguracion = this.getStoreConfiguracionStore();
+
+        var record = Ext.create("HOR.model.Configuracion",
+        {
+            estudioId : estudioId,
+            cursoId : cursoId,
+            semestreId : semestreId,
+            grupoId : grupoId,
+            horaInicio : horaInicio,
+            horaFin : horaFin
+        });
+        storeConfiguracion.add(record);
+        storeConfiguracion.sync(
+        {
+            failure : function()
+            {
+                storeConfiguracion.rejectChanges();
+            },
+            success: function() {
+                Ext.ComponentQuery.query("selectorIntervaloHorario")[0].destroy();
+            }
+        });
+    },
+
+    showIntervaloHorario : function()
+    {
+        Ext.create('HOR.view.horarios.SelectorIntervaloHorario').show();
         var estudio = this.getFiltroGrupos().down('combobox[name=estudio]').getValue();
         var curso = this.getFiltroGrupos().down('combobox[name=curso]').getValue();
         var semestre = this.getFiltroGrupos().down('combobox[name=semestre]').getValue();
-        var grupo = combo.getValue();
+        var grupo = this.getFiltroGrupos().down('combobox[name=grupo]').getValue();
 
         var storeConfiguracion = this.getStoreConfiguracionStore();
 
@@ -69,44 +106,13 @@ Ext.define('HOR.controller.ControllerConfiguracion',
 
                     horaInicio = Ext.Date.format(inicio, "H:i");
                     horaFin = Ext.Date.format(fin, "H:i");
-                    
-                    this.getSelectorHoras().down('combobox[name=horaInicio]').setValue(horaInicio);
-                    this.getSelectorHoras().down('combobox[name=horaFin]').setValue(horaFin);
+
+                    this.getSelectorIntervaloHorario().down('combobox[name=horaInicio]').setValue(horaInicio);
+                    this.getSelectorIntervaloHorario().down('combobox[name=horaFin]').setValue(horaFin);
 
                 }
 
             }
         });
-        this.getConfiguracionCalendario().show();
-    },
-
-    guardarConfiguracion : function()
-    {
-        var estudioId = this.getFiltroGrupos().down('combobox[name=estudio]').getValue();
-        var cursoId = this.getFiltroGrupos().down('combobox[name=curso]').getValue();
-        var semestreId = this.getFiltroGrupos().down('combobox[name=semestre]').getValue();
-        var grupoId = this.getFiltroGrupos().down('combobox[name=grupo]').getValue();
-        var horaInicio = this.getSelectorHoras().down('combobox[name=horaInicio]').getValue();
-        var horaFin = this.getSelectorHoras().down('combobox[name=horaFin]').getValue();
-        
-        var storeConfiguracion = this.getStoreConfiguracionStore();
-        
-        var record = Ext.create("HOR.model.Configuracion", {
-            estudioId: estudioId,
-            cursoId: cursoId,
-            semestreId: semestreId,
-            grupoId: grupoId,
-            horaInicio: horaInicio,
-            horaFin: horaFin
-        });
-        storeConfiguracion.add(record);
-        storeConfiguracion.sync({
-            failure: function() {
-                storeConfiguracion.rejectChanges();
-            }
-        });
-
     }
 });
-
-

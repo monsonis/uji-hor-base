@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import es.uji.apps.hor.DuracionEventoIncorrectaException;
 import es.uji.apps.hor.dao.EventosDAO;
 import es.uji.apps.hor.model.Evento;
+import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
 @Service
 public class EventosService
@@ -58,4 +59,10 @@ public class EventosService
             throw new DuracionEventoIncorrectaException();
         }
     }
+
+    public void deleteEventoSemanaGenerica(Long eventoId) throws RegistroNoEncontradoException
+    {
+        eventosDAO.deleteEventoSemanaGenerica(eventoId);
+    }
+
 }
