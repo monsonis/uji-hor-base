@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.mysema.query.jpa.impl.JPAQuery;
 
+import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.db.DiaSemanaDTO;
 import es.uji.apps.hor.db.ItemCircuitoDTO;
 import es.uji.apps.hor.db.ItemDTO;
@@ -228,7 +229,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
                             .and(item.tipoSubgrupoId.eq(evento.getTipoSubgrupoId()))
                             .and(item.id.ne(eventoId))).list(item);
 
-            // Borramos los items detalle
+            // Borramos los items detalle -- Esto se llevará a otro servicio
             JPAQuery query2 = new JPAQuery(entityManager);
             QItemDetalleDTO itemDetalle = QItemDetalleDTO.itemDetalleDTO;
 
@@ -266,6 +267,81 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         else
         {
             throw new RegistroNoEncontradoException();
+        }
+    }
+
+    @Override
+    public void divideEventoSemanaGenerica(Long eventoId) throws RegistroNoEncontradoException,
+            EventoNoDivisibleException
+    {
+        ItemDTO evento = (ItemDTO) get(ItemDTO.class, eventoId).get(0);
+
+        if (evento == null)
+        {
+            throw new RegistroNoEncontradoException();
+        }
+
+        // Comprobamos que el evento se pueda dividir (de momento que no tenga menos de 1h???)
+
+        if (evento.getHoraFin().getTime() - evento.getHoraInicio().getTime() < 3600 * 1000)
+        {
+            throw new EventoNoDivisibleException();
+        }
+
+        // Modificamos la hora de fin del evento seleccionado
+        Long horaFin = evento.getHoraInicio().getTime()
+                + ((evento.getHoraFin().getTime() - evento.getHoraInicio().getTime()) / 2);
+
+        evento.setHoraFin(new Date(horaFin));
+        evento = update(evento);
+
+        // Creamos el nuevo evento
+        ItemDTO itemDTO = new ItemDTO();
+        itemDTO.setAsignatura(evento.getAsignatura());
+        itemDTO.setAsignaturaId(evento.getAsignaturaId());
+        itemDTO.setAulasPlanificacion(evento.getAulasPlanificacion());
+        itemDTO.setCaracterId(evento.getCaracter());
+        itemDTO.setCaracterId(evento.getCaracterId());
+        itemDTO.setComun(evento.getComun());
+        itemDTO.setCursoId(evento.getCursoId());
+        itemDTO.setDesdeElDia(evento.getDesdeElDia());
+        itemDTO.setDiaSemana(evento.getDiaSemana());
+        itemDTO.setEstudio(evento.getEstudio());
+        itemDTO.setEstudioDesc(evento.getEstudioDesc());
+        itemDTO.setGrupoId(evento.getGrupoId());
+        itemDTO.setHastaElDia(evento.getHastaElDia());
+        itemDTO.setHoraFin(evento.getHoraFin());
+        itemDTO.setHoraInicio(evento.getHoraInicio());
+        itemDTO.setModificaDetalle(evento.getModificaDetalle());
+        itemDTO.setPlazas(evento.getPlazas());
+        itemDTO.setPorcentajeComun(evento.getPorcentajeComun());
+        itemDTO.setProfesor(evento.getProfesor());
+        itemDTO.setSemestre(evento.getSemestre());
+        itemDTO.setSubgrupoId(evento.getSubgrupoId());
+        itemDTO.setTipoAsignatura(evento.getTipoAsignatura());
+        itemDTO.setTipoAsignaturaId(evento.getTipoAsignaturaId());
+        itemDTO.setTipoEstudio(evento.getTipoEstudio());
+        itemDTO.setTipoEstudioId(evento.getTipoEstudio());
+        itemDTO.setTipoSubgrupo(evento.getTipoSubgrupo());
+        itemDTO.setTipoSubgrupoId(evento.getTipoSubgrupoId());
+
+        itemDTO = insert(itemDTO);
+
+        // Copiamos los circuitos
+
+        JPAQuery query = new JPAQuery(entityManager);
+        QItemCircuitoDTO itemCircuito = QItemCircuitoDTO.itemCircuitoDTO;
+
+        List<ItemCircuitoDTO> listaItemsCircuitosDTO = query.from(itemCircuito)
+                .where(itemCircuito.item.id.eq(eventoId)).list(itemCircuito);
+
+        for (ItemCircuitoDTO itemCircuitoDTO : listaItemsCircuitosDTO)
+        {
+            ItemCircuitoDTO aux = new ItemCircuitoDTO();
+            aux.setCircuito(itemCircuitoDTO.getCircuito());
+            aux.setItem(itemDTO);
+            aux.setPlazas(itemCircuitoDTO.getPlazas());
+            insert(aux);
         }
     }
 }

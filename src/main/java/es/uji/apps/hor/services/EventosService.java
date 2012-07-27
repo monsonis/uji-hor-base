@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.uji.apps.hor.DuracionEventoIncorrectaException;
+import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.dao.EventosDAO;
 import es.uji.apps.hor.model.Evento;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
@@ -63,6 +64,12 @@ public class EventosService
     public void deleteEventoSemanaGenerica(Long eventoId) throws RegistroNoEncontradoException
     {
         eventosDAO.deleteEventoSemanaGenerica(eventoId);
+    }
+
+    public void divideEventoSemanaGenerica(Long eventoId) throws RegistroNoEncontradoException,
+            EventoNoDivisibleException
+    {
+        eventosDAO.divideEventoSemanaGenerica(eventoId);
     }
 
 }

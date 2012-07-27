@@ -24,6 +24,7 @@ import javax.ws.rs.core.Response;
 import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.hor.DuracionEventoIncorrectaException;
+import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.RangoHorarioFueradeLimites;
 import es.uji.apps.hor.model.Calendario;
 import es.uji.apps.hor.model.Evento;
@@ -193,6 +194,15 @@ public class CalendarResource
             throws RegistroNoEncontradoException
     {
         eventosService.deleteEventoSemanaGenerica(Long.parseLong(eventoId));
+        return Response.ok().build();
+    }
+
+    @POST
+    @Path("eventos/generica/divide/{id}")
+    public Response divideEventoSemanaGenerica(@PathParam("id") String eventoId)
+            throws RegistroNoEncontradoException, EventoNoDivisibleException
+    {
+        eventosService.divideEventoSemanaGenerica(Long.parseLong(eventoId));
         return Response.ok().build();
     }
 
