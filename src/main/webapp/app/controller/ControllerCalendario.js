@@ -9,8 +9,8 @@ Ext.define('HOR.controller.ControllerCalendario',
         ref : 'filtroGrupos'
     },
     {
-        selector: 'selectorGrupos',
-        ref: 'selectorGrupos'
+        selector : 'selectorGrupos',
+        ref : 'selectorGrupos'
     },
     {
         selector : 'panelCalendario',
@@ -45,15 +45,19 @@ Ext.define('HOR.controller.ControllerCalendario',
                 {
                     return false;
                 },
-                beforeeventdelete: function(cal, rec) {
+                beforeeventdelete : function(cal, rec)
+                {
                     this.deleteEvento(cal, rec);
                     return false;
+                },
+                eventdivide : function(cal, rec)
+                {
+                    this.duplicarEvento(cal, rec);
                 },
                 rangeselect : function()
                 {
                     return false;
-                },
-                eventdelete : this.deleteEvento
+                }
             }
         });
     },
@@ -169,12 +173,47 @@ Ext.define('HOR.controller.ControllerCalendario',
         var calendario = this.getPanelCalendario();
         var store = calendario.eventStore;
         store.remove(registro);
-        
-        store.sync({
-            success: function() {
+
+        store.sync(
+        {
+            success : function()
+            {
                 this.getSelectorGrupos().fireEvent("updateGrupos");
             },
-            scope: this
+            scope : this
+        });
+    },
+
+    duplicarEvento : function(calendario, registro)
+    {
+        var calendario = this.getPanelCalendario();
+
+        Ext.Ajax.request(
+        {
+            url : '/hor/rest/calendario/eventos/generica/divide/' + registro.get("EventId"),
+            method : 'POST',
+            success : function(response)
+            {
+                calendario.getActiveView().refresh(true);
+            },
+            failure : function(response)
+            {
+                if (response.responseXML)
+                {
+                    var msgList = response.responseXML.getElementsByTagName("msg");
+
+                    if (msgList && msgList[0] && msgList[0].firstChild)
+                    {
+                        Ext.MessageBox.show(
+                        {
+                            title : 'Server error',
+                            msg : msgList[0].firstChild.nodeValue,
+                            icon : Ext.MessageBox.ERROR,
+                            buttons : Ext.Msg.OK
+                        });
+                    }
+                }
+            }
         });
     }
 

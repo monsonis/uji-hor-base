@@ -95,14 +95,14 @@ Extensible.calendar.menu.Event.override(
                 scope : me,
                 handler : function()
                 {
-                    me.fireEvent('eventdivide', me, me.rec, me.ctxEl);
+                    Ext.ComponentQuery.query("panelCalendario")[0].fireEvent('eventdivide', me, me.rec);
                 }
             },
             {
                 text : me.deleteText,
                 iconCls : 'extensible-cal-icon-evt-del',
                 scope : me,
-                handler : function(item, event)
+                handler : function()
                 {
                     me.fireEvent('eventdelete', me, me.rec, me.ctxEl);
                 }
