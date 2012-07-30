@@ -24,13 +24,14 @@ Ext.require('Ext.ux.uji.TabPanel');
 Ext.require('Ext.ux.uji.form.LookupComboBox');
 Ext.require('Ext.ux.uji.form.LookupWindow');
 Ext.require('Ext.form.field.Trigger');
+Ext.require('Ext.form.FieldSet');
 Ext.require('Ext.form.field.Text');
 Ext.require('Ext.form.Label');
+Ext.require('Extensible.calendar.menu.Event');
 Ext.require('Extensible.calendar.data.MemoryCalendarStore');
 Ext.require('Extensible.calendar.data.EventStore');
 Ext.require('Extensible.calendar.CalendarPanel');
-
-
+Ext.require('Extensible.calendar.template.BoxLayout');
 
 var login = 'ferrerq';
 
@@ -61,10 +62,13 @@ Ext.application(
 
             Ext.Loader.loadScriptFile('/hor/app/config/extensible-lang-ca.js', function()
             {
-                Ext.create('Ext.ux.uji.ApplicationViewport',
+                Ext.Loader.loadScriptFile('/hor/app/config/calendar.js', function()
                 {
-                    codigoAplicacion : 'HOR',
-                    tituloAplicacion : 'Gestión de horarios'
+                    Ext.create('Ext.ux.uji.ApplicationViewport',
+                    {
+                        codigoAplicacion : 'HOR',
+                        tituloAplicacion : 'Gestión de horarios'
+                    });
                 });
             });
         });
