@@ -30,6 +30,8 @@ Ext.require('Extensible.calendar.data.MemoryCalendarStore');
 Ext.require('Extensible.calendar.data.EventStore');
 Ext.require('Extensible.calendar.CalendarPanel');
 
+
+
 var login = 'ferrerq';
 
 function fixLoadMaskBug(store, combo)
@@ -54,10 +56,10 @@ Ext.application(
 
     launch : function()
     {
-        Ext.Loader.loadScriptFile('/hor/extensible-1.5.1/examples/calendar/ext-locales/ext-lang-ca.js', function()
+        Ext.Loader.loadScriptFile('/hor/app/config/ext-lang-ca.js', function()
         {
 
-            Ext.Loader.loadScriptFile('/hor/js/extensible-lang-ca.js', function()
+            Ext.Loader.loadScriptFile('/hor/app/config/extensible-lang-ca.js', function()
             {
                 Ext.create('Ext.ux.uji.ApplicationViewport',
                 {
