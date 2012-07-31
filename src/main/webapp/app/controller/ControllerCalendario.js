@@ -138,6 +138,7 @@ Ext.define('HOR.controller.ControllerCalendario',
                             }
                         });
 
+
                         // calendario.getActiveView().refresh(true);
                     }
                 }

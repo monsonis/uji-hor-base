@@ -65,9 +65,9 @@ Ext.define('HOR.view.horarios.PanelCalendario',
         {
             firstWeekDateFormat : 'l',
             multiDayFirstDayFormat : 'l',
-            multiDayMonthStartFormat: 'l'
+            multiDayMonthStartFormat : 'l'
         });
-        
+
         this.callParent(arguments);
     }
 });

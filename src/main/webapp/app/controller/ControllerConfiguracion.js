@@ -104,14 +104,13 @@ Ext.define('HOR.controller.ControllerConfiguracion',
                     var inicio = Ext.Date.parse(fechaInicio, 'd/m/Y H:i:s', true);
                     var fin = Ext.Date.parse(fechaFin, 'd/m/Y H:i:s', true);
 
-                    horaInicio = Ext.Date.format(inicio, "H:i");
-                    horaFin = Ext.Date.format(fin, "H:i");
+                    var horaInicio = Ext.Date.format(inicio, 'H:i');
+                    var horaFin = Ext.Date.format(fin, 'H:i');
 
                     this.getSelectorIntervaloHorario().down('combobox[name=horaInicio]').setValue(horaInicio);
                     this.getSelectorIntervaloHorario().down('combobox[name=horaFin]').setValue(horaFin);
 
                 }
-
             }
         });
     }
