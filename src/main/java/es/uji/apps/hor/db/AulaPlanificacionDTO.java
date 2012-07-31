@@ -33,11 +33,11 @@ public class AulaPlanificacionDTO implements Serializable {
 	//bi-directional many-to-one association to AulaDTO
     @ManyToOne
 	@JoinColumn(name="AULA_ID")
-	private AulaDTO horAula;
+	private AulaDTO aula;
 
 	//bi-directional many-to-one association to ItemDTO
 	@OneToMany(mappedBy="aulasPlanificacion")
-	private Set<ItemDTO> horItems;
+	private Set<ItemDTO> items;
 
     public AulaPlanificacionDTO() {
     }
@@ -82,20 +82,20 @@ public class AulaPlanificacionDTO implements Serializable {
 		this.semestreId = semestreId;
 	}
 
-	public AulaDTO getHorAula() {
-		return this.horAula;
+	public AulaDTO getAula() {
+		return this.aula;
 	}
 
-	public void setHorAula(AulaDTO horAula) {
-		this.horAula = horAula;
+	public void setAula(AulaDTO aula) {
+		this.aula = aula;
 	}
 	
-	public Set<ItemDTO> getHorItems() {
-		return this.horItems;
+	public Set<ItemDTO> getItems() {
+		return this.items;
 	}
 
-	public void setHorItems(Set<ItemDTO> horItems) {
-		this.horItems = horItems;
+	public void setItems(Set<ItemDTO> items) {
+		this.items = items;
 	}
 	
 }

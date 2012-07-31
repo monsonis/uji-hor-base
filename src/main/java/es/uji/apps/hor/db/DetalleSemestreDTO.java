@@ -41,12 +41,12 @@ public class DetalleSemestreDTO implements Serializable {
 	//bi-directional many-to-one association to SemestreDTO
     @ManyToOne
 	@JoinColumn(name="SEMESTRE_ID")
-	private SemestreDTO horSemestre;
+	private SemestreDTO semestre;
 
 	//bi-directional many-to-one association to TipoEstudioDTO
     @ManyToOne
 	@JoinColumn(name="TIPO_ESTUDIO_ID")
-	private TipoEstudioDTO horTiposEstudio;
+	private TipoEstudioDTO tiposEstudio;
 
     public DetalleSemestreDTO() {
     }
@@ -99,20 +99,20 @@ public class DetalleSemestreDTO implements Serializable {
 		this.numeroSemanas = numeroSemanas;
 	}
 
-	public SemestreDTO getHorSemestre() {
-		return this.horSemestre;
+	public SemestreDTO getSemestre() {
+		return this.semestre;
 	}
 
-	public void setHorSemestre(SemestreDTO horSemestre) {
-		this.horSemestre = horSemestre;
+	public void setSemestre(SemestreDTO semestre) {
+		this.semestre = semestre;
 	}
 	
-	public TipoEstudioDTO getHorTiposEstudio() {
-		return this.horTiposEstudio;
+	public TipoEstudioDTO getTiposEstudio() {
+		return this.tiposEstudio;
 	}
 
-	public void setHorTiposEstudio(TipoEstudioDTO horTiposEstudio) {
-		this.horTiposEstudio = horTiposEstudio;
+	public void setTiposEstudio(TipoEstudioDTO tiposEstudio) {
+		this.tiposEstudio = tiposEstudio;
 	}
 	
 }

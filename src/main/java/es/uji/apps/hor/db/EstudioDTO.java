@@ -24,17 +24,17 @@ public class EstudioDTO implements Serializable {
 	private BigDecimal oficial;
 
 	//bi-directional many-to-one association to AulaEstudioDTO
-	@OneToMany(mappedBy="horEstudio")
-	private Set<AulaEstudioDTO> horAulasEstudios;
+	@OneToMany(mappedBy="estudio")
+	private Set<AulaEstudioDTO> aulasEstudios;
 
 	//bi-directional many-to-one association to CircuitoDTO
-	@OneToMany(mappedBy="horEstudio")
+	@OneToMany(mappedBy="estudio")
 	private Set<CircuitoDTO> horCircuitos;
 
 	//bi-directional many-to-one association to CentroDTO
     @ManyToOne
 	@JoinColumn(name="CENTRO_ID")
-	private CentroDTO horCentro;
+	private CentroDTO centro;
 
 	//bi-directional many-to-one association to TipoEstudioDTO
     @ManyToOne
@@ -42,7 +42,7 @@ public class EstudioDTO implements Serializable {
 	private TipoEstudioDTO horTiposEstudio;
 
 	//bi-directional many-to-one association to CargoPersonaDTO
-	@OneToMany(mappedBy="horEstudio")
+	@OneToMany(mappedBy="estudio")
 	private Set<CargoPersonaDTO> horExtCargosPers;
 
 	//bi-directional many-to-one association to ItemDTO
@@ -80,12 +80,12 @@ public class EstudioDTO implements Serializable {
 		this.oficial = oficial;
 	}
 
-	public Set<AulaEstudioDTO> getHorAulasEstudios() {
-		return this.horAulasEstudios;
+	public Set<AulaEstudioDTO> getAulasEstudios() {
+		return this.aulasEstudios;
 	}
 
-	public void setHorAulasEstudios(Set<AulaEstudioDTO> horAulasEstudios) {
-		this.horAulasEstudios = horAulasEstudios;
+	public void setAulasEstudios(Set<AulaEstudioDTO> aulasEstudios) {
+		this.aulasEstudios = aulasEstudios;
 	}
 	
 	public Set<CircuitoDTO> getHorCircuitos() {
@@ -96,12 +96,12 @@ public class EstudioDTO implements Serializable {
 		this.horCircuitos = horCircuitos;
 	}
 	
-	public CentroDTO getHorCentro() {
-		return this.horCentro;
+	public CentroDTO getCentro() {
+		return this.centro;
 	}
 
-	public void setHorCentro(CentroDTO horCentro) {
-		this.horCentro = horCentro;
+	public void setCentro(CentroDTO centro) {
+		this.centro = centro;
 	}
 	
 	public TipoEstudioDTO getHorTiposEstudio() {

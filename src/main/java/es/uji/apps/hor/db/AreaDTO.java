@@ -26,11 +26,11 @@ public class AreaDTO implements Serializable {
 	//bi-directional many-to-one association to DepartamentoDTO
     @ManyToOne
 	@JoinColumn(name="DEPARTAMENTO_ID")
-	private DepartamentoDTO horDepartamento;
+	private DepartamentoDTO departamento;
 
 	//bi-directional many-to-one association to ProfesorDTO
-	@OneToMany(mappedBy="horArea")
-	private Set<ProfesorDTO> horProfesores;
+	@OneToMany(mappedBy="area")
+	private Set<ProfesorDTO> profesores;
 
     public AreaDTO() {
     }
@@ -59,20 +59,20 @@ public class AreaDTO implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public DepartamentoDTO getHorDepartamento() {
-		return this.horDepartamento;
+	public DepartamentoDTO getDepartamento() {
+		return this.departamento;
 	}
 
-	public void setHorDepartamento(DepartamentoDTO horDepartamento) {
-		this.horDepartamento = horDepartamento;
+	public void setDepartamento(DepartamentoDTO departamento) {
+		this.departamento = departamento;
 	}
 	
-	public Set<ProfesorDTO> getHorProfesores() {
-		return this.horProfesores;
+	public Set<ProfesorDTO> getProfesores() {
+		return this.profesores;
 	}
 
-	public void setHorProfesores(Set<ProfesorDTO> horProfesores) {
-		this.horProfesores = horProfesores;
+	public void setProfesores(Set<ProfesorDTO> profesores) {
+		this.profesores = profesores;
 	}
 	
 }

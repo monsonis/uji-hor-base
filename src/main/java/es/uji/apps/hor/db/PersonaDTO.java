@@ -26,13 +26,13 @@ public class PersonaDTO implements Serializable {
 	private String nombre;
 
 	//bi-directional many-to-one association to CargoPersonaDTO
-	@OneToMany(mappedBy="horExtPersona")
+	@OneToMany(mappedBy="persona")
 	private Set<CargoPersonaDTO> horExtCargosPers;
 
 	//bi-directional many-to-one association to DepartamentoDTO
     @ManyToOne
 	@JoinColumn(name="DEPARTAMENTO_ID")
-	private DepartamentoDTO horDepartamento;
+	private DepartamentoDTO departamento;
 
 	//bi-directional many-to-one association to PermisoExtraDTO
 	@OneToMany(mappedBy="horExtPersona")
@@ -81,12 +81,12 @@ public class PersonaDTO implements Serializable {
 		this.horExtCargosPers = horExtCargosPers;
 	}
 	
-	public DepartamentoDTO getHorDepartamento() {
-		return this.horDepartamento;
+	public DepartamentoDTO getDepartamento() {
+		return this.departamento;
 	}
 
-	public void setHorDepartamento(DepartamentoDTO horDepartamento) {
-		this.horDepartamento = horDepartamento;
+	public void setDepartamento(DepartamentoDTO departamento) {
+		this.departamento = departamento;
 	}
 	
 	public Set<PermisoExtraDTO> getHorPermisosExtras() {

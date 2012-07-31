@@ -22,12 +22,12 @@ public class AulaEstudioDTO implements Serializable {
 	//bi-directional many-to-one association to AulaDTO
     @ManyToOne
 	@JoinColumn(name="AULA_ID")
-	private AulaDTO horAula;
+	private AulaDTO aula;
 
 	//bi-directional many-to-one association to EstudioDTO
     @ManyToOne
 	@JoinColumn(name="ESTUDIO_ID")
-	private EstudioDTO horEstudio;
+	private EstudioDTO estudio;
 
     public AulaEstudioDTO() {
     }
@@ -48,20 +48,20 @@ public class AulaEstudioDTO implements Serializable {
 		this.descripcion = descripcion;
 	}
 
-	public AulaDTO getHorAula() {
-		return this.horAula;
+	public AulaDTO getAula() {
+		return this.aula;
 	}
 
-	public void setHorAula(AulaDTO horAula) {
-		this.horAula = horAula;
+	public void setAula(AulaDTO aula) {
+		this.aula = aula;
 	}
 	
-	public EstudioDTO getHorEstudio() {
-		return this.horEstudio;
+	public EstudioDTO getEstudio() {
+		return this.estudio;
 	}
 
-	public void setHorEstudio(EstudioDTO horEstudio) {
-		this.horEstudio = horEstudio;
+	public void setEstudio(EstudioDTO estudio) {
+		this.estudio = estudio;
 	}
 	
 }

@@ -21,16 +21,16 @@ public class CentroDTO implements Serializable {
 	private String nombre;
 
 	//bi-directional many-to-one association to AulaDTO
-	@OneToMany(mappedBy="horCentro")
-	private Set<AulaDTO> horAulas;
+	@OneToMany(mappedBy="centro")
+	private Set<AulaDTO> aulas;
 
 	//bi-directional many-to-one association to DepartamentoDTO
-	@OneToMany(mappedBy="horCentro")
-	private Set<DepartamentoDTO> horDepartamentos;
+	@OneToMany(mappedBy="centro")
+	private Set<DepartamentoDTO> departamentos;
 
 	//bi-directional many-to-one association to EstudioDTO
-	@OneToMany(mappedBy="horCentro")
-	private Set<EstudioDTO> horEstudios;
+	@OneToMany(mappedBy="centro")
+	private Set<EstudioDTO> estudios;
 
     public CentroDTO() {
     }
@@ -51,28 +51,28 @@ public class CentroDTO implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public Set<AulaDTO> getHorAulas() {
-		return this.horAulas;
+	public Set<AulaDTO> getAulas() {
+		return this.aulas;
 	}
 
-	public void setHorAulas(Set<AulaDTO> horAulas) {
-		this.horAulas = horAulas;
+	public void setAulas(Set<AulaDTO> aulas) {
+		this.aulas = aulas;
 	}
 	
-	public Set<DepartamentoDTO> getHorDepartamentos() {
-		return this.horDepartamentos;
+	public Set<DepartamentoDTO> getDepartamentos() {
+		return this.departamentos;
 	}
 
-	public void setHorDepartamentos(Set<DepartamentoDTO> horDepartamentos) {
-		this.horDepartamentos = horDepartamentos;
+	public void setDepartamentos(Set<DepartamentoDTO> departamentos) {
+		this.departamentos = departamentos;
 	}
 	
-	public Set<EstudioDTO> getHorEstudios() {
-		return this.horEstudios;
+	public Set<EstudioDTO> getEstudios() {
+		return this.estudios;
 	}
 
-	public void setHorEstudios(Set<EstudioDTO> horEstudios) {
-		this.horEstudios = horEstudios;
+	public void setEstudios(Set<EstudioDTO> estudios) {
+		this.estudios = estudios;
 	}
 	
 }

@@ -25,7 +25,7 @@ public class SemestreDTO implements Serializable {
 	private Set<ItemDTO> horItems;
 
 	//bi-directional many-to-one association to DetalleSemestreDTO
-	@OneToMany(mappedBy="horSemestre")
+	@OneToMany(mappedBy="semestre")
 	private Set<DetalleSemestreDTO> horSemestresDetalles;
 
     public SemestreDTO() {

@@ -24,25 +24,25 @@ public class DepartamentoDTO implements Serializable {
 	private String nombre;
 
 	//bi-directional many-to-one association to AreaDTO
-	@OneToMany(mappedBy="horDepartamento")
-	private Set<AreaDTO> horAreas;
+	@OneToMany(mappedBy="departamento")
+	private Set<AreaDTO> areas;
 
 	//bi-directional many-to-one association to CentroDTO
     @ManyToOne
 	@JoinColumn(name="CENTRO_ID")
-	private CentroDTO horCentro;
+	private CentroDTO centro;
 
 	//bi-directional many-to-one association to CargoPersonaDTO
-	@OneToMany(mappedBy="horDepartamento")
-	private Set<CargoPersonaDTO> horExtCargosPers;
+	@OneToMany(mappedBy="departamento")
+	private Set<CargoPersonaDTO> cargosPers;
 
 	//bi-directional many-to-one association to PersonaDTO
-	@OneToMany(mappedBy="horDepartamento")
-	private Set<PersonaDTO> horExtPersonas;
+	@OneToMany(mappedBy="departamento")
+	private Set<PersonaDTO> personas;
 
 	//bi-directional many-to-one association to PermisoExtraDTO
-	@OneToMany(mappedBy="horDepartamento")
-	private Set<PermisoExtraDTO> horPermisosExtras;
+	@OneToMany(mappedBy="departamento")
+	private Set<PermisoExtraDTO> permisosExtras;
 
     public DepartamentoDTO() {
     }
@@ -71,44 +71,44 @@ public class DepartamentoDTO implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public Set<AreaDTO> getHorAreas() {
-		return this.horAreas;
+	public Set<AreaDTO> getAreas() {
+		return this.areas;
 	}
 
-	public void setHorAreas(Set<AreaDTO> horAreas) {
-		this.horAreas = horAreas;
+	public void setAreas(Set<AreaDTO> areas) {
+		this.areas = areas;
 	}
 	
-	public CentroDTO getHorCentro() {
-		return this.horCentro;
+	public CentroDTO getCentro() {
+		return this.centro;
 	}
 
-	public void setHorCentro(CentroDTO horCentro) {
-		this.horCentro = horCentro;
+	public void setCentro(CentroDTO centro) {
+		this.centro = centro;
 	}
 	
-	public Set<CargoPersonaDTO> getHorExtCargosPers() {
-		return this.horExtCargosPers;
+	public Set<CargoPersonaDTO> getCargosPers() {
+		return this.cargosPers;
 	}
 
-	public void setHorExtCargosPers(Set<CargoPersonaDTO> horExtCargosPers) {
-		this.horExtCargosPers = horExtCargosPers;
+	public void setCargosPers(Set<CargoPersonaDTO> cargosPers) {
+		this.cargosPers = cargosPers;
 	}
 	
-	public Set<PersonaDTO> getHorExtPersonas() {
-		return this.horExtPersonas;
+	public Set<PersonaDTO> getPersonas() {
+		return this.personas;
 	}
 
-	public void setHorExtPersonas(Set<PersonaDTO> horExtPersonas) {
-		this.horExtPersonas = horExtPersonas;
+	public void setPersonas(Set<PersonaDTO> personas) {
+		this.personas = personas;
 	}
 	
-	public Set<PermisoExtraDTO> getHorPermisosExtras() {
-		return this.horPermisosExtras;
+	public Set<PermisoExtraDTO> getPermisosExtras() {
+		return this.permisosExtras;
 	}
 
-	public void setHorPermisosExtras(Set<PermisoExtraDTO> horPermisosExtras) {
-		this.horPermisosExtras = horPermisosExtras;
+	public void setPermisosExtras(Set<PermisoExtraDTO> permisosExtras) {
+		this.permisosExtras = permisosExtras;
 	}
 	
 }

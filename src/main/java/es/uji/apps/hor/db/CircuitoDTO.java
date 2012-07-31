@@ -32,11 +32,11 @@ public class CircuitoDTO implements Serializable {
 	//bi-directional many-to-one association to EstudioDTO
     @ManyToOne
 	@JoinColumn(name="ESTUDIO_ID")
-	private EstudioDTO horEstudio;
+	private EstudioDTO estudio;
 
 	//bi-directional many-to-one association to HorItemsCircuito
 	@OneToMany(mappedBy="circuito")
-	private Set<ItemCircuitoDTO> horItemsCircuitos;
+	private Set<ItemCircuitoDTO> itemsCircuitos;
 
     public CircuitoDTO() {
     }
@@ -81,20 +81,20 @@ public class CircuitoDTO implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public EstudioDTO getHorEstudio() {
-		return this.horEstudio;
+	public EstudioDTO getEstudio() {
+		return this.estudio;
 	}
 
-	public void setHorEstudio(EstudioDTO horEstudio) {
-		this.horEstudio = horEstudio;
+	public void setEstudio(EstudioDTO estudio) {
+		this.estudio = estudio;
 	}
 	
-	public Set<ItemCircuitoDTO> getHorItemsCircuitos() {
-		return this.horItemsCircuitos;
+	public Set<ItemCircuitoDTO> getItemsCircuitos() {
+		return this.itemsCircuitos;
 	}
 
-	public void setHorItemsCircuitos(Set<ItemCircuitoDTO> horItemsCircuitos) {
-		this.horItemsCircuitos = horItemsCircuitos;
+	public void setItemsCircuitos(Set<ItemCircuitoDTO> itemsCircuitos) {
+		this.itemsCircuitos = itemsCircuitos;
 	}
 	
 }

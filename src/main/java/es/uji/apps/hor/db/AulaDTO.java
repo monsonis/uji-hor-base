@@ -30,15 +30,15 @@ public class AulaDTO implements Serializable {
 	//bi-directional many-to-one association to CentroDTO
     @ManyToOne
 	@JoinColumn(name="CENTRO_ID")
-	private CentroDTO horCentro;
+	private CentroDTO centro;
 
 	//bi-directional many-to-one association to AulaEstudioDTO
-	@OneToMany(mappedBy="horAula")
-	private Set<AulaEstudioDTO> horAulasEstudios;
+	@OneToMany(mappedBy="aula")
+	private Set<AulaEstudioDTO> aulasEstudios;
 
 	//bi-directional many-to-one association to AulaPlanificacionDTO
-	@OneToMany(mappedBy="horAula")
-	private Set<AulaPlanificacionDTO> horAulasPlanificacions;
+	@OneToMany(mappedBy="aula")
+	private Set<AulaPlanificacionDTO> aulasPlanificacions;
 
     public AulaDTO() {
     }
@@ -83,28 +83,28 @@ public class AulaDTO implements Serializable {
 		this.tipo = tipo;
 	}
 
-	public CentroDTO getHorCentro() {
-		return this.horCentro;
+	public CentroDTO getCentro() {
+		return this.centro;
 	}
 
-	public void setHorCentro(CentroDTO horCentro) {
-		this.horCentro = horCentro;
+	public void setCentro(CentroDTO centro) {
+		this.centro = centro;
 	}
 	
-	public Set<AulaEstudioDTO> getHorAulasEstudios() {
-		return this.horAulasEstudios;
+	public Set<AulaEstudioDTO> getAulasEstudios() {
+		return this.aulasEstudios;
 	}
 
-	public void setHorAulasEstudios(Set<AulaEstudioDTO> horAulasEstudios) {
-		this.horAulasEstudios = horAulasEstudios;
+	public void setAulasEstudios(Set<AulaEstudioDTO> aulasEstudios) {
+		this.aulasEstudios = aulasEstudios;
 	}
 	
-	public Set<AulaPlanificacionDTO> getHorAulasPlanificacions() {
-		return this.horAulasPlanificacions;
+	public Set<AulaPlanificacionDTO> getAulasPlanificacions() {
+		return this.aulasPlanificacions;
 	}
 
-	public void setHorAulasPlanificacions(Set<AulaPlanificacionDTO> horAulasPlanificacions) {
-		this.horAulasPlanificacions = horAulasPlanificacions;
+	public void setAulasPlanificacions(Set<AulaPlanificacionDTO> aulasPlanificacions) {
+		this.aulasPlanificacions = aulasPlanificacions;
 	}
 	
 }

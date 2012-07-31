@@ -36,7 +36,7 @@ public class ProfesorDTO implements Serializable {
 	//bi-directional many-to-one association to AreaDTO
     @ManyToOne
 	@JoinColumn(name="AREA_ID")
-	private AreaDTO horArea;
+	private AreaDTO area;
 
     public ProfesorDTO() {
     }
@@ -89,12 +89,12 @@ public class ProfesorDTO implements Serializable {
 		this.horItems = horItems;
 	}
 	
-	public AreaDTO getHorArea() {
-		return this.horArea;
+	public AreaDTO getArea() {
+		return this.area;
 	}
 
-	public void setHorArea(AreaDTO horArea) {
-		this.horArea = horArea;
+	public void setArea(AreaDTO area) {
+		this.area = area;
 	}
 	
 }

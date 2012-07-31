@@ -21,7 +21,7 @@ public class TipoCargoDTO implements Serializable {
 	private String nombre;
 
 	//bi-directional many-to-one association to CargoPersonaDTO
-	@OneToMany(mappedBy="horTiposCargo")
+	@OneToMany(mappedBy="tiposCargo")
 	private Set<CargoPersonaDTO> horExtCargosPers;
 
 	//bi-directional many-to-one association to PermisoExtraDTO
