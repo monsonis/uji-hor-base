@@ -1,6 +1,6 @@
 Ext.define('HOR.controller.ControllerDashboards', {
 	extend : 'Ext.app.Controller',
-	views : [ 'dashboard.PanelDashboard' ],
+	views : [ 'dashboard.PanelDashboard', 'ApplicationViewport' ],
 
 	init : function() {
 		this.control({

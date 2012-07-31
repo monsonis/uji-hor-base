@@ -1,7 +1,7 @@
 Ext.define('HOR.view.horarios.PanelCalendario',
 {
     extend : 'Extensible.calendar.CalendarPanel',
-    alias : 'widget.panelCalendario',
+    alias : 'widget.panelCalendario',    
     region : 'center',
     title : 'Calendari',
     depends : [ 'HOR.store.StoreCalendarios', 'HOR.store.StoreEventos' ],

@@ -23,10 +23,13 @@ Ext.require('Ext.ux.TabCloseMenu');
 Ext.require('Ext.ux.uji.TabPanel');
 Ext.require('Ext.ux.uji.form.LookupComboBox');
 Ext.require('Ext.ux.uji.form.LookupWindow');
+Ext.require('Ext.ux.uji.ApplicationViewport');
 Ext.require('Ext.form.field.Trigger');
 Ext.require('Ext.form.FieldSet');
 Ext.require('Ext.form.field.Text');
 Ext.require('Ext.form.Label');
+Ext.require('Ext.toolbar.Toolbar');
+Ext.require('Ext.toolbar.Spacer');
 Ext.require('Extensible.calendar.menu.Event');
 Ext.require('Extensible.calendar.data.MemoryCalendarStore');
 Ext.require('Extensible.calendar.data.EventStore');
@@ -52,23 +55,24 @@ Ext.application(
     appFolder : 'app',
     autoCreateViewport : false,
 
-    views : [ 'dashboard.PanelDashboard', 'horarios.PanelHorarios', 'horarios.FiltroGrupos', 'horarios.PanelCalendario', 'horarios.SelectorIntervaloHorario' ],
-    controllers : [ 'ControllerDashboards', 'ControllerCalendario', 'ControllerGrupoAsignatura', 'ControllerFiltroCalendario', 'ControllerConfiguracion' ],
+    views : [ 'dashboard.PanelDashboard', 'horarios.PanelHorarios', 'horarios.FiltroGrupos', 'horarios.PanelCalendario', 'horarios.SelectorIntervaloHorario', 'commons.MenuSuperior', 'ApplicationViewport' ],
+    controllers : [ 'ControllerDashboards', 'ControllerCalendario', 'ControllerGrupoAsignatura', 'ControllerFiltroCalendario', 'ControllerConfiguracion', 'ControllerPrincipal' ],
 
     launch : function()
     {
         Ext.Loader.loadScriptFile('/hor/app/config/ext-lang-ca.js', function()
         {
-
             Ext.Loader.loadScriptFile('/hor/app/config/extensible-lang-ca.js', function()
             {
                 Ext.Loader.loadScriptFile('/hor/app/config/calendar.js', function()
                 {
-                    Ext.create('Ext.ux.uji.ApplicationViewport',
+                    var viewport = Ext.create('HOR.view.ApplicationViewport',
                     {
                         codigoAplicacion : 'HOR',
-                        tituloAplicacion : 'Gestión de horarios'
+                        tituloAplicacion : 'Gestión de horarios',
+                        dashboard : true
                     });
+                    viewport.addNewTab('HOR.view.horarios.PanelHorarios'); 
                 });
             });
         });
