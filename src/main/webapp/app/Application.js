@@ -55,26 +55,21 @@ Ext.application(
     appFolder : 'app',
     autoCreateViewport : false,
 
-    views : [ 'dashboard.PanelDashboard', 'horarios.PanelHorarios', 'horarios.FiltroGrupos', 'horarios.PanelCalendario', 'horarios.SelectorIntervaloHorario', 'commons.MenuSuperior', 'ApplicationViewport' ],
+    views : [ 'dashboard.PanelDashboard', 'horarios.PanelHorarios', 'horarios.FiltroGrupos', 'horarios.PanelCalendario', 'horarios.SelectorIntervaloHorario', 'commons.MenuSuperior',
+            'ApplicationViewport' ],
     controllers : [ 'ControllerDashboards', 'ControllerCalendario', 'ControllerGrupoAsignatura', 'ControllerFiltroCalendario', 'ControllerConfiguracion', 'ControllerPrincipal' ],
 
     launch : function()
     {
-        Ext.Loader.loadScriptFile('/hor/app/config/ext-lang-ca.js', function()
+        Ext.Loader.loadScriptFile('/hor/app/config/calendar.js', function()
         {
-            Ext.Loader.loadScriptFile('/hor/app/config/extensible-lang-ca.js', function()
+            var viewport = Ext.create('HOR.view.ApplicationViewport',
             {
-                Ext.Loader.loadScriptFile('/hor/app/config/calendar.js', function()
-                {
-                    var viewport = Ext.create('HOR.view.ApplicationViewport',
-                    {
-                        codigoAplicacion : 'HOR',
-                        tituloAplicacion : 'Gestión de horarios',
-                        dashboard : true
-                    });
-                    viewport.addNewTab('HOR.view.horarios.PanelHorarios'); 
-                });
+                codigoAplicacion : 'HOR',
+                tituloAplicacion : 'Gestión de horarios',
+                dashboard : true
             });
+            viewport.addNewTab('HOR.view.horarios.PanelHorarios');
         });
     }
 
