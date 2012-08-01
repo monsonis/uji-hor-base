@@ -111,35 +111,25 @@ Ext.define('HOR.controller.ControllerCalendario',
 
                         Ext.Array.each(Ext.ComponentQuery.query('panelCalendario'), function(panel)
                         {
-                            panel.hide();
+                            panel.destroy();
                         });
 
+                        var eventos = Ext.create('HOR.store.StoreEventos');
                         panelPadre.add(
                         {
                             xtype : 'panelCalendario',
-                            activeItem : 0,
+                            eventStore : eventos,
                             showMultiDayView : true,
-                            multiDayViewCfg :
-                            {
-                                dayCount : 5,
-                                startDay : 1,
-                                startDayIsStatic : true,
-                                showTime : false,
-                                showMonth : false,
+                            viewConfig: {
                                 viewStartHour : horaInicio,
                                 viewEndHour : horaFin
                             },
-                            listeners :
-                            {
-                                'afterrender' : function()
-                                {
-                                    this.getActiveView().refresh(true);
+                            listeners: {
+                                afterrender: function() {
+                                    eventos.load();
                                 }
                             }
                         });
-
-
-                        // calendario.getActiveView().refresh(true);
                     }
                 }
             });
