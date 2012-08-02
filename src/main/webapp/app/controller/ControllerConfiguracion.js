@@ -5,13 +5,18 @@ Ext.define('HOR.controller.ControllerConfiguracion',
     model : [ 'Configuracion' ],
     refs : [
     {
+        selector : 'panelHorarios',
+        ref : 'panelHorarios'
+    },
+
+    {
         selector : 'panelHorarios filtroGrupos',
         ref : 'filtroGrupos'
     },
     {
-        selector: 'selectorIntervaloHorario',
-        ref: 'selectorIntervaloHorario'
-    }],
+        selector : 'selectorIntervaloHorario',
+        ref : 'selectorIntervaloHorario'
+    } ],
     init : function()
     {
         this.control(
@@ -33,7 +38,8 @@ Ext.define('HOR.controller.ControllerConfiguracion',
             },
             'panelHorarios filtroGrupos combobox[name=grupo]' :
             {
-                select : function(combo) {
+                select : function(combo)
+                {
                     combo.up('filtroGrupos').down('button[name=intervaloHorario]').setVisible(true);
                 }
             }
@@ -67,9 +73,12 @@ Ext.define('HOR.controller.ControllerConfiguracion',
             {
                 storeConfiguracion.rejectChanges();
             },
-            success: function() {
-                Ext.ComponentQuery.query("selectorIntervaloHorario")[0].destroy();
-            }
+            success : function()
+            {
+                this.getPanelHorarios().fireEvent("refreshCalendar");
+                this.getSelectorIntervaloHorario().destroy();
+            },
+            scope : this
         });
     },
 

@@ -30,6 +30,10 @@ Ext.define('HOR.controller.ControllerCalendario',
                 select : this.refreshCalendar
             },
 
+            'panelHorarios' :
+            {
+                refreshCalendar : this.refreshCalendar
+            },
             'selectorCalendarios checkbox' :
             {
                 change : this.refreshCalendar
@@ -120,12 +124,15 @@ Ext.define('HOR.controller.ControllerCalendario',
                             xtype : 'panelCalendario',
                             eventStore : eventos,
                             showMultiDayView : true,
-                            viewConfig: {
+                            viewConfig :
+                            {
                                 viewStartHour : horaInicio,
                                 viewEndHour : horaFin
                             },
-                            listeners: {
-                                afterrender: function() {
+                            listeners :
+                            {
+                                afterrender : function()
+                                {
                                     eventos.load();
                                 }
                             }
