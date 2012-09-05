@@ -31,7 +31,7 @@ public class ProfesorDTO implements Serializable {
 
 	//bi-directional many-to-one association to ItemDTO
 	@OneToMany(mappedBy="profesor")
-	private Set<ItemDTO> horItems;
+	private Set<ItemDTO> items;
 
 	//bi-directional many-to-one association to AreaDTO
     @ManyToOne
@@ -81,12 +81,12 @@ public class ProfesorDTO implements Serializable {
 		this.pendienteContratacion = pendienteContratacion;
 	}
 
-	public Set<ItemDTO> getHorItems() {
-		return this.horItems;
+	public Set<ItemDTO> getItems() {
+		return this.items;
 	}
 
-	public void setHorItems(Set<ItemDTO> horItems) {
-		this.horItems = horItems;
+	public void setItems(Set<ItemDTO> items) {
+		this.items = items;
 	}
 	
 	public AreaDTO getArea() {

@@ -29,7 +29,7 @@ public class EstudioDTO implements Serializable {
 
 	//bi-directional many-to-one association to CircuitoDTO
 	@OneToMany(mappedBy="estudio")
-	private Set<CircuitoDTO> horCircuitos;
+	private Set<CircuitoDTO> circuitos;
 
 	//bi-directional many-to-one association to CentroDTO
     @ManyToOne
@@ -39,19 +39,19 @@ public class EstudioDTO implements Serializable {
 	//bi-directional many-to-one association to TipoEstudioDTO
     @ManyToOne
 	@JoinColumn(name="TIPO_ID")
-	private TipoEstudioDTO horTiposEstudio;
+	private TipoEstudioDTO tiposEstudio;
 
 	//bi-directional many-to-one association to CargoPersonaDTO
 	@OneToMany(mappedBy="estudio")
-	private Set<CargoPersonaDTO> horExtCargosPers;
+	private Set<CargoPersonaDTO> cargosPersona;
 
 	//bi-directional many-to-one association to ItemDTO
 	@OneToMany(mappedBy="estudio")
-	private Set<ItemDTO> horItems;
+	private Set<ItemDTO> items;
 
 	//bi-directional many-to-one association to PermisoExtraDTO
-	@OneToMany(mappedBy="horEstudio")
-	private Set<PermisoExtraDTO> horPermisosExtras;
+	@OneToMany(mappedBy="estudio")
+	private Set<PermisoExtraDTO> permisosExtras;
 
     public EstudioDTO() {
     }
@@ -88,12 +88,12 @@ public class EstudioDTO implements Serializable {
 		this.aulasEstudios = aulasEstudios;
 	}
 	
-	public Set<CircuitoDTO> getHorCircuitos() {
-		return this.horCircuitos;
+	public Set<CircuitoDTO> getCircuitos() {
+		return this.circuitos;
 	}
 
-	public void setHorCircuitos(Set<CircuitoDTO> horCircuitos) {
-		this.horCircuitos = horCircuitos;
+	public void setCircuitos(Set<CircuitoDTO> circuitos) {
+		this.circuitos = circuitos;
 	}
 	
 	public CentroDTO getCentro() {
@@ -104,36 +104,36 @@ public class EstudioDTO implements Serializable {
 		this.centro = centro;
 	}
 	
-	public TipoEstudioDTO getHorTiposEstudio() {
-		return this.horTiposEstudio;
+	public TipoEstudioDTO getTiposEstudio() {
+		return this.tiposEstudio;
 	}
 
-	public void setHorTiposEstudio(TipoEstudioDTO horTiposEstudio) {
-		this.horTiposEstudio = horTiposEstudio;
+	public void setTiposEstudio(TipoEstudioDTO tiposEstudio) {
+		this.tiposEstudio = tiposEstudio;
 	}
 	
-	public Set<CargoPersonaDTO> getHorExtCargosPers() {
-		return this.horExtCargosPers;
+	public Set<CargoPersonaDTO> getCargosPersona() {
+		return this.cargosPersona;
 	}
 
-	public void setHorExtCargosPers(Set<CargoPersonaDTO> horExtCargosPers) {
-		this.horExtCargosPers = horExtCargosPers;
+	public void setCargosPersona(Set<CargoPersonaDTO> cargosPersona) {
+		this.cargosPersona = cargosPersona;
 	}
 	
-	public Set<ItemDTO> getHorItems() {
-		return this.horItems;
+	public Set<ItemDTO> getItems() {
+		return this.items;
 	}
 
-	public void setHorItems(Set<ItemDTO> horItems) {
-		this.horItems = horItems;
+	public void setItems(Set<ItemDTO> items) {
+		this.items = items;
 	}
 	
-	public Set<PermisoExtraDTO> getHorPermisosExtras() {
-		return this.horPermisosExtras;
+	public Set<PermisoExtraDTO> getPermisosExtras() {
+		return this.permisosExtras;
 	}
 
-	public void setHorPermisosExtras(Set<PermisoExtraDTO> horPermisosExtras) {
-		this.horPermisosExtras = horPermisosExtras;
+	public void setPermisosExtras(Set<PermisoExtraDTO> permisosExtras) {
+		this.permisosExtras = permisosExtras;
 	}
 	
 }

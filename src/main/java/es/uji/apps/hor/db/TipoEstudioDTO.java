@@ -24,12 +24,12 @@ public class TipoEstudioDTO implements Serializable {
 	private BigDecimal orden;
 
 	//bi-directional many-to-one association to EstudioDTO
-	@OneToMany(mappedBy="horTiposEstudio")
-	private Set<EstudioDTO> horEstudios;
+	@OneToMany(mappedBy="tiposEstudio")
+	private Set<EstudioDTO> estudios;
 
 	//bi-directional many-to-one association to DetalleSemestreDTO
 	@OneToMany(mappedBy="tiposEstudio")
-	private Set<DetalleSemestreDTO> horSemestresDetalles;
+	private Set<DetalleSemestreDTO> detalleSemestres;
 
     public TipoEstudioDTO() {
     }
@@ -58,20 +58,20 @@ public class TipoEstudioDTO implements Serializable {
 		this.orden = orden;
 	}
 
-	public Set<EstudioDTO> getHorEstudios() {
-		return this.horEstudios;
+	public Set<EstudioDTO> getEstudios() {
+		return this.estudios;
 	}
 
-	public void setHorEstudios(Set<EstudioDTO> horEstudios) {
-		this.horEstudios = horEstudios;
+	public void setEstudios(Set<EstudioDTO> estudios) {
+		this.estudios = estudios;
 	}
 	
-	public Set<DetalleSemestreDTO> getHorSemestresDetalles() {
-		return this.horSemestresDetalles;
+	public Set<DetalleSemestreDTO> getDetalleSemestres() {
+		return this.detalleSemestres;
 	}
 
-	public void setHorSemestresDetalles(Set<DetalleSemestreDTO> horSemestresDetalles) {
-		this.horSemestresDetalles = horSemestresDetalles;
+	public void setDetalleSemestres(Set<DetalleSemestreDTO> detalleSemestres) {
+		this.detalleSemestres = detalleSemestres;
 	}
 	
 }

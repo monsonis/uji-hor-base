@@ -22,11 +22,11 @@ public class TipoCargoDTO implements Serializable {
 
 	//bi-directional many-to-one association to CargoPersonaDTO
 	@OneToMany(mappedBy="tiposCargo")
-	private Set<CargoPersonaDTO> horExtCargosPers;
+	private Set<CargoPersonaDTO> cargosPersona;
 
 	//bi-directional many-to-one association to PermisoExtraDTO
-	@OneToMany(mappedBy="horTiposCargo")
-	private Set<PermisoExtraDTO> horPermisosExtras;
+	@OneToMany(mappedBy="tiposCargo")
+	private Set<PermisoExtraDTO> permisosExtras;
 
     public TipoCargoDTO() {
     }
@@ -47,20 +47,20 @@ public class TipoCargoDTO implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public Set<CargoPersonaDTO> getHorExtCargosPers() {
-		return this.horExtCargosPers;
+	public Set<CargoPersonaDTO> getCargosPersona() {
+		return this.cargosPersona;
 	}
 
-	public void setHorExtCargosPers(Set<CargoPersonaDTO> horExtCargosPers) {
-		this.horExtCargosPers = horExtCargosPers;
+	public void setCargosPersona(Set<CargoPersonaDTO> cargosPersona) {
+		this.cargosPersona = cargosPersona;
 	}
 	
-	public Set<PermisoExtraDTO> getHorPermisosExtras() {
-		return this.horPermisosExtras;
+	public Set<PermisoExtraDTO> getPermisosExtras() {
+		return this.permisosExtras;
 	}
 
-	public void setHorPermisosExtras(Set<PermisoExtraDTO> horPermisosExtras) {
-		this.horPermisosExtras = horPermisosExtras;
+	public void setPermisosExtras(Set<PermisoExtraDTO> permisosExtras) {
+		this.permisosExtras = permisosExtras;
 	}
 	
 }

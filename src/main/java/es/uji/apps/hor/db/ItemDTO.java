@@ -112,7 +112,7 @@ public class ItemDTO implements Serializable
     @JoinColumn(name = "SEMESTRE_ID")
     private SemestreDTO semestre;
 
-    // bi-directional many-to-one association to HorItemsCircuito
+    // bi-directional many-to-one association to ItemCircuitoDTO
     @OneToMany(mappedBy = "item")
     private Set<ItemCircuitoDTO> itemsCircuitos;
 

@@ -25,17 +25,17 @@ public class PermisoExtraDTO implements Serializable {
 	//bi-directional many-to-one association to EstudioDTO
     @ManyToOne
 	@JoinColumn(name="ESTUDIO_ID")
-	private EstudioDTO horEstudio;
+	private EstudioDTO estudio;
 
 	//bi-directional many-to-one association to PersonaDTO
     @ManyToOne
 	@JoinColumn(name="PERSONA_ID")
-	private PersonaDTO horExtPersona;
+	private PersonaDTO persona;
 
 	//bi-directional many-to-one association to TipoCargoDTO
     @ManyToOne
 	@JoinColumn(name="TIPO_CARGO_ID")
-	private TipoCargoDTO horTiposCargo;
+	private TipoCargoDTO tiposCargo;
 
     public PermisoExtraDTO() {
     }
@@ -56,28 +56,28 @@ public class PermisoExtraDTO implements Serializable {
 		this.departamento = departamento;
 	}
 	
-	public EstudioDTO getHorEstudio() {
-		return this.horEstudio;
+	public EstudioDTO getEstudio() {
+		return this.estudio;
 	}
 
-	public void setHorEstudio(EstudioDTO horEstudio) {
-		this.horEstudio = horEstudio;
+	public void setEstudio(EstudioDTO estudio) {
+		this.estudio = estudio;
 	}
 	
-	public PersonaDTO getHorExtPersona() {
-		return this.horExtPersona;
+	public PersonaDTO getPersona() {
+		return this.persona;
 	}
 
-	public void setHorExtPersona(PersonaDTO horExtPersona) {
-		this.horExtPersona = horExtPersona;
+	public void setPersona(PersonaDTO persona) {
+		this.persona = persona;
 	}
 	
-	public TipoCargoDTO getHorTiposCargo() {
-		return this.horTiposCargo;
+	public TipoCargoDTO getTiposCargo() {
+		return this.tiposCargo;
 	}
 
-	public void setHorTiposCargo(TipoCargoDTO horTiposCargo) {
-		this.horTiposCargo = horTiposCargo;
+	public void setTiposCargo(TipoCargoDTO tiposCargo) {
+		this.tiposCargo = tiposCargo;
 	}
 	
 }

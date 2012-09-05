@@ -34,7 +34,7 @@ public class CircuitoDTO implements Serializable {
 	@JoinColumn(name="ESTUDIO_ID")
 	private EstudioDTO estudio;
 
-	//bi-directional many-to-one association to HorItemsCircuito
+	//bi-directional many-to-one association to ItemCircuitoDTO
 	@OneToMany(mappedBy="circuito")
 	private Set<ItemCircuitoDTO> itemsCircuitos;
 

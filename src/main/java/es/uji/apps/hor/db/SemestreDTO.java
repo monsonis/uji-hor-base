@@ -22,11 +22,11 @@ public class SemestreDTO implements Serializable {
 
 	//bi-directional many-to-one association to ItemDTO
 	@OneToMany(mappedBy="semestre")
-	private Set<ItemDTO> horItems;
+	private Set<ItemDTO> items;
 
 	//bi-directional many-to-one association to DetalleSemestreDTO
 	@OneToMany(mappedBy="semestre")
-	private Set<DetalleSemestreDTO> horSemestresDetalles;
+	private Set<DetalleSemestreDTO> detalleSemestres;
 
     public SemestreDTO() {
     }
@@ -47,20 +47,20 @@ public class SemestreDTO implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public Set<ItemDTO> getHorItems() {
-		return this.horItems;
+	public Set<ItemDTO> getItems() {
+		return this.items;
 	}
 
-	public void setHorItems(Set<ItemDTO> horItems) {
-		this.horItems = horItems;
+	public void setItems(Set<ItemDTO> items) {
+		this.items = items;
 	}
 	
-	public Set<DetalleSemestreDTO> getHorSemestresDetalles() {
-		return this.horSemestresDetalles;
+	public Set<DetalleSemestreDTO> getDetalleSemestres() {
+		return this.detalleSemestres;
 	}
 
-	public void setHorSemestresDetalles(Set<DetalleSemestreDTO> horSemestresDetalles) {
-		this.horSemestresDetalles = horSemestresDetalles;
+	public void setDetalleSemestres(Set<DetalleSemestreDTO> detalleSemestres) {
+		this.detalleSemestres = detalleSemestres;
 	}
 	
 }
