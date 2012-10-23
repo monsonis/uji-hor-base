@@ -5,7 +5,8 @@ Ext.Loader.setConfig(
     {
         'Ext.ux' : '/hor/examples/ux',
         'Ext.ux.uji' : '/hor/Ext/ux/uji',
-        'Extensible' : '/hor/extensible-1.5.1/src'
+        'Extensible' : '/hor/extensible-1.5.1/src',
+        'Event' : '/hor/app/event'
     }
 });
 
@@ -35,6 +36,12 @@ Ext.require('Extensible.calendar.data.MemoryCalendarStore');
 Ext.require('Extensible.calendar.data.EventStore');
 Ext.require('Extensible.calendar.CalendarPanel');
 Ext.require('Extensible.calendar.template.BoxLayout');
+Ext.require('Event.form.field.DateRange');
+Ext.require('Ext.form.field.Checkbox');
+Ext.require('Ext.form.field.Radio');
+Ext.require('Ext.form.RadioGroup');
+Ext.require('Event.form.field.RadioNumber');
+Ext.require('Event.form.field.RadioDate');
 
 var login = 'ferrerq';
 
