@@ -169,9 +169,9 @@ Ext.define('HOR.controller.ControllerCalendario',
     deleteEvento : function(calendario, registro)
     {
         var calendario = this.getPanelCalendario();
-        var store = calendario.eventStore;
+        var store = calendario.store;
         store.remove(registro);
-
+        
         store.sync(
         {
             success : function()
