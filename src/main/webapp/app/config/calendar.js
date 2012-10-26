@@ -14,7 +14,10 @@ Extensible.calendar.menu.Event.override(
             {
                 text : me.editDetailsText,
                 iconCls : 'extensible-cal-icon-evt-edit',
-                menu : me.dateMenu
+                scope: me,
+                handler: function(){
+                    me.fireEvent('editdetails', me, me.rec, me.ctxEl);
+                }
             },
             {
                 text : 'Assignar aula',
