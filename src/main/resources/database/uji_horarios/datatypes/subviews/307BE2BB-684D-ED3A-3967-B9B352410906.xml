@@ -1,21 +1,21 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <Diagram class="oracle.dbtools.crest.swingui.datatypes.DPVDataTypes" id="307BE2BB-684D-ED3A-3967-B9B352410906">
-   <createdBy>ferrerq</createdBy>
-   <createdTime>2012-04-26 10:42:41 UTC</createdTime>
-   <autoRoute>false</autoRoute>
-   <boxInbox>true</boxInbox>
-   <showLegend>false</showLegend>
-   <showLabels>false</showLabels>
-   <showGrid>false</showGrid>
-   <diagramColor>-1</diagramColor>
-   <display>false</display>
-   <notation>1</notation>
-   <objectViews>
-      <OView class="oracle.dbtools.crest.swingui.datatypes.TVStructuredType" oid="47E390DE-0671-C4B1-8428-0F45CBEE18F8" otype="StructuredType" vid="54117EFF-BE97-71FF-E2D5-CA4090017B5E">
-         <bounds x="20" y="20" width="100" height="100"/>
-      </OView>
-      <OView class="oracle.dbtools.crest.swingui.datatypes.TVStructuredType" oid="F72C39E0-D1CA-8821-2AD7-A1E95A37D3D1" otype="StructuredType" vid="B0A90A47-3B93-21D0-FEF1-22AF69F75DD0">
-         <bounds x="20" y="20" width="100" height="100"/>
-      </OView>
-   </objectViews>
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-04-26 10:42:41 UTC</createdTime>
+<autoRoute>false</autoRoute>
+<boxInbox>true</boxInbox>
+<showLegend>false</showLegend>
+<showLabels>false</showLabels>
+<showGrid>false</showGrid>
+<diagramColor>-1</diagramColor>
+<display>false</display>
+<notation>1</notation>
+<objectViews>
+<OView class="oracle.dbtools.crest.swingui.datatypes.TVStructuredType" oid="47E390DE-0671-C4B1-8428-0F45CBEE18F8" otype="StructuredType" vid="54117EFF-BE97-71FF-E2D5-CA4090017B5E">
+<bounds x="20" y="20" width="100" height="100"/>
+</OView>
+<OView class="oracle.dbtools.crest.swingui.datatypes.TVStructuredType" oid="F72C39E0-D1CA-8821-2AD7-A1E95A37D3D1" otype="StructuredType" vid="B0A90A47-3B93-21D0-FEF1-22AF69F75DD0">
+<bounds x="20" y="20" width="100" height="100"/>
+</OView>
+</objectViews>
 </Diagram>

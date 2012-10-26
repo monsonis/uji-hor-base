@@ -128,6 +128,11 @@
 			<font_object fo_type="Texto" font_color="-16777216" font_name="Dialog" font_size="10" font_style="0"/>
 		</fonts>
 		</fc_object>
+		<fc_object classname="Legend" background="-1" foreground="-16777216">
+		<fonts>
+			<font_object fo_type="Texto" font_color="-16777216" font_name="Dialog" font_size="10" font_style="0"/>
+		</fonts>
+		</fc_object>
 	</default_fonts_and_colors>
 	<default_line_widths_and_colors>
 		<lwc_object classname="Logical Relation" color="-16777216" width="1">
@@ -199,62 +204,66 @@
 	</engineering_params>
 	<eng_compare show_sel_prop_only="true" not_apply_for_new_objects="true" exclude_from_tree="false">
 		<entity_table>
-			<property name="Name" selected="true"/>
-			<property name="Short Name / Abbreviation" selected="true"/>
-			<property name="Comment" selected="true"/>
-			<property name="Comment in RDBMS" selected="true"/>
-			<property name="Notes" selected="true"/>
-			<property name="TempTable Scope" selected="true"/>
-			<property name="Table Type" selected="true"/>
-			<property name="Structured Type" selected="true"/>
-			<property name="Type Substitution (Super-Type Object)" selected="true"/>
-			<property name="Min Volumes" selected="true"/>
-			<property name="Expected Volumes" selected="true"/>
-			<property name="Max Volumes" selected="true"/>
-			<property name="Growth Percent" selected="true"/>
-			<property name="Growth Type" selected="true"/>
-			<property name="Normal Form" selected="true"/>
-			<property name="Adequately Normalized" selected="true"/>
+			<property name="Nombre" selected="true"/>
+			<property name="Abreviatura" selected="true"/>
+			<property name="Comentario" selected="true"/>
+			<property name="Comentarios en RDBMS" selected="true"/>
+			<property name="Notas" selected="true"/>
+			<property name="Ámbito de Tabla Temporal" selected="true"/>
+			<property name="Tipo de Tabla" selected="true"/>
+			<property name="Tipo Estructurado" selected="true"/>
+			<property name="Sustitución de Tipo (Objeto de Supertipo)" selected="true"/>
+			<property name="Volúmenes Mínimos" selected="true"/>
+			<property name="Volúmenes Esperados" selected="true"/>
+			<property name="Volúmenes Máximos" selected="true"/>
+			<property name="Porcentaje de Crecimiento" selected="true"/>
+			<property name="Tipo de Crecimiento" selected="true"/>
+			<property name="Formulario Normal::" selected="true"/>
+			<property name="Con Normalización Adecuada" selected="true"/>
 		</entity_table>
 		<attribute_column>
-			<property name="Name" selected="true"/>
-			<property name="Data Type" selected="true"/>
-			<property name="Data Type Kind" selected="true"/>
-			<property name="Mandatory" selected="true"/>
-			<property name="Default Value" selected="true"/>
-			<property name="Check Constraint Name" selected="true"/>
-			<property name="Use Domain Constraint" selected="true"/>
-			<property name="Comment" selected="true"/>
-			<property name="Comment in RDBMS" selected="true"/>
-			<property name="Notes" selected="true"/>
-			<property name="Source Type" selected="true"/>
-			<property name="Formula Description" selected="true"/>
-			<property name="Type Substitution" selected="true"/>
-			<property name="Scope" selected="true"/>
+			<property name="Nombre" selected="true"/>
+			<property name="Tipo de Dato" selected="true"/>
+			<property name="Clase de Tipo de Dato" selected="true"/>
+			<property name="Obligatorio" selected="true"/>
+			<property name="Valor por Defecto" selected="true"/>
+			<property name="Nombre de Restricción de Control" selected="true"/>
+			<property name="Usar Restricción de Dominio" selected="true"/>
+			<property name="Restricción de Control" selected="true"/>
+			<property name="Restricción de Rango" selected="true"/>
+			<property name="Restricción de LOV" selected="true"/>
+			<property name="Comentario" selected="true"/>
+			<property name="Comentarios en RDBMS" selected="true"/>
+			<property name="Notas" selected="true"/>
+			<property name="Tipo de Origen" selected="true"/>
+			<property name="Descripción de Fórmula" selected="true"/>
+			<property name="Sustitución de Tipo" selected="true"/>
+			<property name="Ámbito" selected="true"/>
 		</attribute_column>
 		<key_index>
-			<property name="Name" selected="true"/>
-			<property name="Comment" selected="true"/>
-			<property name="Comment in RDBMS" selected="true"/>
-			<property name="Notes" selected="true"/>
-			<property name="Primary Key" selected="true"/>
-			<property name="Attributes/Columns" selected="true"/>
+			<property name="Nombre" selected="true"/>
+			<property name="Comentario" selected="true"/>
+			<property name="Comentarios en RDBMS" selected="true"/>
+			<property name="Notas" selected="true"/>
+			<property name="Clave Primaria" selected="true"/>
+			<property name="Atributos/Columnas" selected="true"/>
 		</key_index>
 		<relation_fk>
-			<property name="Name" selected="true"/>
-			<property name="Comment" selected="true"/>
-			<property name="Comment in RDBMS" selected="true"/>
-			<property name="Notes" selected="true"/>
+			<property name="Nombre" selected="true"/>
+			<property name="Suprimir Regla" selected="true"/>
+			<property name="Comentario" selected="true"/>
+			<property name="Comentarios en RDBMS" selected="true"/>
+			<property name="Notas" selected="true"/>
 		</relation_fk>
 		<entityview_view>
-			<property name="Name" selected="true"/>
-			<property name="Comment" selected="true"/>
-			<property name="Comment in RDBMS" selected="true"/>
-			<property name="Notes" selected="true"/>
-			<property name="Structured Type" selected="true"/>
-			<property name="Where" selected="true"/>
+			<property name="Nombre" selected="true"/>
+			<property name="Comentario" selected="true"/>
+			<property name="Comentarios en RDBMS" selected="true"/>
+			<property name="Notas" selected="true"/>
+			<property name="Tipo Estructurado" selected="true"/>
+			<property name="Donde" selected="true"/>
 			<property name="Having" selected="true"/>
-			<property name="User Defined SQL" selected="true"/>
+			<property name="SQL Definido por el Usuario" selected="true"/>
 		</entityview_view>
 	</eng_compare>
 	<naming_options>

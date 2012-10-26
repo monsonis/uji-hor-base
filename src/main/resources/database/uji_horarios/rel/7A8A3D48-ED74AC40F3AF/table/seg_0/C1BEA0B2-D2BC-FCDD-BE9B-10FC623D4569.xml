@@ -1,95 +1,79 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <Table class="oracle.dbtools.crest.model.design.relational.Table" id="C1BEA0B2-D2BC-FCDD-BE9B-10FC623D4569" directorySegmentName="seg_0" name="hor_dias_semana">
-   <createdBy>ferrerq</createdBy>
-   <createdTime>2012-05-28 14:28:56 UTC</createdTime>
-   <generatorID>Generado por el Usuario</generatorID>
-   <ownerDesignName>uji_horarios</ownerDesignName>
-   <engineerTo>
-      <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
-      <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
-   </engineerTo>
-   <schemaObject>1DCAA4CA-B6D6-9F25-1764-48B2C86ECE47</schemaObject>
-   <pkName>hor_dias_semana_PK</pkName>
-   <fonts>
-      <FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
-         <foType>Título</foType>
-         <fontStyle>1</fontStyle>
-         <colorRGB>-16776961</colorRGB>
-      </FontObject>
-      <FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
-         <foType>Columna</foType>
-         <colorRGB>-16777216</colorRGB>
-      </FontObject>
-      <FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
-         <foType>Tipo de Dato</foType>
-         <colorRGB>-16744448</colorRGB>
-      </FontObject>
-      <FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
-         <foType>Elemento de Clave Primaria</foType>
-         <colorRGB>-16776961</colorRGB>
-      </FontObject>
-      <FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
-         <foType>Elemento de Clave Ajena</foType>
-         <colorRGB>-16777216</colorRGB>
-      </FontObject>
-      <FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
-         <foType>Elemento de Clave Única</foType>
-         <colorRGB>-16776961</colorRGB>
-      </FontObject>
-      <FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
-         <foType>No Nulo</foType>
-         <colorRGB>-65536</colorRGB>
-      </FontObject>
-      <FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
-         <foType>Clave</foType>
-         <colorRGB>-16777216</colorRGB>
-      </FontObject>
-   </fonts>
-   <columns>
-      <Column class="oracle.dbtools.crest.model.design.relational.Column" name="id" id="1920D5DD-C87A-869D-9CFB-2952DB68C47A">
-         <createdBy>ferrerq</createdBy>
-         <createdTime>2012-05-28 14:28:56 UTC</createdTime>
-         <generatorID>Generado por el Usuario</generatorID>
-         <ownerDesignName>uji_horarios</ownerDesignName>
-         <engineerTo>
-            <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
-            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
-         </engineerTo>
-         <use>0</use>
-         <logicalDatatype>LOGDT019</logicalDatatype>
-         <domain>B784D6D2-343C-97AF-8447-8FE7645FA837</domain>
-         <autoIncrementCycle>false</autoIncrementCycle>
-      </Column>
-      <Column class="oracle.dbtools.crest.model.design.relational.Column" name="nombre" id="9B62424D-46A8-5FA2-119D-E26765D654AE">
-         <createdBy>ferrerq</createdBy>
-         <createdTime>2012-05-28 14:28:56 UTC</createdTime>
-         <generatorID>Generado por el Usuario</generatorID>
-         <ownerDesignName>uji_horarios</ownerDesignName>
-         <engineerTo>
-            <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
-            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
-         </engineerTo>
-         <use>0</use>
-         <logicalDatatype>LOGDT024</logicalDatatype>
-         <domain>A4232D0A-6592-A0D0-A6DF-91817C0B6413</domain>
-         <autoIncrementCycle>false</autoIncrementCycle>
-      </Column>
-   </columns>
-   <indexes>
-      <ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="AA2777F3-6BC7-2BEE-06D0-D0F11013DBE4" name="hor_dias_semana_PK">
-         <createdBy>ferrerq</createdBy>
-         <createdTime>2012-05-28 14:28:56 UTC</createdTime>
-         <generatorID>Generado por el Usuario</generatorID>
-         <ownerDesignName>uji_horarios</ownerDesignName>
-         <engineerTo>
-            <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
-            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
-         </engineerTo>
-         <pk>true</pk>
-         <indexState>Primary Constraint</indexState>
-         <indexColumnUsage>
-            <colUsage columnID="1920D5DD-C87A-869D-9CFB-2952DB68C47A"/>
-         </indexColumnUsage>
-      </ind_PK_UK>
-   </indexes>
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-05-28 14:28:56 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<schemaObject>1DCAA4CA-B6D6-9F25-1764-48B2C86ECE47</schemaObject>
+<pkName>hor_dias_semana_PK</pkName>
+<fonts>
+<FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
+<foType>Título</foType>
+<fontStyle>1</fontStyle>
+<colorRGB>-16776961</colorRGB>
+</FontObject>
+<FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
+<foType>Columna</foType>
+<colorRGB>-16777216</colorRGB>
+</FontObject>
+<FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
+<foType>Tipo de Dato</foType>
+<colorRGB>-16744448</colorRGB>
+</FontObject>
+<FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
+<foType>Elemento de Clave Primaria</foType>
+<colorRGB>-16776961</colorRGB>
+</FontObject>
+<FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
+<foType>Elemento de Clave Ajena</foType>
+<colorRGB>-16777216</colorRGB>
+</FontObject>
+<FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
+<foType>Elemento de Clave Única</foType>
+<colorRGB>-16776961</colorRGB>
+</FontObject>
+<FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
+<foType>No Nulo</foType>
+<colorRGB>-65536</colorRGB>
+</FontObject>
+<FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
+<foType>Clave</foType>
+<colorRGB>-16777216</colorRGB>
+</FontObject>
+</fonts>
+<columns>
+<Column class="oracle.dbtools.crest.model.design.relational.Column" name="id" id="1920D5DD-C87A-869D-9CFB-2952DB68C47A">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-05-28 14:28:56 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<use>0</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<domain>B784D6D2-343C-97AF-8447-8FE7645FA837</domain>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column class="oracle.dbtools.crest.model.design.relational.Column" name="nombre" id="9B62424D-46A8-5FA2-119D-E26765D654AE">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-05-28 14:28:56 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<use>0</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<domain>A4232D0A-6592-A0D0-A6DF-91817C0B6413</domain>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes>
+<ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="AA2777F3-6BC7-2BEE-06D0-D0F11013DBE4" name="hor_dias_semana_PK">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-05-28 14:28:56 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<indexColumnUsage>
+<colUsage columnID="1920D5DD-C87A-869D-9CFB-2952DB68C47A"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
 </Table>

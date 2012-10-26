@@ -1,17 +1,13 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" id="81C927EF-C230-073F-32CB-D96714D80634" directorySegmentName="seg_0" name="hor_items_hor_profesores_FK">
-   <createdBy>ferrerq</createdBy>
-   <createdTime>2012-05-28 14:28:56 UTC</createdTime>
-   <generatorID>Generado por el Usuario</generatorID>
-   <ownerDesignName>uji_horarios</ownerDesignName>
-   <engineerTo>
-      <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
-      <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
-   </engineerTo>
-   <containerWithKeyObject>7185EE22-E0F3-C3F6-15A8-A27E06438805</containerWithKeyObject>
-   <deleteRule>NO ACTION</deleteRule>
-   <localFKIndex>09CE34B8-F091-E61A-BE2E-8402D220C200</localFKIndex>
-   <keyObject>9959992E-3944-CC44-D1F3-62E38614BD07</keyObject>
-   <mandatory>false</mandatory>
-   <transferable>true</transferable>
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-05-28 14:28:56 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<containerWithKeyObject>7185EE22-E0F3-C3F6-15A8-A27E06438805</containerWithKeyObject>
+<deleteRule>NO ACTION</deleteRule>
+<localFKIndex>09CE34B8-F091-E61A-BE2E-8402D220C200</localFKIndex>
+<keyObject>9959992E-3944-CC44-D1F3-62E38614BD07</keyObject>
+<mandatory>false</mandatory>
+<transferable>true</transferable>
 </FKIndexAssociation>

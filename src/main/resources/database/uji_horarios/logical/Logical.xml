@@ -1,8 +1,8 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <LogicalDesign class="oracle.dbtools.crest.model.design.logical.LogicalDesign" name="Logical" id="B288B61F-7AFC-F658-6F74-CDAE5268E5B9" mainViewID="15881D2D-8100-0C93-CCF2-A7EE878F7EDD">
-   <createdBy>ferrerq</createdBy>
-   <createdTime>2012-04-26 10:42:41 UTC</createdTime>
-   <generatorID>Generado por el Usuario</generatorID>
-   <ownerDesignName>gestió de horaris</ownerDesignName>
-   <shouldBeOpen>false</shouldBeOpen>
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-04-26 10:42:41 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>gestió de horaris</ownerDesignName>
+<shouldBeOpen>false</shouldBeOpen>
 </LogicalDesign>

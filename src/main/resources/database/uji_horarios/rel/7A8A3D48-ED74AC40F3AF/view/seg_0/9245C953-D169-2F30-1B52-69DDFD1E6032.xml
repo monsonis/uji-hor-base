@@ -1,103 +1,87 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <TableView class="oracle.dbtools.crest.model.design.relational.TableView" id="9245C953-D169-2F30-1B52-69DDFD1E6032" directorySegmentName="seg_0" name="hor_v_cursos">
-   <createdBy>ferrerq</createdBy>
-   <createdTime>2012-05-28 15:46:15 UTC</createdTime>
-   <generatorID>Generado por el Usuario</generatorID>
-   <ownerDesignName>uji_horarios</ownerDesignName>
-   <engineerTo>
-      <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
-      <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
-   </engineerTo>
-   <schemaObject>1DCAA4CA-B6D6-9F25-1764-48B2C86ECE47</schemaObject>
-   <userDefined>true</userDefined>
-   <userDefinedSQL>SELECT DISTINCT uji_horarios.hor_items.estudio_id,&amp;lt;br/&amp;gt;  uji_horarios.hor_items.estudio,&amp;lt;br/&amp;gt;  uji_horarios.hor_items.curso_id&amp;lt;br/&amp;gt;FROM uji_horarios.hor_items</userDefinedSQL>
-   <layoutSQL>&amp;lt;?xml version = &amp;apos;1.0&amp;apos; encoding = &amp;apos;UTF-8&amp;apos;?&amp;gt;&amp;lt;br&amp;gt;&amp;lt;ActiveQueryBuilderLayout&amp;gt;&amp;lt;SQL&amp;gt;Select Distinct uji_horarios.hor_items.estudio_id, uji_horarios.hor_items.estudio, uji_horarios.hor_items.curso_id From uji_horarios.hor_items&amp;lt;/SQL&amp;gt;&amp;lt;SubQueries&amp;gt;&amp;lt;SubQuery SQL=&amp;quot;Select Distinct uji_horarios.hor_items.estudio_id, uji_horarios.hor_items.estudio, uji_horarios.hor_items.curso_id From uji_horarios.hor_items&amp;quot;&amp;gt;&amp;lt;UnionSubQuery&amp;gt;&amp;lt;DataSource SQL=&amp;quot;uji_horarios.hor_items&amp;quot; X=&amp;quot;50&amp;quot; Y=&amp;quot;20&amp;quot; Height=&amp;quot;553&amp;quot; Width=&amp;quot;140&amp;quot;/&amp;gt;&amp;lt;/UnionSubQuery&amp;gt;&amp;lt;/SubQuery&amp;gt;&amp;lt;/SubQueries&amp;gt;&amp;lt;/ActiveQueryBuilderLayout&amp;gt;</layoutSQL>
-   <parsed>true</parsed>
-   <fonts>
-      <FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
-         <foType>Título</foType>
-         <fontStyle>1</fontStyle>
-         <colorRGB>-16776961</colorRGB>
-      </FontObject>
-      <FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
-         <foType>Columna</foType>
-         <colorRGB>-16777216</colorRGB>
-      </FontObject>
-      <FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
-         <foType>Tipo de Dato</foType>
-         <colorRGB>-16744448</colorRGB>
-      </FontObject>
-   </fonts>
-   <usedContainers>
-      <container containerID="7185EE22-E0F3-C3F6-15A8-A27E06438805"/>
-   </usedContainers>
-   <viewElements>
-      <viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="estudio_id" id="0286826F-0F76-FBB9-1748-E034BAA90F2D">
-         <createdBy>ferrerq</createdBy>
-         <createdTime>2012-05-28 15:46:33 UTC</createdTime>
-         <generatorID>Generado por el Usuario</generatorID>
-         <ownerDesignName>uji_horarios</ownerDesignName>
-         <engineerTo>
-            <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
-            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
-         </engineerTo>
-         <nullsAllowed>true</nullsAllowed>
-         <dataType>NUMBER</dataType>
-         <reference>false</reference>
-         <referencedColumn>4D9FBA8C-7149-47A4-9879-809BF2231128</referencedColumn>
-         <table>7185EE22-E0F3-C3F6-15A8-A27E06438805</table>
-      </viewElement>
-      <viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="estudio" id="6E88417A-78F2-EB62-1438-B355EFE014D4">
-         <createdBy>ferrerq</createdBy>
-         <createdTime>2012-05-28 15:46:33 UTC</createdTime>
-         <generatorID>Generado por el Usuario</generatorID>
-         <ownerDesignName>uji_horarios</ownerDesignName>
-         <engineerTo>
-            <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
-            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
-         </engineerTo>
-         <nullsAllowed>true</nullsAllowed>
-         <dataType>VARCHAR2 (1000)</dataType>
-         <reference>false</reference>
-         <referencedColumn>CF2F176A-7BF6-D75B-656E-4AC0D96FDABF</referencedColumn>
-         <table>7185EE22-E0F3-C3F6-15A8-A27E06438805</table>
-      </viewElement>
-      <viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="curso_id" id="002143FE-EB2C-C2DE-49B4-F407BCF06B60">
-         <createdBy>ferrerq</createdBy>
-         <createdTime>2012-05-28 15:46:33 UTC</createdTime>
-         <generatorID>Generado por el Usuario</generatorID>
-         <ownerDesignName>uji_horarios</ownerDesignName>
-         <engineerTo>
-            <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
-            <item key="7A8A3D48-75A4-0503-F353-ED74AC40F3AF" value="true"/>
-         </engineerTo>
-         <nullsAllowed>true</nullsAllowed>
-         <dataType>NUMBER</dataType>
-         <reference>false</reference>
-         <referencedColumn>4C7D94EC-E7BD-EDF2-452A-40409D6348B5</referencedColumn>
-         <table>7185EE22-E0F3-C3F6-15A8-A27E06438805</table>
-      </viewElement>
-   </viewElements>
-   <usedObjects>
-      <UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="7185EE22-E0F3-C3F6-15A8-A27E06438805">
-         <container>true</container>
-         <schema>uji_horarios</schema>
-         <tableName>hor_items</tableName>
-      </UsedObject>
-      <UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="4D9FBA8C-7149-47A4-9879-809BF2231128">
-         <columnName>estudio_id</columnName>
-         <schema>uji_horarios</schema>
-         <tableName>hor_items</tableName>
-      </UsedObject>
-      <UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="CF2F176A-7BF6-D75B-656E-4AC0D96FDABF">
-         <columnName>estudio</columnName>
-         <schema>uji_horarios</schema>
-         <tableName>hor_items</tableName>
-      </UsedObject>
-      <UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="4C7D94EC-E7BD-EDF2-452A-40409D6348B5">
-         <columnName>curso_id</columnName>
-         <schema>uji_horarios</schema>
-         <tableName>hor_items</tableName>
-      </UsedObject>
-   </usedObjects>
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-05-28 15:46:15 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<schemaObject>1DCAA4CA-B6D6-9F25-1764-48B2C86ECE47</schemaObject>
+<userDefined>true</userDefined>
+<userDefinedSQL>SELECT DISTINCT uji_horarios.hor_items.estudio_id,&lt;br/&gt;  uji_horarios.hor_items.estudio,&lt;br/&gt;  uji_horarios.hor_items.curso_id&lt;br/&gt;FROM uji_horarios.hor_items</userDefinedSQL>
+<layoutSQL>&lt;?xml version = &apos;1.0&apos; encoding = &apos;UTF-8&apos;?&gt;&lt;br&gt;&lt;ActiveQueryBuilderLayout&gt;&lt;SQL&gt;Select Distinct uji_horarios.hor_items.estudio_id, uji_horarios.hor_items.estudio, uji_horarios.hor_items.curso_id From uji_horarios.hor_items&lt;/SQL&gt;&lt;SubQueries&gt;&lt;SubQuery SQL=&quot;Select Distinct uji_horarios.hor_items.estudio_id, uji_horarios.hor_items.estudio, uji_horarios.hor_items.curso_id From uji_horarios.hor_items&quot;&gt;&lt;UnionSubQuery&gt;&lt;DataSource SQL=&quot;uji_horarios.hor_items&quot; X=&quot;50&quot; Y=&quot;20&quot; Height=&quot;553&quot; Width=&quot;140&quot;/&gt;&lt;/UnionSubQuery&gt;&lt;/SubQuery&gt;&lt;/SubQueries&gt;&lt;/ActiveQueryBuilderLayout&gt;</layoutSQL>
+<parsed>true</parsed>
+<fonts>
+<FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
+<foType>Título</foType>
+<fontStyle>1</fontStyle>
+<colorRGB>-16776961</colorRGB>
+</FontObject>
+<FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
+<foType>Columna</foType>
+<colorRGB>-16777216</colorRGB>
+</FontObject>
+<FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
+<foType>Tipo de Dato</foType>
+<colorRGB>-16744448</colorRGB>
+</FontObject>
+</fonts>
+<usedContainers>
+<container containerID="7185EE22-E0F3-C3F6-15A8-A27E06438805"/>
+</usedContainers>
+<viewElements>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="estudio_id" id="0286826F-0F76-FBB9-1748-E034BAA90F2D">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-05-28 15:46:33 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<dataType>NUMBER</dataType>
+<reference>false</reference>
+<referencedColumn>4D9FBA8C-7149-47A4-9879-809BF2231128</referencedColumn>
+<table>7185EE22-E0F3-C3F6-15A8-A27E06438805</table>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="estudio" id="6E88417A-78F2-EB62-1438-B355EFE014D4">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-05-28 15:46:33 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<dataType>VARCHAR2 (1000)</dataType>
+<reference>false</reference>
+<referencedColumn>CF2F176A-7BF6-D75B-656E-4AC0D96FDABF</referencedColumn>
+<table>7185EE22-E0F3-C3F6-15A8-A27E06438805</table>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="curso_id" id="002143FE-EB2C-C2DE-49B4-F407BCF06B60">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-05-28 15:46:33 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<dataType>NUMBER</dataType>
+<reference>false</reference>
+<referencedColumn>4C7D94EC-E7BD-EDF2-452A-40409D6348B5</referencedColumn>
+<table>7185EE22-E0F3-C3F6-15A8-A27E06438805</table>
+</viewElement>
+</viewElements>
+<usedObjects>
+<UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="7185EE22-E0F3-C3F6-15A8-A27E06438805">
+<container>true</container>
+<schema>uji_horarios</schema>
+<tableName>hor_items</tableName>
+</UsedObject>
+<UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="4D9FBA8C-7149-47A4-9879-809BF2231128">
+<columnName>estudio_id</columnName>
+<schema>uji_horarios</schema>
+<tableName>hor_items</tableName>
+</UsedObject>
+<UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="CF2F176A-7BF6-D75B-656E-4AC0D96FDABF">
+<columnName>estudio</columnName>
+<schema>uji_horarios</schema>
+<tableName>hor_items</tableName>
+</UsedObject>
+<UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="4C7D94EC-E7BD-EDF2-452A-40409D6348B5">
+<columnName>curso_id</columnName>
+<schema>uji_horarios</schema>
+<tableName>hor_items</tableName>
+</UsedObject>
+</usedObjects>
 </TableView>

@@ -1,16 +1,13 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" id="EF191F57-6B99-41B0-4771-A04EFC23A7A1" directorySegmentName="seg_0" name="hor_cursos_est_est_FK">
-   <createdBy>ferrerq</createdBy>
-   <createdTime>2012-04-30 07:57:04 UTC</createdTime>
-   <generatorID>Generado por el Usuario</generatorID>
-   <ownerDesignName>uji_horarios</ownerDesignName>
-   <engineerTo>
-      <item key="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" value="true"/>
-   </engineerTo>
-   <containerWithKeyObject>4CC663EB-4347-9C64-7A97-FD581049B186</containerWithKeyObject>
-   <deleteRule>NO ACTION</deleteRule>
-   <localFKIndex>9BAA4605-82D9-0672-60D4-E8182D1D6972</localFKIndex>
-   <keyObject>72B7409B-DFE1-047C-B2B5-43EB7147EC54</keyObject>
-   <mandatory>true</mandatory>
-   <transferable>true</transferable>
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-04-30 07:57:04 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<containerWithKeyObject>4CC663EB-4347-9C64-7A97-FD581049B186</containerWithKeyObject>
+<deleteRule>NO ACTION</deleteRule>
+<localFKIndex>9BAA4605-82D9-0672-60D4-E8182D1D6972</localFKIndex>
+<keyObject>72B7409B-DFE1-047C-B2B5-43EB7147EC54</keyObject>
+<mandatory>true</mandatory>
+<transferable>true</transferable>
 </FKIndexAssociation>

@@ -1,13 +1,13 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <Diagram class="oracle.dbtools.crest.swingui.logical.DPVLogical" id="15881D2D-8100-0C93-CCF2-A7EE878F7EDD">
-   <createdBy>ferrerq</createdBy>
-   <createdTime>2012-04-26 10:49:22 UTC</createdTime>
-   <autoRoute>false</autoRoute>
-   <boxInbox>true</boxInbox>
-   <showLegend>false</showLegend>
-   <showLabels>false</showLabels>
-   <showGrid>false</showGrid>
-   <diagramColor>-1</diagramColor>
-   <display>false</display>
-   <notation>1</notation>
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-04-26 10:49:22 UTC</createdTime>
+<autoRoute>false</autoRoute>
+<boxInbox>true</boxInbox>
+<showLegend>false</showLegend>
+<showLabels>false</showLabels>
+<showGrid>false</showGrid>
+<diagramColor>-1</diagramColor>
+<display>false</display>
+<notation>1</notation>
 </Diagram>
