@@ -2,6 +2,7 @@ package es.uji.apps.hor.db;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Date;
@@ -119,6 +120,15 @@ public class ItemDTO implements Serializable
     // bi-directional many-to-one association to ItemDetalleDTO
     @OneToMany(mappedBy = "item")
     private Set<ItemDetalleDTO> itemsDetalles;
+
+    @Column(name="DETALLE_MANUAL")
+    private Boolean detalleManual;
+    
+    @Column(name="NUMERO_ITERACIONES")
+    private Integer numeroIteraciones;
+    
+    @Column(name="REPETIR_CADA_SEMANAS")
+    private Integer repetirCadaSemanas;
 
     public ItemDTO()
     {
@@ -422,6 +432,36 @@ public class ItemDTO implements Serializable
     public void setItemsDetalles(Set<ItemDetalleDTO> itemsDetalles)
     {
         this.itemsDetalles = itemsDetalles;
+    }
+
+    public Boolean getDetalleManual()
+    {
+        return detalleManual;
+    }
+
+    public void setDetalleManual(Boolean detalleManual)
+    {
+        this.detalleManual = detalleManual;
+    }
+
+    public Integer getNumeroIteraciones()
+    {
+        return numeroIteraciones;
+    }
+
+    public void setNumeroIteraciones(Integer numeroIteraciones)
+    {
+        this.numeroIteraciones = numeroIteraciones;
+    }
+
+    public Integer getRepetirCadaSemanas()
+    {
+        return repetirCadaSemanas;
+    }
+
+    public void setRepetirCadaSemanas(Integer repetirCadaSemanas)
+    {
+        this.repetirCadaSemanas = repetirCadaSemanas;
     }
 
     @Override
