@@ -118,7 +118,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
                 .intValue(), itemDTO.getHoraInicio());
         Calendar fin = generaItemCalendarioSemanaGenerica(
                 itemDTO.getDiaSemana().getId().intValue(), itemDTO.getHoraFin());
-        return new Evento(itemDTO.getId(), calendario, titulo, inicio.getTime(), fin.getTime());
+        return new Evento(itemDTO.getId(), calendario, titulo, inicio.getTime(), fin.getTime(), itemDTO.getDetalleManual(), itemDTO.getRepetirCadaSemanas(), itemDTO.getNumeroIteraciones());
 
     }
 
