@@ -170,7 +170,8 @@ Ext.define('Event.form.field.DateRange',
             xtype: 'label',
             id: this.id + '-to-label',
             text: this.toText,
-            margins: { top: 4, right: 5, bottom: 0, left: 0 }
+            margins: { top: 4, right: 5, bottom: 0, left: 0 },
+            disabledCls : 'opacity: .3'
         };
     },
 
@@ -372,5 +373,17 @@ Ext.define('Event.form.field.DateRange',
      * @method setRawValue
      * @hide
      */
-    setRawValue : Ext.emptyFn
+    setRawValue : Ext.emptyFn,
+    
+    disableFields : function()
+    {
+        this.disable();
+        this.toLabel.labelStyle = 'opacity: .3';
+        this.toLabel.disable();
+    },
+    
+    enableFields : function()
+    {
+        this.enable();
+    }
 });

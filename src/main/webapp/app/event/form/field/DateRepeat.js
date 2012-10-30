@@ -7,9 +7,14 @@ Ext.define('Event.form.field.DateRepeat',
 
     layout : 'anchor',
 
-    hidden : true,
-
     items : [
+    {
+        xtype : 'datefield',
+        name : Extensible.calendar.data.EventMappings.StartDateRep.name,
+        format : 'j/n/Y',
+        fieldLabel : 'Comença el',
+        startDay : 1,
+    },
     {
         xtype : 'combobox',
         name : Extensible.calendar.data.EventMappings.RepetirCada.name,
@@ -19,15 +24,8 @@ Ext.define('Event.form.field.DateRepeat',
         store : Ext.create('Ext.data.ArrayStore',
         {
             fields : [ 'repeatValue', 'repeatName' ],
-            data : [ [ 2, 'Setmanes alternes' ], [ 3, 'Cada 3 setmanes' ], [ 4, 'Cada 4 setmanes' ] ]
+            data : [ [ 1, 'Setmana' ], [ 2, '2 setmanes' ], [ 3, '3 setmanes' ], [ 4, '4 setmanes' ] ]
         }),
-    },
-    {
-        xtype : 'datefield',
-        name : Extensible.calendar.data.EventMappings.StartDateRep.name,
-        format : 'j/n/Y',
-        fieldLabel : 'Comença el',
-        startDay : 1
     },
     {
         xtype : 'radiogroup',
@@ -43,7 +41,7 @@ Ext.define('Event.form.field.DateRepeat',
             xtype : 'radio',
             name : Extensible.calendar.data.EventMappings.NoEnd.name,
             value : 0,
-            boxLabel : 'Segons semestre',
+            boxLabel : 'Al final del semestre',
             checked : true,
             listeners :
             {
@@ -97,5 +95,19 @@ Ext.define('Event.form.field.DateRepeat',
     initComponent : function()
     {
         this.callParent(arguments);
+    },
+    
+    disableFields : function()
+    {
+        this.down('datefield[name=' + Extensible.calendar.data.EventMappings.StartDateRep.name + ']').disable();
+        this.down('combobox[name=' + Extensible.calendar.data.EventMappings.RepetirCada.name + ']').disable();
+        this.down('radiogroup').disable();
+    },
+    
+    enableFields : function()
+    {
+        this.down('datefield[name=' + Extensible.calendar.data.EventMappings.StartDateRep.name + ']').enable();
+        this.down('combobox[name=' + Extensible.calendar.data.EventMappings.RepetirCada.name + ']').enable();
+        this.down('radiogroup').enable();
     }
 });

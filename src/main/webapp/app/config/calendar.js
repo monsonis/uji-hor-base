@@ -103,11 +103,6 @@ Extensible.calendar.form.EventWindow.override(
     },
 });
 
-Extensible.calendar.data.EventMappings.Repetir =
-{
-    name : 'Repetir',
-    mapping : 'repetir'
-};
 Extensible.calendar.data.EventMappings.RepetirCada =
 {
     name : 'RepetirCada',
@@ -216,35 +211,51 @@ Extensible.calendar.form.EventDetails.override(
             }
         });
 
-        this.repeatField = Ext.create('Ext.form.field.Checkbox',
+        this.dateRepeatField = Ext.create('Event.form.field.DateRepeat',
+        {});
+        
+        this.detalleManualField = Ext.create('Ext.form.field.Checkbox',
         {
-            boxLabel : 'Repetir',
-            name : Extensible.calendar.data.EventMappings.Repetir.name,
+            boxLabel : 'Detall manual',
+            //name : 'detalleManual',
             listeners :
-            {
-                'change' :
+            {                
+                'change' : 
                 {
                     fn : function()
                     {
-                        if (this.repeatField.getValue())
+                        if (this.detalleManualField.getValue())
                         {
-                            this.dateRepeatField.show();
+                            var data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+                            var values = ['01/10/2012', '02/10/2012', '03/10/2012', '04/10/2012', '05/10/2012',
+                                          '06/10/2012', '07/10/2012', '08/10/2012', '09/10/2012', '10/10/2012'];
+                            this.detalleManualFechas.addPosiblesFechas(data, values);
+                            this.detalleManualFechas.show();
+                            this.detalleManualFechas.checkAllBoxes();
+                            
+                            this.dateRangeField.disableFields();
+                            this.dateRepeatField.disableFields();
                         }
                         else
                         {
-                            this.dateRepeatField.hide();
+                            this.detalleManualFechas.hide();
+                            
+                            this.dateRangeField.enableFields();
+                            this.dateRepeatField.enableFields();
                         }
-                    },
-                    scope : this
-                },
+                     },
+                     scope : this
+                }
             }
         });
-        this.dateRepeatField = Ext.create('Event.form.field.DateRepeat',
+        
+        this.detalleManualFechas = Ext.create('Event.form.field.DetalleManual', 
         {
-            anchor : '90%'
+           anchor : '90%' 
         });
 
-        var leftFields = [ this.titleField, this.dateRangeField, this.repeatField, this.dateRepeatField ];
+        var leftFields = [ this.titleField, this.dateRangeField, this.dateRepeatField,
+                           this.detalleManualField, this.detalleManualFechas];
 
         if (this.calendarStore)
         {
@@ -306,7 +317,7 @@ Extensible.calendar.form.EventDetails.override(
         var me = this, EventMappings = Extensible.calendar.data.EventMappings;
         
         // Simulamos datos en los nuevos campos
-        //rec.data[EventMappings.Repetir.name] = "on";
+        //rec.data[EventMappings.ModificaDetalle.name] = "on";
         //rec.data[EventMappings.EndRepNumberComp.name] = 6;
         //rec.data[EventMappings.EndDateRepComp.name] = '7/9/2012';
 
@@ -354,16 +365,13 @@ Extensible.calendar.form.EventDetails.override(
         me.titleField.focus();
 
         // Activar los radios del componente de repetición
-        if (rec.data[EventMappings.Repetir.name])
+        if (rec.data[EventMappings.EndDateRepComp.name])
         {
-            if (rec.data[EventMappings.EndDateRepComp.name])
-            {
-                 this.dateRepeatField.down('radiodatefield radio').setValue(true);
-            }
-            else if (rec.data[EventMappings.EndRepNumberComp.name])
-            {
+            this.dateRepeatField.down('radiodatefield radio').setValue(true);
+        }
+        else if (rec.data[EventMappings.EndRepNumberComp.name])
+        {
                 this.dateRepeatField.down('radionumberfield radio').setValue(true);
-            }
         }
     }
 
