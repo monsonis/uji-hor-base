@@ -1,9 +1,17 @@
 package es.uji.apps.hor.db;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 
 /**
@@ -20,14 +28,14 @@ public class ProfesorDTO implements Serializable {
 	private Long id;
 
 	@Column(name="DEPARTAMENTO_ID")
-	private BigDecimal departamentoId;
+	private Long departamentoId;
 
 	private String email;
 
 	private String nombre;
 
 	@Column(name="PENDIENTE_CONTRATACION")
-	private BigDecimal pendienteContratacion;
+	private Long pendienteContratacion;
 
 	//bi-directional many-to-one association to ItemDTO
 	@OneToMany(mappedBy="profesor")
@@ -49,11 +57,11 @@ public class ProfesorDTO implements Serializable {
 		this.id = id;
 	}
 
-	public BigDecimal getDepartamentoId() {
+	public Long getDepartamentoId() {
 		return this.departamentoId;
 	}
 
-	public void setDepartamentoId(BigDecimal departamentoId) {
+	public void setDepartamentoId(Long departamentoId) {
 		this.departamentoId = departamentoId;
 	}
 
@@ -73,11 +81,11 @@ public class ProfesorDTO implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public BigDecimal getPendienteContratacion() {
+	public Long getPendienteContratacion() {
 		return this.pendienteContratacion;
 	}
 
-	public void setPendienteContratacion(BigDecimal pendienteContratacion) {
+	public void setPendienteContratacion(Long pendienteContratacion) {
 		this.pendienteContratacion = pendienteContratacion;
 	}
 

@@ -1,8 +1,15 @@
 package es.uji.apps.hor.db;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.math.BigDecimal;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 
 /**
@@ -19,7 +26,7 @@ public class CargoPersonaDTO implements Serializable {
 	private Long id;
 
 	@Column(name="CURSO_ID")
-	private BigDecimal cursoId;
+	private Long cursoId;
 
 	//bi-directional many-to-one association to DepartamentoDTO
     @ManyToOne
@@ -52,11 +59,11 @@ public class CargoPersonaDTO implements Serializable {
 		this.id = id;
 	}
 
-	public BigDecimal getCursoId() {
+	public Long getCursoId() {
 		return this.cursoId;
 	}
 
-	public void setCursoId(BigDecimal cursoId) {
+	public void setCursoId(Long cursoId) {
 		this.cursoId = cursoId;
 	}
 

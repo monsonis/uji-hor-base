@@ -1,7 +1,6 @@
 package es.uji.apps.hor.db;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,21 +19,21 @@ public class CursoDTO implements Serializable {
 
 	@Id
 	@Column(name="CURSO_ID")
-	private BigDecimal cursoId;
+	private Long cursoId;
 
 	private String estudio;
 
 	@Column(name="ESTUDIO_ID")
-	private BigDecimal estudioId;
+	private Long estudioId;
 
     public CursoDTO() {
     }
 
-	public BigDecimal getCursoId() {
+	public Long getCursoId() {
 		return this.cursoId;
 	}
 
-	public void setCursoId(BigDecimal cursoId) {
+	public void setCursoId(Long cursoId) {
 		this.cursoId = cursoId;
 	}
 
@@ -46,11 +45,11 @@ public class CursoDTO implements Serializable {
 		this.estudio = estudio;
 	}
 
-	public BigDecimal getEstudioId() {
+	public Long getEstudioId() {
 		return this.estudioId;
 	}
 
-	public void setEstudioId(BigDecimal estudioId) {
+	public void setEstudioId(Long estudioId) {
 		this.estudioId = estudioId;
 	}
 

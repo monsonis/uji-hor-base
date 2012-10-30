@@ -1,9 +1,14 @@
 package es.uji.apps.hor.db;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.Set;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 
 /**
@@ -21,7 +26,7 @@ public class TipoEstudioDTO implements Serializable {
 
 	private String nombre;
 
-	private BigDecimal orden;
+	private Long orden;
 
 	//bi-directional many-to-one association to EstudioDTO
 	@OneToMany(mappedBy="tiposEstudio")
@@ -50,11 +55,11 @@ public class TipoEstudioDTO implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public BigDecimal getOrden() {
+	public Long getOrden() {
 		return this.orden;
 	}
 
-	public void setOrden(BigDecimal orden) {
+	public void setOrden(Long orden) {
 		this.orden = orden;
 	}
 

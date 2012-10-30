@@ -1,9 +1,16 @@
 package es.uji.apps.hor.db;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 /**
@@ -19,20 +26,20 @@ public class CalendarioDTO implements Serializable {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 
-	private BigDecimal año;
+	private Long año;
 
-	private BigDecimal dia;
+	private Long dia;
 
 	@Column(name="DIA_SEMANA")
 	private String diaSemana;
 
 	@Column(name="DIA_SEMANA_ID")
-	private BigDecimal diaSemanaId;
+	private Long diaSemanaId;
 
     @Temporal( TemporalType.DATE)
 	private Date fecha;
 
-	private BigDecimal mes;
+	private Long mes;
 
 	@Column(name="TIPO_DIA")
 	private String tipoDia;
@@ -48,19 +55,19 @@ public class CalendarioDTO implements Serializable {
 		this.id = id;
 	}
 
-	public BigDecimal getAño() {
+	public Long getAño() {
 		return this.año;
 	}
 
-	public void setAño(BigDecimal año) {
+	public void setAño(Long año) {
 		this.año = año;
 	}
 
-	public BigDecimal getDia() {
+	public Long getDia() {
 		return this.dia;
 	}
 
-	public void setDia(BigDecimal dia) {
+	public void setDia(Long dia) {
 		this.dia = dia;
 	}
 
@@ -72,11 +79,11 @@ public class CalendarioDTO implements Serializable {
 		this.diaSemana = diaSemana;
 	}
 
-	public BigDecimal getDiaSemanaId() {
+	public Long getDiaSemanaId() {
 		return this.diaSemanaId;
 	}
 
-	public void setDiaSemanaId(BigDecimal diaSemanaId) {
+	public void setDiaSemanaId(Long diaSemanaId) {
 		this.diaSemanaId = diaSemanaId;
 	}
 
@@ -88,11 +95,11 @@ public class CalendarioDTO implements Serializable {
 		this.fecha = fecha;
 	}
 
-	public BigDecimal getMes() {
+	public Long getMes() {
 		return this.mes;
 	}
 
-	public void setMes(BigDecimal mes) {
+	public void setMes(Long mes) {
 		this.mes = mes;
 	}
 

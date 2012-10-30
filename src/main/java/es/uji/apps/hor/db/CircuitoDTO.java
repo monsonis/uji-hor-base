@@ -1,9 +1,17 @@
 package es.uji.apps.hor.db;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 
 /**
@@ -19,13 +27,13 @@ public class CircuitoDTO implements Serializable {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 
-	private BigDecimal especial;
+	private Long especial;
 
 	@Column(name="GRUPO_ID")
 	private String grupoId;
 
 	@Column(name="ID_CIRCUITO")
-	private BigDecimal idCircuito;
+	private Long idCircuito;
 
 	private String nombre;
 
@@ -49,11 +57,11 @@ public class CircuitoDTO implements Serializable {
 		this.id = id;
 	}
 
-	public BigDecimal getEspecial() {
+	public Long getEspecial() {
 		return this.especial;
 	}
 
-	public void setEspecial(BigDecimal especial) {
+	public void setEspecial(Long especial) {
 		this.especial = especial;
 	}
 
@@ -65,11 +73,11 @@ public class CircuitoDTO implements Serializable {
 		this.grupoId = grupoId;
 	}
 
-	public BigDecimal getIdCircuito() {
+	public Long getIdCircuito() {
 		return this.idCircuito;
 	}
 
-	public void setIdCircuito(BigDecimal idCircuito) {
+	public void setIdCircuito(Long idCircuito) {
 		this.idCircuito = idCircuito;
 	}
 

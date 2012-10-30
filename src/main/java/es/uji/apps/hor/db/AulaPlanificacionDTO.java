@@ -1,9 +1,17 @@
 package es.uji.apps.hor.db;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 
 /**
@@ -20,15 +28,15 @@ public class AulaPlanificacionDTO implements Serializable {
 	private Long id;
 
 	@Column(name="CURSO_ID")
-	private BigDecimal cursoId;
+	private Long cursoId;
 
 	@Column(name="ESTUDIO_ID")
-	private BigDecimal estudioId;
+	private Long estudioId;
 
 	private String nombre;
 
 	@Column(name="SEMESTRE_ID")
-	private BigDecimal semestreId;
+	private Long semestreId;
 
 	//bi-directional many-to-one association to AulaDTO
     @ManyToOne
@@ -50,19 +58,19 @@ public class AulaPlanificacionDTO implements Serializable {
 		this.id = id;
 	}
 
-	public BigDecimal getCursoId() {
+	public Long getCursoId() {
 		return this.cursoId;
 	}
 
-	public void setCursoId(BigDecimal cursoId) {
+	public void setCursoId(Long cursoId) {
 		this.cursoId = cursoId;
 	}
 
-	public BigDecimal getEstudioId() {
+	public Long getEstudioId() {
 		return this.estudioId;
 	}
 
-	public void setEstudioId(BigDecimal estudioId) {
+	public void setEstudioId(Long estudioId) {
 		this.estudioId = estudioId;
 	}
 
@@ -74,11 +82,11 @@ public class AulaPlanificacionDTO implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public BigDecimal getSemestreId() {
+	public Long getSemestreId() {
 		return this.semestreId;
 	}
 
-	public void setSemestreId(BigDecimal semestreId) {
+	public void setSemestreId(Long semestreId) {
 		this.semestreId = semestreId;
 	}
 

@@ -1,9 +1,18 @@
 package es.uji.apps.hor.db;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 /**
@@ -36,7 +45,7 @@ public class DetalleSemestreDTO implements Serializable {
 	private Date fechaInicio;
 
 	@Column(name="NUMERO_SEMANAS")
-	private BigDecimal numeroSemanas;
+	private Long numeroSemanas;
 
 	//bi-directional many-to-one association to SemestreDTO
     @ManyToOne
@@ -91,11 +100,11 @@ public class DetalleSemestreDTO implements Serializable {
 		this.fechaInicio = fechaInicio;
 	}
 
-	public BigDecimal getNumeroSemanas() {
+	public Long getNumeroSemanas() {
 		return this.numeroSemanas;
 	}
 
-	public void setNumeroSemanas(BigDecimal numeroSemanas) {
+	public void setNumeroSemanas(Long numeroSemanas) {
 		this.numeroSemanas = numeroSemanas;
 	}
 

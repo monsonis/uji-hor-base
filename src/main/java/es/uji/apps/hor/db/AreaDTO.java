@@ -1,9 +1,16 @@
 package es.uji.apps.hor.db;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.Set;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 
 /**
@@ -19,7 +26,7 @@ public class AreaDTO implements Serializable {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 
-	private BigDecimal activa;
+	private Long activa;
 
 	private String nombre;
 
@@ -43,11 +50,11 @@ public class AreaDTO implements Serializable {
 		this.id = id;
 	}
 
-	public BigDecimal getActiva() {
+	public Long getActiva() {
 		return this.activa;
 	}
 
-	public void setActiva(BigDecimal activa) {
+	public void setActiva(Long activa) {
 		this.activa = activa;
 	}
 

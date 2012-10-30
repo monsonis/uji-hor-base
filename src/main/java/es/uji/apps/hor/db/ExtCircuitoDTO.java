@@ -1,8 +1,13 @@
 package es.uji.apps.hor.db;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.math.BigDecimal;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 
 /**
@@ -22,24 +27,24 @@ public class ExtCircuitoDTO implements Serializable {
 	private String asignaturaId;
 
 	@Column(name="CIRCUITO_ID")
-	private BigDecimal circuitoId;
+	private Long circuitoId;
 
 	@Column(name="CURSO_ACA")
-	private BigDecimal cursoAca;
+	private Long cursoAca;
 
 	@Column(name="DETALLE_ID")
-	private BigDecimal detalleId;
+	private Long detalleId;
 
 	@Column(name="ESTUDIO_ID")
-	private BigDecimal estudioId;
+	private Long estudioId;
 
 	@Column(name="GRUPO_ID")
 	private String grupoId;
 
-	private BigDecimal plazas;
+	private Long plazas;
 
 	@Column(name="SUBGRUPO_ID")
-	private BigDecimal subgrupoId;
+	private Long subgrupoId;
 
 	private String tipo;
 
@@ -62,35 +67,35 @@ public class ExtCircuitoDTO implements Serializable {
 		this.asignaturaId = asignaturaId;
 	}
 
-	public BigDecimal getCircuitoId() {
+	public Long getCircuitoId() {
 		return this.circuitoId;
 	}
 
-	public void setCircuitoId(BigDecimal circuitoId) {
+	public void setCircuitoId(Long circuitoId) {
 		this.circuitoId = circuitoId;
 	}
 
-	public BigDecimal getCursoAca() {
+	public Long getCursoAca() {
 		return this.cursoAca;
 	}
 
-	public void setCursoAca(BigDecimal cursoAca) {
+	public void setCursoAca(Long cursoAca) {
 		this.cursoAca = cursoAca;
 	}
 
-	public BigDecimal getDetalleId() {
+	public Long getDetalleId() {
 		return this.detalleId;
 	}
 
-	public void setDetalleId(BigDecimal detalleId) {
+	public void setDetalleId(Long detalleId) {
 		this.detalleId = detalleId;
 	}
 
-	public BigDecimal getEstudioId() {
+	public Long getEstudioId() {
 		return this.estudioId;
 	}
 
-	public void setEstudioId(BigDecimal estudioId) {
+	public void setEstudioId(Long estudioId) {
 		this.estudioId = estudioId;
 	}
 
@@ -102,19 +107,19 @@ public class ExtCircuitoDTO implements Serializable {
 		this.grupoId = grupoId;
 	}
 
-	public BigDecimal getPlazas() {
+	public Long getPlazas() {
 		return this.plazas;
 	}
 
-	public void setPlazas(BigDecimal plazas) {
+	public void setPlazas(Long plazas) {
 		this.plazas = plazas;
 	}
 
-	public BigDecimal getSubgrupoId() {
+	public Long getSubgrupoId() {
 		return this.subgrupoId;
 	}
 
-	public void setSubgrupoId(BigDecimal subgrupoId) {
+	public void setSubgrupoId(Long subgrupoId) {
 		this.subgrupoId = subgrupoId;
 	}
 

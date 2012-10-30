@@ -1,9 +1,16 @@
 package es.uji.apps.hor.db;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.Set;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 
 /**
@@ -23,7 +30,7 @@ public class AulaDTO implements Serializable {
 
 	private String nombre;
 
-	private BigDecimal plazas;
+	private Long plazas;
 
 	private String tipo;
 
@@ -67,11 +74,11 @@ public class AulaDTO implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public BigDecimal getPlazas() {
+	public Long getPlazas() {
 		return this.plazas;
 	}
 
-	public void setPlazas(BigDecimal plazas) {
+	public void setPlazas(Long plazas) {
 		this.plazas = plazas;
 	}
 
