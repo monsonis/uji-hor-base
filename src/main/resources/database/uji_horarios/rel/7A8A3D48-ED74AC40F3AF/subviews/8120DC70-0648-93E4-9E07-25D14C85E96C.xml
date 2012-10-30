@@ -39,7 +39,7 @@
 <foregroundColor>-16776961</foregroundColor>
 </OView>
 <OView class="oracle.dbtools.crest.swingui.relational.TVTable" oid="3E028D4B-4EEC-FA73-5DB2-666FF613CFF3" otype="Table" vid="47AC57DE-F7B6-392C-3BB9-DFA1E5A0E291">
-<bounds x="1103" y="993" width="242" height="148"/>
+<bounds x="1080" y="990" width="311" height="161"/>
 </OView>
 <OView class="oracle.dbtools.crest.swingui.relational.TVTable" oid="53F2BA3B-63DD-253E-E91F-3CE9E2787973" otype="Table" vid="6D4F8E69-946F-2ADA-3829-261C409F1243">
 <bounds x="360" y="23" width="811" height="76"/>
@@ -162,7 +162,7 @@
 <lineWidth>1</lineWidth>
 <points>
 <point x="1031" y="1099"/>
-<point x="1103" y="1099"/>
+<point x="1080" y="1099"/>
 </points>
 </Connector>
 <Connector class="oracle.dbtools.crest.swingui.relational.TVFKRelation" oid="5256CB84-4581-F3EE-7C2D-B3C7793B62B7" otype="FKIndexAssociation" vid_source="D322E438-0BC0-91DA-496C-C2A8035336E2" vid_target="B471217D-6ED4-097F-DC2B-313ED6754935">
@@ -240,7 +240,7 @@
 <lineWidth>1</lineWidth>
 <points>
 <point x="1208" y="910"/>
-<point x="1208" y="993"/>
+<point x="1208" y="990"/>
 </points>
 </Connector>
 <Connector class="oracle.dbtools.crest.swingui.relational.TVFKRelation" oid="9F3819A1-AB03-5815-F767-1295110838B2" otype="FKIndexAssociation" vid_source="7B510CAE-580B-B38F-BB52-C579FAD8B179" vid_target="FA599F87-FE56-8D0D-BD18-2AD8B561B110">
@@ -269,13 +269,6 @@
 <points>
 <point x="627" y="99"/>
 <point x="627" y="133"/>
-</points>
-</Connector>
-<Connector class="oracle.dbtools.crest.swingui.relational.TVFKRelation" oid="C4054EB0-16A1-14CA-EECE-F32ACE3E11A2" otype="FKIndexAssociation" vid_source="D322E438-0BC0-91DA-496C-C2A8035336E2" vid_target="44AEA338-8C5E-9AB3-A805-C8570769E2BB">
-<lineWidth>1</lineWidth>
-<points>
-<point x="1098" y="560"/>
-<point x="1098" y="441"/>
 </points>
 </Connector>
 <Connector class="oracle.dbtools.crest.swingui.relational.TVFKRelation" oid="C76FE11C-CB4A-2F1E-F605-0FBF81EAF78B" otype="FKIndexAssociation" vid_source="421B6E96-BC3A-1E40-B3E8-1C668CCACA54" vid_target="B2BC339C-21D8-2F4D-3021-44134F587034">
