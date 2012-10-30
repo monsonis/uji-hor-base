@@ -53,8 +53,8 @@ public class EventosDAOTest
         item.setAsignatura("Prueba");
         item.setCaracter("Troncal");
         item.setCaracterId("TR");
-        item.setComun(new BigDecimal(0));
-        item.setCursoId(new BigDecimal(1));
+        item.setComun(new Long(0));
+        item.setCursoId(new Long(1));
         item.setDiaSemana((DiaSemanaDTO) eventosDAO.get(DiaSemanaDTO.class, new Long(1)).get(0));
         item.setEstudio((EstudioDTO) eventosDAO.get(EstudioDTO.class, new Long(1)).get(0));
         item.setEstudioDesc("Estudio para prueba");
@@ -63,7 +63,7 @@ public class EventosDAOTest
         item.setHoraInicio(horaInicio);
         item.setModificaDetalle("N");
         item.setSemestre((SemestreDTO) eventosDAO.get(SemestreDTO.class, new Long(1)).get(0));
-        item.setSubgrupoId(new BigDecimal(1));
+        item.setSubgrupoId(new Long(1));
         item.setTipoSubgrupoId("TU");
     }
 

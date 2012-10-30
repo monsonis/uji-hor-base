@@ -1,12 +1,21 @@
 package es.uji.apps.hor.db;
 
 import java.io.Serializable;
-import javax.persistence.*;
-
-import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * The persistent class for the HOR_ITEMS database table.
@@ -32,10 +41,10 @@ public class ItemDTO implements Serializable
     @Column(name = "CARACTER_ID")
     private String caracterId;
 
-    private BigDecimal comun;
+    private Long comun;
 
     @Column(name = "CURSO_ID")
-    private BigDecimal cursoId;
+    private Long cursoId;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "DESDE_EL_DIA")
@@ -62,13 +71,13 @@ public class ItemDTO implements Serializable
     @Column(name = "MODIFICA_DETALLE")
     private String modificaDetalle;
 
-    private BigDecimal plazas;
+    private Long plazas;
 
     @Column(name = "PORCENTAJE_COMUN")
-    private BigDecimal porcentajeComun;
+    private Long porcentajeComun;
 
     @Column(name = "SUBGRUPO_ID")
-    private BigDecimal subgrupoId;
+    private Long subgrupoId;
 
     @Column(name = "TIPO_ASIGNATURA")
     private String tipoAsignatura;
@@ -184,22 +193,22 @@ public class ItemDTO implements Serializable
         this.caracterId = caracterId;
     }
 
-    public BigDecimal getComun()
+    public Long getComun()
     {
         return this.comun;
     }
 
-    public void setComun(BigDecimal comun)
+    public void setComun(Long comun)
     {
         this.comun = comun;
     }
 
-    public BigDecimal getCursoId()
+    public Long getCursoId()
     {
         return this.cursoId;
     }
 
-    public void setCursoId(BigDecimal cursoId)
+    public void setCursoId(Long cursoId)
     {
         this.cursoId = cursoId;
     }
@@ -274,32 +283,32 @@ public class ItemDTO implements Serializable
         this.modificaDetalle = modificaDetalle;
     }
 
-    public BigDecimal getPlazas()
+    public Long getPlazas()
     {
         return this.plazas;
     }
 
-    public void setPlazas(BigDecimal plazas)
+    public void setPlazas(Long plazas)
     {
         this.plazas = plazas;
     }
 
-    public BigDecimal getPorcentajeComun()
+    public Long getPorcentajeComun()
     {
         return this.porcentajeComun;
     }
 
-    public void setPorcentajeComun(BigDecimal porcentajeComun)
+    public void setPorcentajeComun(Long porcentajeComun)
     {
         this.porcentajeComun = porcentajeComun;
     }
 
-    public BigDecimal getSubgrupoId()
+    public Long getSubgrupoId()
     {
         return this.subgrupoId;
     }
 
-    public void setSubgrupoId(BigDecimal subgrupoId)
+    public void setSubgrupoId(Long subgrupoId)
     {
         this.subgrupoId = subgrupoId;
     }
@@ -434,6 +443,12 @@ public class ItemDTO implements Serializable
         this.itemsDetalles = itemsDetalles;
     }
 
+    @Override
+    public String toString()
+    {
+        return MessageFormat.format("{0} {1}{2}", asignaturaId, tipoSubgrupoId, subgrupoId);
+    }
+
     public Boolean getDetalleManual()
     {
         return detalleManual;
@@ -462,11 +477,5 @@ public class ItemDTO implements Serializable
     public void setRepetirCadaSemanas(Integer repetirCadaSemanas)
     {
         this.repetirCadaSemanas = repetirCadaSemanas;
-    }
-
-    @Override
-    public String toString()
-    {
-        return MessageFormat.format("{0} {1}{2}", asignaturaId, tipoSubgrupoId, subgrupoId);
     }
 }

@@ -1,6 +1,5 @@
 package es.uji.apps.hor.dao;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,9 +23,8 @@ public class SemestresDAODatabaseImpl extends BaseDAODatabaseImpl implements Sem
 
         QItemDTO item = QItemDTO.itemDTO;
 
-        List<Tuple> listaSemestresTuples = query
-                .from(item)
-                .where(item.estudio.id.eq(estudioId).and(item.cursoId.eq(new BigDecimal(curso))))
+        List<Tuple> listaSemestresTuples = query.from(item)
+                .where(item.estudio.id.eq(estudioId).and(item.cursoId.eq(curso)))
                 .orderBy(item.semestre.id.asc()).listDistinct(new QTuple(item.semestre.id));
 
         List<Semestre> semestres = new ArrayList<Semestre>();

@@ -1,6 +1,5 @@
 package es.uji.apps.hor.dao;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +26,7 @@ public class GruposDAODatabaseImpl extends BaseDAODatabaseImpl implements Grupos
         List<Tuple> listaGruposTuples = query
                 .from(item)
                 .where(item.estudio.id.eq(estudioId).and(
-                        item.cursoId.eq(new BigDecimal(cursoId)).and(
+                        item.cursoId.eq(cursoId).and(
                                 item.semestre.id.eq(semestreId)))).orderBy(item.grupoId.asc())
                 .listDistinct(new QTuple(item.grupoId));
 

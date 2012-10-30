@@ -1,6 +1,5 @@
 package es.uji.apps.hor.dao;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +30,7 @@ public class CursosDAODatabaseImpl extends BaseDAODatabaseImpl implements Cursos
 
         for (Tuple tuple : listaCursosTuples)
         {
-            BigDecimal idCurso = tuple.get(item.cursoId);
+            Long idCurso = tuple.get(item.cursoId);
 
             cursos.add(new Curso(idCurso.longValue()));
         }

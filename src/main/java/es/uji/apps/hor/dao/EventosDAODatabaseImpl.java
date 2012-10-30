@@ -1,6 +1,5 @@
 package es.uji.apps.hor.dao;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -41,7 +40,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         List<ItemDetalleDTO> listaItemsDTO = query
                 .from(detalleItem)
                 .join(detalleItem.item, item)
-                .where(item.estudio.id.eq(estudioId).and(item.cursoId.eq(new BigDecimal(cursoId)))
+                .where(item.estudio.id.eq(estudioId).and(item.cursoId.eq(cursoId))
                         .and(detalleItem.inicio.goe(rangoFechasInicio))
                         .and(detalleItem.fin.loe(rangoFechasFin))).list(detalleItem);
 
@@ -95,7 +94,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         List<ItemDTO> listaItemsDTO = query
                 .from(item)
                 .where(item.estudio.id.eq(estudioId).and(
-                        item.cursoId.eq(new BigDecimal(cursoId))
+                        item.cursoId.eq(cursoId)
                                 .and(item.semestre.id.eq(semestreId)).and(item.grupoId.eq(grupoId))
                                 .and(item.diaSemana.isNotNull())
                                 .and(item.tipoSubgrupoId.in(tiposCalendarios)))).list(item);
@@ -195,7 +194,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         List<ItemDTO> listaItemsDTO = query
                 .from(item)
                 .where(item.estudio.id.eq(estudioId).and(
-                        item.cursoId.eq(new BigDecimal(cursoId))
+                        item.cursoId.eq(cursoId)
                                 .and(item.semestre.id.eq(semestreId)).and(item.grupoId.eq(grupoId))
                                 .and(item.diaSemana.isNotNull()))).list(item);
 

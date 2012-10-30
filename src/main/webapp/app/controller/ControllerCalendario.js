@@ -119,6 +119,8 @@ Ext.define('HOR.controller.ControllerCalendario',
                         });
 
                         var eventos = Ext.create('HOR.store.StoreEventos');
+                        Extensible.calendar.data.EventModel.reconfigure();
+                        
                         panelPadre.add(
                         {
                             xtype : 'panelCalendario',

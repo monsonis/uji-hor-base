@@ -44,6 +44,7 @@ Ext.define('HOR.store.StoreEventos',
     {
         'write' : function(store, operation)
         {
+            console.log(store);
         }
     },
     initComponent : function(cfg)

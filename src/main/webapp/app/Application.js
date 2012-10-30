@@ -33,6 +33,7 @@ Ext.require('Ext.toolbar.Toolbar');
 Ext.require('Ext.toolbar.Spacer');
 Ext.require('Extensible.calendar.menu.Event');
 Ext.require('Extensible.calendar.data.MemoryCalendarStore');
+Ext.require('Extensible.calendar.data.EventMappings');
 Ext.require('Extensible.calendar.data.EventStore');
 Ext.require('Extensible.calendar.CalendarPanel');
 Ext.require('Extensible.calendar.template.BoxLayout');
