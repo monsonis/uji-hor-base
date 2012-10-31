@@ -251,8 +251,14 @@ Extensible.calendar.form.EventDetails.override(
         {
             anchor : '90%'
         });
+        
+        this.detalleClases = Ext.create('Event.form.DetalleClases',
+        {
+            anchor : '90%' 
+        });
 
-        var leftFields = [ this.titleField, this.dateRangeField, this.dateRepeatField, this.detalleManualField, this.detalleManualFechas ];
+        var leftFields = [ this.titleField, this.dateRangeField, this.dateRepeatField,
+                           this.detalleManualField, this.detalleManualFechas, this.detalleClases];
 
         if (this.calendarStore)
         {

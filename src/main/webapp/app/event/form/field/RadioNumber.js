@@ -44,6 +44,7 @@ Ext.define('Event.form.field.RadioNumber',
         },
         {
             xtype : 'label',
+            name : 'endLabel',
             text : this.endLabel,
             margins :
             {
@@ -55,5 +56,15 @@ Ext.define('Event.form.field.RadioNumber',
         } ];
 
         this.callParent(arguments);
+    },
+    
+    disableEndLabel : function()
+    {
+        this.down('label[name=endLabel]').addCls('form-disabled-label');
+    },
+    
+    enableEndLabel : function()
+    {
+        this.down('label[name=endLabel]').removeCls('form-disabled-label');
     }
 });

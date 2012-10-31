@@ -81,6 +81,7 @@ Ext.define('Event.form.field.DateRepeat',
         this.down('datefield[name=' + Extensible.calendar.data.EventMappings.StartDateRep.name + ']').disable();
         this.down('combobox[name=' + Extensible.calendar.data.EventMappings.RepetirCada.name + ']').disable();
         this.down('radiogroup').disable();
+        this.down('radionumberfield').disableEndLabel();
     },
     
     enableFields : function()
@@ -88,5 +89,6 @@ Ext.define('Event.form.field.DateRepeat',
         this.down('datefield[name=' + Extensible.calendar.data.EventMappings.StartDateRep.name + ']').enable();
         this.down('combobox[name=' + Extensible.calendar.data.EventMappings.RepetirCada.name + ']').enable();
         this.down('radiogroup').enable();
+        this.down('radionumberfield').enableEndLabel();
     }
 });

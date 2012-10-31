@@ -44,6 +44,8 @@ Ext.require('Ext.form.RadioGroup');
 Ext.require('Event.form.field.RadioNumber');
 Ext.require('Event.form.field.RadioDate');
 Ext.require('Event.form.field.DetalleManual');
+Ext.require('Ext.layout.container.Table');
+Ext.require('Event.form.DetalleClases');
 
 var login = 'ferrerq';
 

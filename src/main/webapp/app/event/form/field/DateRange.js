@@ -377,13 +377,11 @@ Ext.define('Event.form.field.DateRange',
     
     disableFields : function()
     {
-        this.disable();
-        this.toLabel.labelStyle = 'opacity: .3';
-        this.toLabel.disable();
+        this.day.setReadOnly(true);
     },
     
     enableFields : function()
     {
-        this.enable();
+        this.day.setReadOnly(false);
     }
 });
