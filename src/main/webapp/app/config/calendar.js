@@ -14,8 +14,9 @@ Extensible.calendar.menu.Event.override(
             {
                 text : me.editDetailsText,
                 iconCls : 'extensible-cal-icon-evt-edit',
-                scope: me,
-                handler: function(){
+                scope : me,
+                handler : function()
+                {
                     me.fireEvent('editdetails', me, me.rec, me.ctxEl);
                 }
             },
@@ -118,11 +119,6 @@ Extensible.calendar.data.EventMappings.NoEnd =
     name : 'NoEnd',
     mapping : 'no_end'
 };
-Extensible.calendar.data.EventMappings.EndRepNumber =
-{
-    name : 'EndRepNumber',
-    mapping : 'end_rep_number'
-};
 Extensible.calendar.data.EventMappings.EndRepNumberComp =
 {
     name : 'EndRepNumberComp',
@@ -130,17 +126,16 @@ Extensible.calendar.data.EventMappings.EndRepNumberComp =
     type : 'int',
     defaultValue : 1
 };
-Extensible.calendar.data.EventMappings.EndDateRep =
+Extensible.calendar.data.EventMappings.FechaFinRadio =
 {
-    name : 'EndDateRep',
-    mapping : 'end_date_rep',
+    name : 'FechaFinRadio',
+    mapping : 'seleccionRadioFechaFin',
+    type : 'string'
 };
 Extensible.calendar.data.EventMappings.EndDateRepComp =
 {
     name : 'EndDateRepComp',
     mapping : 'end_date_rep_comp',
-    type : 'date',
-/* dateFormat : 'c' */
 };
 Extensible.calendar.data.EventModel.reconfigure();
 
@@ -211,51 +206,53 @@ Extensible.calendar.form.EventDetails.override(
             }
         });
 
-        this.dateRepeatField = Ext.create('Event.form.field.DateRepeat',
-        {});
-        
+        this.dateRepeatField = Ext.create('Event.form.field.DateRepeat', {
+            getValue: function() {
+                console.log("hola");
+                return 5;
+            }
+        });
+
         this.detalleManualField = Ext.create('Ext.form.field.Checkbox',
         {
             boxLabel : 'Detall manual',
-            //name : 'detalleManual',
+            // name : 'detalleManual',
             listeners :
-            {                
-                'change' : 
+            {
+                'change' :
                 {
                     fn : function()
                     {
                         if (this.detalleManualField.getValue())
                         {
-                            var data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-                            var values = ['01/10/2012', '02/10/2012', '03/10/2012', '04/10/2012', '05/10/2012',
-                                          '06/10/2012', '07/10/2012', '08/10/2012', '09/10/2012', '10/10/2012'];
+                            var data = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ];
+                            var values = [ '01/10/2012', '02/10/2012', '03/10/2012', '04/10/2012', '05/10/2012', '06/10/2012', '07/10/2012', '08/10/2012', '09/10/2012', '10/10/2012' ];
                             this.detalleManualFechas.addPosiblesFechas(data, values);
                             this.detalleManualFechas.show();
                             this.detalleManualFechas.checkAllBoxes();
-                            
+
                             this.dateRangeField.disableFields();
                             this.dateRepeatField.disableFields();
                         }
                         else
                         {
                             this.detalleManualFechas.hide();
-                            
+
                             this.dateRangeField.enableFields();
                             this.dateRepeatField.enableFields();
                         }
-                     },
-                     scope : this
+                    },
+                    scope : this
                 }
             }
         });
-        
-        this.detalleManualFechas = Ext.create('Event.form.field.DetalleManual', 
+
+        this.detalleManualFechas = Ext.create('Event.form.field.DetalleManual',
         {
-           anchor : '90%' 
+            anchor : '90%'
         });
 
-        var leftFields = [ this.titleField, this.dateRangeField, this.dateRepeatField,
-                           this.detalleManualField, this.detalleManualFechas];
+        var leftFields = [ this.titleField, this.dateRangeField, this.dateRepeatField, this.detalleManualField, this.detalleManualFechas ];
 
         if (this.calendarStore)
         {
@@ -315,11 +312,11 @@ Extensible.calendar.form.EventDetails.override(
     loadRecord : function(rec)
     {
         var me = this, EventMappings = Extensible.calendar.data.EventMappings;
-        
+
         // Simulamos datos en los nuevos campos
-        //rec.data[EventMappings.ModificaDetalle.name] = "on";
-        //rec.data[EventMappings.EndRepNumberComp.name] = 6;
-        //rec.data[EventMappings.EndDateRepComp.name] = '7/9/2012';
+        // rec.data[EventMappings.ModificaDetalle.name] = "on";
+        // rec.data[EventMappings.EndRepNumberComp.name] = 6;
+        // rec.data[EventMappings.EndDateRepComp.name] = '7/9/2012';
 
         me.form.reset().loadRecord.apply(me.form, arguments);
         me.activeRecord = rec;
@@ -364,15 +361,6 @@ Extensible.calendar.form.EventDetails.override(
 
         me.titleField.focus();
 
-        // Activar los radios del componente de repetición
-        if (rec.data[EventMappings.EndDateRepComp.name])
-        {
-            this.dateRepeatField.down('radiodatefield radio').setValue(true);
-        }
-        else if (rec.data[EventMappings.EndRepNumberComp.name])
-        {
-                this.dateRepeatField.down('radionumberfield radio').setValue(true);
-        }
     }
 
 });

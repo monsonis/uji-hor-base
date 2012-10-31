@@ -12,7 +12,7 @@ Ext.define('Event.form.field.RadioNumber',
     boxLabel : '',
     endLabel : '',
     minValue : 0,
-    name : '',
+    radioName : '',
     numberName : '',
 
     initComponent : function()
@@ -20,27 +20,14 @@ Ext.define('Event.form.field.RadioNumber',
         this.items = [
         {
             xtype : 'radio',
-            name : this.name,
-            value : this.value,
-            boxLabel : this.boxLabel,
-            listeners :
-            {
-                'change' :
-                {
-                    fn : function(field, newValue, oldValue)
-                    {
-                        if (field.checked)
-                        {
-                            this.fireEvent('radionumberselect');
-                        }
-                    },
-                    scope : this
-                }
-            }
+            name : this.radioName,
+            inputValue: this.inputValue,
+            boxLabel : this.boxLabel
         },
         {
             xtype : 'numberfield',
             margin : '0 5 0 5',
+            value: this.value,
             minValue : this.minValue,
             name : this.numberName,
             listeners :
@@ -50,7 +37,6 @@ Ext.define('Event.form.field.RadioNumber',
                     fn : function()
                     {
                         this.down('radio').setValue(true);
-                        this.fireEvent('radionumberselect');
                     },
                     scope : this
                 }

@@ -2,9 +2,7 @@ Ext.define('Event.form.field.DateRepeat',
 {
     extend : 'Ext.container.Container',
     alias : 'widget.daterepeatfield',
-
     dateFormat : 'n/j/Y',
-
     layout : 'anchor',
 
     items : [
@@ -29,6 +27,7 @@ Ext.define('Event.form.field.DateRepeat',
     },
     {
         xtype : 'radiogroup',
+        name: 'grupoRadio',
         fieldLabel : 'Finalitza',
         vertical : true,
         columns : 1,
@@ -39,45 +38,25 @@ Ext.define('Event.form.field.DateRepeat',
         items : [
         {
             xtype : 'radio',
-            name : Extensible.calendar.data.EventMappings.NoEnd.name,
-            value : 0,
+            name : Extensible.calendar.data.EventMappings.FechaFinRadio.name,
+            inputValue : "F",
             boxLabel : 'Al final del semestre',
-            checked : true,
-            listeners :
-            {
-                'change' : function(field, newValue, oldValue)
-                {
-                    if (field.checked)
-                    {
-                        this.up('daterepeatfield').down('radionumberfield radio').setValue(false);
-                        this.up('daterepeatfield').down('radiodatefield radio').setValue(false);
-                    }
-                }
-            }
+            checked : true
         },
         {
             xtype : 'radionumberfield',
-            value : 1,
+            inputValue : "R",
             boxLabel : 'Després de ',
             endLabel : 'repeticions',
-            name : Extensible.calendar.data.EventMappings.EndRepNumber.name,
+            radioName : Extensible.calendar.data.EventMappings.FechaFinRadio.name,
             numberName : Extensible.calendar.data.EventMappings.EndRepNumberComp.name,
-            minValue : 1,
-            listeners :
-            {
-                'radionumberselect' : function()
-                {
-                    this.up('daterepeatfield').down('radio[name=' + Extensible.calendar.data.EventMappings.NoEnd.name + ']').setValue(false);
-                    this.up('daterepeatfield').down('radiodatefield radio').setValue(false);
-                }
-
-            }
+            minValue : 1
         },
         {
             xtype : 'radiodatefield',
-            value : 2,
+            inputValue : "D",
             boxLabel : 'El ',
-            name : Extensible.calendar.data.EventMappings.EndDateRep.name,
+            radioName : Extensible.calendar.data.EventMappings.FechaFinRadio.name,
             dateName : Extensible.calendar.data.EventMappings.EndDateRepComp.name,
             dateFormat : 'j/n/Y',
             listeners :

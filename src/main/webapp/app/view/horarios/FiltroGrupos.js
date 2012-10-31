@@ -42,7 +42,7 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
         },
         items : [
         {
-            fieldLabel : 'Curso',
+            fieldLabel : 'Curs',
             store : 'StoreCursos',
             displayField : 'curso',
             valueField : 'curso',
@@ -56,7 +56,7 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
             name : 'semestre'
         },
         {
-            fieldLabel : 'Grupo',
+            fieldLabel : 'Grup',
             store : 'StoreGrupos',
             displayField : 'grupo',
             valueField : 'grupo',

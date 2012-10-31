@@ -11,7 +11,7 @@ Ext.define('Event.form.field.RadioDate',
     value : '',
     boxLabel : '',
     dateFormat : 'n/j/Y',
-    name : '',
+    radioName : '',
     dateName : '',
 
     initComponent : function()
@@ -19,26 +19,13 @@ Ext.define('Event.form.field.RadioDate',
         this.items = [
         {
             xtype : 'radio',
-            name : this.name,
-            value : this.value,
-            boxLabel : this.boxLabel,
-            listeners :
-            {
-                'change' :
-                {
-                    fn : function(field, newValue, oldValue)
-                    {
-                        if (field.checked)
-                        {
-                            this.fireEvent('radiodateselect');
-                        }
-                    },
-                    scope : this
-                }
-            }
+            name : this.radioName,
+            inputValue: this.inputValue,
+            boxLabel : this.boxLabel
         },
         {
             xtype : 'datefield',
+            value: this.value,
             name : this.dateName,
             format : this.dateFormat,
             margin : '0 0 0 5',
@@ -49,7 +36,6 @@ Ext.define('Event.form.field.RadioDate',
                     fn : function()
                     {
                         this.down('radio').setValue(true);
-                        this.fireEvent('radiodateselect');
                     },
                     scope : this
                 }

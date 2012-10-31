@@ -179,10 +179,22 @@ public class CalendarResource
             DuracionEventoIncorrectaException
     {
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        DateFormat formatter2 = new SimpleDateFormat("dd/MM/yyyy");
 
         Date inicio = formatter.parse(entity.get("start"));
         Date fin = formatter.parse(entity.get("end"));
+        if (entity.get("start_date_rep") != null) {
+            Date desdeElDia = formatter2.parse(entity.get("start_date_rep"));
+        }
+        
+        Integer repetirCadaSemanas = Integer.parseInt(entity.get("repetir_cada"));
 
+        if (entity.get("seleccionRadioFechaFin").equals("R")) {
+            Integer numeroIteraciones = Integer.parseInt(entity.get("end_rep_number_comp"));
+        } else if (entity.get("seleccionRadioFechaFin").equals("D")) {
+            Date hastaElDia = formatter2.parse(entity.get("end_date_rep_comp"));
+        }
+        
         Evento evento = eventosService.modificaDiaYHoraGrupoAsignatura(
                 Long.parseLong(entity.get("id")), inicio, fin);
         return Collections.singletonList(UIEntity.toUI(evento));
