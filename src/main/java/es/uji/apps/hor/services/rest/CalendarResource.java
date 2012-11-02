@@ -183,18 +183,29 @@ public class CalendarResource
 
         Date inicio = formatter.parse(entity.get("start"));
         Date fin = formatter.parse(entity.get("end"));
-        if (entity.get("start_date_rep") != null) {
+        if (entity.get("start_date_rep") != null && !entity.get("start_date_rep").equals(""))
+        {
             Date desdeElDia = formatter2.parse(entity.get("start_date_rep"));
         }
-        
-        Integer repetirCadaSemanas = Integer.parseInt(entity.get("repetir_cada"));
 
-        if (entity.get("seleccionRadioFechaFin").equals("R")) {
+        Integer repetirCadaSemanas = 1;
+        try
+        {
+            repetirCadaSemanas = Integer.parseInt(entity.get("repetir_cada"));
+        }
+        catch (Exception e)
+        {
+        }
+
+        if (entity.get("seleccionRadioFechaFin").equals("R"))
+        {
             Integer numeroIteraciones = Integer.parseInt(entity.get("end_rep_number_comp"));
-        } else if (entity.get("seleccionRadioFechaFin").equals("D")) {
+        }
+        else if (entity.get("seleccionRadioFechaFin").equals("D"))
+        {
             Date hastaElDia = formatter2.parse(entity.get("end_date_rep_comp"));
         }
-        
+
         Evento evento = eventosService.modificaDiaYHoraGrupoAsignatura(
                 Long.parseLong(entity.get("id")), inicio, fin);
         return Collections.singletonList(UIEntity.toUI(evento));

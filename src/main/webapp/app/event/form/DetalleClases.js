@@ -6,33 +6,29 @@ Ext.define('Event.form.DetalleClases',
         type: 'table',
         columns: 6
     },
+    //hidden : true,
     
     style :
     {
         marginTop: '20px'
     },
     
-    items : [
-       {
-          html: 'textfield',
-          style :
-          {
-              border : '0',
-              paddingRight: '20px'
-          }
-       } ,
-       {
-           html: 'textfield',
-       }  ,
-       { xtype: 'tbtext', text: 'Sample Text Item' }  
-             
-    ],
+    items : [ ],
     
     actualizarDetalleClases : function(clases)
     {
         for (var i=0; i < clases.length; i++)
         {
-            //this.add
+            var display = new Ext.create('Ext.form.field.Display',
+            {
+                value : clases[i],
+                style :
+                {
+                    margin : '50px'
+                }
+            });
+            
+            this.add(display);
         }
     }
 });

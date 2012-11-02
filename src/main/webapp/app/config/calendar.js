@@ -298,13 +298,8 @@ Extensible.calendar.form.EventDetails.override(
             handler : this.onSave
         },
         {
-            itemId : this.id + '-del-btn',
-            text : this.deleteButtonText,
-            scope : this,
-            handler : this.onDelete
-        },
-        {
-            text : this.cancelButtonText,
+            text : 'Tancar',
+            name : 'close',
             scope : this,
             handler : this.onCancel
         } ];
@@ -312,6 +307,16 @@ Extensible.calendar.form.EventDetails.override(
         this.addCls('ext-evt-edit-form');
 
         // this.callParent(arguments);
+        
+        this.on('dirtychange', function(form, isDirty) {
+            if( isDirty ) {
+                 this.down('button[name=close]').setText('Tancar sense guardar');
+             }
+             else {
+                 this.down('button[name=close]').setText('Tancar');
+             }
+         });
+        
         this.superclass.initComponent.call(this);
     },
 
@@ -350,12 +355,10 @@ Extensible.calendar.form.EventDetails.override(
         if (rec.phantom)
         {
             me.setTitle(me.titleTextAdd);
-            me.down('#' + me.id + '-del-btn').hide();
         }
         else
         {
             me.setTitle(me.titleTextEdit);
-            me.down('#' + me.id + '-del-btn').show();
         }
 
         // Using setValue() results in dirty fields, so we reset the field state
@@ -367,6 +370,81 @@ Extensible.calendar.form.EventDetails.override(
 
         me.titleField.focus();
 
-    }
+    },
+    
+ // inherited docs
+    updateRecord: function(){
+        var dates = this.dateRangeField.getValue(),
+            M = Extensible.calendar.data.EventMappings,
+            rec = this.activeRecord,
+            fs = rec.fields,
+            dirty = false;
+            
+        rec.beginEdit();
+        
+        //TODO: This block is copied directly from BasicForm.updateRecord.
+        // Unfortunately since that method internally calls begin/endEdit all
+        // updates happen and the record dirty status is reset internally to
+        // that call. We need the dirty status, plus currently the DateRangeField
+        // does not map directly to the record values, so for now we'll duplicate
+        // the setter logic here (we need to be able to pick up any custom-added 
+        // fields generically). Need to revisit this later and come up with a better solution.
+        fs.each(function(f){
+            var field = this.form.findField(f.name);
+            if(field){
+                var value = field.getValue();
+                if (value.getGroupValue) {
+                    value = value.getGroupValue();
+                } 
+                else if (field.eachItem) {
+                    value = [];
+                    field.eachItem(function(item){
+                        value.push(item.getValue());
+                    });
+                }
+                rec.set(f.name, value);
+            }
+        }, this);
+        
+        rec.set(M.StartDate.name, dates[0]);
+        rec.set(M.EndDate.name, dates[1]);
+        rec.set(M.IsAllDay.name, dates[2]);
+        
+        dirty = rec.dirty;
+        //delete rec.store; // make sure the record does not try to autosave
+        rec.endEdit();
+        
+        return dirty;
+    },
+    
+    // private
+    onCancel: function(){
+        this.cleanup(true);
+        this.fireEvent('eventcancel', this, this.activeRecord);
+    },
+    
+    // private
+    cleanup: function(hide){
+        if (this.activeRecord) {
+            this.activeRecord.reject();
+        }
+        delete this.activeRecord;
+        
+        if (this.form.isDirty()) {
+            this.form.reset();
+        }
+    },
+    
+    // private
+    onSave: function(){
+        if(!this.form.isValid()){
+            return;
+        }
+        if(!this.updateRecord()){
+            this.onCancel();
+            return;
+        }
+        this.fireEvent(this.activeRecord.phantom ? 'eventadd' : 'eventupdate', this, this.activeRecord);
+    },
 
 });
