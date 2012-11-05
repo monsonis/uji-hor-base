@@ -68,5 +68,7 @@ Ext.define('HOR.view.horarios.PanelCalendario',
         });
 
         this.callParent(arguments);
+    },
+    onStoreUpdate: function() {
     }
 });
