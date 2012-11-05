@@ -386,6 +386,11 @@ Extensible.calendar.form.EventDetails.override(
             return;
         }
         
+        me.activeRecord.store.on("update", function() {
+            me.down('button[name=close]').setText('Tancar'); 
+            me.getDetalleClases();
+         });
+        
         if (me.activeRecord.phantom) {
             me.fireEvent('eventadd', me, me.activeRecord);
             return;
@@ -398,9 +403,6 @@ Extensible.calendar.form.EventDetails.override(
             }
             else {
                 me.fireEvent('eventupdate', me, me.activeRecord);
-                // Aquí mostraríamos los días
-                me.getDetalleClases();
-                return;
             }
         }
     },
