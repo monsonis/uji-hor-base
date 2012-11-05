@@ -369,81 +369,47 @@ Extensible.calendar.form.EventDetails.override(
 
         me.titleField.focus();
 
-    },
-    
- // inherited docs
-    updateRecord: function(){
-        var dates = this.dateRangeField.getValue(),
-            M = Extensible.calendar.data.EventMappings,
-            rec = this.activeRecord,
-            fs = rec.fields,
-            dirty = false;
-            
-        rec.beginEdit();
-        
-        //TODO: This block is copied directly from BasicForm.updateRecord.
-        // Unfortunately since that method internally calls begin/endEdit all
-        // updates happen and the record dirty status is reset internally to
-        // that call. We need the dirty status, plus currently the DateRangeField
-        // does not map directly to the record values, so for now we'll duplicate
-        // the setter logic here (we need to be able to pick up any custom-added 
-        // fields generically). Need to revisit this later and come up with a better solution.
-        fs.each(function(f){
-            var field = this.form.findField(f.name);
-            if(field){
-                var value = field.getValue();
-                if (value.getGroupValue) {
-                    value = value.getGroupValue();
-                } 
-                else if (field.eachItem) {
-                    value = [];
-                    field.eachItem(function(item){
-                        value.push(item.getValue());
-                    });
-                }
-                rec.set(f.name, value);
-            }
-        }, this);
-        
-        rec.set(M.StartDate.name, dates[0]);
-        rec.set(M.EndDate.name, dates[1]);
-        rec.set(M.IsAllDay.name, dates[2]);
-        
-        dirty = rec.dirty;
-        //delete rec.store; // make sure the record does not try to autosave
-        rec.endEdit();
-        
-        return dirty;
-    },
-    
-    // private
-    onCancel: function(){
-        this.cleanup(true);
-        this.fireEvent('eventcancel', this, this.activeRecord);
-    },
-    
-    // private
-    cleanup: function(hide){
-        if (this.activeRecord) {
-            this.activeRecord.reject();
-        }
-        delete this.activeRecord;
-        
-        if (this.form.isDirty()) {
-            this.form.reset();
-        }
+        me.getDetalleClases();
     },
     
     // private
     onSave: function(){
-        if(!this.form.isValid()){
+        var me = this,
+            originalHasRecurrence = me.activeRecord.isRecurring();
+        
+        if (!me.form.isValid()) {
             return;
         }
-        if(!this.updateRecord()){
-            this.onCancel();
+        
+        if (!me.updateRecord(me.activeRecord)) {
+            me.onCancel();
             return;
         }
-        this.fireEvent(this.activeRecord.phantom ? 'eventadd' : 'eventupdate', this, this.activeRecord);
+        
+        if (me.activeRecord.phantom) {
+            me.fireEvent('eventadd', me, me.activeRecord);
+            return;
+        }
+        else {
+            if (originalHasRecurrence) {
+                // We only need to prompt when editing an existing recurring event. If a normal
+                // event is edited to make it recurring just do a standard update.
+                me.onRecurrenceUpdate();
+            }
+            else {
+                me.fireEvent('eventupdate', me, me.activeRecord);
+                // Aquí mostraríamos los días
+                me.getDetalleClases();
+                return;
+            }
+        }
     },
+    
+    getDetalleClases : function()
+    {
+        var clases = [ '01/10/2012', '02/10/2012', '03/10/2012', '04/10/2012', '05/10/2012', '06/10/2012', '07/10/2012', '08/10/2012', '09/10/2012', '10/10/2012' ];
+        this.detalleClases.actualizarDetalleClases(clases);
+        this.detalleClases.show();
+    }
 
 });

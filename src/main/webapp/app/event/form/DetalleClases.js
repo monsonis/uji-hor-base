@@ -1,12 +1,13 @@
 Ext.define('Event.form.DetalleClases',
 {
     extend : 'Ext.form.FieldSet',
+    alias : 'widget.detalleClases',
     title : 'La classe tindrà docència els dies:',
     layout: {
         type: 'table',
         columns: 6
     },
-    //hidden : true,
+    hidden : true,
     
     style :
     {
@@ -17,6 +18,8 @@ Ext.define('Event.form.DetalleClases',
     
     actualizarDetalleClases : function(clases)
     {
+        this.removeAll();
+        
         for (var i=0; i < clases.length; i++)
         {
             var display = new Ext.create('Ext.form.field.Display',
@@ -24,7 +27,7 @@ Ext.define('Event.form.DetalleClases',
                 value : clases[i],
                 style :
                 {
-                    margin : '50px'
+                    marginRight : '50px'
                 }
             });
             
