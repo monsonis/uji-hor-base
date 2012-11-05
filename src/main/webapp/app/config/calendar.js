@@ -206,12 +206,7 @@ Extensible.calendar.form.EventDetails.override(
             }
         });
 
-        this.dateRepeatField = Ext.create('Event.form.field.DateRepeat', {
-            getValue: function() {
-                console.log("hola");
-                return 5;
-            }
-        });
+        this.dateRepeatField = Ext.create('Event.form.field.DateRepeat', {});
 
         this.detalleManualField = Ext.create('Ext.form.field.Checkbox',
         {
@@ -329,6 +324,10 @@ Extensible.calendar.form.EventDetails.override(
         // rec.data[EventMappings.EndRepNumberComp.name] = 6;
         // rec.data[EventMappings.EndDateRepComp.name] = '7/9/2012';
 
+        if (!rec.data[EventMappings.RepetirCada.name]) {
+            rec.data[EventMappings.RepetirCada.name] = 1;
+        }
+        
         me.form.reset().loadRecord.apply(me.form, arguments);
         me.activeRecord = rec;
         me.dateRangeField.setValue(rec.data);
