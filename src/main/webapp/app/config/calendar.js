@@ -369,7 +369,7 @@ Extensible.calendar.form.EventDetails.override(
 
         me.titleField.focus();
 
-        me.getDetalleClases();
+        me.getDetalleClases(rec.data[EventMappings.EventId.name]);
     },
     
     // private
@@ -388,7 +388,7 @@ Extensible.calendar.form.EventDetails.override(
         
         me.activeRecord.store.on("update", function() {
             me.down('button[name=close]').setText('Tancar'); 
-            me.getDetalleClases();
+            me.getDetalleClases(me.activeRecord.data[Extensible.calendar.data.EventMappings.EventId.name]);
          });
         
         if (me.activeRecord.phantom) {
@@ -407,11 +407,29 @@ Extensible.calendar.form.EventDetails.override(
         }
     },
     
-    getDetalleClases : function()
+    getDetalleClases : function(eventoId)
     {
-        var clases = [ '01/10/2012', '02/10/2012', '03/10/2012', '04/10/2012', '05/10/2012', '06/10/2012', '07/10/2012', '08/10/2012', '09/10/2012', '10/10/2012' ];
-        this.detalleClases.actualizarDetalleClases(clases);
-        this.detalleClases.show();
+        var me = this;
+        Ext.Ajax.request({
+            url : '/hor/rest/calendario/eventos/detalle/' + eventoId,
+            method : 'GET',
+            success : function(response)
+            {
+                var eventos = Ext.JSON.decode(response.responseText).data;
+                var clases = new Array();
+                for (var i=0; i < eventos.length; i++)
+                {
+                    //var fecha = eventos[i].start;
+                    
+                    var fecha = Ext.Date.parse(eventos[i].start, "Y-m-d\\TH:i:s");
+                    
+                    clases[i] = Ext.Date.format(fecha, "d/m/Y"); 
+                }
+                
+                me.detalleClases.actualizarDetalleClases(clases);
+                me.detalleClases.show();
+            }
+        });
     }
 
 });

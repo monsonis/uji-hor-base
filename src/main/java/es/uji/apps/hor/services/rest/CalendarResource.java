@@ -309,4 +309,16 @@ public class CalendarResource
     {
         return Collections.singletonList(evento);
     }
+
+    @GET
+    @Path("eventos/detalle/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<UIEntity> getEventosDetalleByEventoId(@PathParam("id") String eventoId)
+    {
+
+        List<Evento> eventosDetalle = eventosService.getEventosDetalleByEventoId(ParamUtils
+                .parseLong(eventoId));
+
+        return toUI(eventosDetalle);
+    }
 }

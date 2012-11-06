@@ -94,9 +94,8 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         List<ItemDTO> listaItemsDTO = query
                 .from(item)
                 .where(item.estudio.id.eq(estudioId).and(
-                        item.cursoId.eq(cursoId)
-                                .and(item.semestre.id.eq(semestreId)).and(item.grupoId.eq(grupoId))
-                                .and(item.diaSemana.isNotNull())
+                        item.cursoId.eq(cursoId).and(item.semestre.id.eq(semestreId))
+                                .and(item.grupoId.eq(grupoId)).and(item.diaSemana.isNotNull())
                                 .and(item.tipoSubgrupoId.in(tiposCalendarios)))).list(item);
 
         List<Evento> eventos = new ArrayList<Evento>();
@@ -118,7 +117,9 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
                 .intValue(), itemDTO.getHoraInicio());
         Calendar fin = generaItemCalendarioSemanaGenerica(
                 itemDTO.getDiaSemana().getId().intValue(), itemDTO.getHoraFin());
-        return new Evento(itemDTO.getId(), calendario, titulo, inicio.getTime(), fin.getTime(), itemDTO.getDetalleManual(), itemDTO.getRepetirCadaSemanas(), itemDTO.getNumeroIteraciones());
+        return new Evento(itemDTO.getId(), calendario, titulo, inicio.getTime(), fin.getTime(),
+                itemDTO.getDetalleManual(), itemDTO.getRepetirCadaSemanas(),
+                itemDTO.getNumeroIteraciones());
 
     }
 
@@ -194,9 +195,9 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         List<ItemDTO> listaItemsDTO = query
                 .from(item)
                 .where(item.estudio.id.eq(estudioId).and(
-                        item.cursoId.eq(cursoId)
-                                .and(item.semestre.id.eq(semestreId)).and(item.grupoId.eq(grupoId))
-                                .and(item.diaSemana.isNotNull()))).list(item);
+                        item.cursoId.eq(cursoId).and(item.semestre.id.eq(semestreId))
+                                .and(item.grupoId.eq(grupoId)).and(item.diaSemana.isNotNull())))
+                .list(item);
 
         List<Evento> eventos = new ArrayList<Evento>();
 
@@ -342,5 +343,26 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             aux.setPlazas(itemCircuitoDTO.getPlazas());
             insert(aux);
         }
+    }
+
+    @Override
+    public List<Evento> getEventosDetalleByEventoId(Long eventoId)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+
+        QItemDTO item = QItemDTO.itemDTO;
+        QItemDetalleDTO detalleItem = QItemDetalleDTO.itemDetalleDTO;
+
+        List<ItemDetalleDTO> listaItemsDTO = query.from(detalleItem).join(detalleItem.item, item)
+                .where(item.id.eq(eventoId)).list(detalleItem);
+
+        List<Evento> eventos = new ArrayList<Evento>();
+
+        for (ItemDetalleDTO itemDTO : listaItemsDTO)
+        {
+            eventos.add(creaEventoDesde(itemDTO));
+        }
+
+        return eventos;
     }
 }

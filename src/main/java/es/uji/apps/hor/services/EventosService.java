@@ -72,4 +72,9 @@ public class EventosService
         eventosDAO.divideEventoSemanaGenerica(eventoId);
     }
 
+    public List<Evento> getEventosDetalleByEventoId(Long eventoId)
+    {
+        return eventosDAO.getEventosDetalleByEventoId(eventoId);
+    }
+
 }

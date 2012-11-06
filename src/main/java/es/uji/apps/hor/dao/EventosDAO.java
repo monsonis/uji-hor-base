@@ -24,4 +24,6 @@ public interface EventosDAO extends BaseDAO
 
     void divideEventoSemanaGenerica(Long eventoId) throws RegistroNoEncontradoException,
             EventoNoDivisibleException;
+
+    List<Evento> getEventosDetalleByEventoId(Long eventoId);
 }
