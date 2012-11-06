@@ -27,7 +27,8 @@ Ext.define('Event.form.field.RadioDate',
             xtype : 'datefield',
             value: this.value,
             name : this.dateName,
-            format : this.dateFormat,
+            format : this.format,
+            altFormats: this.altFormats,
             margin : '0 0 0 5',
             listeners :
             {

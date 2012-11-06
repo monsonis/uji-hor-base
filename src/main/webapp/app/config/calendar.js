@@ -123,8 +123,7 @@ Extensible.calendar.data.EventMappings.EndRepNumberComp =
 {
     name : 'EndRepNumberComp',
     mapping : 'end_rep_number_comp',
-    type : 'int',
-    defaultValue : 1
+    type : 'int'
 };
 Extensible.calendar.data.EventMappings.FechaFinRadio =
 {
@@ -317,6 +316,7 @@ Extensible.calendar.form.EventDetails.override(
 
     loadRecord : function(rec)
     {
+
         var me = this, EventMappings = Extensible.calendar.data.EventMappings;
 
         // Simulamos datos en los nuevos campos
@@ -325,7 +325,7 @@ Extensible.calendar.form.EventDetails.override(
         // rec.data[EventMappings.EndDateRepComp.name] = '7/9/2012';
 
         if (!rec.data[EventMappings.RepetirCada.name]) {
-            rec.data[EventMappings.RepetirCada.name] = 1;
+            rec.data[EventMappings.RepetirCada.name] = '1';
         }
         
         me.form.reset().loadRecord.apply(me.form, arguments);
@@ -339,27 +339,29 @@ Extensible.calendar.form.EventDetails.override(
 
             if (!rec.data[EventMappings.RInstanceStartDate.name])
             {
-                // If the record is new we have to set the instance start date explicitly to match
-                // the
-                // field's default so that it does not show up later as dirty if it is not edited:
                 rec.data[EventMappings.RInstanceStartDate.name] = rec.getStartDate();
             }
         }
 
+        if (rec.data[EventMappings.EndRepNumberComp.name]) {
+            this.down('radiogroup[name=grupoDuracion] radio[inputValue=R]').setValue(true);
+            me.dateRepeatField.setNumeroRepeticionesValue(rec.data[EventMappings.EndRepNumberComp.name]);
+        } else if (rec.data[EventMappings.EndDateRepComp.name]) {
+            this.down('radiogroup[name=grupoDuracion] radio[inputValue=D]').setValue(true);
+            me.dateRepeatField.setRepetirHastaValue(rec.data[EventMappings.EndDateRepComp.name]);
+        } else {
+            this.down('radiogroup[name=grupoDuracion] radio[inputValue=F]').setValue(true);
+        }
+        
         if (me.calendarField)
         {
             me.calendarField.setValue(rec.data[EventMappings.CalendarId.name]);
         }
+        me.setTitle(me.titleTextEdit);
 
-        if (rec.phantom)
-        {
-            me.setTitle(me.titleTextAdd);
-        }
-        else
-        {
-            me.setTitle(me.titleTextEdit);
-        }
-
+        
+        me.dateRepeatField.setRepetirCadaValue(rec.data[EventMappings.RepetirCada.name]);
+        
         // Using setValue() results in dirty fields, so we reset the field state
         // after loading the form so that the current values are the "original" values
         me.form.getFields().each(function(item)
@@ -389,6 +391,7 @@ Extensible.calendar.form.EventDetails.override(
         me.activeRecord.store.on("update", function() {
             me.down('button[name=close]').setText('Tancar'); 
             me.getDetalleClases(me.activeRecord.data[Extensible.calendar.data.EventMappings.EventId.name]);
+            me.activeRecord.store.load();
          });
         
         if (me.activeRecord.phantom) {

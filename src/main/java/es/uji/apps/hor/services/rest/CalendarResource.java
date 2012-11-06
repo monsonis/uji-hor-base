@@ -183,31 +183,31 @@ public class CalendarResource
 
         Date inicio = formatter.parse(entity.get("start"));
         Date fin = formatter.parse(entity.get("end"));
+        Date desdeElDia = null;
+        Integer numeroIteraciones = null;
+        Integer repetirCadaSemanas = null;
+        Date hastaElDia = null;
+        
         if (entity.get("start_date_rep") != null && !entity.get("start_date_rep").equals(""))
         {
-            Date desdeElDia = formatter2.parse(entity.get("start_date_rep"));
+            desdeElDia = formatter2.parse(entity.get("start_date_rep"));
         }
-
-        Integer repetirCadaSemanas = 1;
-        try
-        {
+        
+        if (entity.get("repetir_cada") != null && !entity.get("repetir_cada").equals("")) {
             repetirCadaSemanas = Integer.parseInt(entity.get("repetir_cada"));
-        }
-        catch (Exception e)
-        {
         }
 
         if (entity.get("seleccionRadioFechaFin").equals("R"))
         {
-            Integer numeroIteraciones = Integer.parseInt(entity.get("end_rep_number_comp"));
+            numeroIteraciones = Integer.parseInt(entity.get("end_rep_number_comp"));
         }
         else if (entity.get("seleccionRadioFechaFin").equals("D"))
         {
-            Date hastaElDia = formatter2.parse(entity.get("end_date_rep_comp"));
+            hastaElDia = formatter2.parse(entity.get("end_date_rep_comp"));
         }
 
-        Evento evento = eventosService.modificaDiaYHoraGrupoAsignatura(
-                Long.parseLong(entity.get("id")), inicio, fin);
+        Evento evento = eventosService.modificaDetallesGrupoAsignatura(
+                Long.parseLong(entity.get("id")), inicio, fin, desdeElDia, numeroIteraciones, repetirCadaSemanas, hastaElDia);
         return Collections.singletonList(UIEntity.toUI(evento));
     }
 
@@ -240,6 +240,10 @@ public class CalendarResource
             eventoUI.put("cid", evento.getCalendario().getId());
             eventoUI.put("title", evento.getTitulo());
             eventoUI.put("notes", evento.getObservaciones());
+            eventoUI.put("repetir_cada", evento.getRepetirCadaSemanas());
+            eventoUI.put("start_date_rep", evento.getDesdeElDia());
+            eventoUI.put("end_date_rep_comp", evento.getHastaElDia());
+            eventoUI.put("end_rep_number_comp", evento.getNumeroIteraciones());
 
             if (evento.getInicio() != null)
             {

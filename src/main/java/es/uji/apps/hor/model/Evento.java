@@ -13,6 +13,8 @@ public class Evento
     private Boolean detalleManual;
     private Integer numeroIteraciones;
     private Integer repetirCadaSemanas;
+    private Date desdeElDia;
+    private Date hastaElDia;
 
     public Evento(Long id, Calendario calendario, String titulo, Date inicio, Date fin)
     {
@@ -23,18 +25,6 @@ public class Evento
         this.fin = fin;
     }
     
-    public Evento(Long id, Calendario calendario, String titulo, Date inicio, Date fin, Boolean detalleManual, Integer numeroIteraciones, Integer repetirCadaSemanas)
-    {
-        this.id = id;
-        this.calendario = calendario;
-        this.titulo = titulo;
-        this.inicio = inicio;
-        this.fin = fin;
-        this.detalleManual = detalleManual;
-        this.numeroIteraciones = numeroIteraciones;
-        this.repetirCadaSemanas = repetirCadaSemanas;
-    }
-
     public Long getId()
     {
         return id;
@@ -123,5 +113,25 @@ public class Evento
     public void setRepetirCadaSemanas(Integer repetirCadaSemanas)
     {
         this.repetirCadaSemanas = repetirCadaSemanas;
+    }
+
+    public Date getDesdeElDia()
+    {
+        return desdeElDia;
+    }
+
+    public void setDesdeElDia(Date desdeElDia)
+    {
+        this.desdeElDia = desdeElDia;
+    }
+
+    public Date getHastaElDia()
+    {
+        return hastaElDia;
+    }
+
+    public void setHastaElDia(Date hastaElDia)
+    {
+        this.hastaElDia = hastaElDia;
     }
 }

@@ -72,6 +72,30 @@ public class EventosService
         eventosDAO.divideEventoSemanaGenerica(eventoId);
     }
 
+    public Evento modificaDetallesGrupoAsignatura(Long grupoAsignaturaId, Date inicio, Date fin,
+            Date desdeElDia, Integer numeroIteraciones, Integer repetirCadaSemanas, Date hastaElDia) throws DuracionEventoIncorrectaException
+    {
+        Calendar calInicio = Calendar.getInstance();
+        Calendar calFin = Calendar.getInstance();
+
+        calInicio.setTime(inicio);
+        calFin.setTime(fin);
+
+        if (calInicio.get(Calendar.YEAR) == calFin.get(Calendar.YEAR)
+                && calInicio.get(Calendar.MONTH) == calFin.get(Calendar.MONTH)
+                && calInicio.get(Calendar.DAY_OF_MONTH) == calFin.get(Calendar.DAY_OF_MONTH)
+                && calInicio.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY
+                && calInicio.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY)
+        {
+            return eventosDAO.modificaDetallesGrupoAsignatura(grupoAsignaturaId, inicio, fin, desdeElDia, numeroIteraciones, repetirCadaSemanas, hastaElDia);
+        }
+        else
+        {
+            throw new DuracionEventoIncorrectaException();
+        }
+
+    }
+
     public List<Evento> getEventosDetalleByEventoId(Long eventoId)
     {
         return eventosDAO.getEventosDetalleByEventoId(eventoId);

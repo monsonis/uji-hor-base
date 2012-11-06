@@ -117,9 +117,15 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
                 .intValue(), itemDTO.getHoraInicio());
         Calendar fin = generaItemCalendarioSemanaGenerica(
                 itemDTO.getDiaSemana().getId().intValue(), itemDTO.getHoraFin());
-        return new Evento(itemDTO.getId(), calendario, titulo, inicio.getTime(), fin.getTime(),
-                itemDTO.getDetalleManual(), itemDTO.getRepetirCadaSemanas(),
-                itemDTO.getNumeroIteraciones());
+        Evento evento =  new Evento(itemDTO.getId(), calendario, titulo, inicio.getTime(), fin.getTime());
+        
+        evento.setDetalleManual(itemDTO.getDetalleManual());
+        evento.setNumeroIteraciones(itemDTO.getNumeroIteraciones());
+        evento.setRepetirCadaSemanas(itemDTO.getRepetirCadaSemanas());
+        evento.setDesdeElDia(itemDTO.getDesdeElDia());
+        evento.setHastaElDia(itemDTO.getHastaElDia());
+        
+        return evento;
 
     }
 
@@ -343,6 +349,41 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             aux.setPlazas(itemCircuitoDTO.getPlazas());
             insert(aux);
         }
+    }
+
+    @Override
+    public Evento modificaDetallesGrupoAsignatura(Long grupoAsignaturaId, Date inicio, Date fin,
+            Date desdeElDia, Integer numeroIteraciones, Integer repetirCadaSemanas, Date hastaElDia)
+    {
+        QItemDTO qItem = QItemDTO.itemDTO;
+        JPAQuery query = new JPAQuery(entityManager);
+        JPAQuery query2 = new JPAQuery(entityManager);
+
+        query.from(qItem).where(qItem.id.eq(grupoAsignaturaId));
+        ItemDTO item = query.list(qItem).get(0);
+
+        Calendar calInicio = Calendar.getInstance();
+        Calendar calFin = Calendar.getInstance();
+
+        calInicio.setTime(inicio);
+        calFin.setTime(fin);
+
+        String diaSemana = getNombreDiaSemana(calInicio.get(Calendar.DAY_OF_WEEK));
+
+        QDiaSemanaDTO qDiaSemana = QDiaSemanaDTO.diaSemanaDTO;
+        query2.from(qDiaSemana).where(qDiaSemana.nombre.eq(diaSemana));
+        DiaSemanaDTO diaSemanaDTO = query2.list(qDiaSemana).get(0);
+
+        item.setHoraInicio(inicio);
+        item.setHoraFin(fin);
+        item.setDiaSemana(diaSemanaDTO);
+        item.setDesdeElDia(desdeElDia);
+        item.setNumeroIteraciones(numeroIteraciones);
+        item.setRepetirCadaSemanas(repetirCadaSemanas);
+        item.setHastaElDia(hastaElDia);
+        update(item);
+
+        return creaEventoDesde(item);
     }
 
     @Override

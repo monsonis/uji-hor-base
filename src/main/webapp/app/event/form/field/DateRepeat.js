@@ -9,7 +9,8 @@ Ext.define('Event.form.field.DateRepeat',
     {
         xtype : 'datefield',
         name : Extensible.calendar.data.EventMappings.StartDateRep.name,
-        format : 'j/n/Y',
+        format : 'd/m/Y',
+        altFormats : 'd/m/Y H:i:s',       
         fieldLabel : 'Comença el',
         startDay : 1,
     },
@@ -21,16 +22,16 @@ Ext.define('Event.form.field.DateRepeat',
         displayField : 'repeatName',
         mode: 'local',
         triggerAction: 'all',
-        value: 'Setmana',
+        value: '1',
         store : Ext.create('Ext.data.ArrayStore',
         {
             fields : [ 'repeatValue', 'repeatName' ],
-            data : [ [ 1, 'Setmana' ], [ 2, '2 setmanes' ], [ 3, '3 setmanes' ], [ 4, '4 setmanes' ] ]
+            data : [ [ '1', 'Setmana' ], [ '2', '2 setmanes' ], [ '3', '3 setmanes' ], [ '4', '4 setmanes' ] ]
         }),
     },
     {
         xtype : 'radiogroup',
-        name: 'grupoRadio',
+        name: 'grupoDuracion',
         fieldLabel : 'Finalitza',
         vertical : true,
         columns : 1,
@@ -52,8 +53,7 @@ Ext.define('Event.form.field.DateRepeat',
             boxLabel : 'Després de ',
             endLabel : 'repeticions',
             radioName : Extensible.calendar.data.EventMappings.FechaFinRadio.name,
-            numberName : Extensible.calendar.data.EventMappings.EndRepNumberComp.name,
-            minValue : 1
+            numberName : Extensible.calendar.data.EventMappings.EndRepNumberComp.name
         },
         {
             xtype : 'radiodatefield',
@@ -61,7 +61,8 @@ Ext.define('Event.form.field.DateRepeat',
             boxLabel : 'El ',
             radioName : Extensible.calendar.data.EventMappings.FechaFinRadio.name,
             dateName : Extensible.calendar.data.EventMappings.EndDateRepComp.name,
-            dateFormat : 'j/n/Y',
+            format : 'd/m/Y',
+            altFormats : 'd/m/Y H:i:s',
             listeners :
             {
                 'radiodateselect' : function()
@@ -91,5 +92,15 @@ Ext.define('Event.form.field.DateRepeat',
         this.down('datefield[name=' + Extensible.calendar.data.EventMappings.StartDateRep.name + ']').enable();
         this.down('combobox[name=' + Extensible.calendar.data.EventMappings.RepetirCada.name + ']').enable();
         this.down('radiogroup').enable();
+    },
+    setRepetirCadaValue: function(value) {
+        this.down('combobox[name=' + Extensible.calendar.data.EventMappings.RepetirCada.name + ']').setValue(value);
+    },
+    setNumeroRepeticionesValue: function(value) {
+        this.down('numberfield[name=' + Extensible.calendar.data.EventMappings.EndRepNumberComp.name + ']').setValue(value);
+    },
+    
+    setRepetirHastaValue: function(value) {
+        this.down('datefield[name=' + Extensible.calendar.data.EventMappings.EndDateRepComp.name + ']').setValue(value);
     }
 });
