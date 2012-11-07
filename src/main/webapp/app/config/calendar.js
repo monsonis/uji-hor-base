@@ -239,11 +239,8 @@ Extensible.calendar.form.EventDetails.override(
                     {
                         if (this.detalleManualField.getValue())
                         {
-                            var data = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ];
-                            var values = [ '01/10/2012', '02/10/2012', '03/10/2012', '04/10/2012', '05/10/2012', '06/10/2012', '07/10/2012', '08/10/2012', '09/10/2012', '10/10/2012' ];
-                            this.detalleManualFechas.addPosiblesFechas(data, values);
                             this.detalleManualFechas.show();
-                            this.detalleManualFechas.checkAllBoxes();
+                            this.detalleManualFechas.checkBoxes();
 
                             this.dateRangeField.disableFields();
                             this.dateRepeatField.disableFields();
@@ -389,6 +386,7 @@ Extensible.calendar.form.EventDetails.override(
 
         me.titleField.focus();
 
+        me.getDetalleManual(rec.data[EventMappings.EventId.name]);
         me.getDetalleClases(rec.data[EventMappings.EventId.name]);
     },
 
@@ -411,19 +409,24 @@ Extensible.calendar.form.EventDetails.override(
         me.activeRecord.store.on(
         {
             update : function()
-            {
-                if (!this.activeRecord)
-                    return;
-                this.down('button[name=close]').setText('Tancar');
-                me.getForm().reset();
-                me.getForm().loadRecord(me.activeRecord);
-                var fields = me.getForm().getFields();
-                Ext.Array.each( fields.items, function(field) {
-                    field.resetOriginalValue();
-                });
-                this.getDetalleClases(this.activeRecord.data[Extensible.calendar.data.EventMappings.EventId.name]);
-            },
-            scope : me
+                {
+                    if (!this.activeRecord)
+                        return;
+                    this.down('button[name=close]').setText('Tancar');
+                    this.getDetalleClases(this.activeRecord.data[Extensible.calendar.data.EventMappings.EventId.name]);
+                    this.getDetalleManual(this.activeRecord.data[Extensible.calendar.data.EventMappings.EventId.name]);
+                    if (this.detalleManualField.getValue())
+                    {                       
+                        this.detalleManualFechas.checkBoxes();
+                    }
+                    me.getForm().reset();
+                    me.getForm().loadRecord(me.activeRecord);
+                    var fields = me.getForm().getFields();
+                    Ext.Array.each( fields.items, function(field) {
+                        field.resetOriginalValue();
+                    });
+                },
+                scope : me
         });
 
         if (me.activeRecord.phantom)
@@ -456,8 +459,6 @@ Extensible.calendar.form.EventDetails.override(
                 var clases = new Array();
                 for ( var i = 0; i < eventos.length; i++)
                 {
-                    // var fecha = eventos[i].start;
-
                     var fecha = Ext.Date.parse(eventos[i].start, "Y-m-d\\TH:i:s");
 
                     clases[i] = Ext.Date.format(fecha, "d/m/Y");
@@ -466,6 +467,26 @@ Extensible.calendar.form.EventDetails.override(
                 me.detalleClases.actualizarDetalleClases(clases);
                 me.detalleClases.show();
             }
+        });
+    },
+    
+    getDetalleManual : function(eventoId)
+    {
+        var me = this;
+        Ext.Ajax.request(
+        {
+           url : '/hor/rest/calendario/eventos/detalle/manual/' + eventoId,
+           method : 'GET',
+           success : function(response)
+           {
+               var clases = Ext.JSON.decode(response.responseText).data;
+               me.detalleManualFechas.addPosiblesFechas(clases);
+               
+               if (me.detalleManualField.getValue())
+               {
+                   me.detalleManualFechas.checkBoxes();
+               }
+           }
         });
     }
 

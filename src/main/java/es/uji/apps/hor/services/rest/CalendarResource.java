@@ -353,11 +353,11 @@ public class CalendarResource
         
         List<ClaseDetalleManual> clases = new ArrayList<ClaseDetalleManual>();
         
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         for (String fecha : fechas)
         {
             ClaseDetalleManual clase = new ClaseDetalleManual();
-            clase.setFecha(format.parse(fecha));
+            clase.setFecha(dateFormat.parse(fecha));
             clase.setImpartirClase(false);
             
             clases.add(clase);

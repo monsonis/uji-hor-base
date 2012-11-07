@@ -6,6 +6,7 @@ Ext.define('Event.form.field.DetalleManual',
     
     name : '',
     nameCheckbox : '',
+    seleccionadas : false,
     
     items:[{
         xtype: 'checkboxgroup',
@@ -22,29 +23,42 @@ Ext.define('Event.form.field.DetalleManual',
         
     },
    
-    addPosiblesFechas : function(data, values)
+    addPosiblesFechas : function(clases)
     {
         this.items.items[0].removeAll();
+        
+        this.seleccionadas = false;
 
-        for (var i=0; i < data.length; i++)
+        for (var i=0; i < clases.length; i++)
         {
+            var fecha = Ext.Date.parse(clases[i].fecha, "d\/m/\Y H:i:s");
+            var fechaStr = Ext.Date.format(fecha, "d/m/Y");
+            
             var checkbox = Ext.create('Ext.form.field.Checkbox', {
-              inputValue : data[i],
+              inputValue : clases[i].fecha,
               name : this.nameCheckbox,
-              boxLabel : values[i],
+              boxLabel : fechaStr
             });
             
             this.items.items[0].add(checkbox);
+            
+            if (clases[i].impartirClase)
+            {
+                this.seleccionadas = true;
+            }
         }
     },
     
-    checkAllBoxes : function()
+    checkBoxes : function()
     {
         var checkboxes = this.down('checkboxgroup').items.items;
         
         for (var i=0; i < checkboxes.length; i++)
         {
-            checkboxes[i].setValue(true);
+            if (checkboxes[i].getValue() || !this.seleccionadas)
+            {
+                checkboxes[i].setValue(true);
+            }
         }
     }
     
