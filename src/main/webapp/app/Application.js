@@ -40,6 +40,7 @@ Ext.require('Extensible.calendar.template.BoxLayout');
 Ext.require('Event.form.field.DateRange');
 Ext.require('Ext.form.field.Checkbox');
 Ext.require('Ext.form.field.Radio');
+Ext.require('Ext.form.field.Hidden');
 Ext.require('Ext.form.RadioGroup');
 Ext.require('Event.form.field.RadioNumber');
 Ext.require('Event.form.field.RadioDate');

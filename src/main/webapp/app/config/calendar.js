@@ -136,6 +136,13 @@ Extensible.calendar.data.EventMappings.EndDateRepComp =
     name : 'EndDateRepComp',
     mapping : 'end_date_rep_comp',
 };
+Extensible.calendar.data.EventMappings.PosteoDetalle=
+{
+    name : 'PosteoDetalle',
+    mapping : 'posteo_detalle',
+    type: 'int',
+    defaultValue: 0
+};
 Extensible.calendar.data.EventModel.reconfigure();
 
 Extensible.calendar.form.EventDetails.override(
@@ -206,6 +213,10 @@ Extensible.calendar.form.EventDetails.override(
         });
 
         this.dateRepeatField = Ext.create('Event.form.field.DateRepeat', {});
+        this.posteoDetalleField = Ext.create('Event.form.field.PosteoDetalle', {});
+        this.posteoDetalleField.setValue("1");
+        
+        console.log(this.posteoDetalleField.getValue());
 
         this.detalleManualField = Ext.create('Ext.form.field.Checkbox',
         {
@@ -245,14 +256,13 @@ Extensible.calendar.form.EventDetails.override(
         {
             anchor : '90%'
         });
-        
+
         this.detalleClases = Ext.create('Event.form.DetalleClases',
         {
-            anchor : '90%' 
+            anchor : '90%'
         });
 
-        var leftFields = [ this.titleField, this.dateRangeField, this.dateRepeatField,
-                           this.detalleManualField, this.detalleManualFechas, this.detalleClases];
+        var leftFields = [ this.titleField, this.dateRangeField, this.dateRepeatField, this.detalleManualField, this.detalleManualFechas, this.detalleClases, this.posteoDetalleField ];
 
         if (this.calendarStore)
         {
@@ -301,16 +311,19 @@ Extensible.calendar.form.EventDetails.override(
         this.addCls('ext-evt-edit-form');
 
         // this.callParent(arguments);
-        
-        this.on('dirtychange', function(form, isDirty) {
-            if( isDirty ) {
-                 this.down('button[name=close]').setText('Tancar sense guardar');
-             }
-             else {
-                 this.down('button[name=close]').setText('Tancar');
-             }
-         });
-        
+
+        this.on('dirtychange', function(form, isDirty)
+        {
+            if (isDirty)
+            {
+                this.down('button[name=close]').setText('Tancar sense guardar');
+            }
+            else
+            {
+                this.down('button[name=close]').setText('Tancar');
+            }
+        });
+
         this.superclass.initComponent.call(this);
     },
 
@@ -324,10 +337,11 @@ Extensible.calendar.form.EventDetails.override(
         // rec.data[EventMappings.EndRepNumberComp.name] = 6;
         // rec.data[EventMappings.EndDateRepComp.name] = '7/9/2012';
 
-        if (!rec.data[EventMappings.RepetirCada.name]) {
+        if (!rec.data[EventMappings.RepetirCada.name])
+        {
             rec.data[EventMappings.RepetirCada.name] = '1';
         }
-        
+
         me.form.reset().loadRecord.apply(me.form, arguments);
         me.activeRecord = rec;
         me.dateRangeField.setValue(rec.data);
@@ -343,25 +357,29 @@ Extensible.calendar.form.EventDetails.override(
             }
         }
 
-        if (rec.data[EventMappings.EndRepNumberComp.name]) {
+        if (rec.data[EventMappings.EndRepNumberComp.name])
+        {
             this.down('radiogroup[name=grupoDuracion] radio[inputValue=R]').setValue(true);
             me.dateRepeatField.setNumeroRepeticionesValue(rec.data[EventMappings.EndRepNumberComp.name]);
-        } else if (rec.data[EventMappings.EndDateRepComp.name]) {
+        }
+        else if (rec.data[EventMappings.EndDateRepComp.name])
+        {
             this.down('radiogroup[name=grupoDuracion] radio[inputValue=D]').setValue(true);
             me.dateRepeatField.setRepetirHastaValue(rec.data[EventMappings.EndDateRepComp.name]);
-        } else {
+        }
+        else
+        {
             this.down('radiogroup[name=grupoDuracion] radio[inputValue=F]').setValue(true);
         }
-        
+
         if (me.calendarField)
         {
             me.calendarField.setValue(rec.data[EventMappings.CalendarId.name]);
         }
         me.setTitle(me.titleTextEdit);
 
-        
         me.dateRepeatField.setRepetirCadaValue(rec.data[EventMappings.RepetirCada.name]);
-        
+
         // Using setValue() results in dirty fields, so we reset the field state
         // after loading the form so that the current values are the "original" values
         me.form.getFields().each(function(item)
@@ -373,62 +391,76 @@ Extensible.calendar.form.EventDetails.override(
 
         me.getDetalleClases(rec.data[EventMappings.EventId.name]);
     },
-    
+
     // private
-    onSave: function(){
-        var me = this,
-            originalHasRecurrence = me.activeRecord.isRecurring();
-        
-        if (!me.form.isValid()) {
+    onSave : function()
+    {
+        var me = this, originalHasRecurrence = me.activeRecord.isRecurring();
+
+        console.log(me.activeRecord);
+        if (!me.form.isValid())
+        {
             return;
         }
-        
-        if (!me.updateRecord(me.activeRecord)) {
+
+        if (!me.updateRecord(me.activeRecord))
+        {
             me.onCancel();
             return;
         }
-        
-        me.activeRecord.store.on("update", function() {
-            me.down('button[name=close]').setText('Tancar'); 
-            me.getDetalleClases(me.activeRecord.data[Extensible.calendar.data.EventMappings.EventId.name]);
-            me.activeRecord.store.load();
-         });
-        
-        if (me.activeRecord.phantom) {
+
+        me.activeRecord.store.on(
+        {
+            update : function()
+            {
+                if (!this.activeRecord) return;
+                this.down('button[name=close]').setText('Tancar');
+                this.getDetalleClases(this.activeRecord.data[Extensible.calendar.data.EventMappings.EventId.name]);
+                this.activeRecord.store.load();
+            },
+            scope : me
+        });
+
+        if (me.activeRecord.phantom)
+        {
             me.fireEvent('eventadd', me, me.activeRecord);
             return;
         }
-        else {
-            if (originalHasRecurrence) {
+        else
+        {
+            if (originalHasRecurrence)
+            {
                 // We only need to prompt when editing an existing recurring event. If a normal
                 // event is edited to make it recurring just do a standard update.
                 me.onRecurrenceUpdate();
             }
-            else {
+            else
+            {
                 me.fireEvent('eventupdate', me, me.activeRecord);
             }
         }
     },
-    
+
     getDetalleClases : function(eventoId)
     {
         var me = this;
-        Ext.Ajax.request({
+        Ext.Ajax.request(
+        {
             url : '/hor/rest/calendario/eventos/detalle/' + eventoId,
             method : 'GET',
             success : function(response)
             {
                 var eventos = Ext.JSON.decode(response.responseText).data;
                 var clases = new Array();
-                for (var i=0; i < eventos.length; i++)
+                for ( var i = 0; i < eventos.length; i++)
                 {
-                    //var fecha = eventos[i].start;
-                    
+                    // var fecha = eventos[i].start;
+
                     var fecha = Ext.Date.parse(eventos[i].start, "Y-m-d\\TH:i:s");
-                    
-                    clases[i] = Ext.Date.format(fecha, "d/m/Y"); 
+
+                    clases[i] = Ext.Date.format(fecha, "d/m/Y");
                 }
-                
+
                 me.detalleClases.actualizarDetalleClases(clases);
                 me.detalleClases.show();
             }
