@@ -117,14 +117,15 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
                 .intValue(), itemDTO.getHoraInicio());
         Calendar fin = generaItemCalendarioSemanaGenerica(
                 itemDTO.getDiaSemana().getId().intValue(), itemDTO.getHoraFin());
-        Evento evento =  new Evento(itemDTO.getId(), calendario, titulo, inicio.getTime(), fin.getTime());
-        
+        Evento evento = new Evento(itemDTO.getId(), calendario, titulo, inicio.getTime(),
+                fin.getTime());
+
         evento.setDetalleManual(itemDTO.getDetalleManual());
         evento.setNumeroIteraciones(itemDTO.getNumeroIteraciones());
         evento.setRepetirCadaSemanas(itemDTO.getRepetirCadaSemanas());
         evento.setDesdeElDia(itemDTO.getDesdeElDia());
         evento.setHastaElDia(itemDTO.getHastaElDia());
-        
+
         return evento;
 
     }
@@ -395,7 +396,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         QItemDetalleDTO detalleItem = QItemDetalleDTO.itemDetalleDTO;
 
         List<ItemDetalleDTO> listaItemsDTO = query.from(detalleItem).join(detalleItem.item, item)
-                .where(item.id.eq(eventoId)).list(detalleItem);
+                .where(item.id.eq(eventoId)).orderBy(detalleItem.inicio.asc()).list(detalleItem);
 
         List<Evento> eventos = new ArrayList<Evento>();
 
