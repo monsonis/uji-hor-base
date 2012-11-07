@@ -25,11 +25,11 @@ SELECT i.id,
   d.grupo_id,
   d.tipo_subgrupo_id,
   d.subgrupo_id,
-  d.dia_Semana_id
+  d.dia_semana_id
 FROM
   (SELECT x.id,
     x.fecha,
-    row_number() OVER (PARTITION BY x.estudio_id, x.semestre_id, x.curso_id, x.asignatura_id, x.grupo_id, x.tipo_subgrupo_id, x.subgrupo_id, x.dia_Semana_id, DECODE(hor_f_fecha_entre(x.fecha, x.fecha_inicio, x.fecha_fin), 'S', DECODE(hor_f_fecha_entre(x.fecha, NVL(x.desde_el_dia, x.fecha_inicio), NVL(x.hasta_el_dia, x.fecha_fin)), 'S', 'S', 'N'), 'N') ORDER BY x.fecha) orden_id,
+    row_number() OVER (PARTITION BY x.estudio_id, x.semestre_id, x.curso_id, x.asignatura_id, x.grupo_id, x.tipo_subgrupo_id, x.subgrupo_id, x.dia_semana_id, DECODE(hor_f_fecha_entre(x.fecha, x.fecha_inicio, x.fecha_fin), 'S', DECODE(hor_f_fecha_entre(x.fecha, NVL(x.desde_el_dia, x.fecha_inicio), NVL(x.hasta_el_dia, x.fecha_fin)), 'S', 'S', 'N'), 'N') ORDER BY x.fecha) orden_id,
     DECODE(hor_f_fecha_entre(x.fecha, x.fecha_inicio, x.fecha_fin), 'S', DECODE(hor_f_fecha_entre(x.fecha, NVL(x.desde_el_dia, x.fecha_inicio), NVL(x.hasta_el_dia, x.fecha_fin)), 'S', 'S', 'N'), 'N') docencia,
     x.estudio_id,
     x.curso_id,
@@ -37,7 +37,7 @@ FROM
     x.grupo_id,
     x.tipo_subgrupo_id,
     x.subgrupo_id,
-    x.dia_Semana_id,
+    x.dia_semana_id,
     x.asignatura_id,
     x.fecha_inicio,
     x.fecha_fin,
@@ -59,32 +59,32 @@ FROM
       i.grupo_id,
       i.tipo_subgrupo_id,
       i.subgrupo_id,
-      i.dia_Semana_id,
+      i.dia_semana_id,
       i.asignatura_id,
-      fecha_inicio,
-      fecha_fin,
-      fecha_examenes_inicio,
-      fecha_examenes_fin,
+      s.fecha_inicio,
+      s.fecha_fin,
+      s.fecha_examenes_inicio,
+      s.fecha_examenes_fin,
       i.desde_el_dia,
-      hasta_el_dia,
-      repetir_cada_semanas,
-      numero_iteraciones,
-      detalle_manual,
+      i.hasta_el_dia,
+      i.repetir_cada_semanas,
+      i.numero_iteraciones,
+      i.detalle_manual,
       c.fecha,
-      tipo_dia,
-      dia_semana,
-      DECODE(repetir_cada_semanas, NULL, 0, 1, 0, 2, 1 / 2, 3, 2 / 3, 4, 3 / 4) incremento
+      c.tipo_dia,
+      c.dia_semana,
+      DECODE(i.repetir_cada_semanas, NULL, 0, 1, 0, 2, 1 / 2, 3, 2 / 3, 4, 3 / 4) incremento
     FROM hor_estudios e,
       hor_semestres_detalle s,
       hor_items i,
       hor_ext_calendario c
-    WHERE e.tipo_id     = s.tipo_estudio_id
-    AND i.estudio_id    = e.id
-    AND i.semestre_id   = s.semestre_id
-    AND c.dia_semana_id = i.dia_semana_id
-    AND (detalle_manual = 0
-    AND c.fecha BETWEEN fecha_inicio AND NVL(fecha_examenes_fin, fecha_fin)
-    AND tipo_dia = 'L')
+    WHERE e.tipo_id       = s.tipo_estudio_id
+    AND i.estudio_id      = e.id
+    AND i.semestre_id     = s.semestre_id
+    AND c.dia_semana_id   = i.dia_semana_id
+    AND (i.detalle_manual = 0
+    AND c.fecha BETWEEN s.fecha_inicio AND NVL(s.fecha_examenes_fin, s.fecha_fin)
+    AND c.tipo_dia IN ('L', 'E'))
     ) x
   ) d,
   hor_items i
@@ -95,7 +95,10 @@ AND i.asignatura_id    = d.asignatura_id
 AND i.grupo_id         = d.grupo_id
 AND i.tipo_subgrupo_id = d.tipo_subgrupo_id
 AND i.subgrupo_id      = d.subgrupo_id
-AND i.dia_semana_id    = d.dia_Semana_id ;
+AND i.dia_semana_id    = d.dia_semana_id ;
+
+
+
 
 
 ALTER TABLE UJI_HORARIOS.HOR_ITEMS DROP COLUMN MODIFICA_DETALLE;
