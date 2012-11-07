@@ -396,6 +396,44 @@
 <colUsage columnID="3C35D93B-F361-CCD8-4B50-81E0EE6166DF"/>
 </indexColumnUsage>
 </ind_PK_UK>
+<ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="2F110A0C-8C8C-0F8A-DB7D-8ACC049D8028" name="hor_items_v_idx">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-11-07 16:16:31 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<indexColumnUsage>
+<colUsage columnID="4D9FBA8C-7149-47A4-9879-809BF2231128"/>
+<colUsage columnID="4C7D94EC-E7BD-EDF2-452A-40409D6348B5"/>
+<colUsage columnID="0B34F468-D3F7-2A74-2C69-50FB7A0AE7C0"/>
+<colUsage columnID="429CA232-A821-B82E-2A92-D3181CDA4C42"/>
+<colUsage columnID="84B95FFD-EC47-7819-8889-9F9F339A221D"/>
+<colUsage columnID="86809812-09FC-A0BF-91C0-0907992A565F"/>
+<colUsage columnID="5E889152-6E21-AF2D-9362-1BA81B0FB474"/>
+<colUsage columnID="4D67A757-4A56-0A72-CFEA-00531E069B8B"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="D45D0BFC-0767-4C87-E229-B58CBDA358CB" name="hor_items_v2_IDX">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-11-07 16:17:11 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<indexColumnUsage>
+<colUsage columnID="3C35D93B-F361-CCD8-4B50-81E0EE6166DF"/>
+<colUsage columnID="4D9FBA8C-7149-47A4-9879-809BF2231128"/>
+<colUsage columnID="4D67A757-4A56-0A72-CFEA-00531E069B8B"/>
+<colUsage columnID="7E2044FA-E177-C20C-1DD8-8F1AF76F226F"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="BCA90A5F-EB4A-FEE7-49E8-5E3603C8C8B6" name="hor_item_det_man_idx">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-11-07 16:17:35 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<indexColumnUsage>
+<colUsage columnID="3C35D93B-F361-CCD8-4B50-81E0EE6166DF"/>
+<colUsage columnID="7E2044FA-E177-C20C-1DD8-8F1AF76F226F"/>
+</indexColumnUsage>
+</ind_PK_UK>
 <ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="5BF3C208-A39A-1F7D-4989-AEFA2E9FF8D5" name="hor_items_hor_aulas_plan_FK">
 <createdBy>ferrerq</createdBy>
 <createdTime>2012-05-28 14:28:56 UTC</createdTime>

@@ -156,6 +156,15 @@
 <colUsage columnID="D38FADE7-78A7-BF95-BCCE-2931D1919E0C"/>
 </indexColumnUsage>
 </ind_PK_UK>
+<ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="98C7BC5C-DF08-C538-32F8-B585AF784B73" name="hor_semestres_detalle_v_idx">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-11-07 16:14:18 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<indexColumnUsage>
+<colUsage columnID="D38FADE7-78A7-BF95-BCCE-2931D1919E0C"/>
+</indexColumnUsage>
+</ind_PK_UK>
 <ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="7966C66C-32AC-82CF-0332-9CEC193596F8" name="hor_sem_det_sem_FK">
 <createdBy>ferrerq</createdBy>
 <createdTime>2012-05-28 14:28:56 UTC</createdTime>

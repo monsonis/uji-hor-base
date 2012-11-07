@@ -1,5 +1,5 @@
 -- Generado por Oracle SQL Developer Data Modeler 3.1.1.703
---   en:        2012-11-07 15:08:12 CET
+--   en:        2012-11-07 17:21:06 CET
 --   sitio:      Oracle Database 11g
 --   tipo:      Oracle Database 11g
 
@@ -218,6 +218,13 @@ CREATE TABLE uji_horarios.hor_ext_calendario
 ;
 
 
+CREATE INDEX uji_horarios.hor_ext_cal_fecha_idx ON uji_horarios.hor_ext_calendario 
+    ( 
+     fecha ASC , 
+     tipo_dia ASC , 
+     dia_semana_id ASC 
+    ) 
+;
 
 ALTER TABLE uji_horarios.hor_ext_calendario 
     ADD CONSTRAINT hor_ext_calendario_PK PRIMARY KEY ( id ) ;
@@ -356,6 +363,32 @@ CREATE TABLE uji_horarios.hor_items
 ;
 
 
+CREATE INDEX uji_horarios.hor_items_v_idx ON uji_horarios.hor_items 
+    ( 
+     estudio_id ASC , 
+     curso_id ASC , 
+     semestre_id ASC , 
+     asignatura_id ASC , 
+     grupo_id ASC , 
+     tipo_subgrupo_id ASC , 
+     subgrupo_id ASC , 
+     dia_semana_id ASC 
+    ) 
+;
+CREATE INDEX uji_horarios.hor_items_v2_IDX ON uji_horarios.hor_items 
+    ( 
+     id ASC , 
+     estudio_id ASC , 
+     dia_semana_id ASC , 
+     detalle_manual ASC 
+    ) 
+;
+CREATE INDEX uji_horarios.hor_item_det_man_idx ON uji_horarios.hor_items 
+    ( 
+     id ASC , 
+     detalle_manual ASC 
+    ) 
+;
 
 ALTER TABLE uji_horarios.hor_items 
     ADD CONSTRAINT TABLE_1_PK PRIMARY KEY ( id ) ;
@@ -458,6 +491,11 @@ CREATE TABLE uji_horarios.hor_semestres_detalle
 ;
 
 
+CREATE INDEX uji_horarios.hor_semestres_detalle_v_idx ON uji_horarios.hor_semestres_detalle 
+    ( 
+     tipo_estudio_id ASC 
+    ) 
+;
 
 ALTER TABLE uji_horarios.hor_semestres_detalle 
     ADD CONSTRAINT hor_semestres_detalle_PK PRIMARY KEY ( id ) ;
@@ -971,7 +1009,7 @@ AND i.dia_semana_id    = d.dia_semana_id ;
 -- Informe de Resumen de Oracle SQL Developer Data Modeler: 
 -- 
 -- CREATE TABLE                            23
--- CREATE INDEX                             0
+-- CREATE INDEX                             5
 -- ALTER TABLE                             58
 -- CREATE VIEW                              3
 -- CREATE PACKAGE                           0

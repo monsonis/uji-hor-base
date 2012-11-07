@@ -104,4 +104,45 @@ AND i.dia_semana_id    = d.dia_semana_id ;
 
 ALTER TABLE UJI_HORARIOS.HOR_ITEMS DROP COLUMN MODIFICA_DETALLE;
 
+
+CREATE INDEX uji_horarios.hor_items_v_idx ON uji_horarios.hor_items 
+    ( 
+     estudio_id ASC , 
+     curso_id ASC , 
+     semestre_id ASC , 
+     asignatura_id ASC , 
+     grupo_id ASC , 
+     tipo_subgrupo_id ASC , 
+     subgrupo_id ASC , 
+     dia_semana_id ASC 
+    ) 
+;
+CREATE INDEX uji_horarios.hor_items_v2_IDX ON uji_horarios.hor_items 
+    ( 
+     id ASC , 
+     estudio_id ASC , 
+     dia_semana_id ASC , 
+     detalle_manual ASC 
+    ) 
+;
+CREATE INDEX uji_horarios.hor_item_det_man_idx ON uji_horarios.hor_items 
+    ( 
+     id ASC , 
+     detalle_manual ASC 
+    ) 
+;
+
+CREATE INDEX uji_horarios.hor_semestres_detalle_v_idx ON uji_horarios.hor_semestres_detalle 
+    ( 
+     tipo_estudio_id ASC 
+    ) 
+;
+ 
+CREATE INDEX uji_horarios.hor_ext_cal_fecha_idx ON uji_horarios.hor_ext_calendario 
+    ( 
+     fecha ASC , 
+     tipo_dia ASC , 
+     dia_semana_id ASC 
+    ) 
+;
  
