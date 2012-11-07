@@ -136,12 +136,12 @@ Extensible.calendar.data.EventMappings.EndDateRepComp =
     name : 'EndDateRepComp',
     mapping : 'end_date_rep_comp',
 };
-Extensible.calendar.data.EventMappings.PosteoDetalle=
+Extensible.calendar.data.EventMappings.PosteoDetalle =
 {
     name : 'PosteoDetalle',
     mapping : 'posteo_detalle',
-    type: 'int',
-    defaultValue: 0
+    type : 'int',
+    defaultValue : 0
 };
 Extensible.calendar.data.EventModel.reconfigure();
 
@@ -214,10 +214,6 @@ Extensible.calendar.form.EventDetails.override(
 
         this.dateRepeatField = Ext.create('Event.form.field.DateRepeat', {});
         this.posteoDetalleField = Ext.create('Event.form.field.PosteoDetalle', {});
-        this.posteoDetalleField.setValue("1");
-        
-        console.log(this.posteoDetalleField.getValue());
-
         this.detalleManualField = Ext.create('Ext.form.field.Checkbox',
         {
             boxLabel : 'Detall manual',
@@ -357,6 +353,8 @@ Extensible.calendar.form.EventDetails.override(
             }
         }
 
+        me.posteoDetalleField.setValue(1);
+
         if (rec.data[EventMappings.EndRepNumberComp.name])
         {
             this.down('radiogroup[name=grupoDuracion] radio[inputValue=R]').setValue(true);
@@ -409,17 +407,21 @@ Extensible.calendar.form.EventDetails.override(
             return;
         }
 
-        me.activeRecord.store.on(
+        if (me.activeRecord.store)
         {
-            update : function()
+            me.activeRecord.store.on(
             {
-                if (!this.activeRecord) return;
-                this.down('button[name=close]').setText('Tancar');
-                this.getDetalleClases(this.activeRecord.data[Extensible.calendar.data.EventMappings.EventId.name]);
-                this.activeRecord.store.load();
-            },
-            scope : me
-        });
+                update : function()
+                {
+                    if (!this.activeRecord)
+                        return;
+                    this.down('button[name=close]').setText('Tancar');
+                    this.getDetalleClases(this.activeRecord.data[Extensible.calendar.data.EventMappings.EventId.name]);
+                    this.activeRecord.store.load();
+                },
+                scope : me
+            });
+        }
 
         if (me.activeRecord.phantom)
         {

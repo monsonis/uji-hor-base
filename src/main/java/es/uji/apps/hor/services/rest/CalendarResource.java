@@ -187,28 +187,42 @@ public class CalendarResource
         Integer numeroIteraciones = null;
         Integer repetirCadaSemanas = null;
         Date hastaElDia = null;
-        
-        if (entity.get("start_date_rep") != null && !entity.get("start_date_rep").equals(""))
+        Integer posteoDetalle = Integer.parseInt(entity.get("posteo_detalle"));
+
+        if (posteoDetalle.equals(0))
         {
-            desdeElDia = formatter2.parse(entity.get("start_date_rep"));
+            Evento evento = eventosService.modificaDiaYHoraGrupoAsignatura(
+                    Long.parseLong(entity.get("id")), inicio, fin);
+            return Collections.singletonList(UIEntity.toUI(evento));
+
         }
-        
-        if (entity.get("repetir_cada") != null && !entity.get("repetir_cada").equals("")) {
-            repetirCadaSemanas = Integer.parseInt(entity.get("repetir_cada"));
+        else
+        {
+            if (entity.get("start_date_rep") != null && !entity.get("start_date_rep").equals(""))
+            {
+                desdeElDia = formatter2.parse(entity.get("start_date_rep"));
+            }
+
+            if (entity.get("repetir_cada") != null && !entity.get("repetir_cada").equals(""))
+            {
+                repetirCadaSemanas = Integer.parseInt(entity.get("repetir_cada"));
+            }
+
+            if (entity.get("seleccionRadioFechaFin").equals("R"))
+            {
+                numeroIteraciones = Integer.parseInt(entity.get("end_rep_number_comp"));
+            }
+            else if (entity.get("seleccionRadioFechaFin").equals("D"))
+            {
+                hastaElDia = formatter2.parse(entity.get("end_date_rep_comp"));
+            }
+
+            Evento evento = eventosService.modificaDetallesGrupoAsignatura(
+                    Long.parseLong(entity.get("id")), inicio, fin, desdeElDia, numeroIteraciones,
+                    repetirCadaSemanas, hastaElDia);
+            return Collections.singletonList(UIEntity.toUI(evento));
         }
 
-        if (entity.get("seleccionRadioFechaFin").equals("R"))
-        {
-            numeroIteraciones = Integer.parseInt(entity.get("end_rep_number_comp"));
-        }
-        else if (entity.get("seleccionRadioFechaFin").equals("D"))
-        {
-            hastaElDia = formatter2.parse(entity.get("end_date_rep_comp"));
-        }
-
-        Evento evento = eventosService.modificaDetallesGrupoAsignatura(
-                Long.parseLong(entity.get("id")), inicio, fin, desdeElDia, numeroIteraciones, repetirCadaSemanas, hastaElDia);
-        return Collections.singletonList(UIEntity.toUI(evento));
     }
 
     @DELETE
