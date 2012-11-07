@@ -4,8 +4,12 @@ Ext.define('Event.form.field.DetalleManual',
     alias : 'widget.detalleManual',
     hidden : true,
     
+    name : '',
+    nameCheckbox : '',
+    
     items:[{
         xtype: 'checkboxgroup',
+        name : this.name,
         columns: 6,
         vertical: true,
         items: [
@@ -26,7 +30,7 @@ Ext.define('Event.form.field.DetalleManual',
         {
             var checkbox = Ext.create('Ext.form.field.Checkbox', {
               inputValue : data[i],
-              name : 'prueba',
+              name : this.nameCheckbox,
               boxLabel : values[i],
             });
             

@@ -27,6 +27,7 @@ import es.uji.apps.hor.DuracionEventoIncorrectaException;
 import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.RangoHorarioFueradeLimites;
 import es.uji.apps.hor.model.Calendario;
+import es.uji.apps.hor.model.ClaseDetalleManual;
 import es.uji.apps.hor.model.Evento;
 import es.uji.apps.hor.model.GrupoHorario;
 import es.uji.apps.hor.services.CalendariosService;
@@ -338,5 +339,30 @@ public class CalendarResource
                 .parseLong(eventoId));
 
         return toUI(eventosDetalle);
+    }
+    
+    @GET
+    @Path("eventos/detalle/manual/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<UIEntity> getDetalleManualEvento(@PathParam("id") String eventoId) throws ParseException
+    {
+        // Datos de prueba
+
+        String[] fechas = { "01/10/2012", "02/10/2012", "03/10/2012", "04/10/2012", "05/10/2012",
+                "06/10/2012", "07/10/2012", "08/10/2012", "09/10/2012", "10/10/2012" };
+        
+        List<ClaseDetalleManual> clases = new ArrayList<ClaseDetalleManual>();
+        
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        for (String fecha : fechas)
+        {
+            ClaseDetalleManual clase = new ClaseDetalleManual();
+            clase.setFecha(format.parse(fecha));
+            clase.setImpartirClase(false);
+            
+            clases.add(clase);
+        }
+
+        return UIEntity.toUI(clases);
     }
 }

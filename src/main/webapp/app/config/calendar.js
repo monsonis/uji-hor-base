@@ -136,7 +136,17 @@ Extensible.calendar.data.EventMappings.EndDateRepComp =
     name : 'EndDateRepComp',
     mapping : 'end_date_rep_comp',
 };
-Extensible.calendar.data.EventMappings.PosteoDetalle =
+Extensible.calendar.data.EventMappings.DetalleManual =
+{
+    name : 'DetalleManual',
+    mapping : 'detalle_manual',
+};
+Extensible.calendar.data.EventMappings.FechaDetalleManual =
+{
+    name : 'FechaDetalleManual',
+    mapping : 'fecha_detalle_manual',
+};
+Extensible.calendar.data.EventMappings.PosteoDetalle=
 {
     name : 'PosteoDetalle',
     mapping : 'posteo_detalle',
@@ -217,7 +227,8 @@ Extensible.calendar.form.EventDetails.override(
         this.detalleManualField = Ext.create('Ext.form.field.Checkbox',
         {
             boxLabel : 'Detall manual',
-            // name : 'detalleManual',
+            name : Extensible.calendar.data.EventMappings.DetalleManual.name,
+            nameCheckbox : Extensible.calendar.data.EventMappings.FechaDetalleManual.name,
             listeners :
             {
                 'change' :
