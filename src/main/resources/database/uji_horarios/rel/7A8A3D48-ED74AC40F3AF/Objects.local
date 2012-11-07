@@ -26,6 +26,7 @@
    <object objectType="Table" objectID="E1B6EB21-A59E-74E6-D702-E478C110425F" name="hor_tipos_estudios" seqName="seg_0"/>
    <object objectType="View" objectID="9245C953-D169-2F30-1B52-69DDFD1E6032" name="hor_v_cursos" seqName="seg_0"/>
    <object objectType="View" objectID="0F4BC563-A5B6-20CF-D040-6F7583854AA2" name="hor_v_grupos" seqName="seg_0"/>
+   <object objectType="View" objectID="0678D567-6BDC-3D9C-1247-9488502374F4" name="hor_v_items_detalle" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="2F57917F-059E-AB80-369F-8B9515A51188" name="hor_areas_hor_dep_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="134037EC-2204-2D2E-DA6A-420F5CFF97D1" name="hor_aulas_estudio_aulas_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="5615D099-456A-75AA-FB3E-9A427B445EDA" name="hor_aulas_estudio_est_FK" seqName="seg_0"/>

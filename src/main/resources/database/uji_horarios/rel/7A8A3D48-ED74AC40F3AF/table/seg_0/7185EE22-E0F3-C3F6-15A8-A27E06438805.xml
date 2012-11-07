@@ -328,17 +328,6 @@
 <domain>B784D6D2-343C-97AF-8447-8FE7645FA837</domain>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column class="oracle.dbtools.crest.model.design.relational.Column" name="modifica_detalle" id="BC99E298-E762-4580-23F7-73C53BAB66C1">
-<createdBy>ferrerq</createdBy>
-<createdTime>2012-05-28 14:28:56 UTC</createdTime>
-<generatorID>Generado por el Usuario</generatorID>
-<ownerDesignName>uji_horarios</ownerDesignName>
-<defaultValue>N</defaultValue>
-<use>0</use>
-<logicalDatatype>LOGDT024</logicalDatatype>
-<domain>248A388F-935C-368E-FB29-14E5B5B9EBF6</domain>
-<autoIncrementCycle>false</autoIncrementCycle>
-</Column>
 <Column class="oracle.dbtools.crest.model.design.relational.Column" name="desde_el_dia" id="5FFC2870-0502-763C-4311-458CF79FA8AE">
 <createdBy>ferrerq</createdBy>
 <createdTime>2012-05-28 14:28:56 UTC</createdTime>
