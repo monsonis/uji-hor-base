@@ -146,7 +146,7 @@ Extensible.calendar.data.EventMappings.FechaDetalleManual =
     name : 'FechaDetalleManual',
     mapping : 'fecha_detalle_manual',
 };
-Extensible.calendar.data.EventMappings.PosteoDetalle=
+Extensible.calendar.data.EventMappings.PosteoDetalle =
 {
     name : 'PosteoDetalle',
     mapping : 'posteo_detalle',
@@ -205,6 +205,8 @@ Extensible.calendar.form.EventDetails.override(
             eventcancel : true
         });
 
+        this.trackResetOnLoad = true;
+        
         this.titleField = Ext.create('Ext.form.TextField',
         {
             fieldLabel : this.titleLabelText,
@@ -353,17 +355,6 @@ Extensible.calendar.form.EventDetails.override(
         me.activeRecord = rec;
         me.dateRangeField.setValue(rec.data);
 
-        if (me.recurrenceField)
-        {
-            me.recurrenceField.setStartDate(rec.data[EventMappings.StartDate.name]);
-            me.recurrenceField.setValue(rec.data[EventMappings.RRule.name]);
-
-            if (!rec.data[EventMappings.RInstanceStartDate.name])
-            {
-                rec.data[EventMappings.RInstanceStartDate.name] = rec.getStartDate();
-            }
-        }
-
         me.posteoDetalleField.setValue(1);
 
         if (rec.data[EventMappings.EndRepNumberComp.name])
@@ -404,9 +395,8 @@ Extensible.calendar.form.EventDetails.override(
     // private
     onSave : function()
     {
-        var me = this, originalHasRecurrence = me.activeRecord.isRecurring();
+        var me = this;
 
-        console.log(me.activeRecord);
         if (!me.form.isValid())
         {
             return;
@@ -417,22 +407,24 @@ Extensible.calendar.form.EventDetails.override(
             me.onCancel();
             return;
         }
-
-        if (me.activeRecord.store)
+        
+        me.activeRecord.store.on(
         {
-            me.activeRecord.store.on(
+            update : function()
             {
-                update : function()
-                {
-                    if (!this.activeRecord)
-                        return;
-                    this.down('button[name=close]').setText('Tancar');
-                    this.getDetalleClases(this.activeRecord.data[Extensible.calendar.data.EventMappings.EventId.name]);
-                    this.activeRecord.store.load();
-                },
-                scope : me
-            });
-        }
+                if (!this.activeRecord)
+                    return;
+                this.down('button[name=close]').setText('Tancar');
+                me.getForm().reset();
+                me.getForm().loadRecord(me.activeRecord);
+                var fields = me.getForm().getFields();
+                Ext.Array.each( fields.items, function(field) {
+                    field.resetOriginalValue();
+                });
+                this.getDetalleClases(this.activeRecord.data[Extensible.calendar.data.EventMappings.EventId.name]);
+            },
+            scope : me
+        });
 
         if (me.activeRecord.phantom)
         {
@@ -441,19 +433,16 @@ Extensible.calendar.form.EventDetails.override(
         }
         else
         {
-            if (originalHasRecurrence)
-            {
-                // We only need to prompt when editing an existing recurring event. If a normal
-                // event is edited to make it recurring just do a standard update.
-                me.onRecurrenceUpdate();
-            }
-            else
-            {
-                me.fireEvent('eventupdate', me, me.activeRecord);
-            }
+            me.fireEvent('eventupdate', me, me.activeRecord);
         }
     },
 
+    onCancel: function() {
+      this.activeRecord.store.load();
+      this.cleanup(true);
+      this.fireEvent('eventcancel', this, this.activeRecord);
+    },
+    
     getDetalleClases : function(eventoId)
     {
         var me = this;
