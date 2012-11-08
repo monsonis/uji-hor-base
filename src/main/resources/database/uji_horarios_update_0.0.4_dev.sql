@@ -11,8 +11,8 @@ CREATE OR REPLACE VIEW uji_horarios.hor_v_items_detalle AS
 SELECT i.id,
   d.fecha,
   d.docencia docencia_paso_1,
-  DECODE(d.repetir_cada_semanas, NULL, d.docencia, 1, d.docencia, DECODE(mod(d.orden_id, d.repetir_cada_semanas), 1, d.docencia, 'N')) docencia_paso_2,
-  DECODE(d.repetir_cada_semanas, NULL, d.docencia, DECODE(d.numero_iteraciones, NULL, DECODE(d.repetir_cada_semanas, NULL, d.docencia, 1, d.docencia, DECODE(mod(d.orden_id, d.repetir_cada_semanas), 1, d.docencia, 'N')), DECODE(SIGN((d.orden_id / NVL(d.repetir_cada_semanas, 1)) - NVL(d.numero_iteraciones, 0)), 1, 'N', DECODE(d.repetir_cada_semanas, NULL, d.docencia, 1, d.docencia, DECODE(mod(d.orden_id, d.repetir_cada_semanas), 1, d.docencia, 'N'))))) docencia,
+  NULL docencia_paso_2,
+  NULL docencia,
   d.orden_id,
   d.numero_iteraciones,
   d.repetir_cada_semanas,
@@ -95,7 +95,59 @@ AND i.asignatura_id    = d.asignatura_id
 AND i.grupo_id         = d.grupo_id
 AND i.tipo_subgrupo_id = d.tipo_subgrupo_id
 AND i.subgrupo_id      = d.subgrupo_id
-AND i.dia_semana_id    = d.dia_semana_id ;
+AND i.dia_semana_id    = d.dia_semana_id
+AND (i.detalle_manual  = 0)
+UNION ALL
+SELECT c.id,
+  c.fecha,
+  'N' docencia_paso_1,
+  NULL docencia_paso_2,
+  DECODE(d.id, NULL, 'N', 'S') docencia,
+  1 orden_id,
+  c.numero_iteraciones,
+  c.repetir_cada_semanas,
+  c.fecha_inicio,
+  c.fecha_fin,
+  c.estudio_id,
+  c.semestre_id,
+  c.curso_id,
+  c.asignatura_id,
+  c.grupo_id,
+  c.tipo_subgrupo_id,
+  c.subgrupo_id,
+  c.dia_semana_id
+FROM
+  (SELECT i.id,
+    c.fecha,
+    i.numero_iteraciones,
+    i.repetir_cada_semanas,
+    s.fecha_inicio,
+    s.fecha_fin,
+    i.estudio_id,
+    i.semestre_id,
+    i.curso_id,
+    i.asignatura_id,
+    i.grupo_id,
+    i.tipo_subgrupo_id,
+    i.subgrupo_id,
+    i.dia_semana_id
+  FROM hor_estudios e,
+    hor_semestres_detalle s,
+    hor_items i,
+    hor_ext_calendario c
+  WHERE e.tipo_id     = s.tipo_estudio_id
+  AND i.estudio_id    = e.id
+  AND i.semestre_id   = s.semestre_id
+  AND c.dia_semana_id = i.dia_semana_id
+  AND (c.fecha BETWEEN s.fecha_inicio AND NVL(s.fecha_examenes_fin, s.fecha_fin)
+  AND c.tipo_dia      IN ('L', 'E')
+  AND i.detalle_manual = 1)
+  ) c,
+  hor_items_detalle d
+WHERE c.id  = d.item_id(+)
+AND c.fecha = d.inicio(+) ;
+
+
 
 
 
@@ -145,4 +197,10 @@ CREATE INDEX uji_horarios.hor_ext_cal_fecha_idx ON uji_horarios.hor_ext_calendar
     ) 
 ;
 
+CREATE INDEX uji_horarios.hor_items_detalle_fechas_IDX ON uji_horarios.hor_items_detalle 
+    ( 
+     item_id ASC , 
+     inicio ASC 
+    ) 
+;
  
