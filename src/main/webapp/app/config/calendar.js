@@ -406,7 +406,6 @@ Extensible.calendar.form.EventDetails.override(
 
         if (!me.updateRecord(me.activeRecord))
         {
-            me.onCancel();
             return;
         }
         
