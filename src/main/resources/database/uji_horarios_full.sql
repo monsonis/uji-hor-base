@@ -1,5 +1,5 @@
 -- Generado por Oracle SQL Developer Data Modeler 3.1.1.703
---   en:        2012-11-08 10:23:05 CET
+--   en:        2012-11-08 12:55:48 CET
 --   sitio:      Oracle Database 11g
 --   tipo:      Oracle Database 11g
 
@@ -922,8 +922,8 @@ CREATE OR REPLACE VIEW uji_horarios.hor_v_items_detalle AS
 SELECT i.id,
   d.fecha,
   d.docencia docencia_paso_1,
-  NULL docencia_paso_2,
-  NULL docencia,
+  DECODE(NVL(d.repetir_cada_semanas, 1), 1, d.docencia, DECODE(mod(d.orden_id, d.repetir_cada_semanas), 1, d.docencia, 'N')) docencia_paso_2,
+  DECODE(d.numero_iteraciones, NULL, DECODE(NVL(d.repetir_cada_semanas, 1), 1, d.docencia, DECODE(mod(d.orden_id, d.repetir_cada_semanas), 1, d.docencia, 'N')), DECODE(SIGN((d.orden_id / d.repetir_cada_semanas) - d.numero_iteraciones), -1, DECODE(NVL(d.repetir_cada_semanas, 1), 1, d.docencia, DECODE(mod(d.orden_id, d.repetir_cada_semanas), 1, d.docencia, 'N')), 'N')) docencia,
   d.orden_id,
   d.numero_iteraciones,
   d.repetir_cada_semanas,
@@ -940,7 +940,7 @@ SELECT i.id,
 FROM
   (SELECT x.id,
     x.fecha,
-    row_number() OVER (PARTITION BY x.estudio_id, x.semestre_id, x.curso_id, x.asignatura_id, x.grupo_id, x.tipo_subgrupo_id, x.subgrupo_id, x.dia_semana_id, DECODE(hor_f_fecha_entre(x.fecha, x.fecha_inicio, x.fecha_fin), 'S', DECODE(hor_f_fecha_entre(x.fecha, NVL(x.desde_el_dia, x.fecha_inicio), NVL(x.hasta_el_dia, x.fecha_fin)), 'S', 'S', 'N'), 'N') ORDER BY x.fecha) orden_id,
+    row_number() OVER (PARTITION BY DECODE(hor_f_fecha_entre(x.fecha, x.fecha_inicio, x.fecha_fin), 'S', DECODE(hor_f_fecha_entre(x.fecha, NVL(x.desde_el_dia, x.fecha_inicio), NVL(x.hasta_el_dia, x.fecha_fin)), 'S', 'S', 'N'), 'N'), x.id, x.estudio_id, x.semestre_id, x.curso_id, x.asignatura_id, x.grupo_id, x.tipo_subgrupo_id, x.subgrupo_id, x.dia_semana_id ORDER BY x.fecha) orden_id,
     DECODE(hor_f_fecha_entre(x.fecha, x.fecha_inicio, x.fecha_fin), 'S', DECODE(hor_f_fecha_entre(x.fecha, NVL(x.desde_el_dia, x.fecha_inicio), NVL(x.hasta_el_dia, x.fecha_fin)), 'S', 'S', 'N'), 'N') docencia,
     x.estudio_id,
     x.curso_id,
@@ -960,8 +960,7 @@ FROM
     x.numero_iteraciones,
     x.detalle_manual,
     x.tipo_dia,
-    x.dia_semana,
-    x.incremento
+    x.dia_semana
   FROM
     (SELECT i.id,
       i.estudio_id,
@@ -983,8 +982,7 @@ FROM
       i.detalle_manual,
       c.fecha,
       c.tipo_dia,
-      c.dia_semana,
-      DECODE(i.repetir_cada_semanas, NULL, 0, 1, 0, 2, 1 / 2, 3, 2 / 3, 4, 3 / 4) incremento
+      c.dia_semana
     FROM hor_estudios e,
       hor_semestres_detalle s,
       hor_items i,
@@ -1007,6 +1005,7 @@ AND i.grupo_id         = d.grupo_id
 AND i.tipo_subgrupo_id = d.tipo_subgrupo_id
 AND i.subgrupo_id      = d.subgrupo_id
 AND i.dia_semana_id    = d.dia_semana_id
+AND i.id               = d.id
 AND (i.detalle_manual  = 0)
 UNION ALL
 SELECT c.id,
