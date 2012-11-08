@@ -50,6 +50,7 @@ Ext.define('Event.form.field.DateRepeat',
         {
             xtype : 'radionumberfield',
             inputValue : "R",
+            minValue: 1,
             boxLabel : 'Després de ',
             endLabel : 'repeticions',
             radioName : Extensible.calendar.data.EventMappings.FechaFinRadio.name,

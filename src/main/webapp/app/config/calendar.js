@@ -369,6 +369,10 @@ Extensible.calendar.form.EventDetails.override(
             this.down('radiogroup[name=grupoDuracion] radio[inputValue=F]').setValue(true);
         }
 
+        if (!rec.data[Extensible.calendar.data.EventMappings.EndRepNumberComp]) {
+            this.down('numberfield').setValue(1);
+        }
+        
         if (me.calendarField)
         {
             me.calendarField.setValue(rec.data[EventMappings.CalendarId.name]);
