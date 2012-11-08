@@ -55,5 +55,6 @@
     <class>es.uji.apps.hor.db.CursoDTO</class>
     <class>es.uji.apps.hor.db.GrupoDTO</class>
     <class>es.uji.apps.hor.db.GrupoHorarioDTO</class>
+    <class>es.uji.apps.hor.db.ItemDetalleCompletoDTO</class>
   </persistence-unit>
 </persistence>

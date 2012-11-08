@@ -11,6 +11,7 @@ import es.uji.apps.hor.DuracionEventoIncorrectaException;
 import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.dao.EventosDAO;
 import es.uji.apps.hor.model.Evento;
+import es.uji.apps.hor.model.EventoDocencia;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
 @Service
@@ -101,4 +102,8 @@ public class EventosService
         return eventosDAO.getEventosDetalleByEventoId(eventoId);
     }
 
+    public List<EventoDocencia> getEventosDocenciaByEventoId(Long eventoId)
+    {
+        return eventosDAO.getEventosDocenciaByEventoId(eventoId);
+    }
 }

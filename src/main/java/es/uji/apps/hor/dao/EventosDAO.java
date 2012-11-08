@@ -5,6 +5,7 @@ import java.util.List;
 
 import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.model.Evento;
+import es.uji.apps.hor.model.EventoDocencia;
 import es.uji.commons.db.BaseDAO;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
@@ -26,5 +27,8 @@ public interface EventosDAO extends BaseDAO
             EventoNoDivisibleException;
     Evento modificaDetallesGrupoAsignatura(Long grupoAsignaturaId, Date inicio, Date fin,
             Date desdeElDia, Integer numeroIteraciones, Integer repetirCadaSemanas, Date hastaElDia);
+    
     List<Evento> getEventosDetalleByEventoId(Long eventoId);
+    
+    List<EventoDocencia> getEventosDocenciaByEventoId(Long eventoId);
 }

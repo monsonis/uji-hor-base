@@ -390,8 +390,7 @@ Extensible.calendar.form.EventDetails.override(
 
         me.titleField.focus();
 
-        me.getDetalleManual(rec.data[EventMappings.EventId.name]);
-        me.getDetalleClases(rec.data[EventMappings.EventId.name]);
+        me.getDetalleClasesDocencia(rec.data[EventMappings.EventId.name]);
     },
 
     // private
@@ -416,12 +415,7 @@ Extensible.calendar.form.EventDetails.override(
                     if (!this.activeRecord)
                         return;
                     this.down('button[name=close]').setText('Tancar');
-                    this.getDetalleClases(this.activeRecord.data[Extensible.calendar.data.EventMappings.EventId.name]);
-                    this.getDetalleManual(this.activeRecord.data[Extensible.calendar.data.EventMappings.EventId.name]);
-                    if (this.detalleManualField.getValue())
-                    {                       
-                        this.detalleManualFechas.checkBoxes();
-                    }
+                    this.getDetalleClasesDocencia(this.activeRecord.data[Extensible.calendar.data.EventMappings.EventId.name]);
                     me.getForm().reset();
                     me.getForm().loadRecord(me.activeRecord);
                     var fields = me.getForm().getFields();
@@ -449,48 +443,30 @@ Extensible.calendar.form.EventDetails.override(
       this.fireEvent('eventcancel', this, this.activeRecord);
     },
     
-    getDetalleClases : function(eventoId)
+    getDetalleClasesDocencia : function(eventoId)
     {
+        var me = this;
+        
         var me = this;
         Ext.Ajax.request(
         {
-            url : '/hor/rest/calendario/eventos/detalle/' + eventoId,
+            url : '/hor/rest/calendario/eventos/docencia/' + eventoId,
             method : 'GET',
             success : function(response)
             {
-                var eventos = Ext.JSON.decode(response.responseText).data;
-                var clases = new Array();
-                for ( var i = 0; i < eventos.length; i++)
-                {
-                    var fecha = Ext.Date.parse(eventos[i].start, "Y-m-d\\TH:i:s");
-
-                    clases[i] = Ext.Date.format(fecha, "d/m/Y");
-                }
-
+                var clases = Ext.JSON.decode(response.responseText).data;
+                
                 me.detalleClases.actualizarDetalleClases(clases);
                 me.detalleClases.show();
+                
+                me.detalleManualFechas.addPosiblesFechas(clases);
+                
+                if (me.detalleManualField.getValue())
+                {
+                    me.detalleManualFechas.checkBoxes();
+                }
             }
         });
     },
-    
-    getDetalleManual : function(eventoId)
-    {
-        var me = this;
-        Ext.Ajax.request(
-        {
-           url : '/hor/rest/calendario/eventos/detalle/manual/' + eventoId,
-           method : 'GET',
-           success : function(response)
-           {
-               var clases = Ext.JSON.decode(response.responseText).data;
-               me.detalleManualFechas.addPosiblesFechas(clases);
-               
-               if (me.detalleManualField.getValue())
-               {
-                   me.detalleManualFechas.checkBoxes();
-               }
-           }
-        });
-    }
 
 });

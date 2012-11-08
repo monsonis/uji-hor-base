@@ -27,7 +27,7 @@ import es.uji.apps.hor.DuracionEventoIncorrectaException;
 import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.RangoHorarioFueradeLimites;
 import es.uji.apps.hor.model.Calendario;
-import es.uji.apps.hor.model.ClaseDetalleManual;
+import es.uji.apps.hor.model.EventoDocencia;
 import es.uji.apps.hor.model.Evento;
 import es.uji.apps.hor.model.GrupoHorario;
 import es.uji.apps.hor.services.CalendariosService;
@@ -215,7 +215,8 @@ public class CalendarResource
             }
             else if (entity.get("seleccionRadioFechaFin").equals("D"))
             {
-                if (entity.get("end_date_rep_comp") != "") {
+                if (entity.get("end_date_rep_comp") != "")
+                {
                     hastaElDia = formatter2.parse(entity.get("end_date_rep_comp"));
                 }
             }
@@ -332,39 +333,13 @@ public class CalendarResource
     }
 
     @GET
-    @Path("eventos/detalle/{id}")
+    @Path("eventos/docencia/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UIEntity> getEventosDetalleByEventoId(@PathParam("id") String eventoId)
+    public List<UIEntity> getEventosDocenciaByEventoId(@PathParam("id") String eventoId)
     {
+        List<EventoDocencia> eventosDocencia = eventosService
+                .getEventosDocenciaByEventoId(ParamUtils.parseLong(eventoId));
 
-        List<Evento> eventosDetalle = eventosService.getEventosDetalleByEventoId(ParamUtils
-                .parseLong(eventoId));
-
-        return toUI(eventosDetalle);
-    }
-    
-    @GET
-    @Path("eventos/detalle/manual/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<UIEntity> getDetalleManualEvento(@PathParam("id") String eventoId) throws ParseException
-    {
-        // Datos de prueba
-
-        String[] fechas = { "01/10/2012", "02/10/2012", "03/10/2012", "04/10/2012", "05/10/2012",
-                "06/10/2012", "07/10/2012", "08/10/2012", "09/10/2012", "10/10/2012" };
-        
-        List<ClaseDetalleManual> clases = new ArrayList<ClaseDetalleManual>();
-        
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        for (String fecha : fechas)
-        {
-            ClaseDetalleManual clase = new ClaseDetalleManual();
-            clase.setFecha(dateFormat.parse(fecha));
-            clase.setImpartirClase(false);
-            
-            clases.add(clase);
-        }
-
-        return UIEntity.toUI(clases);
+        return UIEntity.toUI(eventosDocencia);
     }
 }

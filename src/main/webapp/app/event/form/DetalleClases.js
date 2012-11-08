@@ -22,16 +22,21 @@ Ext.define('Event.form.DetalleClases',
         
         for (var i=0; i < clases.length; i++)
         {
-            var display = new Ext.create('Ext.form.field.Display',
+            if (clases[i].docencia == 'S')
             {
-                value : clases[i],
-                style :
+                var fecha = Ext.Date.parse(clases[i].fecha, "d\/m/\Y H:i:s");
+                
+                var display = new Ext.create('Ext.form.field.Display',
                 {
-                    marginRight : '50px'
-                }
-            });
+                    value : Ext.Date.format(fecha, "d/m/Y"),
+                    style :
+                    {
+                        marginRight : '50px'
+                    }
+                });
             
-            this.add(display);
+                this.add(display);
+            }
         }
     }
 });

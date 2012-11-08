@@ -14,13 +14,16 @@ import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.db.DiaSemanaDTO;
 import es.uji.apps.hor.db.ItemCircuitoDTO;
 import es.uji.apps.hor.db.ItemDTO;
+import es.uji.apps.hor.db.ItemDetalleCompletoDTO;
 import es.uji.apps.hor.db.ItemDetalleDTO;
 import es.uji.apps.hor.db.QDiaSemanaDTO;
 import es.uji.apps.hor.db.QItemCircuitoDTO;
 import es.uji.apps.hor.db.QItemDTO;
+import es.uji.apps.hor.db.QItemDetalleCompletoDTO;
 import es.uji.apps.hor.db.QItemDetalleDTO;
 import es.uji.apps.hor.model.Calendario;
 import es.uji.apps.hor.model.Evento;
+import es.uji.apps.hor.model.EventoDocencia;
 import es.uji.apps.hor.model.TipoSubgrupo;
 import es.uji.commons.db.BaseDAODatabaseImpl;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
@@ -404,5 +407,36 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         }
 
         return eventos;
+    }
+
+    @Override
+    public List<EventoDocencia> getEventosDocenciaByEventoId(Long eventoId)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+
+        QItemDetalleCompletoDTO item = QItemDetalleCompletoDTO.itemDetalleCompletoDTO;
+
+        List<ItemDetalleCompletoDTO> listaItemsDetalleCompletoDTO = query.from(item)
+                .where(item.id.eq(eventoId)).orderBy(item.fecha.asc()).list(item);
+
+        List<EventoDocencia> eventosDocencia = new ArrayList<EventoDocencia>();
+
+        for (ItemDetalleCompletoDTO itemDetalleCompletoDTO : listaItemsDetalleCompletoDTO)
+        {
+            eventosDocencia.add(creaEventoDocenciaDesde(itemDetalleCompletoDTO));
+        }
+
+        return eventosDocencia;
+    }
+
+    private EventoDocencia creaEventoDocenciaDesde(ItemDetalleCompletoDTO itemDetalleCompletoDTO)
+    {
+        EventoDocencia eventoDocencia = new EventoDocencia();
+
+        eventoDocencia.setEventoId(itemDetalleCompletoDTO.getId());
+        eventoDocencia.setFecha(itemDetalleCompletoDTO.getFecha());
+        eventoDocencia.setDocencia(itemDetalleCompletoDTO.getDocencia());
+
+        return eventoDocencia;
     }
 }
