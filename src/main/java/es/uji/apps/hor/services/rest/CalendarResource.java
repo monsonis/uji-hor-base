@@ -215,7 +215,9 @@ public class CalendarResource
             }
             else if (entity.get("seleccionRadioFechaFin").equals("D"))
             {
-                hastaElDia = formatter2.parse(entity.get("end_date_rep_comp"));
+                if (entity.get("end_date_rep_comp") != "") {
+                    hastaElDia = formatter2.parse(entity.get("end_date_rep_comp"));
+                }
             }
 
             Evento evento = eventosService.modificaDetallesGrupoAsignatura(
