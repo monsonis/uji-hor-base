@@ -31,7 +31,9 @@ public class SemestresDAODatabaseImpl extends BaseDAODatabaseImpl implements Sem
 
         for (Tuple tuple : listaSemestresTuples)
         {
-            semestres.add(new Semestre(tuple.get(item.semestre.id)));
+            Semestre semestre = new Semestre(tuple.get(item.semestre.id));
+            semestre.setNombre(tuple.get(item.semestre.nombre));
+            semestres.add(semestre);
         }
 
         return semestres;

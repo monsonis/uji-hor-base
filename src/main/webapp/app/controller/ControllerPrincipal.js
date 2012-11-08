@@ -15,6 +15,10 @@ Ext.define('HOR.controller.ControllerPrincipal',
             'menuSuperior menuitem[action=gestion-horarios]' :
             {
                 click : this.showGestionHorarios
+            },
+            'menuSuperior menuitem[action=curso-academico]' :
+            {
+                click : this.showCursoAcademico
             }
         });
     },
@@ -22,5 +26,10 @@ Ext.define('HOR.controller.ControllerPrincipal',
     showGestionHorarios : function()
     {
         this.getViewportHorarios().addNewTab('HOR.view.horarios.PanelHorarios');
+    },
+    
+    showCursoAcademico: function()
+    {
+        this.getViewportHorarios().addNewTab('HOR.view.semestres.PanelSemestres');
     }
 });

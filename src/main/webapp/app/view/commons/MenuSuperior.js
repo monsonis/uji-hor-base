@@ -14,7 +14,11 @@ Ext.define('HOR.view.commons.MenuSuperior',
             {
                 text : 'Gestió d\'horaris',
                 action: 'gestion-horarios'
-            } ]
+            },
+            {
+                text : 'Dates del curs acadèmic',
+                action: 'curso-academico'
+            }]
         }
 
     } ]

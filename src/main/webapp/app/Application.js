@@ -47,8 +47,11 @@ Ext.require('Event.form.field.RadioDate');
 Ext.require('Event.form.field.DetalleManual');
 Ext.require('Ext.layout.container.Table');
 Ext.require('Event.form.DetalleClases');
+Ext.require('Ext.grid.Panel');
+Ext.require('Ext.Date');
 
-var login = 'ferrerq';
+
+var login = 'borillo';
 
 function fixLoadMaskBug(store, combo)
 {
@@ -67,9 +70,9 @@ Ext.application(
     appFolder : 'app',
     autoCreateViewport : false,
 
-    views : [ 'dashboard.PanelDashboard', 'horarios.PanelHorarios', 'horarios.FiltroGrupos', 'horarios.PanelCalendario', 'horarios.SelectorIntervaloHorario', 'commons.MenuSuperior',
+    views : [ 'dashboard.PanelDashboard', 'horarios.PanelHorarios', 'horarios.FiltroGrupos', 'horarios.PanelCalendario', 'horarios.SelectorIntervaloHorario', 'commons.MenuSuperior', 'semestres.PanelSemestres', 
             'ApplicationViewport' ],
-    controllers : [ 'ControllerDashboards', 'ControllerCalendario', 'ControllerGrupoAsignatura', 'ControllerFiltroCalendario', 'ControllerConfiguracion', 'ControllerPrincipal' ],
+    controllers : [ 'ControllerDashboards', 'ControllerCalendario', 'ControllerGrupoAsignatura', 'ControllerFiltroCalendario', 'ControllerConfiguracion', 'ControllerPrincipal', 'ControllerSemestreDetalle' ],
 
     launch : function()
     {
