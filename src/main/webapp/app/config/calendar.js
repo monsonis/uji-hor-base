@@ -230,7 +230,6 @@ Extensible.calendar.form.EventDetails.override(
         {
             boxLabel : 'Detall manual',
             name : Extensible.calendar.data.EventMappings.DetalleManual.name,
-            nameCheckbox : Extensible.calendar.data.EventMappings.FechaDetalleManual.name,
             listeners :
             {
                 'change' :
@@ -260,7 +259,8 @@ Extensible.calendar.form.EventDetails.override(
 
         this.detalleManualFechas = Ext.create('Event.form.field.DetalleManual',
         {
-            anchor : '90%'
+            anchor : '90%',
+            nameCheckbox : Extensible.calendar.data.EventMappings.FechaDetalleManual.name
         });
 
         this.detalleClases = Ext.create('Event.form.DetalleClases',
@@ -395,7 +395,7 @@ Extensible.calendar.form.EventDetails.override(
     {
         var me = this;
 
-        if (!me.form.isValid())
+        if (!me.getForm().isValid())
         {
             return;
         }

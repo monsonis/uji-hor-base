@@ -10,7 +10,7 @@ Ext.define('Event.form.field.DetalleManual',
     
     items:[{
         xtype: 'checkboxgroup',
-        name : this.name,
+        name : 'grupoDetalleManualFechas',
         columns: 6,
         vertical: true,
         items: [
