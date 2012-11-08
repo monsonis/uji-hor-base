@@ -330,7 +330,6 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         itemDTO.setTipoEstudioId(evento.getTipoEstudio());
         itemDTO.setTipoSubgrupo(evento.getTipoSubgrupo());
         itemDTO.setTipoSubgrupoId(evento.getTipoSubgrupoId());
-
         itemDTO = insert(itemDTO);
 
         // Copiamos los circuitos
