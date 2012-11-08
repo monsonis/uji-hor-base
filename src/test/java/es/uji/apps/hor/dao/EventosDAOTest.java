@@ -61,7 +61,6 @@ public class EventosDAOTest
         item.setGrupoId("A");
         item.setHoraFin(horaFin);
         item.setHoraInicio(horaInicio);
-        item.setModificaDetalle("N");
         item.setSemestre((SemestreDTO) eventosDAO.get(SemestreDTO.class, new Long(1)).get(0));
         item.setSubgrupoId(new Long(1));
         item.setTipoSubgrupoId("TU");

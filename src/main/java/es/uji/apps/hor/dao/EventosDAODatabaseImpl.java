@@ -319,7 +319,6 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         itemDTO.setHastaElDia(evento.getHastaElDia());
         itemDTO.setHoraFin(evento.getHoraFin());
         itemDTO.setHoraInicio(evento.getHoraInicio());
-        itemDTO.setModificaDetalle(evento.getModificaDetalle());
         itemDTO.setPlazas(evento.getPlazas());
         itemDTO.setPorcentajeComun(evento.getPorcentajeComun());
         itemDTO.setProfesor(evento.getProfesor());

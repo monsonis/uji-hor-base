@@ -68,9 +68,6 @@ public class ItemDTO implements Serializable
     @Column(name = "HORA_INICIO")
     private Date horaInicio;
 
-    @Column(name = "MODIFICA_DETALLE")
-    private String modificaDetalle;
-
     private Long plazas;
 
     @Column(name = "PORCENTAJE_COMUN")
@@ -271,16 +268,6 @@ public class ItemDTO implements Serializable
     public void setHoraInicio(Date horaInicio)
     {
         this.horaInicio = horaInicio;
-    }
-
-    public String getModificaDetalle()
-    {
-        return this.modificaDetalle;
-    }
-
-    public void setModificaDetalle(String modificaDetalle)
-    {
-        this.modificaDetalle = modificaDetalle;
     }
 
     public Long getPlazas()
