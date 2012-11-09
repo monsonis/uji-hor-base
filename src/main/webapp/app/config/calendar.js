@@ -409,6 +409,9 @@ Extensible.calendar.form.EventDetails.override(
             return;
         }
 
+        var fechas = me.activeRecord.get(Extensible.calendar.data.EventMappings.FechaDetalleManual.name);
+        me.activeRecord.set(Extensible.calendar.data.EventMappings.FechaDetalleManual.name, Ext.JSON.encode(fechas));
+        
         me.activeRecord.store.on(
         {
             update : function()

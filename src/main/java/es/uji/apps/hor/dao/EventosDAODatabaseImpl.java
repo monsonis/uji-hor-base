@@ -1,5 +1,7 @@
 package es.uji.apps.hor.dao;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -25,6 +27,7 @@ import es.uji.apps.hor.model.Calendario;
 import es.uji.apps.hor.model.Evento;
 import es.uji.apps.hor.model.EventoDocencia;
 import es.uji.apps.hor.model.TipoSubgrupo;
+import es.uji.apps.hor.services.rest.CalendarResource;
 import es.uji.commons.db.BaseDAODatabaseImpl;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
@@ -438,5 +441,65 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         eventoDocencia.setDocencia(itemDetalleCompletoDTO.getDocencia());
 
         return eventoDocencia;
+    }
+
+    @Override
+    public Evento updateEventoConDetalleManual(Long eventoId, List<Date> fechas)
+            throws RegistroNoEncontradoException
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+
+        QItemDTO itemDTO = QItemDTO.itemDTO;
+        QItemDetalleDTO itemDetalleDTO = QItemDetalleDTO.itemDetalleDTO;
+
+        ItemDTO evento = (ItemDTO) get(ItemDTO.class, eventoId).get(0);
+
+        if (evento == null)
+        {
+            throw new RegistroNoEncontradoException();
+        }
+
+        delete(ItemDetalleDTO.class, "item_id=" + eventoId);
+
+        // Insertamos el detalle del evento según las fechas
+        
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(evento.getHoraInicio());
+        
+        int horaInicio = calendar.get(Calendar.HOUR);
+        int minutoInicio = calendar.get(Calendar.MINUTE);
+        int segundoInicio = calendar.get(Calendar.SECOND);
+        
+        calendar.setTime(evento.getHoraFin());
+        
+        int horaFin = calendar.get(Calendar.HOUR);
+        int minutoFin = calendar.get(Calendar.MINUTE);
+        int segundoFin = calendar.get(Calendar.SECOND);
+        
+        for (Date fecha : fechas)
+        {
+            calendar.setTime(fecha);
+            calendar.add(Calendar.SECOND, segundoInicio);
+            calendar.add(Calendar.MINUTE, minutoInicio);
+            calendar.add(calendar.HOUR, horaInicio);
+            
+            Date fechaInicio = calendar.getTime();
+            
+            calendar.setTime(fecha);
+            calendar.add(Calendar.SECOND, segundoInicio);
+            calendar.add(Calendar.MINUTE, minutoInicio);
+            calendar.add(calendar.HOUR, horaInicio);
+            
+            Date fechaFin = calendar.getTime();       
+            
+            ItemDetalleDTO eventoDetalle = new ItemDetalleDTO();
+            eventoDetalle.setItem(evento);
+            eventoDetalle.setInicio(fechaInicio);
+            eventoDetalle.setFin(fechaFin);
+            
+            insert(eventoDetalle);
+        }
+        
+        return creaEventoDesde(evento);
     }
 }

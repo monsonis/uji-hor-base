@@ -25,10 +25,14 @@ public interface EventosDAO extends BaseDAO
 
     void divideEventoSemanaGenerica(Long eventoId) throws RegistroNoEncontradoException,
             EventoNoDivisibleException;
+
     Evento modificaDetallesGrupoAsignatura(Long grupoAsignaturaId, Date inicio, Date fin,
             Date desdeElDia, Integer numeroIteraciones, Integer repetirCadaSemanas, Date hastaElDia);
-    
+
     List<Evento> getEventosDetalleByEventoId(Long eventoId);
-    
+
     List<EventoDocencia> getEventosDocenciaByEventoId(Long eventoId);
+ 
+    Evento updateEventoConDetalleManual(Long eventoId, List<Date> fechas)
+            throws RegistroNoEncontradoException;
 }
