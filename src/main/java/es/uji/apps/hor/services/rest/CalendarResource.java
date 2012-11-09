@@ -198,13 +198,13 @@ public class CalendarResource
         Integer numeroIteraciones = null;
         Integer repetirCadaSemanas = null;
         Date hastaElDia = null;
-        Integer posteoDetalle = Integer.parseInt(entity.get("posteo_detalle"));
+        Integer posteoDetalle = Integer.parseInt(entity.get("posteo_detalle"));        
 
         if (posteoDetalle.equals(0))
         {
             Evento evento = eventosService.modificaDiaYHoraGrupoAsignatura(
                     Long.parseLong(entity.get("id")), inicio, fin);
-            return Collections.singletonList(UIEntity.toUI(evento));
+            return toUI(Collections.singletonList(evento));
 
         }
         else
@@ -222,9 +222,9 @@ public class CalendarResource
                 }
 
                 Evento evento = eventosService.updateEventoConDetalleManual(
-                        Long.parseLong(entity.get("id")), fechas);
+                        Long.parseLong(entity.get("id")), fechas, inicio, fin);
 
-                return Collections.singletonList(UIEntity.toUI(evento));
+                return toUI(Collections.singletonList(evento));
             }
             else
             {
@@ -254,7 +254,7 @@ public class CalendarResource
                 Evento evento = eventosService.modificaDetallesGrupoAsignatura(
                         Long.parseLong(entity.get("id")), inicio, fin, desdeElDia,
                         numeroIteraciones, repetirCadaSemanas, hastaElDia);
-                return Collections.singletonList(UIEntity.toUI(evento));
+                return toUI(Collections.singletonList(evento));
             }
         }
 

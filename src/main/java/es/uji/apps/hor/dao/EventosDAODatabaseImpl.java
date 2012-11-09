@@ -178,6 +178,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         item.setHoraInicio(inicio);
         item.setHoraFin(fin);
         item.setDiaSemana(diaSemanaDTO);
+        item.setDetalleManual(false);
         update(item);
 
         return creaEventoDesde(item);
@@ -386,6 +387,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         item.setNumeroIteraciones(numeroIteraciones);
         item.setRepetirCadaSemanas(repetirCadaSemanas);
         item.setHastaElDia(hastaElDia);
+        item.setDetalleManual(false);
         update(item);
 
         return creaEventoDesde(item);
@@ -444,7 +446,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
     }
 
     @Override
-    public Evento updateEventoConDetalleManual(Long eventoId, List<Date> fechas)
+    public Evento updateEventoConDetalleManual(Long eventoId, List<Date> fechas, Date inicio, Date fin)
             throws RegistroNoEncontradoException
     {
         JPAQuery query = new JPAQuery(entityManager);
@@ -458,6 +460,12 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         {
             throw new RegistroNoEncontradoException();
         }
+        
+        evento.setDetalleManual(true);
+        evento.setHoraInicio(inicio);
+        evento.setHoraFin(fin);
+        
+        evento = update(evento);
 
         delete(ItemDetalleDTO.class, "item_id=" + eventoId);
 
@@ -466,13 +474,13 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(evento.getHoraInicio());
         
-        int horaInicio = calendar.get(Calendar.HOUR);
+        int horaInicio = calendar.get(Calendar.HOUR_OF_DAY);
         int minutoInicio = calendar.get(Calendar.MINUTE);
         int segundoInicio = calendar.get(Calendar.SECOND);
         
         calendar.setTime(evento.getHoraFin());
         
-        int horaFin = calendar.get(Calendar.HOUR);
+        int horaFin = calendar.get(Calendar.HOUR_OF_DAY);
         int minutoFin = calendar.get(Calendar.MINUTE);
         int segundoFin = calendar.get(Calendar.SECOND);
         
@@ -481,14 +489,14 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             calendar.setTime(fecha);
             calendar.add(Calendar.SECOND, segundoInicio);
             calendar.add(Calendar.MINUTE, minutoInicio);
-            calendar.add(calendar.HOUR, horaInicio);
+            calendar.add(calendar.HOUR_OF_DAY, horaInicio);
             
             Date fechaInicio = calendar.getTime();
             
             calendar.setTime(fecha);
-            calendar.add(Calendar.SECOND, segundoInicio);
-            calendar.add(Calendar.MINUTE, minutoInicio);
-            calendar.add(calendar.HOUR, horaInicio);
+            calendar.add(Calendar.SECOND, segundoFin);
+            calendar.add(Calendar.MINUTE, minutoFin);
+            calendar.add(calendar.HOUR_OF_DAY, horaFin);
             
             Date fechaFin = calendar.getTime();       
             

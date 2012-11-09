@@ -109,9 +109,9 @@ public class EventosService
         return eventosDAO.getEventosDocenciaByEventoId(eventoId);
     }
 
-    public Evento updateEventoConDetalleManual(Long eventoId, List<Date> fechas)
+    public Evento updateEventoConDetalleManual(Long eventoId, List<Date> fechas, Date inicio, Date fin)
             throws RegistroNoEncontradoException
     {
-        return eventosDAO.updateEventoConDetalleManual(eventoId, fechas);
+        return eventosDAO.updateEventoConDetalleManual(eventoId, fechas, inicio, fin);
     }
 }

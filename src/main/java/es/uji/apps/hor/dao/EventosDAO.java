@@ -33,6 +33,6 @@ public interface EventosDAO extends BaseDAO
 
     List<EventoDocencia> getEventosDocenciaByEventoId(Long eventoId);
  
-    Evento updateEventoConDetalleManual(Long eventoId, List<Date> fechas)
+    Evento updateEventoConDetalleManual(Long eventoId, List<Date> fechas, Date inicio, Date fin)
             throws RegistroNoEncontradoException;
 }

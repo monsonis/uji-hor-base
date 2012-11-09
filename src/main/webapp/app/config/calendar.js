@@ -206,6 +206,7 @@ Extensible.calendar.form.EventDetails.override(
         });
 
         this.trackResetOnLoad = true;
+        this.updateactive = false;
 
         this.titleField = Ext.create('Ext.form.TextField',
         {
@@ -335,13 +336,7 @@ Extensible.calendar.form.EventDetails.override(
 
     loadRecord : function(rec)
     {
-
         var me = this, EventMappings = Extensible.calendar.data.EventMappings;
-
-        // Simulamos datos en los nuevos campos
-        // rec.data[EventMappings.ModificaDetalle.name] = "on";
-        // rec.data[EventMappings.EndRepNumberComp.name] = 6;
-        // rec.data[EventMappings.EndDateRepComp.name] = '7/9/2012';
 
         if (!rec.data[EventMappings.RepetirCada.name])
         {
@@ -369,10 +364,10 @@ Extensible.calendar.form.EventDetails.override(
             this.down('radiogroup[name=grupoDuracion] radio[inputValue=F]').setValue(true);
         }
 
-        if (!rec.data[Extensible.calendar.data.EventMappings.EndRepNumberComp])
-        {
-            this.down('numberfield').setValue(1);
-        }
+        // if (!rec.data[Extensible.calendar.data.EventMappings.EndRepNumberComp])
+        // {
+        // this.down('numberfield').setValue(1);
+        // }
 
         if (me.calendarField)
         {
@@ -382,15 +377,12 @@ Extensible.calendar.form.EventDetails.override(
 
         me.dateRepeatField.setRepetirCadaValue(rec.data[EventMappings.RepetirCada.name]);
 
-        // Using setValue() results in dirty fields, so we reset the field state
-        // after loading the form so that the current values are the "original" values
         me.form.getFields().each(function(item)
         {
             item.resetOriginalValue();
         });
 
         me.titleField.focus();
-
         me.getDetalleClasesDocencia(rec.data[EventMappings.EventId.name]);
     },
 
@@ -411,25 +403,22 @@ Extensible.calendar.form.EventDetails.override(
 
         var fechas = me.activeRecord.get(Extensible.calendar.data.EventMappings.FechaDetalleManual.name);
         me.activeRecord.set(Extensible.calendar.data.EventMappings.FechaDetalleManual.name, Ext.JSON.encode(fechas));
-        
-        me.activeRecord.store.on(
+
+        if (!this.updateactive)
         {
-            update : function()
+            me.activeRecord.store.on(
             {
-                if (!this.activeRecord)
-                    return;
-                this.down('button[name=close]').setText('Tancar');
-                this.getDetalleClasesDocencia(this.activeRecord.data[Extensible.calendar.data.EventMappings.EventId.name]);
-                me.getForm().reset();
-                me.getForm().loadRecord(me.activeRecord);
-                var fields = me.getForm().getFields();
-                Ext.Array.each(fields.items, function(field)
+                update : function(store, record)
                 {
-                    field.resetOriginalValue();
-                });
-            },
-            scope : me
-        });
+                    if (!this.activeRecord)
+                        return;
+                    this.down('button[name=close]').setText('Tancar');
+                    this.loadRecord(record);
+                },
+                scope : me
+            });
+            this.updateactive = true;
+        }
 
         if (me.activeRecord.phantom)
         {
@@ -456,7 +445,9 @@ Extensible.calendar.form.EventDetails.override(
                     me.fireEvent('eventcancel', me, me.activeRecord);
                 }
             });
-        } else {
+        }
+        else
+        {
             me.activeRecord.store.load();
             me.cleanup(true);
             me.fireEvent('eventcancel', me, me.activeRecord);
@@ -472,6 +463,7 @@ Extensible.calendar.form.EventDetails.override(
             method : 'GET',
             success : function(response)
             {
+                console.log(response);
                 var clases = Ext.JSON.decode(response.responseText).data;
 
                 me.detalleClases.actualizarDetalleClases(clases);
