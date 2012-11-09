@@ -453,6 +453,10 @@ Extensible.calendar.form.EventDetails.override(
                     me.fireEvent('eventcancel', me, me.activeRecord);
                 }
             });
+        } else {
+            me.activeRecord.store.load();
+            me.cleanup(true);
+            me.fireEvent('eventcancel', me, me.activeRecord);
         }
     },
 
