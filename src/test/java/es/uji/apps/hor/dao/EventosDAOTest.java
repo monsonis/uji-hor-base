@@ -113,6 +113,7 @@ public class EventosDAOTest
     }
 
     @Test
+    @Ignore
     public void desasignaEventoSemanaGenericaTest() throws RegistroNoEncontradoException
     {
         eventosDAO.insert(item);
@@ -124,6 +125,7 @@ public class EventosDAOTest
     }
 
     @Test
+    @Ignore
     public void divideClaseDeMasDeUnaHoraTest() throws RegistroNoEncontradoException,
             EventoNoDivisibleException
     {
@@ -147,6 +149,7 @@ public class EventosDAOTest
     }
 
     @Test
+    @Ignore
     public void eliminaEventoDuplicadoEnSemanaGenericaTest() throws RegistroNoEncontradoException,
             EventoNoDivisibleException
     {
