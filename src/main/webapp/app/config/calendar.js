@@ -206,7 +206,7 @@ Extensible.calendar.form.EventDetails.override(
         });
 
         this.trackResetOnLoad = true;
-        
+
         this.titleField = Ext.create('Ext.form.TextField',
         {
             fieldLabel : this.titleLabelText,
@@ -369,10 +369,11 @@ Extensible.calendar.form.EventDetails.override(
             this.down('radiogroup[name=grupoDuracion] radio[inputValue=F]').setValue(true);
         }
 
-        if (!rec.data[Extensible.calendar.data.EventMappings.EndRepNumberComp]) {
+        if (!rec.data[Extensible.calendar.data.EventMappings.EndRepNumberComp])
+        {
             this.down('numberfield').setValue(1);
         }
-        
+
         if (me.calendarField)
         {
             me.calendarField.setValue(rec.data[EventMappings.CalendarId.name]);
@@ -407,23 +408,24 @@ Extensible.calendar.form.EventDetails.override(
         {
             return;
         }
-        
+
         me.activeRecord.store.on(
         {
             update : function()
+            {
+                if (!this.activeRecord)
+                    return;
+                this.down('button[name=close]').setText('Tancar');
+                this.getDetalleClasesDocencia(this.activeRecord.data[Extensible.calendar.data.EventMappings.EventId.name]);
+                me.getForm().reset();
+                me.getForm().loadRecord(me.activeRecord);
+                var fields = me.getForm().getFields();
+                Ext.Array.each(fields.items, function(field)
                 {
-                    if (!this.activeRecord)
-                        return;
-                    this.down('button[name=close]').setText('Tancar');
-                    this.getDetalleClasesDocencia(this.activeRecord.data[Extensible.calendar.data.EventMappings.EventId.name]);
-                    me.getForm().reset();
-                    me.getForm().loadRecord(me.activeRecord);
-                    var fields = me.getForm().getFields();
-                    Ext.Array.each( fields.items, function(field) {
-                        field.resetOriginalValue();
-                    });
-                },
-                scope : me
+                    field.resetOriginalValue();
+                });
+            },
+            scope : me
         });
 
         if (me.activeRecord.phantom)
@@ -437,16 +439,27 @@ Extensible.calendar.form.EventDetails.override(
         }
     },
 
-    onCancel: function() {
-      this.activeRecord.store.load();
-      this.cleanup(true);
-      this.fireEvent('eventcancel', this, this.activeRecord);
+    onCancel : function()
+    {
+        var me = this
+        if (this.getForm().isDirty())
+        {
+            Ext.Msg.confirm('Dades sense guardar', 'Tens dades sense guardar en el event, estàs segur de voler tancar la edició?', function(btn, text)
+            {
+                if (btn == 'yes')
+                {
+                    me.activeRecord.store.load();
+                    me.cleanup(true);
+                    me.fireEvent('eventcancel', me, me.activeRecord);
+                }
+            });
+        }
     },
-    
+
     getDetalleClasesDocencia : function(eventoId)
     {
         var me = this;
-        
+
         var me = this;
         Ext.Ajax.request(
         {
@@ -455,12 +468,12 @@ Extensible.calendar.form.EventDetails.override(
             success : function(response)
             {
                 var clases = Ext.JSON.decode(response.responseText).data;
-                
+
                 me.detalleClases.actualizarDetalleClases(clases);
                 me.detalleClases.show();
-                
+
                 me.detalleManualFechas.addPosiblesFechas(clases);
-                
+
                 if (me.detalleManualField.getValue())
                 {
                     me.detalleManualFechas.checkBoxes();
