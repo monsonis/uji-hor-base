@@ -441,7 +441,7 @@ Extensible.calendar.form.EventDetails.override(
 
     onCancel : function()
     {
-        var me = this
+        var me = this;
         if (this.getForm().isDirty())
         {
             Ext.Msg.confirm('Dades sense guardar', 'Tens dades sense guardar en el event, estàs segur de voler tancar la edició?', function(btn, text)
@@ -458,8 +458,6 @@ Extensible.calendar.form.EventDetails.override(
 
     getDetalleClasesDocencia : function(eventoId)
     {
-        var me = this;
-
         var me = this;
         Ext.Ajax.request(
         {

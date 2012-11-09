@@ -17,12 +17,14 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
         ref : 'selectorCalendarios'
     } ],
 
-    initComponent: function() {
+    initComponent : function()
+    {
         this.addEvents('updateGrupos');
-        this.callParent(arguments); 
+        this.callParent(arguments);
     },
     init : function()
     {
+        var me = this;
         this.control(
         {
             'selectorGrupos' :
@@ -37,6 +39,23 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
             {
                 change : this.updateAsignaturasSinAsignar
             },
+            'panelCalendario' :
+            {
+                editdetails : function()
+                {
+                    me.getFiltroGrupos().setDisabled(true);
+                    me.getSelectorGrupos().setDisabled(true);
+                    me.getSelectorCalendarios().setDisabled(true);
+
+                },
+                eventcancel : function()
+                {
+                    me.getFiltroGrupos().setDisabled(false);
+                    me.getSelectorGrupos().setDisabled(false);
+                    me.getSelectorCalendarios().setDisabled(false);
+
+                }
+            }
         });
     },
 
