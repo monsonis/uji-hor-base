@@ -293,6 +293,7 @@ public class CalendarResource
             eventoUI.put("start_date_rep", evento.getDesdeElDia());
             eventoUI.put("end_date_rep_comp", evento.getHastaElDia());
             eventoUI.put("end_rep_number_comp", evento.getNumeroIteraciones());
+            eventoUI.put("detalle_manual", evento.getDetalleManual());
 
             if (evento.getInicio() != null)
             {
