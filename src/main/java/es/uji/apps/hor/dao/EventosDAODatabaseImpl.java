@@ -446,68 +446,172 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
     }
 
     @Override
-    public Evento updateEventoConDetalleManual(Long eventoId, List<Date> fechas, Date inicio, Date fin)
-            throws RegistroNoEncontradoException
+    public Evento updateEventoConDetalleManual(Long eventoId, List<Date> fechas, Date inicio,
+            Date fin) throws RegistroNoEncontradoException
     {
-        JPAQuery query = new JPAQuery(entityManager);
+        ItemDTO evento;
 
-        QItemDTO itemDTO = QItemDTO.itemDTO;
-        QItemDetalleDTO itemDetalleDTO = QItemDetalleDTO.itemDetalleDTO;
-
-        ItemDTO evento = (ItemDTO) get(ItemDTO.class, eventoId).get(0);
-
-        if (evento == null)
+        try
+        {
+            evento = get(ItemDTO.class, eventoId).get(0);
+        }
+        catch (Exception e)
         {
             throw new RegistroNoEncontradoException();
         }
-        
+
         evento.setDetalleManual(true);
         evento.setHoraInicio(inicio);
         evento.setHoraFin(fin);
-        
+
         evento = update(evento);
 
         delete(ItemDetalleDTO.class, "item_id=" + eventoId);
 
         // Insertamos el detalle del evento según las fechas
-        
+
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(evento.getHoraInicio());
-        
+
         int horaInicio = calendar.get(Calendar.HOUR_OF_DAY);
         int minutoInicio = calendar.get(Calendar.MINUTE);
         int segundoInicio = calendar.get(Calendar.SECOND);
-        
+
         calendar.setTime(evento.getHoraFin());
-        
+
         int horaFin = calendar.get(Calendar.HOUR_OF_DAY);
         int minutoFin = calendar.get(Calendar.MINUTE);
         int segundoFin = calendar.get(Calendar.SECOND);
-        
+
         for (Date fecha : fechas)
         {
             calendar.setTime(fecha);
             calendar.add(Calendar.SECOND, segundoInicio);
             calendar.add(Calendar.MINUTE, minutoInicio);
-            calendar.add(calendar.HOUR_OF_DAY, horaInicio);
-            
+            calendar.add(Calendar.HOUR_OF_DAY, horaInicio);
+
             Date fechaInicio = calendar.getTime();
-            
+
             calendar.setTime(fecha);
             calendar.add(Calendar.SECOND, segundoFin);
             calendar.add(Calendar.MINUTE, minutoFin);
-            calendar.add(calendar.HOUR_OF_DAY, horaFin);
-            
-            Date fechaFin = calendar.getTime();       
-            
+            calendar.add(Calendar.HOUR_OF_DAY, horaFin);
+
+            Date fechaFin = calendar.getTime();
+
             ItemDetalleDTO eventoDetalle = new ItemDetalleDTO();
             eventoDetalle.setItem(evento);
             eventoDetalle.setInicio(fechaInicio);
             eventoDetalle.setFin(fechaFin);
-            
+
             insert(eventoDetalle);
         }
+
+        return creaEventoDesde(evento);
+    }
+
+    @Override
+    public boolean isDetalleManualYNoCambiaDiaSemana(Long eventoId, Date inicio)
+            throws RegistroNoEncontradoException
+    {
+        ItemDTO item;
+
+        try
+        {
+            item = get(ItemDTO.class, eventoId).get(0);
+        }
+        catch (Exception e)
+        {
+            throw new RegistroNoEncontradoException();
+        }
+
+        if (item.getDetalleManual())
+        {
+            // Miramos el día de la semana
+            JPAQuery query = new JPAQuery(entityManager);
+
+            Calendar calendar = Calendar.getInstance();
+
+            calendar.setTime(inicio);
+
+            String diaSemana = getNombreDiaSemana(calendar.get(Calendar.DAY_OF_WEEK));
+
+            QDiaSemanaDTO qDiaSemana = QDiaSemanaDTO.diaSemanaDTO;
+            query.from(qDiaSemana).where(qDiaSemana.nombre.eq(diaSemana));
+            DiaSemanaDTO diaSemanaDTO = query.list(qDiaSemana).get(0);
+
+            if (diaSemanaDTO.getId().equals(item.getDiaSemana().getId()))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public Evento updateHorasEventoDetalleManual(Long eventoId, Date inicio, Date fin)
+            throws RegistroNoEncontradoException
+    {
+        ItemDTO evento;
+
+        try
+        {
+            evento = get(ItemDTO.class, eventoId).get(0);
+        }
+        catch (Exception e)
+        {
+            throw new RegistroNoEncontradoException();
+        }
+
+        evento.setDetalleManual(true);
+        evento.setHoraInicio(inicio);
+        evento.setHoraFin(fin);
+
+        evento = update(evento);
         
+        System.out.println(evento.getHoraInicio());
+        System.out.println(evento.getHoraFin());
+
+        // Modificamos el detalle del evento según las fechas
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(evento.getHoraInicio());
+
+        int horaInicio = calendar.get(Calendar.HOUR_OF_DAY);
+        int minutoInicio = calendar.get(Calendar.MINUTE);
+        int segundoInicio = calendar.get(Calendar.SECOND);
+
+        calendar.setTime(evento.getHoraFin());
+
+        int horaFin = calendar.get(Calendar.HOUR_OF_DAY);
+        int minutoFin = calendar.get(Calendar.MINUTE);
+        int segundoFin = calendar.get(Calendar.SECOND);
+
+        List<ItemDetalleDTO> itemDetalles = get(ItemDetalleDTO.class, "item_id=" + eventoId);
+
+        for (ItemDetalleDTO itemDetalle : itemDetalles)
+        {
+            calendar.setTime(itemDetalle.getInicio());
+            calendar.set(Calendar.SECOND, segundoInicio);
+            calendar.set(Calendar.MINUTE, minutoInicio);
+            calendar.set(Calendar.HOUR_OF_DAY, horaInicio);
+
+            itemDetalle.setInicio(calendar.getTime());
+
+            calendar.setTime(itemDetalle.getFin());
+            calendar.set(Calendar.SECOND, segundoFin);
+            calendar.set(Calendar.MINUTE, minutoFin);
+            calendar.set(Calendar.HOUR_OF_DAY, horaFin);
+
+            itemDetalle.setFin(calendar.getTime());
+
+            itemDetalle = update(itemDetalle);
+            
+            System.out.println(itemDetalle.getInicio());
+            System.out.println(itemDetalle.getFin());
+        }
+
         return creaEventoDesde(evento);
     }
 }

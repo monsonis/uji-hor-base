@@ -109,9 +109,21 @@ public class EventosService
         return eventosDAO.getEventosDocenciaByEventoId(eventoId);
     }
 
-    public Evento updateEventoConDetalleManual(Long eventoId, List<Date> fechas, Date inicio, Date fin)
-            throws RegistroNoEncontradoException
+    public Evento updateEventoConDetalleManual(Long eventoId, List<Date> fechas, Date inicio,
+            Date fin) throws RegistroNoEncontradoException
     {
         return eventosDAO.updateEventoConDetalleManual(eventoId, fechas, inicio, fin);
+    }
+
+    public boolean isDetalleManualYNoCambiaDiaSemana(Long eventoId, Date inicio)
+            throws RegistroNoEncontradoException
+    {
+        return eventosDAO.isDetalleManualYNoCambiaDiaSemana(eventoId, inicio);
+    }
+
+    public Evento updateHorasEventoDetalleManual(Long eventoId, Date inicio, Date fin)
+            throws RegistroNoEncontradoException
+    {
+        return eventosDAO.updateHorasEventoDetalleManual(eventoId, inicio, fin);
     }
 }
