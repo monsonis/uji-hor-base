@@ -32,7 +32,8 @@ Ext.define('HOR.controller.ControllerCalendario',
 
             'panelHorarios' :
             {
-                refreshCalendar : this.refreshCalendar
+                refreshCalendar : this.refreshCalendar,
+                render : this.onPanelCalendarioRendered
             },
             'selectorCalendarios checkbox' :
             {
@@ -120,7 +121,7 @@ Ext.define('HOR.controller.ControllerCalendario',
 
                         var eventos = Ext.create('HOR.store.StoreEventos');
                         Extensible.calendar.data.EventModel.reconfigure();
-                        
+
                         panelPadre.add(
                         {
                             xtype : 'panelCalendario',
@@ -173,7 +174,7 @@ Ext.define('HOR.controller.ControllerCalendario',
         var calendario = this.getPanelCalendario();
         var store = calendario.store;
         store.remove(registro);
-        
+
         store.sync(
         {
             success : function()
@@ -213,6 +214,33 @@ Ext.define('HOR.controller.ControllerCalendario',
                         });
                     }
                 }
+            }
+        });
+    },
+    onPanelCalendarioRendered : function()
+    {
+        var ref = this;
+
+        var panelCalendario = ref.getPanelCalendario();
+        var panelPadre = panelCalendario.up('panel');
+
+        Ext.Array.each(Ext.ComponentQuery.query('panelCalendario'), function(panel)
+        {
+            panel.destroy();
+        });
+
+        var eventos = Ext.create('HOR.store.StoreEventos');
+        Extensible.calendar.data.EventModel.reconfigure();
+
+        panelPadre.add(
+        {
+            xtype : 'panelCalendario',
+            eventStore : eventos,
+            showMultiDayView : true,
+            viewConfig :
+            {
+                viewStartHour : 8,
+                viewEndHour : 22
             }
         });
     }

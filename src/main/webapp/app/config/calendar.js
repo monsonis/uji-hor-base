@@ -459,7 +459,6 @@ Extensible.calendar.form.EventDetails.override(
             method : 'GET',
             success : function(response)
             {
-                console.log(response);
                 var clases = Ext.JSON.decode(response.responseText).data;
 
                 me.detalleClases.actualizarDetalleClases(clases);
