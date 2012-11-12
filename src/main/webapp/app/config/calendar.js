@@ -407,10 +407,19 @@ Extensible.calendar.form.EventDetails.override(
         {
             update : function(store, record)
             {
+                var me = this;
+                me.record = record;
+                
                 if (!this.activeRecord)
                     return;
                 this.down('button[name=close]').setText('Tancar');
-                this.loadRecord(record);
+                
+                var waitForLoading = function() {
+                    me.loadRecord(me.record);
+                };
+                
+                var task = new Ext.util.DelayedTask(waitForLoading);
+                task.delay(500);
             },
             scope : me,
             single : true
