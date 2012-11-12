@@ -206,7 +206,6 @@ Extensible.calendar.form.EventDetails.override(
         });
 
         this.trackResetOnLoad = true;
-        this.updateactive = false;
 
         this.titleField = Ext.create('Ext.form.TextField',
         {
@@ -404,21 +403,19 @@ Extensible.calendar.form.EventDetails.override(
         var fechas = me.activeRecord.get(Extensible.calendar.data.EventMappings.FechaDetalleManual.name);
         me.activeRecord.set(Extensible.calendar.data.EventMappings.FechaDetalleManual.name, Ext.JSON.encode(fechas));
 
-        if (!this.updateactive)
+        me.activeRecord.store.on(
         {
-            me.activeRecord.store.on(
+            update : function(store, record)
             {
-                update : function(store, record)
-                {
-                    if (!this.activeRecord)
-                        return;
-                    this.down('button[name=close]').setText('Tancar');
-                    this.loadRecord(record);
-                },
-                scope : me
-            });
-            this.updateactive = true;
-        }
+                console.log("hola");
+                if (!this.activeRecord)
+                    return;
+                this.down('button[name=close]').setText('Tancar');
+                this.loadRecord(record);
+            },
+            scope : me,
+            single : true
+        });
 
         if (me.activeRecord.phantom)
         {
