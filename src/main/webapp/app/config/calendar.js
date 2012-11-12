@@ -407,7 +407,6 @@ Extensible.calendar.form.EventDetails.override(
         {
             update : function(store, record)
             {
-                console.log("hola");
                 if (!this.activeRecord)
                     return;
                 this.down('button[name=close]').setText('Tancar');
