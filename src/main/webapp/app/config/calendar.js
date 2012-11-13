@@ -400,24 +400,22 @@ Extensible.calendar.form.EventDetails.override(
             return;
         }
 
-        var fechas = me.activeRecord.get(Extensible.calendar.data.EventMappings.FechaDetalleManual.name);
-        me.activeRecord.set(Extensible.calendar.data.EventMappings.FechaDetalleManual.name, Ext.JSON.encode(fechas));
-
         me.activeRecord.store.on(
         {
             update : function(store, record)
             {
                 var me = this;
                 me.record = record;
-                
+
                 if (!this.activeRecord)
                     return;
                 this.down('button[name=close]').setText('Tancar');
-                
-                var waitForLoading = function() {
+
+                var waitForLoading = function()
+                {
                     me.loadRecord(me.record);
                 };
-                
+
                 var task = new Ext.util.DelayedTask(waitForLoading);
                 task.delay(500);
             },
@@ -481,6 +479,62 @@ Extensible.calendar.form.EventDetails.override(
                 }
             }
         });
+    },
+
+    updateRecord : function(record)
+    {
+        var fields = record.fields, values = this.getForm().getValues(), EventMappings = Extensible.calendar.data.EventMappings, name, obj = {};
+
+        fields.each(function(f)
+        {
+            name = f.name;
+            if (name in values)
+            {
+                obj[name] = values[name];
+            }
+        });
+
+        var dates = this.dateRangeField.getValue(), allday = obj[EventMappings.IsAllDay.name] = dates[2],
+        // Clear times for all day events so that they are stored consistently
+        startDate = allday ? Extensible.Date.clearTime(dates[0]) : dates[0], endDate = allday ? Extensible.Date.clearTime(dates[1]) : dates[1], singleDayDurationConfig =
+        {
+            days : 1
+        };
+
+        // The full length of a day based on the minimum event time resolution:
+        singleDayDurationConfig[Extensible.calendar.data.EventModel.resolution] = -1;
+
+        obj[EventMappings.StartDate.name] = startDate;
+
+        // If the event is all day, calculate the end date as midnight of the day after the end
+        // date minus 1 unit based on the EventModel resolution, e.g. 23:59:00 on the end date
+        obj[EventMappings.EndDate.name] = allday ? Extensible.Date.add(endDate, singleDayDurationConfig) : endDate;
+
+        if (EventMappings.Duration)
+        {
+            obj[EventMappings.Duration.name] = Extensible.Date.diff(startDate, obj[EventMappings.EndDate.name], Extensible.calendar.data.EventModel.resolution);
+        }
+
+        if (obj[Extensible.calendar.data.EventMappings.FechaFinRadio.name] == "R")
+        {
+            obj[Extensible.calendar.data.EventMappings.EndDateRepComp.name] = "";
+
+        }
+        else if (obj[Extensible.calendar.data.EventMappings.FechaFinRadio.name] == "D")
+        {
+            obj[Extensible.calendar.data.EventMappings.EndRepNumberComp.name] = "";
+        }
+        else
+        {
+            obj[Extensible.calendar.data.EventMappings.EndDateRepComp.name] = "";
+            obj[Extensible.calendar.data.EventMappings.EndRepNumberComp.name] = "";
+        }
+
+        var fechas = obj[Extensible.calendar.data.EventMappings.FechaDetalleManual.name];
+        obj[Extensible.calendar.data.EventMappings.FechaDetalleManual.name] = Ext.JSON.encode(fechas);
+
+        record.set(obj);
+        return record.dirty;
     },
 
 });
