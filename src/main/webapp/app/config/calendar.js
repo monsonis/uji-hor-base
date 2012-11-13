@@ -146,6 +146,11 @@ Extensible.calendar.data.EventMappings.FechaDetalleManual =
     name : 'FechaDetalleManual',
     mapping : 'fecha_detalle_manual',
 };
+Extensible.calendar.data.EventMappings.FechaDetalleManualInt =
+{
+    name : 'FechaDetalleManualInt',
+    mapping : 'fecha_detalle_manual_int',
+};
 Extensible.calendar.data.EventMappings.PosteoDetalle =
 {
     name : 'PosteoDetalle',
@@ -260,7 +265,8 @@ Extensible.calendar.form.EventDetails.override(
         this.detalleManualFechas = Ext.create('Event.form.field.DetalleManual',
         {
             anchor : '90%',
-            nameCheckbox : Extensible.calendar.data.EventMappings.FechaDetalleManual.name
+            nameCheckbox : Extensible.calendar.data.EventMappings.FechaDetalleManual.name,
+            nameHidden : Extensible.calendar.data.EventMappings.FechaDetalleManualInt.name
         });
 
         this.detalleClases = Ext.create('Event.form.DetalleClases',
@@ -531,7 +537,7 @@ Extensible.calendar.form.EventDetails.override(
         }
 
         var fechas = obj[Extensible.calendar.data.EventMappings.FechaDetalleManual.name];
-        obj[Extensible.calendar.data.EventMappings.FechaDetalleManual.name] = Ext.JSON.encode(fechas);
+        obj[Extensible.calendar.data.EventMappings.FechaDetalleManualInt.name] = Ext.JSON.encode(fechas);
 
         record.set(obj);
         return record.dirty;

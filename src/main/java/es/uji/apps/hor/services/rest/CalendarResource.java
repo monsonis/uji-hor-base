@@ -201,7 +201,6 @@ public class CalendarResource
         Integer posteoDetalle = Integer.parseInt(entity.get("posteo_detalle"));
         Boolean detalleManual = false;
 
-
         if (posteoDetalle.equals(0))
         {
             detalleManual = true;
@@ -227,7 +226,7 @@ public class CalendarResource
             if (entity.get("detalle_manual") != null && entity.get("detalle_manual").equals("on"))
             {
                 detalleManual = true;
-                String strFechas = entity.get("fecha_detalle_manual");
+                String strFechas = entity.get("fecha_detalle_manual_int");
                 JSONArray array = new JSONArray(strFechas);
 
                 List<Date> fechas = new ArrayList<Date>();
