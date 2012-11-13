@@ -27,7 +27,7 @@ public interface EventosDAO extends BaseDAO
             EventoNoDivisibleException;
 
     Evento modificaDetallesGrupoAsignatura(Long grupoAsignaturaId, Date inicio, Date fin,
-            Date desdeElDia, Integer numeroIteraciones, Integer repetirCadaSemanas, Date hastaElDia);
+            Date desdeElDia, Integer numeroIteraciones, Integer repetirCadaSemanas, Date hastaElDia, Boolean detalleManual);
 
     List<Evento> getEventosDetalleByEventoId(Long eventoId);
 

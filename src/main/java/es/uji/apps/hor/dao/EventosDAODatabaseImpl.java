@@ -359,7 +359,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
 
     @Override
     public Evento modificaDetallesGrupoAsignatura(Long grupoAsignaturaId, Date inicio, Date fin,
-            Date desdeElDia, Integer numeroIteraciones, Integer repetirCadaSemanas, Date hastaElDia)
+            Date desdeElDia, Integer numeroIteraciones, Integer repetirCadaSemanas, Date hastaElDia, Boolean detalleManual )
     {
         QItemDTO qItem = QItemDTO.itemDTO;
         JPAQuery query = new JPAQuery(entityManager);
@@ -387,7 +387,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         item.setNumeroIteraciones(numeroIteraciones);
         item.setRepetirCadaSemanas(repetirCadaSemanas);
         item.setHastaElDia(hastaElDia);
-        item.setDetalleManual(false);
+        item.setDetalleManual(detalleManual);
         update(item);
 
         return creaEventoDesde(item);

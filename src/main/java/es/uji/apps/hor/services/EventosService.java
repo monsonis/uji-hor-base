@@ -74,7 +74,7 @@ public class EventosService
     }
 
     public Evento modificaDetallesGrupoAsignatura(Long grupoAsignaturaId, Date inicio, Date fin,
-            Date desdeElDia, Integer numeroIteraciones, Integer repetirCadaSemanas, Date hastaElDia)
+            Date desdeElDia, Integer numeroIteraciones, Integer repetirCadaSemanas, Date hastaElDia, Boolean detalleManual)    
             throws DuracionEventoIncorrectaException
     {
         Calendar calInicio = Calendar.getInstance();
@@ -90,7 +90,7 @@ public class EventosService
                 && calInicio.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY)
         {
             return eventosDAO.modificaDetallesGrupoAsignatura(grupoAsignaturaId, inicio, fin,
-                    desdeElDia, numeroIteraciones, repetirCadaSemanas, hastaElDia);
+                    desdeElDia, numeroIteraciones, repetirCadaSemanas, hastaElDia, detalleManual);
         }
         else
         {
