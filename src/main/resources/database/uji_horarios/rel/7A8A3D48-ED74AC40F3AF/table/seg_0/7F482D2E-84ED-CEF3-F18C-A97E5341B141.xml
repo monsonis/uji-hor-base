@@ -109,6 +109,39 @@
 <domain>CED887F4-B813-929D-A940-B429423E3FC9</domain>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
+<Column class="oracle.dbtools.crest.model.design.relational.Column" name="area" id="670930B6-83CB-3B01-607C-5B3FD9FBEF9C">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-11-13 14:57:38 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<use>0</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<domain>A4232D0A-6592-A0D0-A6DF-91817C0B6413</domain>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column class="oracle.dbtools.crest.model.design.relational.Column" name="edificio" id="EFCD9770-44CB-DC69-C611-7B1A412F3CD9">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-11-13 14:57:38 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<use>0</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<domain>A4232D0A-6592-A0D0-A6DF-91817C0B6413</domain>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column class="oracle.dbtools.crest.model.design.relational.Column" name="planta" id="ED5105E6-0CDC-2746-0F78-3307C4D355D2">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-11-13 14:57:38 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<use>0</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<domain>A4232D0A-6592-A0D0-A6DF-91817C0B6413</domain>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
 </columns>
 <indexes>
 <ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="3025F7AA-3A47-A091-A241-8D7BEB6A3DCB" name="hor_aulas_PK">
@@ -120,6 +153,15 @@
 <indexState>Primary Constraint</indexState>
 <indexColumnUsage>
 <colUsage columnID="6C3BA2CB-552F-C920-0834-B393DC6F24E4"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="21E4D1E2-EDD1-B002-7746-01D581CFD212" name="hor_aulas_centro_IDX">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-11-13 15:11:37 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<indexColumnUsage>
+<colUsage columnID="9FD5914E-7BE3-7951-B5AC-F1804BADB46C"/>
 </indexColumnUsage>
 </ind_PK_UK>
 <ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="32D0CD33-573B-9ACE-2856-B3F56D1D5553" name="hor_aulas_hor_centros_FK">

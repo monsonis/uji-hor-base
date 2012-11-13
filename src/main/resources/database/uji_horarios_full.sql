@@ -1,5 +1,5 @@
 -- Generado por Oracle SQL Developer Data Modeler 3.1.1.703
---   en:        2012-11-08 12:55:48 CET
+--   en:        2012-11-13 16:15:15 CET
 --   sitio:      Oracle Database 11g
 --   tipo:      Oracle Database 11g
 
@@ -14,8 +14,6 @@ DROP VIEW uji_horarios.hor_v_items_detalle
 DROP TABLE uji_horarios.hor_areas CASCADE CONSTRAINTS 
 ;
 DROP TABLE uji_horarios.hor_aulas CASCADE CONSTRAINTS 
-;
-DROP TABLE uji_horarios.hor_aulas_estudio CASCADE CONSTRAINTS 
 ;
 DROP TABLE uji_horarios.hor_aulas_planificacion CASCADE CONSTRAINTS 
 ;
@@ -80,30 +78,22 @@ CREATE TABLE uji_horarios.hor_aulas
      centro_id NUMBER  NOT NULL , 
      tipo VARCHAR2 (100) , 
      plazas NUMBER , 
-     codigo VARCHAR2 (100) 
+     codigo VARCHAR2 (100) , 
+     area VARCHAR2 (10) , 
+     edificio VARCHAR2 (10) , 
+     planta VARCHAR2 (10) 
     ) 
 ;
 
 
+CREATE INDEX uji_horarios.hor_aulas_centro_IDX ON uji_horarios.hor_aulas 
+    ( 
+     centro_id ASC 
+    ) 
+;
 
 ALTER TABLE uji_horarios.hor_aulas 
     ADD CONSTRAINT hor_aulas_PK PRIMARY KEY ( id ) ;
-
-
-
-CREATE TABLE uji_horarios.hor_aulas_estudio 
-    ( 
-     id NUMBER  NOT NULL , 
-     aula_id NUMBER  NOT NULL , 
-     estudio_id NUMBER  NOT NULL , 
-     descripcion VARCHAR2 (1000) 
-    ) 
-;
-
-
-
-ALTER TABLE uji_horarios.hor_aulas_estudio 
-    ADD CONSTRAINT hor_aulas_estudio_PK PRIMARY KEY ( id ) ;
 
 
 
@@ -119,6 +109,16 @@ CREATE TABLE uji_horarios.hor_aulas_planificacion
 ;
 
 
+CREATE INDEX uji_horarios.hor_aulas_plan_aula_IDX ON uji_horarios.hor_aulas_planificacion 
+    ( 
+     aula_id ASC 
+    ) 
+;
+CREATE INDEX uji_horarios.hor_aulas_plan_est_IDX ON uji_horarios.hor_aulas_planificacion 
+    ( 
+     estudio_id ASC 
+    ) 
+;
 
 ALTER TABLE uji_horarios.hor_aulas_planificacion 
     ADD CONSTRAINT hor_aulas_planificacion_PK PRIMARY KEY ( id ) ;
@@ -554,30 +554,6 @@ ALTER TABLE uji_horarios.hor_areas
 ;
 
 
-ALTER TABLE uji_horarios.hor_aulas_estudio 
-    ADD CONSTRAINT hor_aulas_estudio_aulas_FK FOREIGN KEY 
-    ( 
-     aula_id
-    ) 
-    REFERENCES uji_horarios.hor_aulas 
-    ( 
-     id
-    ) 
-;
-
-
-ALTER TABLE uji_horarios.hor_aulas_estudio 
-    ADD CONSTRAINT hor_aulas_estudio_est_FK FOREIGN KEY 
-    ( 
-     estudio_id
-    ) 
-    REFERENCES uji_horarios.hor_estudios 
-    ( 
-     id
-    ) 
-;
-
-
 ALTER TABLE uji_horarios.hor_aulas 
     ADD CONSTRAINT hor_aulas_hor_centros_FK FOREIGN KEY 
     ( 
@@ -596,6 +572,18 @@ ALTER TABLE uji_horarios.hor_aulas_planificacion
      aula_id
     ) 
     REFERENCES uji_horarios.hor_aulas 
+    ( 
+     id
+    ) 
+;
+
+
+ALTER TABLE uji_horarios.hor_aulas_planificacion 
+    ADD CONSTRAINT hor_aulas_planif_hor_est_FK FOREIGN KEY 
+    ( 
+     estudio_id
+    ) 
+    REFERENCES uji_horarios.hor_estudios 
     ( 
      id
     ) 
@@ -1063,9 +1051,9 @@ AND c.fecha = d.inicio(+) ;
 
 -- Informe de Resumen de Oracle SQL Developer Data Modeler: 
 -- 
--- CREATE TABLE                            23
--- CREATE INDEX                             6
--- ALTER TABLE                             58
+-- CREATE TABLE                            22
+-- CREATE INDEX                             9
+-- ALTER TABLE                             56
 -- CREATE VIEW                              3
 -- CREATE PACKAGE                           0
 -- CREATE PACKAGE BODY                      0
