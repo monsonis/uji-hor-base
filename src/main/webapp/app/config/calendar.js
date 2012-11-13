@@ -343,6 +343,8 @@ Extensible.calendar.form.EventDetails.override(
     {
         var me = this, EventMappings = Extensible.calendar.data.EventMappings;
 
+        me.getEl().mask('Carregant dades...');
+
         if (!rec.data[EventMappings.RepetirCada.name])
         {
             rec.data[EventMappings.RepetirCada.name] = '1';
@@ -423,6 +425,7 @@ Extensible.calendar.form.EventDetails.override(
                 };
 
                 var task = new Ext.util.DelayedTask(waitForLoading);
+                me.getEl().mask('Carregant dades...');
                 task.delay(500);
             },
             scope : me,
@@ -483,6 +486,12 @@ Extensible.calendar.form.EventDetails.override(
                 {
                     me.detalleManualFechas.checkBoxes();
                 }
+
+                me.getEl().unmask();
+            },
+            failure : function()
+            {
+                me.getEl().unmask();
             }
         });
     },
