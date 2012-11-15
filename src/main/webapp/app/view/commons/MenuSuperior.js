@@ -6,6 +6,7 @@ Ext.define('HOR.view.commons.MenuSuperior',
     items : [
     {
         xtype : 'splitbutton',
+        alias : 'widget.splitbutton',
         text : 'Menú Principal',
         menu :
         {
