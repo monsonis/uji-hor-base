@@ -1,3 +1,9 @@
 .form-disabled-label {
-	opacity : .3;
+	opacity: .3;
+}
+
+.form-checkboxgroup-legend {
+	font-size: 10px;
+	font-style: italic;
+	margin-left: 0.5px;
 }

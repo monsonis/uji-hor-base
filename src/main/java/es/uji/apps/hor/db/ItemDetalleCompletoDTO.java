@@ -1,7 +1,10 @@
 package es.uji.apps.hor.db;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+
 import javax.persistence.*;
+
 import java.util.Date;
 
 /**
@@ -9,7 +12,8 @@ import java.util.Date;
  * 
  */
 @SuppressWarnings("serial")
-@Entity @IdClass(ItemDetalleCompletoDTOId.class)
+@Entity
+@IdClass(ItemDetalleCompletoDTOId.class)
 @Table(name = "HOR_V_ITEMS_DETALLE")
 public class ItemDetalleCompletoDTO implements Serializable
 {
@@ -68,6 +72,11 @@ public class ItemDetalleCompletoDTO implements Serializable
 
     @Column(name = "TIPO_SUBGRUPO_ID")
     private String tipoSubgrupoId;
+
+    private BigDecimal festivos;
+
+    @Column(name = "TIPO_DIA")
+    private String tipoDia;
 
     public ItemDetalleCompletoDTO()
     {
@@ -251,6 +260,26 @@ public class ItemDetalleCompletoDTO implements Serializable
     public void setTipoSubgrupoId(String tipoSubgrupoId)
     {
         this.tipoSubgrupoId = tipoSubgrupoId;
+    }
+
+    public BigDecimal getFestivos()
+    {
+        return festivos;
+    }
+
+    public void setFestivos(BigDecimal festivos)
+    {
+        this.festivos = festivos;
+    }
+
+    public String getTipoDia()
+    {
+        return tipoDia;
+    }
+
+    public void setTipoDia(String tipoDia)
+    {
+        this.tipoDia = tipoDia;
     }
 
 }
