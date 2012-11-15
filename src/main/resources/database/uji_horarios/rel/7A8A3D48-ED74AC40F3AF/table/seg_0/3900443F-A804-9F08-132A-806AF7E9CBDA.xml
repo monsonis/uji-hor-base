@@ -122,6 +122,17 @@
 <domain>74012CB9-12FD-63B5-AE3B-B3A835E3B023</domain>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
+<Column class="oracle.dbtools.crest.model.design.relational.Column" name="vacaciones" id="12A43D2C-674A-6D96-D271-7CEE93023084">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-11-15 13:55:45 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<defaultValue>0</defaultValue>
+<use>0</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<domain>C8BEC214-AF88-DA55-04CD-2FDF25BA4A1F</domain>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
 </columns>
 <indexes>
 <ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="7A098636-6B4F-69A6-D16F-4AAFB884F1EB" name="hor_ext_calendario_PK">
@@ -166,6 +177,18 @@
 <colUsage columnID="40355874-F720-6F5D-CD00-362DAC0BB06F"/>
 <colUsage columnID="524974EB-4603-DCD3-6C2D-08246497D66A"/>
 <colUsage columnID="76B71848-3E1C-8A43-D2C4-AE5495F2049E"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="EEFF4CB8-D726-3A72-329E-952C860C3259" name="hor_ext_cal_fecha_vac_IDX">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-11-15 13:56:36 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<indexColumnUsage>
+<colUsage columnID="40355874-F720-6F5D-CD00-362DAC0BB06F"/>
+<colUsage columnID="524974EB-4603-DCD3-6C2D-08246497D66A"/>
+<colUsage columnID="76B71848-3E1C-8A43-D2C4-AE5495F2049E"/>
+<colUsage columnID="12A43D2C-674A-6D96-D271-7CEE93023084"/>
 </indexColumnUsage>
 </ind_PK_UK>
 </indexes>

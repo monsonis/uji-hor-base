@@ -1,5 +1,5 @@
 -- Generado por Oracle SQL Developer Data Modeler 3.1.1.703
---   en:        2012-11-13 16:15:15 CET
+--   en:        2012-11-15 14:57:10 CET
 --   sitio:      Oracle Database 11g
 --   tipo:      Oracle Database 11g
 
@@ -213,7 +213,8 @@ CREATE TABLE uji_horarios.hor_ext_calendario
      dia_semana VARCHAR2 (100)  NOT NULL , 
      dia_semana_id NUMBER  NOT NULL , 
      tipo_dia VARCHAR2 (10)  NOT NULL , 
-     fecha DATE  NOT NULL 
+     fecha DATE  NOT NULL , 
+     vacaciones NUMBER DEFAULT 0  NOT NULL CHECK ( vacaciones IN (0, 1)) 
     ) 
 ;
 
@@ -223,6 +224,14 @@ CREATE INDEX uji_horarios.hor_ext_cal_fecha_idx ON uji_horarios.hor_ext_calendar
      fecha ASC , 
      tipo_dia ASC , 
      dia_semana_id ASC 
+    ) 
+;
+CREATE INDEX uji_horarios.hor_ext_cal_fecha_vac_IDX ON uji_horarios.hor_ext_calendario 
+    ( 
+     fecha ASC , 
+     tipo_dia ASC , 
+     dia_semana_id ASC , 
+     vacaciones ASC 
     ) 
 ;
 
@@ -1052,7 +1061,7 @@ AND c.fecha = d.inicio(+) ;
 -- Informe de Resumen de Oracle SQL Developer Data Modeler: 
 -- 
 -- CREATE TABLE                            22
--- CREATE INDEX                             9
+-- CREATE INDEX                            10
 -- ALTER TABLE                             56
 -- CREATE VIEW                              3
 -- CREATE PACKAGE                           0
