@@ -37,7 +37,7 @@ public class SemestreDetalleResourceTest extends JerseyTest
     public SemestreDetalleResourceTest()
     {
         super(new WebAppDescriptor.Builder(packageName)
-                .contextParam("contextConfigLocation", "classpath:applicationContext.xml")
+                .contextParam("contextConfigLocation", "classpath:applicationContext-test.xml")
                 .contextParam("log4jConfigLocation", "src/main/webapp/WEB-INF/log4j.properties")
                 .contextParam("webAppRootKey", packageName)
                 .contextListenerClass(Log4jConfigListener.class)
