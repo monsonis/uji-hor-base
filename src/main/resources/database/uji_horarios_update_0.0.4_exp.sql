@@ -60,6 +60,18 @@ CREATE INDEX uji_horarios.hor_items_detalle_fechas_IDX ON uji_horarios.hor_items
     ) 
 ;
  
+
+CREATE OR REPLACE FUNCTION UJI_HORARIOS.hor_f_fecha_entre (p_fecha in date, p_fecha_inicio in date, p_fecha_fin in date)
+   RETURN varchar2 IS
+BEGIN
+   if p_fecha between trunc (p_Fecha_inicio) and trunc (p_fecha_fin) then
+      return ('S');
+   else
+      return ('N');
+   end if;
+END hor_f_fecha_entre;
+
+
  
 CREATE OR REPLACE FORCE VIEW UJI_HORARIOS.HOR_V_ITEMS_DETALLE (ID,
                                                                FECHA,
@@ -254,6 +266,8 @@ begin
    delete      uji_horarios.hor_items_detalle
    where       item_id = :old.id;
 end hor_items_delete;
+
+
 
 
  
