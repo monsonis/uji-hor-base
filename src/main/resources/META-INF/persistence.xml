@@ -32,7 +32,6 @@
     <class>es.uji.commons.sso.db.ApaVwPersonasPlaza</class>
     <class>es.uji.apps.hor.db.AreaDTO</class>
     <class>es.uji.apps.hor.db.AulaDTO</class>
-    <class>es.uji.apps.hor.db.AulaEstudioDTO</class>
     <class>es.uji.apps.hor.db.AulaPlanificacionDTO</class>
     <class>es.uji.apps.hor.db.CentroDTO</class>
     <class>es.uji.apps.hor.db.CircuitoDTO</class>

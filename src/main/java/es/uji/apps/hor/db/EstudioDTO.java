@@ -12,135 +12,142 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-
 /**
  * The persistent class for the HOR_ESTUDIOS database table.
  * 
  */
 @Entity
-@Table(name="HOR_ESTUDIOS")
-public class EstudioDTO implements Serializable {
-	private static final long serialVersionUID = 1L;
+@Table(name = "HOR_ESTUDIOS")
+public class EstudioDTO implements Serializable
+{
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-	private String nombre;
+    private String nombre;
 
-	private Long oficial;
+    private Long oficial;
 
-	//bi-directional many-to-one association to AulaEstudioDTO
-	@OneToMany(mappedBy="estudio")
-	private Set<AulaEstudioDTO> aulasEstudios;
+    // bi-directional many-to-one association to CircuitoDTO
+    @OneToMany(mappedBy = "estudio")
+    private Set<CircuitoDTO> circuitos;
 
-	//bi-directional many-to-one association to CircuitoDTO
-	@OneToMany(mappedBy="estudio")
-	private Set<CircuitoDTO> circuitos;
-
-	//bi-directional many-to-one association to CentroDTO
+    // bi-directional many-to-one association to CentroDTO
     @ManyToOne
-	@JoinColumn(name="CENTRO_ID")
-	private CentroDTO centro;
+    @JoinColumn(name = "CENTRO_ID")
+    private CentroDTO centro;
 
-	//bi-directional many-to-one association to TipoEstudioDTO
+    // bi-directional many-to-one association to TipoEstudioDTO
     @ManyToOne
-	@JoinColumn(name="TIPO_ID")
-	private TipoEstudioDTO tiposEstudio;
+    @JoinColumn(name = "TIPO_ID")
+    private TipoEstudioDTO tiposEstudio;
 
-	//bi-directional many-to-one association to CargoPersonaDTO
-	@OneToMany(mappedBy="estudio")
-	private Set<CargoPersonaDTO> cargosPersona;
+    // bi-directional many-to-one association to CargoPersonaDTO
+    @OneToMany(mappedBy = "estudio")
+    private Set<CargoPersonaDTO> cargosPersona;
 
-	//bi-directional many-to-one association to ItemDTO
-	@OneToMany(mappedBy="estudio")
-	private Set<ItemDTO> items;
+    // bi-directional many-to-one association to ItemDTO
+    @OneToMany(mappedBy = "estudio")
+    private Set<ItemDTO> items;
 
-	//bi-directional many-to-one association to PermisoExtraDTO
-	@OneToMany(mappedBy="estudio")
-	private Set<PermisoExtraDTO> permisosExtras;
+    // bi-directional many-to-one association to PermisoExtraDTO
+    @OneToMany(mappedBy = "estudio")
+    private Set<PermisoExtraDTO> permisosExtras;
 
-    public EstudioDTO() {
+    public EstudioDTO()
+    {
     }
 
-	public Long getId() {
-		return this.id;
-	}
+    public Long getId()
+    {
+        return this.id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id)
+    {
+        this.id = id;
+    }
 
-	public String getNombre() {
-		return this.nombre;
-	}
+    public String getNombre()
+    {
+        return this.nombre;
+    }
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
+    public void setNombre(String nombre)
+    {
+        this.nombre = nombre;
+    }
 
-	public Long getOficial() {
-		return this.oficial;
-	}
+    public Long getOficial()
+    {
+        return this.oficial;
+    }
 
-	public void setOficial(Long oficial) {
-		this.oficial = oficial;
-	}
+    public void setOficial(Long oficial)
+    {
+        this.oficial = oficial;
+    }
 
-	public Set<AulaEstudioDTO> getAulasEstudios() {
-		return this.aulasEstudios;
-	}
+    public Set<CircuitoDTO> getCircuitos()
+    {
+        return this.circuitos;
+    }
 
-	public void setAulasEstudios(Set<AulaEstudioDTO> aulasEstudios) {
-		this.aulasEstudios = aulasEstudios;
-	}
-	
-	public Set<CircuitoDTO> getCircuitos() {
-		return this.circuitos;
-	}
+    public void setCircuitos(Set<CircuitoDTO> circuitos)
+    {
+        this.circuitos = circuitos;
+    }
 
-	public void setCircuitos(Set<CircuitoDTO> circuitos) {
-		this.circuitos = circuitos;
-	}
-	
-	public CentroDTO getCentro() {
-		return this.centro;
-	}
+    public CentroDTO getCentro()
+    {
+        return this.centro;
+    }
 
-	public void setCentro(CentroDTO centro) {
-		this.centro = centro;
-	}
-	
-	public TipoEstudioDTO getTiposEstudio() {
-		return this.tiposEstudio;
-	}
+    public void setCentro(CentroDTO centro)
+    {
+        this.centro = centro;
+    }
 
-	public void setTiposEstudio(TipoEstudioDTO tiposEstudio) {
-		this.tiposEstudio = tiposEstudio;
-	}
-	
-	public Set<CargoPersonaDTO> getCargosPersona() {
-		return this.cargosPersona;
-	}
+    public TipoEstudioDTO getTiposEstudio()
+    {
+        return this.tiposEstudio;
+    }
 
-	public void setCargosPersona(Set<CargoPersonaDTO> cargosPersona) {
-		this.cargosPersona = cargosPersona;
-	}
-	
-	public Set<ItemDTO> getItems() {
-		return this.items;
-	}
+    public void setTiposEstudio(TipoEstudioDTO tiposEstudio)
+    {
+        this.tiposEstudio = tiposEstudio;
+    }
 
-	public void setItems(Set<ItemDTO> items) {
-		this.items = items;
-	}
-	
-	public Set<PermisoExtraDTO> getPermisosExtras() {
-		return this.permisosExtras;
-	}
+    public Set<CargoPersonaDTO> getCargosPersona()
+    {
+        return this.cargosPersona;
+    }
 
-	public void setPermisosExtras(Set<PermisoExtraDTO> permisosExtras) {
-		this.permisosExtras = permisosExtras;
-	}
-	
+    public void setCargosPersona(Set<CargoPersonaDTO> cargosPersona)
+    {
+        this.cargosPersona = cargosPersona;
+    }
+
+    public Set<ItemDTO> getItems()
+    {
+        return this.items;
+    }
+
+    public void setItems(Set<ItemDTO> items)
+    {
+        this.items = items;
+    }
+
+    public Set<PermisoExtraDTO> getPermisosExtras()
+    {
+        return this.permisosExtras;
+    }
+
+    public void setPermisosExtras(Set<PermisoExtraDTO> permisosExtras)
+    {
+        this.permisosExtras = permisosExtras;
+    }
+
 }
