@@ -19,6 +19,10 @@ Ext.define('HOR.view.commons.MenuSuperior',
             {
                 text : 'Dates del curs acadèmic',
                 action: 'curso-academico'
+            },
+            {
+                text : 'Assignació d\'aules',
+                action: 'asignacion-aulas'
             }]
         }
 
