@@ -103,8 +103,10 @@ public class CalendarResource
 
         inicio.set(Calendar.HOUR_OF_DAY, Integer.parseInt(horaInicio.split(":")[0]));
         inicio.set(Calendar.MINUTE, Integer.parseInt(horaInicio.split(":")[1]));
+        inicio.set(Calendar.SECOND, 0);
         fin.set(Calendar.HOUR_OF_DAY, Integer.parseInt(horaFin.split(":")[0]));
         fin.set(Calendar.MINUTE, Integer.parseInt(horaFin.split(":")[1]));
+        fin.set(Calendar.SECOND, 0);
 
         GrupoHorario grupoHorario = grupoHorarioService.getHorarioById(estudioId, cursoId,
                 semestreId, grupoId);
