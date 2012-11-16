@@ -8,4 +8,7 @@ import es.uji.commons.db.BaseDAO;
 public interface EstudiosDAO extends BaseDAO
 {
     List<Estudio> getEstudios();
+
+    List<Estudio> getEstudiosByCentroId(Long centroId);
+    
 }

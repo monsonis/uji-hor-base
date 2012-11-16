@@ -23,4 +23,10 @@ public class EstudiosService
     {
         return estudiosDAO.getEstudios();
     }
+
+    public List<Estudio> getEstudiosByCentroId(Long centroId)
+    {
+        return estudiosDAO.getEstudiosByCentroId(centroId);
+    }
+
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -27,4 +28,15 @@ public class EstudioResource
         
         return UIEntity.toUI(estudios);
     }
+    
+    @GET
+    @Path("centro/{centroId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<UIEntity> getEstudiosPorCentro(@PathParam("centroId") String centroId)
+    {
+        List<Estudio> estudios = consultaEstudios.getEstudiosByCentroId(Long.parseLong(centroId));
+        
+        return UIEntity.toUI(estudios);
+    }
+
 }

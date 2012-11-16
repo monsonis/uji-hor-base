@@ -9,6 +9,8 @@ import com.mysema.query.Tuple;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.types.QTuple;
 
+import es.uji.apps.hor.db.EstudioDTO;
+import es.uji.apps.hor.db.QEstudioDTO;
 import es.uji.apps.hor.db.QItemDTO;
 import es.uji.apps.hor.model.Estudio;
 import es.uji.commons.db.BaseDAODatabaseImpl;
@@ -40,6 +42,30 @@ public class EstudiosDAODatabaseImpl extends BaseDAODatabaseImpl implements Estu
     {
         Estudio estudio = new Estudio(tuple.get(item.estudio.id), tuple.get(item.estudioDesc));
 
+        return estudio;
+    }
+
+    @Override
+    public List<Estudio> getEstudiosByCentroId(Long centroId)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+
+        QEstudioDTO qEstudio = QEstudioDTO.estudioDTO;
+
+        query.from(qEstudio).where(qEstudio.centro.id.eq(centroId));
+
+        List<Estudio> listaEstudios = new ArrayList<Estudio>();
+        
+        for (EstudioDTO estudioDTO: query.list(qEstudio)) {
+            listaEstudios.add(creaEstudioDesdeEstudioDTO(estudioDTO));
+        }
+        
+        return listaEstudios;
+    }
+
+    private Estudio  creaEstudioDesdeEstudioDTO(EstudioDTO estudioDTO)
+    {
+        Estudio estudio = new Estudio (estudioDTO.getId(), estudioDTO.getNombre());
         return estudio;
     }
 }
