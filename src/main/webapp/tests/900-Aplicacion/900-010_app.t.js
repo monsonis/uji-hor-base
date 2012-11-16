@@ -1,10 +1,8 @@
 StartTest(function(t) {
 	t.waitForCQ('splitbutton', function(splitbutton) {
-		
-		// var down_arrow = document.getElementById('splitbutton-1025-btnWrap');
-		
+			
 		var steps = [
-		             { action : 'click', target :[90,90] }, // no sé cómo seleccionar la flechita del splitbutton
+		             { action : 'click', target: '>>splitbutton' }, 
 		             { action : 'click', target :'#menuitem-1028' }, // el item 'Dates del curs acadèmic'
 		             {  waitFor : 'componentQuery', args : 'grid' },
 		             function (next) {
