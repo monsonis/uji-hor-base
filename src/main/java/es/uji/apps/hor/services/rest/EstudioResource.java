@@ -1,11 +1,12 @@
 package es.uji.apps.hor.services.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import com.sun.jersey.api.core.InjectParam;
@@ -22,21 +23,19 @@ public class EstudioResource
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UIEntity> getEstudios()
+    public List<UIEntity> getEstudiosPorCentro(@QueryParam("centroId") String centroId)
     {
-        List<Estudio> estudios = consultaEstudios.getEstudios();
-        
-        return UIEntity.toUI(estudios);
-    }
-    
-    @GET
-    @Path("centro/{centroId}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<UIEntity> getEstudiosPorCentro(@PathParam("centroId") String centroId)
-    {
-        List<Estudio> estudios = consultaEstudios.getEstudiosByCentroId(Long.parseLong(centroId));
-        
-        return UIEntity.toUI(estudios);
-    }
+        List<Estudio> estudios = new ArrayList<Estudio>();
 
+        if (centroId == null || centroId.isEmpty())
+        {
+            estudios = consultaEstudios.getEstudios();
+        }
+        else
+        {
+            estudios = consultaEstudios.getEstudiosByCentroId(Long.parseLong(centroId));
+        }
+
+        return UIEntity.toUI(estudios);
+    }
 }
