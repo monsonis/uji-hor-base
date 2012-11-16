@@ -43,9 +43,12 @@ Ext.define('Event.form.field.DetalleManual',
                 checked = true;
             }
 
+            var cls = 'form-label-date-manual';
+
             if (clases[i].tipoDia == 'E')
             {
                 fecha = "*" + fecha;
+                cls = 'form-label-exam-date-manual';
             }
 
             var checkbox = Ext.create('Ext.form.field.Checkbox',
@@ -53,7 +56,8 @@ Ext.define('Event.form.field.DetalleManual',
                 inputValue : clases[i].fecha,
                 name : this.nameCheckbox,
                 boxLabel : fecha,
-                checked : checked
+                checked : checked,
+                cls : cls
             });
 
             this.items.items[0].add(checkbox);

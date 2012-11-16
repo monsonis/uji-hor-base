@@ -2,8 +2,24 @@
 	opacity: .3;
 }
 
-.form-checkboxgroup-legend {
-	font-size: 10px;
+.form-label-date {
+	margin-right: 50px;
+}
+
+.form-label-exams-date {
+	color: grey;
+	margin-right: 50px;
+}
+
+.form-label-exam-date-manual {
+	color: grey;
+}
+
+.form-label-date-manual {
+	
+}
+
+.form-legend-exams {
+	color: grey;
 	font-style: italic;
-	margin-left: 0.5px;
 }

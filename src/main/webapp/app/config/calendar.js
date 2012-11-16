@@ -276,6 +276,7 @@ Extensible.calendar.form.EventDetails.override(
         
         this.notaExamenes = Ext.create('Ext.form.field.Display', {
             value : "*Període d'exàmens",
+            fieldCls : 'form-legend-exams'
         });
 
         var leftFields = [ this.titleField, this.dateRangeField, this.dateRepeatField, this.detalleManualField, this.detalleManualFechas, this.detalleClases, this.posteoDetalleField, this.notaExamenes ];

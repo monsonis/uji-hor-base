@@ -28,18 +28,18 @@ Ext.define('Event.form.DetalleClases',
                 var fecha = Ext.Date.parse(clases[i].fecha, "d\/m/\Y H:i:s");
                 fecha = Ext.Date.format(fecha, "d/m/Y");
 
+                var cls = 'form-label-date';
+
                 if (clases[i].tipoDia == 'E')
                 {
                     fecha = '*' + fecha;
+                    cls = 'form-label-exams-date';
                 }
 
                 var display = new Ext.create('Ext.form.field.Display',
                 {
                     value : fecha,
-                    style :
-                    {
-                        marginRight : '50px'
-                    }
+                    fieldCls : cls,
                 });
 
                 this.add(display);
