@@ -275,7 +275,7 @@ Extensible.calendar.form.EventDetails.override(
         });
         
         this.notaExamenes = Ext.create('Ext.form.field.Display', {
-            value : "*Període d'exàmens",
+            value : "[*] Període d'exàmens",
             fieldCls : 'form-legend-exams'
         });
 

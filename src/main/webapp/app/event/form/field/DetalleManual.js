@@ -48,7 +48,7 @@ Ext.define('Event.form.field.DetalleManual',
 
             if (clases[i].tipoDia == 'E')
             {
-                fecha = "*" + fecha;
+                fecha = "[*] " + fecha;
                 cls = 'form-label-exam-date-manual';
             }
             else if (clases[i].tipoDia == 'F')

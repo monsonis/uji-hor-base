@@ -32,7 +32,7 @@ Ext.define('Event.form.DetalleClases',
 
                 if (clases[i].tipoDia == 'E')
                 {
-                    fecha = '*' + fecha;
+                    fecha = '[*] ' + fecha;
                     cls = 'form-label-exams-date';
                 }
 
