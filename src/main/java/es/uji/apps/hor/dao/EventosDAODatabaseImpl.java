@@ -441,6 +441,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         eventoDocencia.setEventoId(itemDetalleCompletoDTO.getId());
         eventoDocencia.setFecha(itemDetalleCompletoDTO.getFecha());
         eventoDocencia.setDocencia(itemDetalleCompletoDTO.getDocencia());
+        eventoDocencia.setTipoDia(itemDetalleCompletoDTO.getTipoDia());
 
         return eventoDocencia;
     }

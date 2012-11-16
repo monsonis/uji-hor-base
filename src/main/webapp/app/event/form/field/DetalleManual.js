@@ -20,16 +20,7 @@ Ext.define('Event.form.field.DetalleManual',
     {
         xtype : 'hidden',
         name : this.nameHidden
-    },
-    {
-        xtype : 'displayfield',
-        value : "*Període d'exàmens",
-        style :
-        {
-            font: 'italic 11px tahoma,arial,verdana,sans-serif !important',
-            marginLeft: '3px',
-        }
-    }],
+    } ],
 
     initComponent : function()
     {
@@ -51,12 +42,10 @@ Ext.define('Event.form.field.DetalleManual',
             {
                 checked = true;
             }
-            
-            var value = clases[i].fecha;
-            
-            if (clases[i].tipo_docente == 'E')
+
+            if (clases[i].tipoDia == 'E')
             {
-                value = "*" + value;
+                fecha = "*" + fecha;
             }
 
             var checkbox = Ext.create('Ext.form.field.Checkbox',

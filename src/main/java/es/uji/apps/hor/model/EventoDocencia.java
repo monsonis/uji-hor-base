@@ -7,6 +7,7 @@ public class EventoDocencia
     private Long eventoId;
     private Date fecha;
     private String docencia;
+    private String tipoDia;
 
     public Long getEventoId()
     {
@@ -36,5 +37,15 @@ public class EventoDocencia
     public void setDocencia(String docencia)
     {
         this.docencia = docencia;
+    }
+
+    public String getTipoDia()
+    {
+        return tipoDia;
+    }
+
+    public void setTipoDia(String tipoDia)
+    {
+        this.tipoDia = tipoDia;
     }
 }

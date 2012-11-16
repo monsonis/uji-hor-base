@@ -273,8 +273,12 @@ Extensible.calendar.form.EventDetails.override(
         {
             anchor : '90%'
         });
+        
+        this.notaExamenes = Ext.create('Ext.form.field.Display', {
+            value : "*Període d'exàmens",
+        });
 
-        var leftFields = [ this.titleField, this.dateRangeField, this.dateRepeatField, this.detalleManualField, this.detalleManualFechas, this.detalleClases, this.posteoDetalleField ];
+        var leftFields = [ this.titleField, this.dateRangeField, this.dateRepeatField, this.detalleManualField, this.detalleManualFechas, this.detalleClases, this.posteoDetalleField, this.notaExamenes ];
 
         if (this.calendarStore)
         {
