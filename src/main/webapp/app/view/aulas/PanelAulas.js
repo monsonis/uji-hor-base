@@ -1,14 +1,19 @@
 Ext.define('HOR.view.aulas.PanelAulas', {
 	extend : 'Ext.panel.Panel',
 	title : 'Assignació d\'aules a estudis',
-	requires : [ ],
+	requires : ['HOR.view.aulas.FiltroAsignacionAulas'],
 	alias : 'widget.panelAulas',
 	closable : true,
 	layout : {
 		type : 'vbox',
+		align : 'center',		
 		padding : 10
 	},
 
-	items : [  ]
+
+	items : [ {
+		xtype : 'filtroAsignacionAulas',
+		width: 800,		
+	} ]
 
 });
