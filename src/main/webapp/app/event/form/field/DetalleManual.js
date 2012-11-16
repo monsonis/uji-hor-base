@@ -44,11 +44,16 @@ Ext.define('Event.form.field.DetalleManual',
             }
 
             var cls = 'form-label-date-manual';
+            var disabled = false;
 
             if (clases[i].tipoDia == 'E')
             {
                 fecha = "*" + fecha;
                 cls = 'form-label-exam-date-manual';
+            }
+            else if (clases[i].tipoDia == 'F')
+            {
+                disabled = true;
             }
 
             var checkbox = Ext.create('Ext.form.field.Checkbox',
@@ -57,7 +62,8 @@ Ext.define('Event.form.field.DetalleManual',
                 name : this.nameCheckbox,
                 boxLabel : fecha,
                 checked : checked,
-                cls : cls
+                cls : cls,
+                disabled : disabled
             });
 
             this.items.items[0].add(checkbox);

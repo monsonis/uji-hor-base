@@ -359,7 +359,8 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
 
     @Override
     public Evento modificaDetallesGrupoAsignatura(Long grupoAsignaturaId, Date inicio, Date fin,
-            Date desdeElDia, Integer numeroIteraciones, Integer repetirCadaSemanas, Date hastaElDia, Boolean detalleManual )
+            Date desdeElDia, Integer numeroIteraciones, Integer repetirCadaSemanas,
+            Date hastaElDia, Boolean detalleManual)
     {
         QItemDTO qItem = QItemDTO.itemDTO;
         JPAQuery query = new JPAQuery(entityManager);
@@ -484,6 +485,20 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         int minutoFin = calendar.get(Calendar.MINUTE);
         int segundoFin = calendar.get(Calendar.SECOND);
 
+        // Obtenemos las fechas válidas y que no caigan en festivo
+
+        JPAQuery query = new JPAQuery(entityManager);
+        QItemDetalleCompletoDTO item = QItemDetalleCompletoDTO.itemDetalleCompletoDTO;
+
+        List<ItemDetalleCompletoDTO> listaItemsDetalleCompletoDTO = query.from(item)
+                .where(item.id.eq(eventoId).and(item.tipoDia.ne("F"))).list(item);
+
+        List<Date> fechasValidas = new ArrayList<Date>();
+        for (ItemDetalleCompletoDTO itemDetalle : listaItemsDetalleCompletoDTO)
+        {
+            fechasValidas.add(itemDetalle.getFecha());
+        }
+
         for (Date fecha : fechas)
         {
             calendar.setTime(fecha);
@@ -500,12 +515,15 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
 
             Date fechaFin = calendar.getTime();
 
-            ItemDetalleDTO eventoDetalle = new ItemDetalleDTO();
-            eventoDetalle.setItem(evento);
-            eventoDetalle.setInicio(fechaInicio);
-            eventoDetalle.setFin(fechaFin);
+            if (fechasValidas.contains(fecha))
+            {
+                ItemDetalleDTO eventoDetalle = new ItemDetalleDTO();
+                eventoDetalle.setItem(evento);
+                eventoDetalle.setInicio(fechaInicio);
+                eventoDetalle.setFin(fechaFin);
 
-            insert(eventoDetalle);
+                insert(eventoDetalle);
+            }
         }
 
         return creaEventoDesde(evento);
@@ -570,7 +588,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         evento.setHoraFin(fin);
 
         evento = update(evento);
-        
+
         System.out.println(evento.getHoraInicio());
         System.out.println(evento.getHoraFin());
 
@@ -608,7 +626,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             itemDetalle.setFin(calendar.getTime());
 
             itemDetalle = update(itemDetalle);
-            
+
             System.out.println(itemDetalle.getInicio());
             System.out.println(itemDetalle.getFin());
         }
