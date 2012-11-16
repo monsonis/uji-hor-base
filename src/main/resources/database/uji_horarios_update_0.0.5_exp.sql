@@ -1770,33 +1770,11 @@ COMMIT;
           d.semestre_id, d.curso_id, d.asignatura_id, d.grupo_id, d.tipo_subgrupo_id, d.subgrupo_id, d.dia_semana_id,
           tipo_dia, festivos
    FROM   (SELECT id, fecha,
-                  sum (decode (tipo_dia, 'F', 1, 0)) over (partition by DECODE
-                                                                          (decode (sign (x.fecha - fecha_inicio),
-                                                                                   -1, 'N',
-                                                                                   decode (sign (fecha_fin - x.fecha),
-                                                                                           -1, 'N',
-                                                                                           'S'
-                                                                                          )
-                                                                                  ),
-                                                                           'S', DECODE
-                                                                              (decode
-                                                                                   (sign (x.fecha
-                                                                                          - NVL (x.desde_el_dia,
-                                                                                                 fecha_inicio)),
-                                                                                    -1, 'N',
-                                                                                    decode (sign (NVL (x.hasta_el_dia,
-                                                                                                       fecha_fin)
-                                                                                                  - x.fecha),
-                                                                                            -1, 'N',
-                                                                                            'S'
-                                                                                           )
-                                                                                   ),
-                                                                               'S', 'S',
-                                                                               'N'
-                                                                              ),
-                                                                           'N'
-                                                                          ), x.id, x.estudio_id, x.semestre_id, x.curso_id, x.asignatura_id, x.grupo_id, x.tipo_subgrupo_id, x.subgrupo_id, x.dia_semana_id)
-                                                                                                               festivos,
+                  (select count (*)
+                   from   hor_ext_calendario c2
+                   where  c2.fecha between NVL (x.desde_el_dia, fecha_inicio) and x.fecha
+                   and    tipo_dia = 'F'
+                   and    dia_semana_id = x.dia_semana_id) festivos,
                   ROW_NUMBER () OVER (PARTITION BY DECODE
                                                        (decode (sign (x.fecha - fecha_inicio),
                                                                 -1, 'N',
@@ -1857,9 +1835,10 @@ COMMIT;
    AND    i.detalle_manual = 0
    AND    i.id = d.id
    UNION ALL
-   SELECT c.id, c.fecha, 'N' docencia_paso_1, NULL docencia_paso_2, DECODE (d.id, NULL, 'N', 'S') docencia, 1 orden_id,
+   SELECT c.id, c.fecha, 'N' docencia_paso_1, 'N' docencia_paso_2, DECODE (d.id, NULL, 'N', 'S') docencia, 1 orden_id,
           numero_iteraciones, repetir_cada_semanas, fecha_inicio, fecha_fin, estudio_id, semestre_id, curso_id,
-          asignatura_id, grupo_id, tipo_subgrupo_id, subgrupo_id, dia_semana_id, tipo_dia, 0 festivos
+          asignatura_id, grupo_id, tipo_subgrupo_id, subgrupo_id, dia_semana_id, tipo_dia,
+          decode (tipo_dia, 'F', 1, 0) festivos
    FROM   (SELECT i.id, c.fecha, numero_iteraciones, repetir_cada_semanas, s.fecha_inicio, s.fecha_fin, i.estudio_id,
                   i.semestre_id, i.curso_id, i.asignatura_id, i.grupo_id, i.tipo_subgrupo_id, i.subgrupo_id,
                   i.dia_semana_id, tipo_dia
@@ -1879,4 +1858,3 @@ COMMIT;
    WHERE  c.id = d.item_id(+)
    AND    trunc (c.fecha) = trunc (d.inicio(+));
 
- 
