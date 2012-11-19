@@ -1858,3 +1858,17 @@ COMMIT;
    WHERE  c.id = d.item_id(+)
    AND    trunc (c.fecha) = trunc (d.inicio(+));
 
+ALTER TABLE UJI_HORARIOS.HOR_ESTUDIOS
+ ADD (numero_cursos  NUMBER);
+
+
+update hor_estudios
+set numero_cursos = 4
+where id between 200 and 999;
+
+update hor_estudios
+set numero_cursos = 6
+where id = 229;
+
+commit;
+

@@ -101,6 +101,17 @@
 <domain>1E4290F0-F6C1-C278-B5DC-173A67CC159C</domain>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
+<Column class="oracle.dbtools.crest.model.design.relational.Column" name="numero_cursos" id="5DE9211A-2412-F1B1-A28D-F677124420DF">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-11-19 13:38:59 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<use>0</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<domain>B784D6D2-343C-97AF-8447-8FE7645FA837</domain>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
 </columns>
 <indexes>
 <ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="C082289F-A082-D07B-C82D-317FB710A43D" name="hor_estudios_PK">

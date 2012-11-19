@@ -1,5 +1,5 @@
 -- Generado por Oracle SQL Developer Data Modeler 3.1.1.703
---   en:        2012-11-15 14:57:10 CET
+--   en:        2012-11-19 14:42:14 CET
 --   sitio:      Oracle Database 11g
 --   tipo:      Oracle Database 11g
 
@@ -193,7 +193,8 @@ CREATE TABLE uji_horarios.hor_estudios
      nombre VARCHAR2 (1000)  NOT NULL , 
      tipo_id VARCHAR2 (10)  NOT NULL , 
      centro_id NUMBER  NOT NULL , 
-     oficial NUMBER DEFAULT 1  NOT NULL CHECK ( oficial IN (0, 1)) 
+     oficial NUMBER DEFAULT 1  NOT NULL CHECK ( oficial IN (0, 1)) , 
+     numero_cursos NUMBER 
     ) 
 ;
 
