@@ -3,7 +3,7 @@ StartTest(function(t) {
 			
 		var steps = [
 		             { action : 'click', target: '>>splitbutton' }, 
-		             { action : 'click', target :'#menuitem-1028' }, // el item 'Dates del curs acadèmic'
+		             { action : 'click', target :'>>menuitem[action="curso-academico"]' }, // el item 'Dates del curs acadèmic'
 		             {  waitFor : 'componentQuery', args : 'grid' },
 		             function (next) {
 		            	 var grid = Ext.ComponentQuery.query('grid')[0];		            	 

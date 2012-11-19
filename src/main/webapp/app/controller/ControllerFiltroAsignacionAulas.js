@@ -73,8 +73,8 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
     },
     
     actualizarDatosArbol : function() {
-        Ext.MessageBox.alert('Recarga', 'Ahora se recargarán los datos del árbol');
-
+//        Ext.MessageBox.alert('Recarga', 'Ahora se recargarán los datos del árbol');
+    	console.log('Ahora se recargarán los datos del árbol');
     }
     
 });
