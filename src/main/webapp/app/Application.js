@@ -49,6 +49,7 @@ Ext.require('Ext.layout.container.Table');
 Ext.require('Event.form.DetalleClases');
 Ext.require('Ext.grid.Panel');
 Ext.require('Ext.Date');
+Ext.require('Event.form.PanelInfo');
 
 
 var login = 'borillo';

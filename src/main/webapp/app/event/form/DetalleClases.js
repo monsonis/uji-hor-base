@@ -1,7 +1,7 @@
 Ext.define('Event.form.DetalleClases',
 {
     extend : 'Ext.form.FieldSet',
-    alias : 'widget.detalleClases',
+    alias : 'widget.detalleclases',
     title : 'La classe tindrà docència els dies:',
     layout :
     {
@@ -20,6 +20,8 @@ Ext.define('Event.form.DetalleClases',
     actualizarDetalleClases : function(clases)
     {
         this.removeAll();
+        
+        var count = 0;
 
         for ( var i = 0; i < clases.length; i++)
         {
@@ -43,7 +45,11 @@ Ext.define('Event.form.DetalleClases',
                 });
 
                 this.add(display);
+                
+                count++;
             }
         }
+        
+        return count;
     }
 });

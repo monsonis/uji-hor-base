@@ -273,13 +273,20 @@ Extensible.calendar.form.EventDetails.override(
         {
             anchor : '90%'
         });
-        
-        this.notaExamenes = Ext.create('Ext.form.field.Display', {
+
+        this.notaExamenes = Ext.create('Ext.form.field.Display',
+        {
             value : "[*] Període d'exàmens",
             fieldCls : 'form-legend-exams'
         });
 
-        var leftFields = [ this.titleField, this.dateRangeField, this.dateRepeatField, this.detalleManualField, this.detalleManualFechas, this.detalleClases, this.posteoDetalleField, this.notaExamenes ];
+        this.panelAviso = Ext.create('Event.form.PanelInfo',
+        {
+            anchor : '90%'
+        });
+
+        var leftFields = [ this.titleField, this.dateRangeField, this.dateRepeatField, this.detalleManualField, this.detalleManualFechas, this.detalleClases, this.posteoDetalleField,
+                this.notaExamenes, this.panelAviso ];
 
         if (this.calendarStore)
         {
@@ -395,7 +402,7 @@ Extensible.calendar.form.EventDetails.override(
         });
 
         me.titleField.focus();
-        me.getDetalleClasesDocencia(rec.data[EventMappings.EventId.name]);
+        me.getDetalleClasesDocencia(rec.data[EventMappings.EventId.name], rec.data[EventMappings.EndRepNumberComp.name]);
     },
 
     // private
@@ -471,7 +478,7 @@ Extensible.calendar.form.EventDetails.override(
         }
     },
 
-    getDetalleClasesDocencia : function(eventoId)
+    getDetalleClasesDocencia : function(eventoId, numeroRepeticiones)
     {
         var me = this;
         Ext.Ajax.request(
@@ -482,8 +489,20 @@ Extensible.calendar.form.EventDetails.override(
             {
                 var clases = Ext.JSON.decode(response.responseText).data;
 
-                me.detalleClases.actualizarDetalleClases(clases);
+                var numClases = me.detalleClases.actualizarDetalleClases(clases);
                 me.detalleClases.show();
+
+                // Si se ha establecido el número de repeticiones, comprobamos que coincide con el
+                // número de clases
+                
+                if (numeroRepeticiones && numeroRepeticiones != numClases)
+                {
+                    me.down('panelinfo').showAviso('AVIS: Les repeticions no coincideixen amb el nombre de classes. Es possible que alguna classe haja coincidit amb un dia festiu.');
+                }
+                else
+                {
+                    me.down('panelinfo').dropAviso();
+                }
 
                 me.detalleManualFechas.addPosiblesFechas(clases);
 
