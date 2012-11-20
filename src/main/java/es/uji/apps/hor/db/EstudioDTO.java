@@ -3,6 +3,7 @@ package es.uji.apps.hor.db;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -55,6 +56,9 @@ public class EstudioDTO implements Serializable
     // bi-directional many-to-one association to PermisoExtraDTO
     @OneToMany(mappedBy = "estudio")
     private Set<PermisoExtraDTO> permisosExtras;
+
+    @Column(name = "NUMERO_CURSOS")
+    private Long numeroCursos;
 
     public EstudioDTO()
     {
@@ -148,6 +152,16 @@ public class EstudioDTO implements Serializable
     public void setPermisosExtras(Set<PermisoExtraDTO> permisosExtras)
     {
         this.permisosExtras = permisosExtras;
+    }
+
+    public Long getNumeroCursos()
+    {
+        return numeroCursos;
+    }
+
+    public void setNumeroCursos(Long numeroCursos)
+    {
+        this.numeroCursos = numeroCursos;
     }
 
 }
