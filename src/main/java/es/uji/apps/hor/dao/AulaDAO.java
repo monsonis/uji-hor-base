@@ -13,5 +13,5 @@ public interface AulaDAO extends BaseDAO
 
     List<Aula> getAulasByCentroId(Long centroId);
     
-    
+    List<Aula> getAulasAsignadasToEstudio(Long estudioId, Long semestreId, Long cursoId);
 }

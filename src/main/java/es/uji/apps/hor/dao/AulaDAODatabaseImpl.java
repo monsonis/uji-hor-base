@@ -27,11 +27,12 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         query.from(qAula);
 
         List<Aula> listaAulas = new ArrayList<Aula>();
-        
-        for (AulaDTO aulaDTO: query.list(qAula)) {
+
+        for (AulaDTO aulaDTO : query.list(qAula))
+        {
             listaAulas.add(creaAulaDesdeAulaDTO(aulaDTO));
         }
-        
+
         return listaAulas;
     }
 
@@ -39,7 +40,7 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
     {
         Aula aula = new Aula(aulaDTO.getId());
         Centro centro = new Centro(aulaDTO.getCentro().getId(), aulaDTO.getCentro().getNombre());
-        
+
         aula.setNombre(aulaDTO.getNombre());
         aula.setCentro(centro);
         aula.setTipo(aulaDTO.getTipo());
@@ -61,12 +62,13 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         query.from(qAula).where(qAula.centro.id.eq(centroId));
 
         List<Aula> listaAulas = new ArrayList<Aula>();
-        
-        for (AulaDTO aulaDTO: query.list(qAula)) {
+
+        for (AulaDTO aulaDTO : query.list(qAula))
+        {
             listaAulas.add(creaAulaDesdeAulaDTO(aulaDTO));
         }
-        
-        return listaAulas;        
+
+        return listaAulas;
     }
 
     @Override
@@ -77,15 +79,64 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         QAulaDTO qAula = QAulaDTO.aulaDTO;
         QAulaPlanificacionDTO qAulaPlanificacion = QAulaPlanificacionDTO.aulaPlanificacionDTO;
 
-        query.from(qAula, qAulaPlanificacion).join(qAulaPlanificacion.aula, qAula).where(qAula.centro.id.eq(centroId).and(qAulaPlanificacion.estudioId.eq(estudioId)));
+        query.from(qAula, qAulaPlanificacion)
+                .join(qAulaPlanificacion.aula, qAula)
+                .where(qAula.centro.id.eq(centroId).and(qAulaPlanificacion.estudioId.eq(estudioId)));
 
         List<Aula> listaAulas = new ArrayList<Aula>();
-        
-        for (AulaDTO aulaDTO: query.list(qAula)) {
+
+        for (AulaDTO aulaDTO : query.list(qAula))
+        {
             listaAulas.add(creaAulaDesdeAulaDTO(aulaDTO));
         }
-        
-        return listaAulas;        
+
+        return listaAulas;
+    }
+
+    @Override
+    public List<Aula> getAulasAsignadasToEstudio(Long estudioId, Long semestreId, Long cursoId)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+
+        QAulaPlanificacionDTO qAulaPlanificacion = QAulaPlanificacionDTO.aulaPlanificacionDTO;
+        QAulaDTO qAula = QAulaDTO.aulaDTO;
+
+        query.from(qAula, qAulaPlanificacion).join(qAulaPlanificacion.aula, qAula)
+                .where(qAula.id.eq(estudioId));
+        /*
+         * .and(qAulaPlanificacion.semestreId.eq(semestreId).or(
+         * qAulaPlanificacion.semestreId.isNull())) .and(qAulaPlanificacion.cursoId.eq(cursoId).or(
+         * qAulaPlanificacion.cursoId.isNull()))).list(qAula);
+         */
+
+        if (semestreId != null)
+        {
+            query.where(qAulaPlanificacion.semestreId.eq(semestreId).or(
+                    qAulaPlanificacion.semestreId.isNull()));
+        }
+        else
+        {
+            query.where(qAulaPlanificacion.semestreId.isNull());
+        }
+
+        if (cursoId != null)
+        {
+            query.where(qAulaPlanificacion.cursoId.eq(cursoId).or(
+                    qAulaPlanificacion.cursoId.isNull()));
+        }
+        else
+        {
+            query.where(qAulaPlanificacion.cursoId.isNull());
+        }
+
+        List<Aula> listaAulasAsignadas = new ArrayList<Aula>();
+
+        for (AulaDTO aulaDTO : query.list(qAula))
+        {
+            listaAulasAsignadas.add(creaAulaDesdeAulaDTO(aulaDTO));
+        }
+
+        return listaAulasAsignadas;
     }
 
 }

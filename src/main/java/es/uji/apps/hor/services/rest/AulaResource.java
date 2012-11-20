@@ -197,4 +197,26 @@ public class AulaResource
 
         return hashEdificios;
     }
+
+    @GET
+    @Path("estudio/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<UIEntity> getAulasAsignadasToEstudio(@PathParam("id") String estudioId,
+            @QueryParam("semestreId") String semestreId, @QueryParam("cursoId") String cursoId)
+    {
+        Long semestre = null;      
+        try{
+            semestre = Long.parseLong(semestreId);
+        } catch (Exception e) {}
+        
+        Long curso = null;
+        try{
+            curso = Long.parseLong(cursoId);
+        } catch (Exception e) {}
+        
+        List<Aula> aulasAsignadas = consultaAulas.getAulasAsignadasToEstudio(
+                Long.parseLong(estudioId), semestre, curso);
+
+        return UIEntity.toUI(aulasAsignadas);
+    }
 }
