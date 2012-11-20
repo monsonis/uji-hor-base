@@ -1,8 +1,6 @@
 Ext.define('HOR.store.StoreGruposAsignaturasSinAsignar',
 {
     extend : 'Ext.data.Store',
-    model : 'HOR.model.GrupoAsignatura',
-
     autoLoad : false,
     autoSync : false,
 
