@@ -98,7 +98,7 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
     }
 
     @Override
-    public List<Aula> getAulasAsignadasToEstudio(Long estudioId, Long semestreId, Long cursoId)
+    public List<AulaPlanificacion> getAulasAsignadasToEstudio(Long estudioId, Long semestreId, Long cursoId)
     {
         JPAQuery query = new JPAQuery(entityManager);
 
@@ -128,11 +128,11 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
             query.where(qAulaPlanificacion.cursoId.isNull());
         }
 
-        List<Aula> listaAulasAsignadas = new ArrayList<Aula>();
+        List<AulaPlanificacion> listaAulasAsignadas = new ArrayList<AulaPlanificacion>();
 
-        for (AulaDTO aulaDTO : query.list(qAula))
+        for (AulaPlanificacionDTO aulaPlanificacionDTO : query.list(qAulaPlanificacion))
         {
-            listaAulasAsignadas.add(creaAulaDesdeAulaDTO(aulaDTO));
+            listaAulasAsignadas.add(creaAulaPlanificacionDesde(aulaPlanificacionDTO));
         }
 
         return listaAulasAsignadas;

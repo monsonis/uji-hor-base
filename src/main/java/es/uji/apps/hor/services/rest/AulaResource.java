@@ -226,7 +226,7 @@ public class AulaResource
         {
         }
 
-        List<Aula> aulasAsignadas = consultaAulas.getAulasAsignadasToEstudio(
+        List<AulaPlanificacion> aulasAsignadas = consultaAulas.getAulasAsignadasToEstudio(
                 Long.parseLong(estudioId), semestre, curso);
 
         return UIEntity.toUI(aulasAsignadas);

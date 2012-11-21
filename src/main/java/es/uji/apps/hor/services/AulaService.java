@@ -36,7 +36,7 @@ public class AulaService
         return aulaDAO.getAulasByCentroIdAndestudioId(centroId, estudioId);
     }
 
-    public List<Aula> getAulasAsignadasToEstudio(Long estudioId, Long semestreId, Long cursoId)
+    public List<AulaPlanificacion> getAulasAsignadasToEstudio(Long estudioId, Long semestreId, Long cursoId)
     {
         return aulaDAO.getAulasAsignadasToEstudio(estudioId, semestreId, cursoId);
     }

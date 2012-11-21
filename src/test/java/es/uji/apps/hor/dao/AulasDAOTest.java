@@ -104,7 +104,7 @@ public class AulasDAOTest
     public void recuperaAulasAsignadasAUnEstudioSinSemestreNiGrupoTest()
     {
         insertaDatos();
-        List<Aula> aulas = aulasDAO.getAulasAsignadasToEstudio(estudio.getId(), null, null);
+        List<AulaPlanificacion> aulas = aulasDAO.getAulasAsignadasToEstudio(estudio.getId(), null, null);
 
         Assert.assertEquals(1, aulas.size());
     }
@@ -113,7 +113,7 @@ public class AulasDAOTest
     public void recuperaAulasAsignadasAUnEstudionConSemestreTest()
     {
         insertaDatos();
-        List<Aula> aulas = aulasDAO.getAulasAsignadasToEstudio(estudio.getId(), new Long(1), null);
+        List<AulaPlanificacion> aulas = aulasDAO.getAulasAsignadasToEstudio(estudio.getId(), new Long(1), null);
 
         Assert.assertEquals(2, aulas.size());
     }
@@ -122,7 +122,7 @@ public class AulasDAOTest
     public void recuperaAulasAsignadasAUnEstudioConCursoTest()
     {
         insertaDatos();
-        List<Aula> aulas = aulasDAO.getAulasAsignadasToEstudio(estudio.getId(), null, new Long(1));
+        List<AulaPlanificacion> aulas = aulasDAO.getAulasAsignadasToEstudio(estudio.getId(), null, new Long(1));
 
         Assert.assertEquals(2, aulas.size());
     }
@@ -131,7 +131,7 @@ public class AulasDAOTest
     public void recuperaAulasAsignadasAUnEstudioConSemestreYCursoTest()
     {
         insertaDatos();
-        List<Aula> aulas = aulasDAO.getAulasAsignadasToEstudio(estudio.getId(), new Long(2),
+        List<AulaPlanificacion> aulas = aulasDAO.getAulasAsignadasToEstudio(estudio.getId(), new Long(2),
                 new Long(2));
 
         Assert.assertEquals(2, aulas.size());
