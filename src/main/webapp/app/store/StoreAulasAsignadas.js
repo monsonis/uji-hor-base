@@ -1,7 +1,7 @@
-Ext.define('HOR.store.StoreTreePanelAulas',
+Ext.define('HOR.store.StoreAulasAsignadas',
 {
-    extend: 'Ext.data.TreeStore',
-    model: 'TreeItem',
+    extend: 'Ext.data.Store',
+    model: 'HOR.model.Aula',
     autoLoad : false,
     expanded: true,
     proxy :

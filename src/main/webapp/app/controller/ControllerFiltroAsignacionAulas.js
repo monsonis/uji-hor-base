@@ -1,8 +1,8 @@
 Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
 {
     extend : 'Ext.app.Controller',
-    stores : [ 'StoreCentros', 'StoreEstudios', 'StoreCursos', 'StoreTreePanelAulas' ],
-    model : [ 'Centro', 'Estudio', 'Semestre', 'Curso' ],
+    stores : [ 'StoreCentros', 'StoreEstudios', 'StoreCursos', 'TreeStoreAulas', 'StoreAulasAsignadas' ],
+    model : [ 'Centro', 'Estudio', 'Semestre', 'Curso', 'Aula' ],
     refs : [
     {
         selector : 'panelAulas',
