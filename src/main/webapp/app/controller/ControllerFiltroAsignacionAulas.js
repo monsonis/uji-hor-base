@@ -38,6 +38,10 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
             'panelAulas filtroAsignacionAulas combobox[name=semestre]' :
             {
                 select : this.onSemestreSelected
+            },
+            'menuSuperior menuitem[action=asignacion-aulas]' :
+            {
+                click : this.limpiaDatosArbol
             }
         });
     },
@@ -71,6 +75,8 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
 
     onEstudioSelected : function(combo, records)
     {
+        this.limpiaDatosArbol();
+
         var combo_semestre = this.getFiltroAsignacionAulas().down('combobox[name=semestre]');
         combo_semestre.setDisabled(false);
         combo_semestre.select(combo_semestre.getStore().data.items[0]);
@@ -84,6 +90,7 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
     {
         this.actualizarDatosArbol();
     },
+    
     actualizarDatosArbol : function()
     {
         var tree = this.getTreePanelAulas();
@@ -92,7 +99,6 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
         var estudioId = this.getFiltroAsignacionAulas().down("combobox[name=estudio]").getValue();
         tree.getStore().load({ url: '/hor/rest/aula/centro/' + centroId + '/tree' }).load();
         
-        tree.getRootNode().e
         var grid = this.getGridAulas();
         grid.setDisabled(false);
     },
@@ -101,7 +107,7 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
     {
         var tree = this.getTreePanelAulas();
         tree.setDisabled(true);
-        tree.getRootNode().clear();
+        tree.getRootNode().removeAll();
 
         var grid = this.getGridAulas();
         grid.setDisabled(true);
