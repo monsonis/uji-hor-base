@@ -101,13 +101,8 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         QAulaPlanificacionDTO qAulaPlanificacion = QAulaPlanificacionDTO.aulaPlanificacionDTO;
         QAulaDTO qAula = QAulaDTO.aulaDTO;
 
-        query.from(qAula, qAulaPlanificacion).join(qAulaPlanificacion.aula, qAula)
-                .where(qAula.id.eq(estudioId));
-        /*
-         * .and(qAulaPlanificacion.semestreId.eq(semestreId).or(
-         * qAulaPlanificacion.semestreId.isNull())) .and(qAulaPlanificacion.cursoId.eq(cursoId).or(
-         * qAulaPlanificacion.cursoId.isNull()))).list(qAula);
-         */
+        query.from(qAulaPlanificacion).join(qAulaPlanificacion.aula, qAula)
+                .where(qAulaPlanificacion.estudioId.eq(estudioId));
 
         if (semestreId != null)
         {
