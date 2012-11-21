@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -262,5 +263,12 @@ public class AulaResource
                 Long.parseLong(estudioId), Long.parseLong(aulaId), semestre, curso);
 
         return Collections.singletonList(UIEntity.toUI(aulaPlanificacion));
+    }
+    
+    @DELETE
+    @Path("planificacion/{id}")
+    public void deleteAulaAsignadaToEstudio(@PathParam("id") String aulaPlanificacionId)
+    {
+        consultaAulas.deleteAulaAsignadaToEstudio(Long.parseLong(aulaPlanificacionId));
     }
 }

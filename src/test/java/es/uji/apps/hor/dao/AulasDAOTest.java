@@ -104,7 +104,8 @@ public class AulasDAOTest
     public void recuperaAulasAsignadasAUnEstudioSinSemestreNiGrupoTest()
     {
         insertaDatos();
-        List<AulaPlanificacion> aulas = aulasDAO.getAulasAsignadasToEstudio(estudio.getId(), null, null);
+        List<AulaPlanificacion> aulas = aulasDAO.getAulasAsignadasToEstudio(estudio.getId(), null,
+                null);
 
         Assert.assertEquals(1, aulas.size());
     }
@@ -113,7 +114,8 @@ public class AulasDAOTest
     public void recuperaAulasAsignadasAUnEstudionConSemestreTest()
     {
         insertaDatos();
-        List<AulaPlanificacion> aulas = aulasDAO.getAulasAsignadasToEstudio(estudio.getId(), new Long(1), null);
+        List<AulaPlanificacion> aulas = aulasDAO.getAulasAsignadasToEstudio(estudio.getId(),
+                new Long(1), null);
 
         Assert.assertEquals(2, aulas.size());
     }
@@ -122,7 +124,8 @@ public class AulasDAOTest
     public void recuperaAulasAsignadasAUnEstudioConCursoTest()
     {
         insertaDatos();
-        List<AulaPlanificacion> aulas = aulasDAO.getAulasAsignadasToEstudio(estudio.getId(), null, new Long(1));
+        List<AulaPlanificacion> aulas = aulasDAO.getAulasAsignadasToEstudio(estudio.getId(), null,
+                new Long(1));
 
         Assert.assertEquals(2, aulas.size());
     }
@@ -131,8 +134,8 @@ public class AulasDAOTest
     public void recuperaAulasAsignadasAUnEstudioConSemestreYCursoTest()
     {
         insertaDatos();
-        List<AulaPlanificacion> aulas = aulasDAO.getAulasAsignadasToEstudio(estudio.getId(), new Long(2),
-                new Long(2));
+        List<AulaPlanificacion> aulas = aulasDAO.getAulasAsignadasToEstudio(estudio.getId(),
+                new Long(2), new Long(2));
 
         Assert.assertEquals(2, aulas.size());
     }
@@ -157,5 +160,19 @@ public class AulasDAOTest
                 .get(0);
 
         Assert.assertEquals(aulaPlan.getNombre(), aux.getNombre());
+    }
+
+    @Test
+    public void eliminaAulaPlanificadaTest()
+    {
+        insertaDatos();
+
+        AulaPlanificacionDTO aulaPlan = aulas.get(0);
+
+        aulasDAO.deleteAulaAsignadaToEstudio(aulaPlan.getId());
+
+        List<AulaPlanificacionDTO> aux = aulasDAO.get(AulaPlanificacionDTO.class, aulaPlan.getId());
+
+        Assert.assertEquals(0, aux.size());
     }
 }

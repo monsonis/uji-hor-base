@@ -19,4 +19,6 @@ public interface AulaDAO extends BaseDAO
 
     AulaPlanificacion asignaAulaToEstudio(Long estudioId, Long aulaId, Long semestreId, Long cursoId)
             throws RegistroNoEncontradoException;
+
+    void deleteAulaAsignadaToEstudio(Long aulaPlanificacionId);
 }

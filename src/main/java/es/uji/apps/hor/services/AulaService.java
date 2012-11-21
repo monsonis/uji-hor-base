@@ -36,7 +36,8 @@ public class AulaService
         return aulaDAO.getAulasByCentroIdAndestudioId(centroId, estudioId);
     }
 
-    public List<AulaPlanificacion> getAulasAsignadasToEstudio(Long estudioId, Long semestreId, Long cursoId)
+    public List<AulaPlanificacion> getAulasAsignadasToEstudio(Long estudioId, Long semestreId,
+            Long cursoId)
     {
         return aulaDAO.getAulasAsignadasToEstudio(estudioId, semestreId, cursoId);
     }
@@ -46,4 +47,10 @@ public class AulaService
     {
         return aulaDAO.asignaAulaToEstudio(estudioId, aulaId, semestreId, cursoId);
     }
+
+    public void deleteAulaAsignadaToEstudio(Long aulaPlanificacionId)
+    {
+        aulaDAO.deleteAulaAsignadaToEstudio(aulaPlanificacionId);
+    }
+
 }
