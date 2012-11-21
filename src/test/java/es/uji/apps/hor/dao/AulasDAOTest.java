@@ -19,6 +19,8 @@ import es.uji.apps.hor.db.CentroDTO;
 import es.uji.apps.hor.db.EstudioDTO;
 import es.uji.apps.hor.db.TipoEstudioDTO;
 import es.uji.apps.hor.model.Aula;
+import es.uji.apps.hor.model.AulaPlanificacion;
+import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
@@ -99,7 +101,7 @@ public class AulasDAOTest
     }
 
     @Test
-    public void recuperaAulasAsignadasAUnEstudioSinSemestreNiGrupo()
+    public void recuperaAulasAsignadasAUnEstudioSinSemestreNiGrupoTest()
     {
         insertaDatos();
         List<Aula> aulas = aulasDAO.getAulasAsignadasToEstudio(estudio.getId(), null, null);
@@ -108,7 +110,7 @@ public class AulasDAOTest
     }
 
     @Test
-    public void recuperaAulasAsignadasAUnEstudionConSemestre()
+    public void recuperaAulasAsignadasAUnEstudionConSemestreTest()
     {
         insertaDatos();
         List<Aula> aulas = aulasDAO.getAulasAsignadasToEstudio(estudio.getId(), new Long(1), null);
@@ -117,7 +119,7 @@ public class AulasDAOTest
     }
 
     @Test
-    public void recuperaAulasAsignadasAUnEstudioConCurso()
+    public void recuperaAulasAsignadasAUnEstudioConCursoTest()
     {
         insertaDatos();
         List<Aula> aulas = aulasDAO.getAulasAsignadasToEstudio(estudio.getId(), null, new Long(1));
@@ -126,12 +128,34 @@ public class AulasDAOTest
     }
 
     @Test
-    public void recuperaAulasAsignadasAUnEstudioConSemestreYCurso()
+    public void recuperaAulasAsignadasAUnEstudioConSemestreYCursoTest()
     {
         insertaDatos();
         List<Aula> aulas = aulasDAO.getAulasAsignadasToEstudio(estudio.getId(), new Long(2),
                 new Long(2));
 
         Assert.assertEquals(2, aulas.size());
+    }
+
+    @Test
+    public void asignaAulaAUnEstudioTest() throws RegistroNoEncontradoException
+    {
+        insertaDatos();
+
+        // Creamos una nueva aula
+
+        aula = new AulaDTO();
+        aula.setNombre("Aula2000");
+        aula.setCentro(centro);
+
+        aula = aulasDAO.insert(aula);
+
+        AulaPlanificacion aulaPlan = aulasDAO.asignaAulaToEstudio(estudio.getId(), aula.getId(),
+                null, null);
+
+        AulaPlanificacionDTO aux = aulasDAO.get(AulaPlanificacionDTO.class, aulaPlan.getId())
+                .get(0);
+
+        Assert.assertEquals(aulaPlan.getNombre(), aux.getNombre());
     }
 }

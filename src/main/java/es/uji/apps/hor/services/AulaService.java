@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import es.uji.apps.hor.dao.AulaDAO;
 import es.uji.apps.hor.model.Aula;
+import es.uji.apps.hor.model.AulaPlanificacion;
+import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
 @Service
 public class AulaService
@@ -37,5 +39,11 @@ public class AulaService
     public List<Aula> getAulasAsignadasToEstudio(Long estudioId, Long semestreId, Long cursoId)
     {
         return aulaDAO.getAulasAsignadasToEstudio(estudioId, semestreId, cursoId);
+    }
+
+    public AulaPlanificacion asignaAulaToEstudio(Long estudioId, Long aulaId, Long semestreId,
+            Long cursoId) throws RegistroNoEncontradoException
+    {
+        return aulaDAO.asignaAulaToEstudio(estudioId, aulaId, semestreId, cursoId);
     }
 }

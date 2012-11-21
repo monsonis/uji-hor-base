@@ -8,11 +8,15 @@ import org.springframework.stereotype.Repository;
 import com.mysema.query.jpa.impl.JPAQuery;
 
 import es.uji.apps.hor.db.AulaDTO;
+import es.uji.apps.hor.db.AulaPlanificacionDTO;
+import es.uji.apps.hor.db.EstudioDTO;
 import es.uji.apps.hor.db.QAulaDTO;
 import es.uji.apps.hor.db.QAulaPlanificacionDTO;
 import es.uji.apps.hor.model.Aula;
+import es.uji.apps.hor.model.AulaPlanificacion;
 import es.uji.apps.hor.model.Centro;
 import es.uji.commons.db.BaseDAODatabaseImpl;
+import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
 @Repository
 public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
@@ -132,6 +136,47 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         }
 
         return listaAulasAsignadas;
+    }
+
+    @Override
+    public AulaPlanificacion asignaAulaToEstudio(Long estudioId, Long aulaId, Long semestreId,
+            Long cursoId) throws RegistroNoEncontradoException
+    {
+        AulaDTO aula;
+        EstudioDTO estudio;
+
+        try
+        {
+            aula = get(AulaDTO.class, aulaId).get(0);
+            estudio = get(EstudioDTO.class, estudioId).get(0);
+        }
+        catch (Exception e)
+        {
+            throw new RegistroNoEncontradoException();
+        }
+
+        AulaPlanificacionDTO aulaPlan = new AulaPlanificacionDTO();
+        aulaPlan.setNombre(aula.getNombre());
+        aulaPlan.setAula(aula);
+        aulaPlan.setEstudioId(estudioId);
+        aulaPlan.setCursoId(cursoId);
+        aulaPlan.setSemestreId(semestreId);
+
+        aulaPlan = insert(aulaPlan);
+
+        return creaAulaPlanificacionDesde(aulaPlan);
+    }
+
+    private AulaPlanificacion creaAulaPlanificacionDesde(AulaPlanificacionDTO aulaPlanificacionDTO)
+    {
+        AulaPlanificacion aulaPlanificacion = new AulaPlanificacion();
+        aulaPlanificacion.setId(aulaPlanificacionDTO.getId());
+        aulaPlanificacion.setNombre(aulaPlanificacionDTO.getNombre());
+        aulaPlanificacion.setEstudioId(aulaPlanificacionDTO.getEstudioId());
+        aulaPlanificacion.setCursoId(aulaPlanificacion.getCursoId());
+        aulaPlanificacion.setSemestreId(aulaPlanificacion.getSemestreId());
+
+        return aulaPlanificacion;
     }
 
 }

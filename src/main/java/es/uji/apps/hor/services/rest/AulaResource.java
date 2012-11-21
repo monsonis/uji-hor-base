@@ -1,12 +1,14 @@
 package es.uji.apps.hor.services.rest;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -16,9 +18,11 @@ import javax.ws.rs.core.MediaType;
 import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.hor.model.Aula;
+import es.uji.apps.hor.model.AulaPlanificacion;
 import es.uji.apps.hor.model.TreeRowsetAula;
 import es.uji.apps.hor.services.AulaService;
 import es.uji.commons.rest.UIEntity;
+import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 import es.uji.commons.rest.model.tree.TreeRow;
 
 @Path("aula")
@@ -204,19 +208,59 @@ public class AulaResource
     public List<UIEntity> getAulasAsignadasToEstudio(@PathParam("id") String estudioId,
             @QueryParam("semestreId") String semestreId, @QueryParam("cursoId") String cursoId)
     {
-        Long semestre = null;      
-        try{
+        Long semestre = null;
+        try
+        {
             semestre = Long.parseLong(semestreId);
-        } catch (Exception e) {}
-        
+        }
+        catch (Exception e)
+        {
+        }
+
         Long curso = null;
-        try{
+        try
+        {
             curso = Long.parseLong(cursoId);
-        } catch (Exception e) {}
-        
+        }
+        catch (Exception e)
+        {
+        }
+
         List<Aula> aulasAsignadas = consultaAulas.getAulasAsignadasToEstudio(
                 Long.parseLong(estudioId), semestre, curso);
 
         return UIEntity.toUI(aulasAsignadas);
+    }
+
+    @PUT
+    @Path("estudio/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<UIEntity> asignaAulaToEstudio(@PathParam("id") String estudioId,
+            @QueryParam("aulaId") String aulaId, @QueryParam("semestreId") String semestreId,
+            @QueryParam("cursoId") String cursoId) throws RegistroNoEncontradoException,
+            NumberFormatException
+    {
+        Long semestre = null;
+        try
+        {
+            semestre = Long.parseLong(semestreId);
+        }
+        catch (Exception e)
+        {
+        }
+
+        Long curso = null;
+        try
+        {
+            curso = Long.parseLong(cursoId);
+        }
+        catch (Exception e)
+        {
+        }
+
+        AulaPlanificacion aulaPlanificacion = consultaAulas.asignaAulaToEstudio(
+                Long.parseLong(estudioId), Long.parseLong(aulaId), semestre, curso);
+
+        return Collections.singletonList(UIEntity.toUI(aulaPlanificacion));
     }
 }
