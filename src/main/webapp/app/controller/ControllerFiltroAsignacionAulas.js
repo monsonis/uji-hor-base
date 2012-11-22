@@ -90,21 +90,34 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
     {
         this.actualizarDatos();
     },
-    
-    actualizarDatos: function()
+
+    actualizarDatos : function()
     {
         var tree = this.getTreePanelAulas();
         tree.setDisabled(false);
         var centroId = this.getFiltroAsignacionAulas().down("combobox[name=centro]").getValue();
         var estudioId = this.getFiltroAsignacionAulas().down("combobox[name=estudio]").getValue();
-        tree.getStore().load({ url: '/hor/rest/aula/centro/' + centroId + '/tree' });
-        
+        tree.getStore().load(
+        {
+            url : '/hor/rest/aula/centro/' + centroId + '/tree'
+        });
+
+        var semestreId = this.getFiltroAsignacionAulas().down('combobox[name=semestre]').getValue();
+
         var grid = this.getGridAulas();
         grid.setDisabled(false);
-        grid.getStore().load({ url: '/hor/rest/aula/estudio/' + 1, params: { semestreId: 1, cursoId: 1} });
+        grid.getStore().load(
+        {
+            url : '/hor/rest/aula/estudio/' + estudioId,
+            params :
+            {
+                semestreId : semestreId,
+                cursoId : ''
+            }
+        });
     },
 
-    limpiaDatos: function()
+    limpiaDatos : function()
     {
         var tree = this.getTreePanelAulas();
         tree.setDisabled(true);
