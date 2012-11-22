@@ -1,19 +1,25 @@
 Ext.define('HOR.store.StoreAulasAsignadas',
 {
-    extend: 'Ext.data.Store',
-    model: 'HOR.model.Aula',
+    extend : 'Ext.data.Store',
     autoLoad : false,
-    expanded: true,
+    autoSync : false,
+    model: 'HOR.model.Aula',
     proxy :
     {
-        type : 'ajax',
-        url : '/hor/rest/aula/tree',
-        noCache : false,
+        type : 'rest',
+        url : '/hor/rest/aula/estudio/',
 
         reader :
         {
             type : 'json',
-            root : 'row'
+            successProperty : 'success',
+            root : 'data'
+        },
+
+        writer :
+        {
+            type : 'json',
+            successProperty : 'success'
         }
     }
 });

@@ -41,7 +41,7 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
             },
             'menuSuperior menuitem[action=asignacion-aulas]' :
             {
-                click : this.limpiaDatosArbol
+                click : this.limpiaDatos
             }
         });
     },
@@ -49,7 +49,7 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
     onCentroSelected : function(combo, records)
     {
 
-        this.limpiaDatosArbol();
+        this.limpiaDatos();
 
         var combo_estudios = this.getFiltroAsignacionAulas().down('combobox[name=estudio]');
         combo_estudios.setDisabled(false);
@@ -75,7 +75,7 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
 
     onEstudioSelected : function(combo, records)
     {
-        this.limpiaDatosArbol();
+        this.limpiaDatos();
 
         var combo_semestre = this.getFiltroAsignacionAulas().down('combobox[name=semestre]');
         combo_semestre.setDisabled(false);
@@ -83,27 +83,28 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
 
         fixLoadMaskBug(combo_semestre.getStore(), combo_semestre);
 
-        this.actualizarDatosArbol();
+        this.actualizarDatos();
     },
 
     onSemestreSelected : function(combo, records)
     {
-        this.actualizarDatosArbol();
+        this.actualizarDatos();
     },
     
-    actualizarDatosArbol : function()
+    actualizarDatos: function()
     {
         var tree = this.getTreePanelAulas();
         tree.setDisabled(false);
         var centroId = this.getFiltroAsignacionAulas().down("combobox[name=centro]").getValue();
         var estudioId = this.getFiltroAsignacionAulas().down("combobox[name=estudio]").getValue();
-        tree.getStore().load({ url: '/hor/rest/aula/centro/' + centroId + '/tree' }).load();
+        tree.getStore().load({ url: '/hor/rest/aula/centro/' + centroId + '/tree' });
         
         var grid = this.getGridAulas();
         grid.setDisabled(false);
+        grid.getStore().load({ url: '/hor/rest/aula/estudio/' + 1, params: { semestreId: 1, cursoId: 1} });
     },
 
-    limpiaDatosArbol : function()
+    limpiaDatos: function()
     {
         var tree = this.getTreePanelAulas();
         tree.setDisabled(true);
