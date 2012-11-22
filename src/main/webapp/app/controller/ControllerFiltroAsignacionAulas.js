@@ -123,7 +123,8 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
         tree.setDisabled(true);
         tree.getRootNode().removeAll();
 
-        var grid = this.getGridAulas();
+        var grid = this.getGridAulas();      
         grid.setDisabled(true);
+        grid.getStore().removeAll();
     }
 });
