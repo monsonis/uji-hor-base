@@ -53,8 +53,6 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
     onCentroSelected : function(combo, records)
     {
 
-        this.limpiaDatos();
-
         var combo_estudios = this.getFiltroAsignacionAulas().down('combobox[name=estudio]');
         combo_estudios.setDisabled(false);
         combo_estudios.clearValue();
@@ -72,6 +70,11 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
         var combo_semestre = this.getFiltroAsignacionAulas().down('combobox[name=semestre]');
         combo_semestre.setDisabled(true);
         combo_semestre.clearValue();
+        
+        this.actualizarDatosArbolAulas();
+        this.getTreePanelAulas().setDisabled(true);
+        this.getGridAulas().setDisabled(true);
+        this.limpiaDatosGridAulas();
 
         fixLoadMaskBug(estudios_store, combo_estudios);
 
@@ -79,37 +82,40 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
 
     onEstudioSelected : function(combo, records)
     {
-        this.limpiaDatos();
-
         var combo_semestre = this.getFiltroAsignacionAulas().down('combobox[name=semestre]');
         combo_semestre.setDisabled(false);
         combo_semestre.select(combo_semestre.getStore().data.items[0]);
-
+     
+        this.actualizarDatosGridAsignaciones();
+        this.getTreePanelAulas().setDisabled(false);
+        this.getGridAulas().setDisabled(false);
+        
         fixLoadMaskBug(combo_semestre.getStore(), combo_semestre);
-
-        this.actualizarDatos();
+        
     },
 
     onSemestreSelected : function(combo, records)
     {
-        this.actualizarDatos();
+        this.actualizarDatosGridAsignaciones();
     },
 
-    actualizarDatos : function()
+    actualizarDatosArbolAulas : function()
     {
         var tree = this.getTreePanelAulas();
-        tree.setDisabled(false);
-        var centroId = this.getFiltroAsignacionAulas().down("combobox[name=centro]").getValue();
-        var estudioId = this.getFiltroAsignacionAulas().down("combobox[name=estudio]").getValue();
-        var semestreId = this.getFiltroAsignacionAulas().down("combobox[name=semestre]").getValue();
+        var centroId = this.getFiltroAsignacionAulas().down("combobox[name=centro]").getValue();       
 
         tree.getStore().load(
         {
             url : '/hor/rest/aula/centro/' + centroId + '/tree'
         });
+       
+    },
 
-        var grid = this.getGridAulas();
-        grid.setDisabled(false);
+    actualizarDatosGridAsignaciones : function()
+    {
+	    var estudioId = this.getFiltroAsignacionAulas().down("combobox[name=estudio]").getValue();
+        var semestreId = this.getFiltroAsignacionAulas().down("combobox[name=semestre]").getValue();
+    	var grid = this.getGridAulas();
         grid.getStore().load(
         {
             url : '/hor/rest/aula/estudio/' + estudioId,
@@ -136,7 +142,7 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
                 nombre: item.get("text"),
                 aulaId: item.get("id"),
                 semestreId: semestreId
-            }, "HOR.model.Aula");
+            }, "HOR.model.AulaPlanificacion");
             
             gridStore.add(aulaAsignada);
             gridStore.commitChanges();
@@ -148,14 +154,9 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
         
     },
 
-    limpiaDatos : function()
-    {
-        var tree = this.getTreePanelAulas();
-        tree.setDisabled(true);
-        tree.getRootNode().removeAll();
-
+    limpiaDatosGridAulas : function()
+    {        
         var grid = this.getGridAulas();      
-        grid.setDisabled(true);
         grid.getStore().removeAll();
     }
 });
