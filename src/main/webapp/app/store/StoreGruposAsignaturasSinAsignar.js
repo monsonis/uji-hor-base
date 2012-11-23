@@ -3,7 +3,7 @@ Ext.define('HOR.store.StoreGruposAsignaturasSinAsignar',
     extend : 'Ext.data.Store',
     autoLoad : false,
     autoSync : false,
-
+    model: 'HOR.model.GrupoAsignatura',
     proxy :
     {
         type : 'rest',

@@ -8,6 +8,7 @@ Ext.define('HOR.view.aulas.TreePanelAulas',
     tbar: [ {
         xtype: 'button',
         text: 'Afegir aula',
+        name: 'anyadir',
         iconCls : 'application-add'
     }]
 

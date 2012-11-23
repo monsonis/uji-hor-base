@@ -2,7 +2,7 @@ Ext.define('HOR.controller.ControllerCalendario',
 {
     extend : 'Ext.app.Controller',
     stores : [ 'StoreCalendarios', 'StoreEventos', 'StoreGruposAsignaturasSinAsignar', 'StoreConfiguracion' ],
-    model : [ 'Calendario', 'Evento', 'Configuracion' ],
+    model : [ 'Configuracion' ],
     refs : [
     {
         selector : 'panelHorarios filtroGrupos',

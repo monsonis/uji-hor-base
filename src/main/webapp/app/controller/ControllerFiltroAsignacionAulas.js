@@ -2,7 +2,7 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
 {
     extend : 'Ext.app.Controller',
     stores : [ 'StoreCentros', 'StoreEstudios', 'StoreCursos', 'TreeStoreAulas', 'StoreAulasAsignadas' ],
-    model : [ 'Centro', 'Estudio', 'Semestre', 'Curso', 'Aula' ],
+    model : [ 'Centro', 'Estudio', 'Semestre', 'Curso', 'AulaPlafinicacion' ],
     refs : [
     {
         selector : 'panelAulas',
@@ -42,6 +42,10 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
             'menuSuperior menuitem[action=asignacion-aulas]' :
             {
                 click : this.limpiaDatos
+            },
+            'treePanelAulas button[name=anyadir]' :
+            {
+                click : this.anyadirAula
             }
         });
     },
@@ -97,12 +101,12 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
         tree.setDisabled(false);
         var centroId = this.getFiltroAsignacionAulas().down("combobox[name=centro]").getValue();
         var estudioId = this.getFiltroAsignacionAulas().down("combobox[name=estudio]").getValue();
+        var semestreId = this.getFiltroAsignacionAulas().down("combobox[name=semestre]").getValue();
+
         tree.getStore().load(
         {
             url : '/hor/rest/aula/centro/' + centroId + '/tree'
         });
-
-        var semestreId = this.getFiltroAsignacionAulas().down('combobox[name=semestre]').getValue();
 
         var grid = this.getGridAulas();
         grid.setDisabled(false);
@@ -115,6 +119,33 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
                 cursoId : ''
             }
         });
+    },
+
+    anyadirAula: function() {
+        var listaSeleccion = this.getTreePanelAulas().getSelectionModel().getSelection();
+        if (listaSeleccion.length > 0 && listaSeleccion[0].get("leaf") === true) {
+            var item = listaSeleccion[0];
+            var estudioId = this.getFiltroAsignacionAulas().down("combobox[name=estudio]").getValue();
+            var semestreId = this.getFiltroAsignacionAulas().down("combobox[name=semestre]").getValue();
+
+            var gridStore = this.getGridAulas().getStore();
+
+            var aulaAsignada = Ext.ModelManager.create({
+                id: estudioId,
+                cursoId: '',
+                nombre: item.get("text"),
+                aulaId: item.get("id"),
+                semestreId: semestreId
+            }, "HOR.model.Aula");
+            
+            gridStore.add(aulaAsignada);
+            gridStore.commitChanges();
+        }
+    },
+   
+    borrarAula: function() {
+        console.log("existo");
+        
     },
 
     limpiaDatos : function()

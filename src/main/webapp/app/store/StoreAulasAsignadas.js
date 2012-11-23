@@ -2,8 +2,7 @@ Ext.define('HOR.store.StoreAulasAsignadas',
 {
     extend : 'Ext.data.Store',
     autoLoad : false,
-    autoSync : false,
-    model: 'HOR.model.Aula',
+    model: 'HOR.model.AulaPlanificacion',
     proxy :
     {
         type : 'rest',

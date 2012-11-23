@@ -2,7 +2,6 @@ Ext.define('HOR.store.StoreEventos',
 {
     extend : 'Extensible.calendar.data.EventStore',
     autoLoad : false,
-
     proxy :
     {
         type : 'rest',

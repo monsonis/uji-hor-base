@@ -9,7 +9,7 @@ import java.util.UUID;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.PUT;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -22,6 +22,7 @@ import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.AulaPlanificacion;
 import es.uji.apps.hor.model.TreeRowsetAula;
 import es.uji.apps.hor.services.AulaService;
+import es.uji.commons.rest.ParamUtils;
 import es.uji.commons.rest.UIEntity;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 import es.uji.commons.rest.model.tree.TreeRow;
@@ -233,40 +234,24 @@ public class AulaResource
         return UIEntity.toUI(aulasAsignadas);
     }
 
-    @PUT
-    @Path("estudio/{id}")
+    @POST
+    @Path("estudio/{estudioId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UIEntity> asignaAulaToEstudio(@PathParam("id") String estudioId,
-            @QueryParam("aulaId") String aulaId, @QueryParam("semestreId") String semestreId,
-            @QueryParam("cursoId") String cursoId) throws RegistroNoEncontradoException,
-            NumberFormatException
+    public List<UIEntity> asignaAulaToEstudio(@PathParam("estudioId") String estudioId,
+            UIEntity entity) throws RegistroNoEncontradoException
     {
-        Long semestre = null;
-        try
-        {
-            semestre = Long.parseLong(semestreId);
-        }
-        catch (Exception e)
-        {
-        }
-
-        Long curso = null;
-        try
-        {
-            curso = Long.parseLong(cursoId);
-        }
-        catch (Exception e)
-        {
-        }
+        Long cursoId = ParamUtils.parseLong(entity.get("cursoId"));
+        Long semestreId = ParamUtils.parseLong(entity.get("semestreId"));
+        String aulaId = entity.get("id");
 
         AulaPlanificacion aulaPlanificacion = consultaAulas.asignaAulaToEstudio(
-                Long.parseLong(estudioId), Long.parseLong(aulaId), semestre, curso);
+                Long.parseLong(estudioId), Long.parseLong(aulaId), semestreId, cursoId);
 
         return Collections.singletonList(UIEntity.toUI(aulaPlanificacion));
     }
-    
+
     @DELETE
-    @Path("planificacion/{id}")
+    @Path("estudio/{id}")
     public void deleteAulaAsignadaToEstudio(@PathParam("id") String aulaPlanificacionId)
     {
         consultaAulas.deleteAulaAsignadaToEstudio(Long.parseLong(aulaPlanificacionId));
