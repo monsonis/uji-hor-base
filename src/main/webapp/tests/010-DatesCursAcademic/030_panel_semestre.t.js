@@ -3,7 +3,7 @@ StartTest(function(t) {
 	
 	t.requireOk([ 'HOR.model.SemestreDetalle',
 			'HOR.store.StoreSemestreDetalles',
-			'HOR.view.semestres.PanelSemestres',
+			'HOR.view.semestres.PanelSemestres'
 	// 'widget.GridSemestresDetalles'
 	], function() {
 		var grid = Ext.create('HOR.view.semestres.GridSemestres', {

@@ -34,7 +34,6 @@ Ext.define('HOR.view.aulas.FiltroAsignacionAulas', {
 		disabled : true,
 		alias : 'widget.comboEstudios'
 	},
-
 	{
 		xtype : 'combobox',
 		lastQuery : '',
@@ -42,7 +41,7 @@ Ext.define('HOR.view.aulas.FiltroAsignacionAulas', {
 		labelWidth : 65,
 		store: Ext.create('Ext.data.ArrayStore', {
             fields : ['index', 'name'],
-            data : [['1', '1'], ['2', '2'],]
+            data : [['1', '1'], ['2', '2']]
         }),		editable : false,
 		displayField : 'name',
 		valueField : 'index',
@@ -50,7 +49,6 @@ Ext.define('HOR.view.aulas.FiltroAsignacionAulas', {
 		anchor : '20%',
 		disabled : true	,
 		alias : 'widget.comboSemestre'
-	},
-
+	}
 	]
 });

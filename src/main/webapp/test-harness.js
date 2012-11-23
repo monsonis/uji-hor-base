@@ -18,7 +18,7 @@ Harness.configure({
 			// 'http://cdn.sencha.io/ext-4.1.0-gpl/locale/ext-lang-ca.js',
 			'/hor/Ext/ext-lang-ca.js',
 			'/hor/extensible-1.5.1/lib/extensible-all-debug.js',
-			'/hor/extensible-1.5.1/src/locale/extensible-lang-ca.js',
+			'/hor/extensible-1.5.1/src/locale/extensible-lang-ca.js'
 	// '/hor/app/Application.js'
 	]
 });
@@ -27,10 +27,10 @@ Harness.start({
 	group : "Dates Curs Academic",
 	items : [ 'tests/010-DatesCursAcademic/010_sanity.t.js',
 			'tests/010-DatesCursAcademic/020_semestredetallemodel.t.js',
-			'tests/010-DatesCursAcademic/030_panel_semestre.t.js', ]
+			'tests/010-DatesCursAcademic/030_panel_semestre.t.js' ]
 }, {
 	group : "Asignacio d'aules a estudis",
-	items : [ 'tests/020-AsignacioAulesEstudis/010_sanity.t.js',
+	items : [ 'tests/020-AsignacioAulesEstudis/010_sanity.t.js'
 	         // 'tests/020-AsignacioAulesEstudis/020_view_filtroasignacionaulas.t.js',
 			 ]
 }, {

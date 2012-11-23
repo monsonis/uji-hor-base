@@ -49,7 +49,6 @@ StartTest(function(t) {
 		            	 t.ok(node_area.hasChildNodes(),'La carpeta area tiene contenido');
 		            	 
 		            	 var node_aula = node_area.getChildAt(1);
-		            	 console.log(node_aula.getId());
 		            	 tree_aulas.getSelectionModel().select(node_aula);
 		            	 
 		            	 next();
