@@ -24,6 +24,7 @@ import es.uji.apps.hor.model.TreeRowsetAula;
 import es.uji.apps.hor.services.AulaService;
 import es.uji.commons.rest.ParamUtils;
 import es.uji.commons.rest.UIEntity;
+import es.uji.commons.rest.exceptions.RegistroConHijosException;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 import es.uji.commons.rest.model.tree.TreeRow;
 
@@ -253,6 +254,7 @@ public class AulaResource
     @DELETE
     @Path("estudio/{id}")
     public void deleteAulaAsignadaToEstudio(@PathParam("id") String aulaPlanificacionId)
+            throws RegistroConHijosException, NumberFormatException
     {
         consultaAulas.deleteAulaAsignadaToEstudio(Long.parseLong(aulaPlanificacionId));
     }

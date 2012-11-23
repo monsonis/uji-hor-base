@@ -6,6 +6,7 @@ import java.util.List;
 import junit.framework.Assert;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +18,12 @@ import es.uji.apps.hor.db.AulaDTO;
 import es.uji.apps.hor.db.AulaPlanificacionDTO;
 import es.uji.apps.hor.db.CentroDTO;
 import es.uji.apps.hor.db.EstudioDTO;
+import es.uji.apps.hor.db.ItemDTO;
+import es.uji.apps.hor.db.SemestreDTO;
 import es.uji.apps.hor.db.TipoEstudioDTO;
 import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.AulaPlanificacion;
+import es.uji.commons.rest.exceptions.RegistroConHijosException;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -162,8 +166,9 @@ public class AulasDAOTest
         Assert.assertEquals(aulaPlan.getNombre(), aux.getNombre());
     }
 
+    @Ignore
     @Test
-    public void eliminaAulaPlanificadaTest()
+    public void eliminaAulaPlanificadaTest() throws RegistroConHijosException
     {
         insertaDatos();
 
@@ -174,5 +179,33 @@ public class AulasDAOTest
         List<AulaPlanificacionDTO> aux = aulasDAO.get(AulaPlanificacionDTO.class, aulaPlan.getId());
 
         Assert.assertEquals(0, aux.size());
+    }
+
+    @Test(expected = RegistroConHijosException.class)
+    public void eliminaAulaPlanificadaConEventoAsignadoTest() throws RegistroConHijosException
+    {
+        insertaDatos();
+
+        // Creamos un item al que asignar el aula
+
+        SemestreDTO semestre = new SemestreDTO();
+        semestre.setNombre("Prueba");
+        semestre = aulasDAO.insert(semestre);
+
+        ItemDTO item = new ItemDTO();
+        item.setAsignaturaId("PA");
+        item.setEstudio(estudio);
+        item.setCursoId(new Long(1));
+        item.setCaracterId("PC");
+        item.setSemestre(semestre);
+        item.setComun(new Long(0));
+        item.setGrupoId("PG");
+        item.setTipoSubgrupoId("PTS");
+        item.setSubgrupoId(new Long(0));
+        item.setDetalleManual(false);
+        item.setAulasPlanificacion(aulas.get(0));
+        item = aulasDAO.insert(item);
+
+        aulasDAO.deleteAulaAsignadaToEstudio(aulas.get(0).getId());
     }
 }

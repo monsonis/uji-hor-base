@@ -3,6 +3,7 @@ package es.uji.apps.hor.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.stereotype.Repository;
 
 import com.mysema.query.jpa.impl.JPAQuery;
@@ -16,6 +17,7 @@ import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.AulaPlanificacion;
 import es.uji.apps.hor.model.Centro;
 import es.uji.commons.db.BaseDAODatabaseImpl;
+import es.uji.commons.rest.exceptions.RegistroConHijosException;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
 @Repository
@@ -182,8 +184,17 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
 
     @Override
     public void deleteAulaAsignadaToEstudio(Long aulaPlanificacionId)
+            throws RegistroConHijosException
     {
-        delete(AulaPlanificacionDTO.class, aulaPlanificacionId);
+        try
+        {
+            delete(AulaPlanificacionDTO.class, aulaPlanificacionId);
+        }
+        catch (ConstraintViolationException e)
+        {
+            throw new RegistroConHijosException(
+                    "No es pot borrar l'aula perque té classes assignades");
+        }
     }
 
 }

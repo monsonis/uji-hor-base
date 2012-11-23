@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import es.uji.apps.hor.dao.AulaDAO;
 import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.AulaPlanificacion;
+import es.uji.commons.rest.exceptions.RegistroConHijosException;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
 @Service
@@ -49,6 +50,7 @@ public class AulaService
     }
 
     public void deleteAulaAsignadaToEstudio(Long aulaPlanificacionId)
+            throws RegistroConHijosException
     {
         aulaDAO.deleteAulaAsignadaToEstudio(aulaPlanificacionId);
     }

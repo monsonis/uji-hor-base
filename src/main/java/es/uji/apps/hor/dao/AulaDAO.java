@@ -5,6 +5,7 @@ import java.util.List;
 import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.AulaPlanificacion;
 import es.uji.commons.db.BaseDAO;
+import es.uji.commons.rest.exceptions.RegistroConHijosException;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
 public interface AulaDAO extends BaseDAO
@@ -20,5 +21,5 @@ public interface AulaDAO extends BaseDAO
     AulaPlanificacion asignaAulaToEstudio(Long estudioId, Long aulaId, Long semestreId, Long cursoId)
             throws RegistroNoEncontradoException;
 
-    void deleteAulaAsignadaToEstudio(Long aulaPlanificacionId);
+    void deleteAulaAsignadaToEstudio(Long aulaPlanificacionId) throws RegistroConHijosException;
 }
