@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.mysema.query.jpa.impl.JPAQuery;
 
+import es.uji.apps.hor.AulaYaAsignadaAEstudioException;
 import es.uji.apps.hor.db.AulaDTO;
 import es.uji.apps.hor.db.AulaPlanificacionDTO;
 import es.uji.apps.hor.db.EstudioDTO;
@@ -144,7 +145,7 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
 
     @Override
     public AulaPlanificacion asignaAulaToEstudio(Long estudioId, Long aulaId, Long semestreId,
-            Long cursoId) throws RegistroNoEncontradoException
+            Long cursoId) throws RegistroNoEncontradoException, AulaYaAsignadaAEstudioException
     {
         AulaDTO aula;
         EstudioDTO estudio;
@@ -157,6 +158,39 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         catch (Exception e)
         {
             throw new RegistroNoEncontradoException();
+        }
+
+        // Comprobamos si existe una aula aignada con los mismos datos
+
+        JPAQuery query = new JPAQuery(entityManager);
+        QAulaPlanificacionDTO qAulaPlan = QAulaPlanificacionDTO.aulaPlanificacionDTO;
+
+        query.from(qAulaPlan).where(
+                qAulaPlan.estudio.id.eq(estudioId).and(qAulaPlan.aula.id.eq(aulaId)));
+
+        if (semestreId != null)
+        {
+            query.where(qAulaPlan.semestreId.eq(semestreId));
+        }
+        else
+        {
+            query.where(qAulaPlan.semestreId.isNull());
+        }
+
+        if (cursoId != null)
+        {
+            query.where(qAulaPlan.cursoId.eq(cursoId));
+        }
+        else
+        {
+            query.where(qAulaPlan.cursoId.isNull());
+        }
+
+        List<AulaPlanificacionDTO> aulasPlan = query.list(qAulaPlan);
+
+        if (aulasPlan.size() > 0)
+        {
+            throw new AulaYaAsignadaAEstudioException();
         }
 
         AulaPlanificacionDTO aulaPlan = new AulaPlanificacionDTO();

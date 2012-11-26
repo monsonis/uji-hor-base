@@ -14,6 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import es.uji.apps.hor.AulaYaAsignadaAEstudioException;
 import es.uji.apps.hor.db.AulaDTO;
 import es.uji.apps.hor.db.AulaPlanificacionDTO;
 import es.uji.apps.hor.db.CentroDTO;
@@ -144,7 +145,8 @@ public class AulasDAOTest
     }
 
     @Test
-    public void asignaAulaAUnEstudioTest() throws RegistroNoEncontradoException
+    public void asignaAulaAUnEstudioTest() throws RegistroNoEncontradoException,
+            AulaYaAsignadaAEstudioException
     {
         insertaDatos();
 
@@ -165,6 +167,29 @@ public class AulasDAOTest
 
         Assert.assertEquals(aulaPlan.getNombre(), aux.getNombre());
         Assert.assertEquals(aula.getEdificio(), aux.getAula().getEdificio());
+    }
+
+    @Test(expected = AulaYaAsignadaAEstudioException.class)
+    public void asignaAulaYaAsignadaAUnEstudioTest() throws RegistroNoEncontradoException,
+            AulaYaAsignadaAEstudioException
+    {
+        insertaDatos();
+
+        // Creamos una nueva aula
+
+        aula = new AulaDTO();
+        aula.setNombre("Aula2000");
+        aula.setCentro(centro);
+        aula.setEdificio("EDI");
+
+        aula = aulasDAO.insert(aula);
+
+        AulaPlanificacion aulaPlan = aulasDAO.asignaAulaToEstudio(estudio.getId(), aula.getId(),
+                new Long(1), null);
+
+        // Y volvemos a asignar el aula al estudio
+
+        aulasDAO.asignaAulaToEstudio(estudio.getId(), aula.getId(), new Long(1), null);
     }
 
     @Test

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import es.uji.apps.hor.AulaYaAsignadaAEstudioException;
 import es.uji.apps.hor.dao.AulaDAO;
 import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.AulaPlanificacion;
@@ -44,7 +45,7 @@ public class AulaService
     }
 
     public AulaPlanificacion asignaAulaToEstudio(Long estudioId, Long aulaId, Long semestreId,
-            Long cursoId) throws RegistroNoEncontradoException
+            Long cursoId) throws RegistroNoEncontradoException, AulaYaAsignadaAEstudioException
     {
         return aulaDAO.asignaAulaToEstudio(estudioId, aulaId, semestreId, cursoId);
     }

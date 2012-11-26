@@ -18,6 +18,7 @@ import javax.ws.rs.core.MediaType;
 
 import com.sun.jersey.api.core.InjectParam;
 
+import es.uji.apps.hor.AulaYaAsignadaAEstudioException;
 import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.AulaPlanificacion;
 import es.uji.apps.hor.model.TreeRowsetAula;
@@ -238,7 +239,9 @@ public class AulaResource
     @POST
     @Path("estudio")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UIEntity> asignaAulaToEstudio(UIEntity entity) throws RegistroNoEncontradoException
+    public List<UIEntity> asignaAulaToEstudio(UIEntity entity)
+            throws RegistroNoEncontradoException, AulaYaAsignadaAEstudioException,
+            NumberFormatException
     {
         String estudioId = entity.get("estudioId");
         Long cursoId = ParamUtils.parseLong(entity.get("cursoId"));
