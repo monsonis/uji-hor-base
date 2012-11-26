@@ -70,6 +70,7 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
         this.actualizarDatosArbolAulas();
         this.getTreePanelAulas().setDisabled(true);
         this.getGridAulas().setDisabled(true);
+        
         this.limpiaDatosGridAulas();
 
         fixLoadMaskBug(estudios_store, combo_estudios);
@@ -85,6 +86,8 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
         this.actualizarDatosGridAsignaciones();
         this.getTreePanelAulas().setDisabled(false);
         this.getGridAulas().setDisabled(false);
+        
+        this.actualizarDatosGridAsignaciones();
         
         fixLoadMaskBug(combo_semestre.getStore(), combo_semestre);
         
@@ -118,7 +121,7 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
             params :
             {
                 semestreId : semestreId,
-                cursoId : ''
+                cursoId : '0'
             }
         });
     },
@@ -134,7 +137,7 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
 
             var aulaAsignada = Ext.ModelManager.create({
                 estudioId: estudioId,
-                cursoId: '2012',
+                cursoId: '0',
                 nombre: item.get("text"),
                 aulaId: item.get("id"),
                 semestreId: semestreId
@@ -142,7 +145,7 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
                      
           
             gridStore.add(aulaAsignada);
-
+                      
         }
     },
    
@@ -150,6 +153,7 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
         console.log("existo");
         
     },
+      
 
     limpiaDatosGridAulas : function()
     {        

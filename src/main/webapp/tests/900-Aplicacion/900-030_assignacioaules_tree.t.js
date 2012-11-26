@@ -49,6 +49,8 @@ StartTest(function(t) {
 		            	 t.ok(node_area.hasChildNodes(),'La carpeta area tiene contenido');
 		            	 
 		            	 var node_aula = node_area.getChildAt(1);
+		            	 selected_aula_id = node_aula.get("id");
+		            	 console.log(selected_aula_id);
 		            	 tree_aulas.getSelectionModel().select(node_aula);
 		            	 
 		            	 next();
@@ -57,7 +59,7 @@ StartTest(function(t) {
 		             { action : 'click', target :'>>panel[alias=widget.treePanelAulas] button' }, 
 		             // Esperar a que se recarge
 		             function (next){	            	 
-		            	 var encontrado = grid_aulasasign.getStore().find('id',selected_aula_id);
+		            	 var encontrado = grid_aulasasign.getStore().find('aulaId',selected_aula_id);
 		            			            	 
 		            	 var has_been_inserted = encontrado>=0;
 		            	 
