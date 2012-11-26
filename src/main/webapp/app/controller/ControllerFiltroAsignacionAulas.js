@@ -39,10 +39,6 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
             {
                 select : this.onSemestreSelected
             },
-            'menuSuperior menuitem[action=asignacion-aulas]' :
-            {
-                click : this.limpiaDatos
-            },
             'treePanelAulas button[name=anyadir]' :
             {
                 click : this.anyadirAula
