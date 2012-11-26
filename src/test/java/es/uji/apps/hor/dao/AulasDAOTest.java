@@ -6,10 +6,10 @@ import java.util.List;
 import junit.framework.Assert;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +21,6 @@ import es.uji.apps.hor.db.EstudioDTO;
 import es.uji.apps.hor.db.ItemDTO;
 import es.uji.apps.hor.db.SemestreDTO;
 import es.uji.apps.hor.db.TipoEstudioDTO;
-import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.AulaPlanificacion;
 import es.uji.commons.rest.exceptions.RegistroConHijosException;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
@@ -166,7 +165,6 @@ public class AulasDAOTest
         Assert.assertEquals(aulaPlan.getNombre(), aux.getNombre());
     }
 
-    @Ignore
     @Test
     public void eliminaAulaPlanificadaTest() throws RegistroConHijosException
     {
@@ -181,7 +179,7 @@ public class AulasDAOTest
         Assert.assertEquals(0, aux.size());
     }
 
-    @Test(expected = RegistroConHijosException.class)
+    @Test(expected = JpaSystemException.class)
     public void eliminaAulaPlanificadaConEventoAsignadoTest() throws RegistroConHijosException
     {
         insertaDatos();
@@ -203,9 +201,15 @@ public class AulasDAOTest
         item.setTipoSubgrupoId("PTS");
         item.setSubgrupoId(new Long(0));
         item.setDetalleManual(false);
-        item.setAulasPlanificacion(aulas.get(0));
+
+        AulaPlanificacionDTO aula = aulas.get(0);
+        item.setAulasPlanificacion(aula);
         item = aulasDAO.insert(item);
 
         aulasDAO.deleteAulaAsignadaToEstudio(aulas.get(0).getId());
+
+        AulaPlanificacionDTO aux = aulasDAO.get(AulaPlanificacionDTO.class, aula.getId()).get(0);
+
+        System.out.println(aux.getNombre());
     }
 }

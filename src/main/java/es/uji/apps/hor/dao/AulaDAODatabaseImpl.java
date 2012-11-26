@@ -3,7 +3,7 @@ package es.uji.apps.hor.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
 
 import com.mysema.query.jpa.impl.JPAQuery;
@@ -190,7 +190,7 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         {
             delete(AulaPlanificacionDTO.class, aulaPlanificacionId);
         }
-        catch (ConstraintViolationException e)
+        catch (DataIntegrityViolationException e)
         {
             throw new RegistroConHijosException(
                     "No es pot borrar l'aula perque té classes assignades");
