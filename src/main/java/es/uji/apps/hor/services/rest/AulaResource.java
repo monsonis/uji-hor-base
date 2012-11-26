@@ -236,14 +236,14 @@ public class AulaResource
     }
 
     @POST
-    @Path("estudio/{estudioId}")
+    @Path("estudio")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UIEntity> asignaAulaToEstudio(@PathParam("estudioId") String estudioId,
-            UIEntity entity) throws RegistroNoEncontradoException
+    public List<UIEntity> asignaAulaToEstudio(UIEntity entity) throws RegistroNoEncontradoException
     {
+        String estudioId = entity.get("estudioId");
         Long cursoId = ParamUtils.parseLong(entity.get("cursoId"));
         Long semestreId = ParamUtils.parseLong(entity.get("semestreId"));
-        String aulaId = entity.get("id");
+        String aulaId = entity.get("aulaId");
 
         AulaPlanificacion aulaPlanificacion = consultaAulas.asignaAulaToEstudio(
                 Long.parseLong(estudioId), Long.parseLong(aulaId), semestreId, cursoId);

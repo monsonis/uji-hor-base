@@ -98,7 +98,7 @@ public class AulasDAOTest
 
         for (AulaPlanificacionDTO aulaPlan : aulas)
         {
-            aulaPlan.setEstudioId(estudio.getId());
+            aulaPlan.setEstudio(estudio);
             aulasDAO.insert(aulaPlan);
         }
     }

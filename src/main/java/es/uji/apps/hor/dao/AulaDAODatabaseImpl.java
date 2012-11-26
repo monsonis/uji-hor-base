@@ -87,7 +87,8 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
 
         query.from(qAula, qAulaPlanificacion)
                 .join(qAulaPlanificacion.aula, qAula)
-                .where(qAula.centro.id.eq(centroId).and(qAulaPlanificacion.estudioId.eq(estudioId)));
+                .where(qAula.centro.id.eq(centroId)
+                        .and(qAulaPlanificacion.estudio.id.eq(estudioId)));
 
         List<Aula> listaAulas = new ArrayList<Aula>();
 
@@ -109,7 +110,7 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         QAulaDTO qAula = QAulaDTO.aulaDTO;
 
         query.from(qAulaPlanificacion).join(qAulaPlanificacion.aula, qAula)
-                .where(qAulaPlanificacion.estudioId.eq(estudioId));
+                .where(qAulaPlanificacion.estudio.id.eq(estudioId));
 
         if (semestreId != null)
         {
@@ -161,7 +162,7 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         AulaPlanificacionDTO aulaPlan = new AulaPlanificacionDTO();
         aulaPlan.setNombre(aula.getNombre());
         aulaPlan.setAula(aula);
-        aulaPlan.setEstudioId(estudioId);
+        aulaPlan.setEstudio(estudio);
         aulaPlan.setCursoId(cursoId);
         aulaPlan.setSemestreId(semestreId);
 
@@ -175,7 +176,7 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         AulaPlanificacion aulaPlanificacion = new AulaPlanificacion();
         aulaPlanificacion.setId(aulaPlanificacionDTO.getId());
         aulaPlanificacion.setNombre(aulaPlanificacionDTO.getNombre());
-        aulaPlanificacion.setEstudioId(aulaPlanificacionDTO.getEstudioId());
+        aulaPlanificacion.setEstudioId(aulaPlanificacionDTO.getEstudio().getId());
         aulaPlanificacion.setCursoId(aulaPlanificacionDTO.getCursoId());
         aulaPlanificacion.setSemestreId(aulaPlanificacionDTO.getSemestreId());
         aulaPlanificacion.setEdificio(aulaPlanificacionDTO.getAula().getEdificio());

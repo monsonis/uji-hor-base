@@ -137,15 +137,16 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
             var gridStore = this.getGridAulas().getStore();
 
             var aulaAsignada = Ext.ModelManager.create({
-                id: estudioId,
-                cursoId: '',
+                estudioId: estudioId,
+                cursoId: '2012',
                 nombre: item.get("text"),
                 aulaId: item.get("id"),
                 semestreId: semestreId
             }, "HOR.model.AulaPlanificacion");
-            
+                     
+          
             gridStore.add(aulaAsignada);
-            gridStore.commitChanges();
+
         }
     },
    
