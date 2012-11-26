@@ -48,7 +48,11 @@ StartTest(function(t) {
 		            	 node_area.expand();
 		            	 t.ok(node_area.hasChildNodes(),'La carpeta area tiene contenido');
 		            	 
-		            	 var node_aula = node_area.getChildAt(1);
+		            	 var node_planta = node_area.getChildAt(0);
+		            	 node_planta.expand();
+		            	 t.ok(node_planta.hasChildNodes(),'La carpeta planta tiene contenido');
+		            	 
+		            	 var node_aula = node_planta.getChildAt(1);
 		            	 selected_aula_id = node_aula.get("id");
 		            	 console.log(selected_aula_id);
 		            	 tree_aulas.getSelectionModel().select(node_aula);

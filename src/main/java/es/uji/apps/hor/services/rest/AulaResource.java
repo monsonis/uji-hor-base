@@ -160,17 +160,65 @@ public class AulaResource
         treeRowTipoAula.setText(tipoAula.getTipo());
         treeRowTipoAula.setLeaf("false");
 
-        List<TreeRow> listaTreeRowAulas = new ArrayList<TreeRow>();
+        List<TreeRow> listaTreeRowPlantas = new ArrayList<TreeRow>();
 
-        for (Aula aula : hashAulas.get(edificio + tipo))
+        for (TreeRow plantaTreeRow : aulasPorPlantaTreeRow(hashAulas.get(edificio + tipo)))
         {
-            listaTreeRowAulas.add(aulaToTreeRow(aula));
+            listaTreeRowPlantas.add(plantaTreeRow);
         }
 
-        treeRowTipoAula.setHijos(listaTreeRowAulas);
+        treeRowTipoAula.setHijos(listaTreeRowPlantas);
 
         return treeRowTipoAula;
 
+    }
+
+    private List<TreeRow> aulasPorPlantaTreeRow(List<Aula> listaAulas)
+    {
+        List<TreeRow> treePlantas = new ArrayList<TreeRow>();
+
+        Map<String, List<Aula>> hashPlantas = extraeAulasPorPlanta(listaAulas);
+
+        List<String> lista_plantas = new ArrayList<String>(hashPlantas.keySet());
+        Collections.sort(lista_plantas);
+        for (String planta : lista_plantas)
+        {
+            TreeRow treeRowPlanta = new TreeRow();
+
+            treeRowPlanta.setId(UUID.randomUUID().toString());
+            treeRowPlanta.setTitle("Planta " + planta);
+            treeRowPlanta.setText("Planta " + planta);
+            treeRowPlanta.setLeaf("false");
+
+            List<TreeRow> listaTreeRowAulas = new ArrayList<TreeRow>();
+
+            for (Aula aula : hashPlantas.get(planta))
+            {
+                listaTreeRowAulas.add(aulaToTreeRow(aula));
+            }
+
+            treeRowPlanta.setHijos(listaTreeRowAulas);
+
+            treePlantas.add(treeRowPlanta);
+        }
+
+        return treePlantas;
+    }
+
+    private Map<String, List<Aula>> extraeAulasPorPlanta(List<Aula> listaAulas)
+    {
+        HashMap<String, List<Aula>> hashPlantas = new HashMap<String, List<Aula>>();
+
+        for (Aula aula : listaAulas)
+        {
+            if (!hashPlantas.containsKey(aula.getPlanta()))
+            {
+                hashPlantas.put(aula.getPlanta(), new ArrayList<Aula>());
+            }
+            hashPlantas.get(aula.getPlanta()).add(aula);
+        }
+
+        return hashPlantas;
     }
 
     private TreeRow aulaToTreeRow(Aula aula)
