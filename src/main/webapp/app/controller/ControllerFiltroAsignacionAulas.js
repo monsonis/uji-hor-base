@@ -42,7 +42,12 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
             'treePanelAulas button[name=anyadir]' :
             {
                 click : this.anyadirAula
+            },
+            'gridAulas button[name=borrar]' :
+            {
+                click : this.borrarAula
             }
+
         });
     },
 
@@ -126,6 +131,17 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
         });
     },
 
+    borrarAula: function() {
+        var listaSeleccion = this.getGridAulas().getSelectionModel().getSelection();
+        if (listaSeleccion.length > 0) {
+            var aulaPlanificada = listaSeleccion[0];
+            var gridStore = this.getGridAulas().getStore();
+
+            gridStore.remove(aulaPlanificada);
+            gridStore.sync();
+        }
+    },
+   
     anyadirAula: function() {
         var listaSeleccion = this.getTreePanelAulas().getSelectionModel().getSelection();
         if (listaSeleccion.length > 0 && listaSeleccion[0].get("leaf") === true) {
@@ -139,19 +155,13 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
                 estudioId: estudioId,
                 cursoId: '0',
                 nombre: item.get("text"),
+                estudioId: estudioId,
                 aulaId: item.get("id"),
                 semestreId: semestreId
             }, "HOR.model.AulaPlanificacion");
                      
-          
             gridStore.add(aulaAsignada);
-                      
         }
-    },
-   
-    borrarAula: function() {
-        console.log("existo");
-        
     },
       
 

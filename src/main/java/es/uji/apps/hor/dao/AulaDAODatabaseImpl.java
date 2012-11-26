@@ -160,8 +160,6 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
             throw new RegistroNoEncontradoException();
         }
 
-        // Comprobamos si existe una aula aignada con los mismos datos
-
         JPAQuery query = new JPAQuery(entityManager);
         QAulaPlanificacionDTO qAulaPlan = QAulaPlanificacionDTO.aulaPlanificacionDTO;
 

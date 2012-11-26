@@ -8,12 +8,14 @@ Ext.define('HOR.view.aulas.GridAulas',
     sortableColumns : false,
     tbar: [ {
         xtype: 'button',
+        name: 'borrar',
         text: 'Esborrar aula',
         iconCls : 'application-add'
     }],
     columns : [
     {
         text : 'Aula',
-        dataIndex : 'nombre'
+        dataIndex : 'nombre',
+        width: 250
     }]
 });

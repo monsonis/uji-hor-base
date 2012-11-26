@@ -18,9 +18,7 @@ Ext.define('HOR.store.StoreAulasAsignadas',
 
         writer :
         {
-            type : 'json',
-            successProperty : 'success'
+            type : 'json'
         }
-        
     }
 });
