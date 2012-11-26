@@ -176,8 +176,11 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         aulaPlanificacion.setId(aulaPlanificacionDTO.getId());
         aulaPlanificacion.setNombre(aulaPlanificacionDTO.getNombre());
         aulaPlanificacion.setEstudioId(aulaPlanificacionDTO.getEstudioId());
-        aulaPlanificacion.setCursoId(aulaPlanificacion.getCursoId());
-        aulaPlanificacion.setSemestreId(aulaPlanificacion.getSemestreId());
+        aulaPlanificacion.setCursoId(aulaPlanificacionDTO.getCursoId());
+        aulaPlanificacion.setSemestreId(aulaPlanificacionDTO.getSemestreId());
+        aulaPlanificacion.setEdificio(aulaPlanificacionDTO.getAula().getEdificio());
+        aulaPlanificacion.setTipo(aulaPlanificacionDTO.getAula().getTipo());
+        aulaPlanificacion.setPlanta(aulaPlanificacionDTO.getAula().getPlanta());
 
         return aulaPlanificacion;
     }

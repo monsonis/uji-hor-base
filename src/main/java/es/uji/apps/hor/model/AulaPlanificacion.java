@@ -14,6 +14,12 @@ public class AulaPlanificacion
 
     private Long semestreId;
 
+    private String edificio;
+
+    private String tipo;
+
+    private String planta;
+
     public Long getId()
     {
         return id;
@@ -72,6 +78,36 @@ public class AulaPlanificacion
     public void setSemestreId(Long semestreId)
     {
         this.semestreId = semestreId;
+    }
+
+    public String getEdificio()
+    {
+        return edificio;
+    }
+
+    public void setEdificio(String edificio)
+    {
+        this.edificio = edificio;
+    }
+
+    public String getTipo()
+    {
+        return tipo;
+    }
+
+    public void setTipo(String tipo)
+    {
+        this.tipo = tipo;
+    }
+
+    public String getPlanta()
+    {
+        return planta;
+    }
+
+    public void setPlanta(String planta)
+    {
+        this.planta = planta;
     }
 
 }

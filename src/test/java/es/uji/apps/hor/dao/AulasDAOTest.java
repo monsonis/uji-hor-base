@@ -153,6 +153,7 @@ public class AulasDAOTest
         aula = new AulaDTO();
         aula.setNombre("Aula2000");
         aula.setCentro(centro);
+        aula.setEdificio("EDI");
 
         aula = aulasDAO.insert(aula);
 
@@ -163,6 +164,7 @@ public class AulasDAOTest
                 .get(0);
 
         Assert.assertEquals(aulaPlan.getNombre(), aux.getNombre());
+        Assert.assertEquals(aula.getEdificio(), aux.getAula().getEdificio());
     }
 
     @Test
