@@ -6,7 +6,14 @@ Ext.define('Event.form.DetalleClases',
     layout :
     {
         type : 'table',
-        columns : 6
+        columns : 6,
+        tableAttrs :
+        {
+            style :
+            {
+                width : '100%'
+            }
+        }
     },
     hidden : true,
 
@@ -20,7 +27,7 @@ Ext.define('Event.form.DetalleClases',
     actualizarDetalleClases : function(clases)
     {
         this.removeAll();
-        
+
         var count = 0;
 
         for ( var i = 0; i < clases.length; i++)
@@ -41,15 +48,15 @@ Ext.define('Event.form.DetalleClases',
                 var display = new Ext.create('Ext.form.field.Display',
                 {
                     value : fecha,
-                    fieldCls : cls,
+                    fieldCls : cls
                 });
 
                 this.add(display);
-                
+
                 count++;
             }
         }
-        
+
         return count;
     }
 });
