@@ -132,8 +132,8 @@ public class AulaResource
         Aula aulaEdificio = hashAulas.get(edificio + listaTipos.get(0)).get(0);
 
         treeRowEdificio.setId(UUID.randomUUID().toString());
-        treeRowEdificio.setTitle(aulaEdificio.getEdificio());
-        treeRowEdificio.setText(aulaEdificio.getEdificio());
+        treeRowEdificio.setTitle("Edifici " + aulaEdificio.getEdificio());
+        treeRowEdificio.setText("Edifici " + aulaEdificio.getEdificio());
         treeRowEdificio.setLeaf("false");
 
         List<TreeRow> listaTreeRowTipos = new ArrayList<TreeRow>();
@@ -156,8 +156,8 @@ public class AulaResource
         Aula tipoAula = hashAulas.get(edificio + tipo).get(0);
 
         treeRowTipoAula.setId(UUID.randomUUID().toString());
-        treeRowTipoAula.setTitle(tipoAula.getTipo());
-        treeRowTipoAula.setText(tipoAula.getTipo());
+        treeRowTipoAula.setTitle("Tipus " + tipoAula.getTipo());
+        treeRowTipoAula.setText("Tipus " + tipoAula.getTipo());
         treeRowTipoAula.setLeaf("false");
 
         List<TreeRow> listaTreeRowPlantas = new ArrayList<TreeRow>();
