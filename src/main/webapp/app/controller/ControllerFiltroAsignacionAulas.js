@@ -140,6 +140,13 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
             var gridStore = this.getGridAulas().getStore();
 
             gridStore.remove(aulaPlanificada);
+            gridStore.sync(
+            {
+                failure : function()
+                {
+                    gridStore.add(aulaPlanificada);
+                }
+            });
         }
     },
 
@@ -168,7 +175,7 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
             gridStore.sync(
             {
                 failure : function()
-                {                 
+                {
                     gridStore.remove(aulaAsignada);
                 }
             });
