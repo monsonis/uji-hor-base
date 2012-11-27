@@ -5,6 +5,9 @@ Ext.define('HOR.view.aulas.GridAulas',
     alias : 'widget.gridAulas',
     store : 'StoreAulasAsignadas',
     disableSelection : false,
+    selModel: {
+        mode: 'MULTI'
+    },
     sortableColumns : true,
     tbar: [ {
         xtype: 'button',

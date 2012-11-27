@@ -140,15 +140,16 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
         var listaSeleccion = this.getGridAulas().getSelectionModel().getSelection();
         if (listaSeleccion.length > 0)
         {
-            var aulaPlanificada = listaSeleccion[0];
+        	 
             var gridStore = this.getGridAulas().getStore();
 
-            gridStore.remove(aulaPlanificada);
+            var ref = this;
+            gridStore.remove(listaSeleccion);
             gridStore.sync(
             {
                 failure : function()
                 {
-                    gridStore.add(aulaPlanificada);
+                	ref.actualizarDatosGridAsignaciones();
                 }
             });
         }
@@ -190,7 +191,6 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
 	                failure : function()
 	                {
 	                	ref.actualizarDatosGridAsignaciones();
-	                    //gridStore.remove(itemsParaAnyadir);
 	                }
 	            });
             }
