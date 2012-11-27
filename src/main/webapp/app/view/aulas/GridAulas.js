@@ -10,7 +10,7 @@ Ext.define('HOR.view.aulas.GridAulas',
         xtype: 'button',
         name: 'borrar',
         text: 'Esborrar aula',
-        iconCls : 'application-add'
+        iconCls : 'application-delete'
     } ],
     columns : [
     {
