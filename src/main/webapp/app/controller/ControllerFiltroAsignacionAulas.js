@@ -34,6 +34,11 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
             {
                 select : this.onEstudioSelected,
             },
+            
+            'treePanelAulas' :
+            {
+            	itemdblclick : this.anyadirAula,
+            },
 
             'panelAulas filtroAsignacionAulas combobox[name=semestre]' :
             {
@@ -49,8 +54,7 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
             }
 
         });
-    },
-
+    },    
     onCentroSelected : function(combo, records)
     {
 
