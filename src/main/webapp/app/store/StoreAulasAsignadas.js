@@ -2,7 +2,7 @@ Ext.define('HOR.store.StoreAulasAsignadas',
 {
     extend : 'Ext.data.Store',
     autoLoad : false,
-    autoSync : true,
+    autoSync : false,
     model : 'HOR.model.AulaPlanificacion',
     proxy :
     {
