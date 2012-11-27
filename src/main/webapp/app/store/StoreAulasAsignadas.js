@@ -4,6 +4,10 @@ Ext.define('HOR.store.StoreAulasAsignadas',
     autoLoad : false,
     autoSync : false,
     model : 'HOR.model.AulaPlanificacion',
+    sorters: [{
+        property: 'nombre',
+        direction: 'ASC'
+    }],
     proxy :
     {
         type : 'rest',
