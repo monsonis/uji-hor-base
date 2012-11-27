@@ -4,6 +4,9 @@ Ext.define('HOR.view.aulas.TreePanelAulas',
     title: 'Aules disponibles',
     alias : 'widget.treePanelAulas',
     rootVisible : false,
+    selModel: {
+        mode: 'MULTI'
+    },
     store : 'TreeStoreAulas',
     tbar: [ {
         xtype: 'button',

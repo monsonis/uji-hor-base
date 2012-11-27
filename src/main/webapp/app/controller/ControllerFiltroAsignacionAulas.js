@@ -157,32 +157,43 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
     anyadirAula : function()
     {
         var listaSeleccion = this.getTreePanelAulas().getSelectionModel().getSelection();
-        if (listaSeleccion.length > 0 && listaSeleccion[0].get("leaf") === true)
+        if (listaSeleccion.length > 0)
         {
-            var item = listaSeleccion[0];
             var estudioId = this.getFiltroAsignacionAulas().down("combobox[name=estudio]").getValue();
             var semestreId = this.getFiltroAsignacionAulas().down("combobox[name=semestre]").getValue();
 
             var gridStore = this.getGridAulas().getStore();
 
-            var aulaAsignada = Ext.ModelManager.create(
-            {
-                estudioId : estudioId,
-                cursoId : '0',
-                nombre : item.get("text"),
-                estudioId : estudioId,
-                aulaId : item.get("id"),
-                semestreId : semestreId
-            }, "HOR.model.AulaPlanificacion");
-
-            gridStore.add(aulaAsignada);
-            gridStore.sync(
-            {
-                failure : function()
-                {
-                    gridStore.remove(aulaAsignada);
-                }
-            });
+            var itemsParaAnyadir = new Array();
+            for (index in listaSeleccion){
+            	var item = listaSeleccion[index];
+            	if (item.get("leaf") === true){
+	            	 var aulaAsignada = Ext.ModelManager.create(
+	            	            {
+	            	                estudioId : estudioId,
+	            	                cursoId : '0',
+	            	                nombre : item.get("text"),
+	            	                estudioId : estudioId,
+	            	                aulaId : item.get("id"),
+	            	                semestreId : semestreId
+	            	            }, "HOR.model.AulaPlanificacion");
+	
+	            	 itemsParaAnyadir.push(aulaAsignada);  
+            	}
+            }
+            
+            var ref = this;
+            if (itemsParaAnyadir.length > 0 ){
+	            gridStore.add(itemsParaAnyadir);
+	            gridStore.sync(
+	            {
+	                failure : function()
+	                {
+	                	ref.actualizarDatosGridAsignaciones();
+	                    //gridStore.remove(itemsParaAnyadir);
+	                }
+	            });
+            }
         }
     },
 
