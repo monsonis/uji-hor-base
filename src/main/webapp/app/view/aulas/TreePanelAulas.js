@@ -13,6 +13,12 @@ Ext.define('HOR.view.aulas.TreePanelAulas',
         text: 'Afegir aula',
         name: 'anyadir',
         iconCls : 'application-add'
+    }],
+    
+    tools: [{
+        type: 'collapse'
+    },{
+        type: 'expand'
     }]
 
 });

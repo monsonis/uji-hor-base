@@ -51,10 +51,20 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
             'gridAulas button[name=borrar]' :
             {
                 click : this.borrarAula
-            }
+            },
+            'tool[type=expand]' :
+            {
+                click : this.expandirArbol
+            },
+            'tool[type=collapse]' :
+            {
+                click : this.colapsarArbol
+            },
 
         });
     },    
+    
+   
     onCentroSelected : function(combo, records)
     {
 
@@ -201,5 +211,14 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
     {
         var grid = this.getGridAulas();
         grid.getStore().removeAll();
-    }
+    },
+   
+    expandirArbol : function(){
+   	 this.getTreePanelAulas().expandAll();
+   },
+   
+   colapsarArbol : function(){
+  	 this.getTreePanelAulas().collapseAll();
+   }
+   
 });
