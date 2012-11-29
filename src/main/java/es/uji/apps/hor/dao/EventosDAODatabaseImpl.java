@@ -1,7 +1,5 @@
 package es.uji.apps.hor.dao;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -27,7 +25,6 @@ import es.uji.apps.hor.model.Calendario;
 import es.uji.apps.hor.model.Evento;
 import es.uji.apps.hor.model.EventoDocencia;
 import es.uji.apps.hor.model.TipoSubgrupo;
-import es.uji.apps.hor.services.rest.CalendarResource;
 import es.uji.commons.db.BaseDAODatabaseImpl;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 

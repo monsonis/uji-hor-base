@@ -3,6 +3,7 @@ package es.uji.apps.hor.dao;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -31,9 +32,6 @@ public class EventosDAOTest
 {
     @Autowired
     private EventosDAO eventosDAO;
-    
-    @Autowired
-    private GrupoAsignaturaDAO grupoAsignaturaDAO;
 
     private ItemDTO item;
 
@@ -64,7 +62,7 @@ public class EventosDAOTest
         item.setSemestre((SemestreDTO) eventosDAO.get(SemestreDTO.class, new Long(1)).get(0));
         item.setSubgrupoId(new Long(1));
         item.setTipoSubgrupoId("TU");
-        
+
     }
 
     @Test
@@ -89,16 +87,17 @@ public class EventosDAOTest
     {
         eventosDAO.insert(item);
 
-        String fechaIniStr = "31/07/2012 10:00";
-        String fechaFinStr = "31/07/2012 12:00";
+        Calendar calendarIni = Calendar.getInstance();
+        calendarIni.set(Calendar.HOUR, 10);
+        calendarIni.set(Calendar.MINUTE, 0);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        Date fechaInicio = sdf.parse(fechaIniStr);
-        Date fechaFin = sdf.parse(fechaFinStr);
+        Calendar calendarFin = Calendar.getInstance();
+        calendarFin.set(Calendar.HOUR, 12);
+        calendarFin.set(Calendar.MINUTE, 0);
 
-        Evento evento = eventosDAO.modificaDiaYHoraGrupoAsignatura(item.getId(), fechaInicio,
-                fechaFin);
-        Assert.assertEquals(fechaInicio, evento.getInicio());
+        Evento evento = eventosDAO.modificaDiaYHoraGrupoAsignatura(item.getId(),
+                calendarIni.getTime(), calendarFin.getTime());
+        Assert.assertEquals(calendarIni.getTime(), evento.getInicio());
     }
 
     @Test
@@ -119,8 +118,9 @@ public class EventosDAOTest
 
         eventosDAO.deleteEventoSemanaGenerica(item.getId());
 
-        ItemDTO itemDTO = eventosDAO.get(ItemDTO.class, item.getId()).get(0);
-        Assert.assertNull(itemDTO.getDiaSemana());
+        List<ItemDTO> items = eventosDAO.get(ItemDTO.class, item.getId());
+        Assert.assertTrue(items.size() > 0);
+        Assert.assertNull(items.get(0).getDiaSemana());
     }
 
     @Test
