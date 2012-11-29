@@ -258,28 +258,12 @@ public class AulaResource
     @Path("estudio/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> getAulasAsignadasToEstudio(@PathParam("id") String estudioId,
-            @QueryParam("semestreId") String semestreId, @QueryParam("cursoId") String cursoId)
+            @QueryParam("semestreId") String semestreId)
     {
-        Long semestre = null;
-        try
-        {
-            semestre = Long.parseLong(semestreId);
-        }
-        catch (Exception e)
-        {
-        }
-
-        Long curso = null;
-        try
-        {
-            curso = Long.parseLong(cursoId);
-        }
-        catch (Exception e)
-        {
-        }
+        Long semestre = Long.parseLong(semestreId);
 
         List<AulaPlanificacion> aulasAsignadas = consultaAulas.getAulasAsignadasToEstudio(
-                Long.parseLong(estudioId), semestre, curso);
+                Long.parseLong(estudioId), semestre);
 
         return UIEntity.toUI(aulasAsignadas);
     }
@@ -292,12 +276,11 @@ public class AulaResource
             NumberFormatException
     {
         String estudioId = entity.get("estudioId");
-        Long cursoId = ParamUtils.parseLong(entity.get("cursoId"));
         Long semestreId = ParamUtils.parseLong(entity.get("semestreId"));
         String aulaId = entity.get("aulaId");
 
         AulaPlanificacion aulaPlanificacion = consultaAulas.asignaAulaToEstudio(
-                Long.parseLong(estudioId), Long.parseLong(aulaId), semestreId, cursoId);
+                Long.parseLong(estudioId), Long.parseLong(aulaId), semestreId);
 
         return Collections.singletonList(UIEntity.toUI(aulaPlanificacion));
     }

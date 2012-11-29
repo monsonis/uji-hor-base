@@ -17,9 +17,9 @@ public interface AulaDAO extends BaseDAO
 
     List<Aula> getAulasByCentroId(Long centroId);
 
-    List<AulaPlanificacion> getAulasAsignadasToEstudio(Long estudioId, Long semestreId, Long cursoId);
+    List<AulaPlanificacion> getAulasAsignadasToEstudio(Long estudioId, Long semestreId);
 
-    AulaPlanificacion asignaAulaToEstudio(Long estudioId, Long aulaId, Long semestreId, Long cursoId)
+    AulaPlanificacion asignaAulaToEstudio(Long estudioId, Long aulaId, Long semestreId)
             throws RegistroNoEncontradoException, AulaYaAsignadaAEstudioException;
 
     void deleteAulaAsignadaToEstudio(Long aulaPlanificacionId) throws RegistroConHijosException;

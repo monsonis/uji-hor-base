@@ -77,7 +77,6 @@ public class AulasDAOTest
         aulaPlan = new AulaPlanificacionDTO();
         aulaPlan.setNombre("Aula1000-3");
         aulaPlan.setAula(aula);
-        aulaPlan.setCursoId(new Long(1));
 
         aulas.add(aulaPlan);
 
@@ -85,7 +84,6 @@ public class AulasDAOTest
         aulaPlan.setNombre("Aula1000-3");
         aulaPlan.setAula(aula);
         aulaPlan.setSemestreId(new Long(2));
-        aulaPlan.setCursoId(new Long(2));
 
         aulas.add(aulaPlan);
     }
@@ -105,43 +103,13 @@ public class AulasDAOTest
     }
 
     @Test
-    public void recuperaAulasAsignadasAUnEstudioSinSemestreNiGrupoTest()
-    {
-        insertaDatos();
-        List<AulaPlanificacion> aulas = aulasDAO.getAulasAsignadasToEstudio(estudio.getId(), null,
-                null);
-
-        Assert.assertEquals(1, aulas.size());
-    }
-
-    @Test
-    public void recuperaAulasAsignadasAUnEstudionConSemestreTest()
+    public void recuperaAulasAsignadasAUnEstudionTest()
     {
         insertaDatos();
         List<AulaPlanificacion> aulas = aulasDAO.getAulasAsignadasToEstudio(estudio.getId(),
-                new Long(1), null);
-
-        Assert.assertEquals(2, aulas.size());
-    }
-
-    @Test
-    public void recuperaAulasAsignadasAUnEstudioConCursoTest()
-    {
-        insertaDatos();
-        List<AulaPlanificacion> aulas = aulasDAO.getAulasAsignadasToEstudio(estudio.getId(), null,
                 new Long(1));
 
-        Assert.assertEquals(2, aulas.size());
-    }
-
-    @Test
-    public void recuperaAulasAsignadasAUnEstudioConSemestreYCursoTest()
-    {
-        insertaDatos();
-        List<AulaPlanificacion> aulas = aulasDAO.getAulasAsignadasToEstudio(estudio.getId(),
-                new Long(2), new Long(2));
-
-        Assert.assertEquals(2, aulas.size());
+        Assert.assertEquals(1, aulas.size());
     }
 
     @Test
@@ -160,7 +128,7 @@ public class AulasDAOTest
         aula = aulasDAO.insert(aula);
 
         AulaPlanificacion aulaPlan = aulasDAO.asignaAulaToEstudio(estudio.getId(), aula.getId(),
-                null, null);
+                new Long(2));
 
         AulaPlanificacionDTO aux = aulasDAO.get(AulaPlanificacionDTO.class, aulaPlan.getId())
                 .get(0);
@@ -185,11 +153,11 @@ public class AulasDAOTest
         aula = aulasDAO.insert(aula);
 
         AulaPlanificacion aulaPlan = aulasDAO.asignaAulaToEstudio(estudio.getId(), aula.getId(),
-                new Long(1), null);
+                new Long(1));
 
         // Y volvemos a asignar el aula al estudio
 
-        aulasDAO.asignaAulaToEstudio(estudio.getId(), aula.getId(), new Long(1), null);
+        aulasDAO.asignaAulaToEstudio(estudio.getId(), aula.getId(), new Long(1));
     }
 
     @Test

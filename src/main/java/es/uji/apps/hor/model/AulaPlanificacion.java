@@ -10,8 +10,6 @@ public class AulaPlanificacion
 
     private Long estudioId;
 
-    private Long cursoId;
-
     private Long semestreId;
 
     private String edificio;
@@ -58,16 +56,6 @@ public class AulaPlanificacion
     public void setEstudioId(Long estudioId)
     {
         this.estudioId = estudioId;
-    }
-
-    public Long getCursoId()
-    {
-        return cursoId;
-    }
-
-    public void setCursoId(Long cursoId)
-    {
-        this.cursoId = cursoId;
     }
 
     public Long getSemestreId()

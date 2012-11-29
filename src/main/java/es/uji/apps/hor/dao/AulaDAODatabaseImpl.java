@@ -102,36 +102,17 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
     }
 
     @Override
-    public List<AulaPlanificacion> getAulasAsignadasToEstudio(Long estudioId, Long semestreId,
-            Long cursoId)
+    public List<AulaPlanificacion> getAulasAsignadasToEstudio(Long estudioId, Long semestreId)
     {
         JPAQuery query = new JPAQuery(entityManager);
 
         QAulaPlanificacionDTO qAulaPlanificacion = QAulaPlanificacionDTO.aulaPlanificacionDTO;
         QAulaDTO qAula = QAulaDTO.aulaDTO;
 
-        query.from(qAulaPlanificacion).join(qAulaPlanificacion.aula, qAula)
-                .where(qAulaPlanificacion.estudio.id.eq(estudioId));
-
-        if (semestreId != null)
-        {
-            query.where(qAulaPlanificacion.semestreId.eq(semestreId).or(
-                    qAulaPlanificacion.semestreId.isNull()));
-        }
-        else
-        {
-            query.where(qAulaPlanificacion.semestreId.isNull());
-        }
-
-        if (cursoId != null)
-        {
-            query.where(qAulaPlanificacion.cursoId.eq(cursoId).or(
-                    qAulaPlanificacion.cursoId.isNull()));
-        }
-        else
-        {
-            query.where(qAulaPlanificacion.cursoId.isNull());
-        }
+        query.from(qAulaPlanificacion)
+                .join(qAulaPlanificacion.aula, qAula)
+                .where(qAulaPlanificacion.estudio.id.eq(estudioId).and(
+                        qAulaPlanificacion.semestreId.eq(semestreId)));
 
         List<AulaPlanificacion> listaAulasAsignadas = new ArrayList<AulaPlanificacion>();
 
@@ -144,8 +125,8 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
     }
 
     @Override
-    public AulaPlanificacion asignaAulaToEstudio(Long estudioId, Long aulaId, Long semestreId,
-            Long cursoId) throws RegistroNoEncontradoException, AulaYaAsignadaAEstudioException
+    public AulaPlanificacion asignaAulaToEstudio(Long estudioId, Long aulaId, Long semestreId)
+            throws RegistroNoEncontradoException, AulaYaAsignadaAEstudioException
     {
         AulaDTO aula;
         EstudioDTO estudio;
@@ -164,25 +145,8 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         QAulaPlanificacionDTO qAulaPlan = QAulaPlanificacionDTO.aulaPlanificacionDTO;
 
         query.from(qAulaPlan).where(
-                qAulaPlan.estudio.id.eq(estudioId).and(qAulaPlan.aula.id.eq(aulaId)));
-
-        if (semestreId != null)
-        {
-            query.where(qAulaPlan.semestreId.eq(semestreId));
-        }
-        else
-        {
-            query.where(qAulaPlan.semestreId.isNull());
-        }
-
-        if (cursoId != null)
-        {
-            query.where(qAulaPlan.cursoId.eq(cursoId));
-        }
-        else
-        {
-            query.where(qAulaPlan.cursoId.isNull());
-        }
+                qAulaPlan.estudio.id.eq(estudioId).and(qAulaPlan.aula.id.eq(aulaId))
+                        .and(qAulaPlan.semestreId.eq(semestreId)));
 
         List<AulaPlanificacionDTO> aulasPlan = query.list(qAulaPlan);
 
@@ -195,7 +159,6 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         aulaPlan.setNombre(aula.getNombre());
         aulaPlan.setAula(aula);
         aulaPlan.setEstudio(estudio);
-        aulaPlan.setCursoId(cursoId);
         aulaPlan.setSemestreId(semestreId);
 
         aulaPlan = insert(aulaPlan);
@@ -209,7 +172,6 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         aulaPlanificacion.setId(aulaPlanificacionDTO.getId());
         aulaPlanificacion.setNombre(aulaPlanificacionDTO.getNombre());
         aulaPlanificacion.setEstudioId(aulaPlanificacionDTO.getEstudio().getId());
-        aulaPlanificacion.setCursoId(aulaPlanificacionDTO.getCursoId());
         aulaPlanificacion.setSemestreId(aulaPlanificacionDTO.getSemestreId());
         aulaPlanificacion.setEdificio(aulaPlanificacionDTO.getAula().getEdificio());
         aulaPlanificacion.setTipo(aulaPlanificacionDTO.getAula().getTipo());

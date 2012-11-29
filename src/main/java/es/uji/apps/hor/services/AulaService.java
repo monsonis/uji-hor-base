@@ -38,16 +38,15 @@ public class AulaService
         return aulaDAO.getAulasByCentroIdAndestudioId(centroId, estudioId);
     }
 
-    public List<AulaPlanificacion> getAulasAsignadasToEstudio(Long estudioId, Long semestreId,
-            Long cursoId)
+    public List<AulaPlanificacion> getAulasAsignadasToEstudio(Long estudioId, Long semestreId)
     {
-        return aulaDAO.getAulasAsignadasToEstudio(estudioId, semestreId, cursoId);
+        return aulaDAO.getAulasAsignadasToEstudio(estudioId, semestreId);
     }
 
-    public AulaPlanificacion asignaAulaToEstudio(Long estudioId, Long aulaId, Long semestreId,
-            Long cursoId) throws RegistroNoEncontradoException, AulaYaAsignadaAEstudioException
+    public AulaPlanificacion asignaAulaToEstudio(Long estudioId, Long aulaId, Long semestreId)
+            throws RegistroNoEncontradoException, AulaYaAsignadaAEstudioException
     {
-        return aulaDAO.asignaAulaToEstudio(estudioId, aulaId, semestreId, cursoId);
+        return aulaDAO.asignaAulaToEstudio(estudioId, aulaId, semestreId);
     }
 
     public void deleteAulaAsignadaToEstudio(Long aulaPlanificacionId)

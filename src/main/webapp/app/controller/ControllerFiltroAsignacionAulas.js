@@ -139,8 +139,7 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
             url : '/hor/rest/aula/estudio/' + estudioId,
             params :
             {
-                semestreId : semestreId,
-                cursoId : '0'
+                semestreId : semestreId
             }
         });
     },
@@ -182,7 +181,6 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
 	            	 var aulaAsignada = Ext.ModelManager.create(
 	            	            {
 	            	                estudioId : estudioId,
-	            	                cursoId : '0',
 	            	                nombre : item.get("text"),
 	            	                estudioId : estudioId,
 	            	                aulaId : item.get("id"),
