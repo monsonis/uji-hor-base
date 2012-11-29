@@ -179,7 +179,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         item.setHoraFin(fin);
         item.setDiaSemana(diaSemanaDTO);
         item.setDetalleManual(false);
-        update(item);
+        item = update(item);
 
         return creaEventoDesde(item);
     }
@@ -314,7 +314,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         itemDTO.setAsignatura(evento.getAsignatura());
         itemDTO.setAsignaturaId(evento.getAsignaturaId());
         itemDTO.setAulasPlanificacion(evento.getAulasPlanificacion());
-        itemDTO.setCaracterId(evento.getCaracter());
+        itemDTO.setCaracter(evento.getCaracter());
         itemDTO.setCaracterId(evento.getCaracterId());
         itemDTO.setComun(evento.getComun());
         itemDTO.setCursoId(evento.getCursoId());
@@ -337,6 +337,11 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         itemDTO.setTipoEstudioId(evento.getTipoEstudio());
         itemDTO.setTipoSubgrupo(evento.getTipoSubgrupo());
         itemDTO.setTipoSubgrupoId(evento.getTipoSubgrupoId());
+        itemDTO.setDesdeElDia(evento.getDesdeElDia());
+        itemDTO.setHastaElDia(evento.getHastaElDia());
+        itemDTO.setRepetirCadaSemanas(evento.getRepetirCadaSemanas());
+        itemDTO.setNumeroIteraciones(evento.getNumeroIteraciones());
+        itemDTO.setDetalleManual(evento.getDetalleManual());
         itemDTO = insert(itemDTO);
 
         // Copiamos los circuitos

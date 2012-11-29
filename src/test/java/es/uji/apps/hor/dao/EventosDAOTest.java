@@ -65,6 +65,7 @@ public class EventosDAOTest
         item.setSemestre((SemestreDTO) eventosDAO.get(SemestreDTO.class, new Long(1)).get(0));
         item.setSubgrupoId(new Long(1));
         item.setTipoSubgrupoId("TU");
+        
     }
 
     @Test
@@ -85,7 +86,6 @@ public class EventosDAOTest
     }
 
     @Test
-    @Ignore
     public void modificaDiaYHoraGrupoAsignaturaTest() throws ParseException
     {
         eventosDAO.insert(item);
@@ -113,7 +113,6 @@ public class EventosDAOTest
     }
 
     @Test
-    @Ignore
     public void desasignaEventoSemanaGenericaTest() throws RegistroNoEncontradoException
     {
         eventosDAO.insert(item);
@@ -125,7 +124,6 @@ public class EventosDAOTest
     }
 
     @Test
-    @Ignore
     public void divideClaseDeMasDeUnaHoraTest() throws RegistroNoEncontradoException,
             EventoNoDivisibleException
     {
@@ -149,7 +147,6 @@ public class EventosDAOTest
     }
 
     @Test
-    @Ignore
     public void eliminaEventoDuplicadoEnSemanaGenericaTest() throws RegistroNoEncontradoException,
             EventoNoDivisibleException
     {
