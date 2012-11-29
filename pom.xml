@@ -1,10 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>es.uji.apps.hor</groupId>
 	<artifactId>uji-hor-base</artifactId>
 	<packaging>war</packaging>
-	<version>0.0.5-SNAPSHOT</version>
+	<version>0.0.5</version>
 	<name>uji-hor-base</name>
 
 	<properties>
@@ -45,8 +44,8 @@
 
 
 	<scm>
-		<connection>scm:svn:http://jira.uji.es/repos/uji/HOR/uji-hor-base/trunk</connection>
-		<url>http://jira.uji.es/repos/uji/HOR/uji-hor-base/trunk</url>
+		<connection>scm:svn:http://jira.uji.es/repos/uji/HOR/uji-hor-base/tags/uji-hor-base_0.0.5</connection>
+		<url>http://jira.uji.es/repos/uji/HOR/uji-hor-base/tags/uji-hor-base_0.0.5</url>
 	</scm>
 
 	<distributionManagement>
