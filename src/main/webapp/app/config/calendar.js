@@ -402,7 +402,13 @@ Extensible.calendar.form.EventDetails.override(
         });
 
         me.titleField.focus();
-        me.getDetalleClasesDocencia(rec.data[EventMappings.EventId.name], rec.data[EventMappings.EndRepNumberComp.name]);
+
+        var numRepeticiones = rec.data[EventMappings.EndRepNumberComp.name];
+        if (rec.data[EventMappings.DetalleManual.name] == 'true')
+        {
+            numRepeticiones = '';
+        }
+        me.getDetalleClasesDocencia(rec.data[EventMappings.EventId.name], numRepeticiones);
     },
 
     // private
@@ -494,7 +500,7 @@ Extensible.calendar.form.EventDetails.override(
 
                 // Si se ha establecido el número de repeticiones, comprobamos que coincide con el
                 // número de clases
-                
+
                 if (numeroRepeticiones && numeroRepeticiones != numClases)
                 {
                     me.down('panelinfo').showAviso('AVIS: Les repeticions no coincideixen amb el nombre de classes. Es possible que alguna classe haja coincidit amb un dia festiu.');
