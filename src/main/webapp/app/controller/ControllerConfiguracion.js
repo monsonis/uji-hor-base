@@ -41,6 +41,8 @@ Ext.define('HOR.controller.ControllerConfiguracion',
                 select : function(combo)
                 {
                     combo.up('filtroGrupos').down('button[name=intervaloHorario]').setVisible(true);
+                    combo.up('filtroGrupos').down('button[name=calendarioDetalle]').setVisible(true);
+                    combo.up('filtroGrupos').down('button[name=calendarioGenerica]').setVisible(true);
                 }
             }
         });

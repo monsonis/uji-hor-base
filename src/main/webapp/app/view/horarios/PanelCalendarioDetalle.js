@@ -1,30 +1,19 @@
-Ext.define('HOR.view.horarios.PanelCalendario',
+Ext.define('HOR.view.horarios.PanelCalendarioDetalle',
 {
     extend : 'Extensible.calendar.CalendarPanel',
-    alias : 'widget.panelCalendario',    
+    alias : 'widget.panelCalendarioDetalle',    
     region : 'center',
-    title : 'Calendari',
+    title : 'Calendari detall',
     depends : [ 'HOR.store.StoreCalendarios', 'HOR.store.StoreEventos' ],
     calendarStore : Ext.create('HOR.store.StoreCalendarios'),
     eventStore : Ext.create('HOR.store.StoreEventos'),
     editModal : true,
     flex : 1,
     padding : 5,
-    showTodayText : false,
-    showNavToday : false,
-    showDayView : false,
-    showWeekView : false,
-    showMonthView : false,
-    weekViewCfg :
-    {
-        dayCount : 5,
-        startDay : 1,
-        startDayIsStatic : true,
-    },
-    showMultiDayView : true,
+    showMultiDayView : false,
     showMultiWeekView : false,
-    showNavJump : false,
-    showNavNextPrev : false,
+    showMonthView : false,
+    showWeekView : false,
     multiDayViewCfg :
     {
         dayCount : 5,
@@ -42,32 +31,27 @@ Ext.define('HOR.view.horarios.PanelCalendario',
             return params;
         }
     },
-    getMultiDayText : function()
-    {
-        return 'Setmana genèrica';
-    },
-
-    initComponent : function()
-    {
-        this.callParent(arguments);
-    },
 
     limpiaCalendario : function()
     {
         this.store.removeAll(false);
     },
-
     initComponent : function()
     {
         Extensible.calendar.template.BoxLayout.override(
         {
-            firstWeekDateFormat : 'l',
-            multiDayFirstDayFormat : 'l',
-            multiDayMonthStartFormat : 'l'
+            firstWeekDateFormat : 'D j',
+            multiDayFirstDayFormat : 'M j, Y',
+            multiDayMonthStartFormat : 'M j'
         });
 
         this.callParent(arguments);
     },
+    getMultiDayText : function()
+    {
+        return 'Setmana';
+    },
+
     onStoreUpdate: function() {
     }
 });

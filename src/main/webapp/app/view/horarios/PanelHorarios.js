@@ -2,7 +2,7 @@ Ext.define('HOR.view.horarios.PanelHorarios',
 {
     extend : 'Ext.panel.Panel',
     title : 'Gestió d\'horaris',
-    requires : [ 'HOR.view.horarios.FiltroGrupos', 'HOR.view.horarios.PanelCalendario', 'HOR.view.horarios.SelectorGrupos', 'HOR.view.horarios.SelectorCalendarios', 'HOR.view.commons.MenuSuperior' ],
+    requires : [ 'HOR.view.horarios.FiltroGrupos', 'HOR.view.horarios.PanelCalendario', 'HOR.view.horarios.PanelCalendarioDetalle', 'HOR.view.horarios.SelectorGrupos', 'HOR.view.horarios.SelectorCalendarios', 'HOR.view.commons.MenuSuperior' ],
     alias : 'widget.panelHorarios',
     closable : false,
     layout :

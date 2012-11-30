@@ -23,12 +23,12 @@ Ext.define('HOR.controller.ControllerFiltroCalendario',
         {
             'panelHorarios filtroGrupos combobox[name=estudio]' :
             {
-                select : this.onTitulacionSelected,
+                select : this.onTitulacionSelected
             },
 
             'panelHorarios filtroGrupos combobox[name=curso]' :
             {
-                select : this.onCursoSelected,
+                select : this.onCursoSelected
             },
 
             'panelHorarios filtroGrupos combobox[name=semestre]' :
@@ -44,6 +44,8 @@ Ext.define('HOR.controller.ControllerFiltroCalendario',
         this.getFiltroGrupos().down('combobox[name=semestre]').clearValue();
         this.getFiltroGrupos().down('combobox[name=grupo]').clearValue();
         this.getFiltroGrupos().down('button[name=intervaloHorario]').hide();
+        this.getFiltroGrupos().down('button[name=calendarioDetalle]').hide();
+        this.getFiltroGrupos().down('button[name=calendarioGenerica]').hide();
 
         this.getPanelCalendario().limpiaCalendario();
         this.getSelectorGrupos().limpiaGrupos();
@@ -70,6 +72,8 @@ Ext.define('HOR.controller.ControllerFiltroCalendario',
         this.getFiltroGrupos().down('combobox[name=semestre]').clearValue();
         this.getFiltroGrupos().down('combobox[name=grupo]').clearValue();
         this.getFiltroGrupos().down('button[name=intervaloHorario]').hide();
+        this.getFiltroGrupos().down('button[name=calendarioDetalle]').hide();
+        this.getFiltroGrupos().down('button[name=calendarioGenerica]').hide();
 
         this.getPanelCalendario().limpiaCalendario();
         this.getSelectorGrupos().limpiaGrupos();
@@ -97,6 +101,8 @@ Ext.define('HOR.controller.ControllerFiltroCalendario',
     {
         this.getFiltroGrupos().down('combobox[name=grupo]').clearValue();
         this.getFiltroGrupos().down('button[name=intervaloHorario]').hide();
+        this.getFiltroGrupos().down('button[name=calendarioDetalle]').hide();
+        this.getFiltroGrupos().down('button[name=calendarioGenerica]').hide();
 
         this.getPanelCalendario().limpiaCalendario();
         this.getSelectorGrupos().limpiaGrupos();
@@ -118,6 +124,5 @@ Ext.define('HOR.controller.ControllerFiltroCalendario',
         });
 
         fixLoadMaskBug(store, this.getFiltroGrupos().down('combobox[name=grupo]'));
-    },
-
+    }
 });

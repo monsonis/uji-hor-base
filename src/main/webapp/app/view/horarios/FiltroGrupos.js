@@ -6,14 +6,13 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
     border : false,
     padding : 5,
     closable : false,
-
     layout : 'anchor',
 
     items : [
     {
         xtype : 'combobox',
         fieldLabel : 'Titulació',
-        labelWidth: 75,
+        labelWidth : 75,
         store : 'StoreEstudios',
         editable : false,
         displayField : 'nombre',
@@ -36,9 +35,9 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
             editable : false,
             lastQuery : '',
             width : 120,
-            labelWidth: 75,
+            labelWidth : 75,
             labelAlign : 'left',
-            margin : '0 20 0 0',
+            margin : '0 20 0 0'
         },
         items : [
         {
@@ -64,12 +63,29 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
         },
         {
             margin : '0 0 0 0',
-            name: 'intervaloHorario',
-            xtype: 'button',
-            hidden: true,
-            width: '40',
-            flex: 0,
-            text : 'Interval horari...',
+            name : 'intervaloHorario',
+            xtype : 'button',
+            hidden : true,
+            width : '40',
+            text : 'Interval horari...'
+        },
+        {
+            margin : '0 0 0 0',
+            name : 'calendarioDetalle',
+            xtype : 'button',
+            hidden : true,
+            width : '40',
+            flex : 0,
+            text : 'Setmana detallada'
+        },
+        {
+            margin : '0 0 0 0',
+            name : 'calendarioGenerica',
+            xtype : 'button',
+            hidden : true,
+            width : '40',
+            flex : 0,
+            text : 'Setmana genèrica'
         } ]
     } ]
 });

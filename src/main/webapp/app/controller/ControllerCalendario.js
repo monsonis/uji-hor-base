@@ -17,6 +17,10 @@ Ext.define('HOR.controller.ControllerCalendario',
         ref : 'panelCalendario'
     },
     {
+        selector : 'panelCalendarioDetalle',
+        ref : 'panelCalendarioDetalle'
+    },
+    {
         selector : 'selectorCalendarios',
         ref : 'selectorCalendarios'
     } ],
@@ -63,8 +67,105 @@ Ext.define('HOR.controller.ControllerCalendario',
                 {
                     return false;
                 }
+            },
+            'panelHorarios button[name=calendarioDetalle]' :
+            {
+                click : this.refreshCalendarDetalle
+
+            },
+            'panelHorarios button[name=calendarioGenerica]' :
+            {
+                click : this.refreshCalendar
             }
         });
+    },
+
+    refreshCalendarDetalle : function()
+    {
+        var titulaciones = this.getFiltroGrupos().down('combobox[name=estudio]');
+        var cursos = this.getFiltroGrupos().down('combobox[name=curso]');
+        var semestres = this.getFiltroGrupos().down('combobox[name=semestre]');
+        var grupos = this.getFiltroGrupos().down('combobox[name=grupo]');
+
+        if (grupos.getValue() != null)
+        {
+            var calendarios = this.getSelectorCalendarios().getCalendarsSelected();
+
+            var storeEventos = this.getStoreEventosStore();
+            storeEventos.getProxy().extraParams["estudioId"] = titulaciones.getValue();
+            storeEventos.getProxy().extraParams["cursoId"] = cursos.getValue();
+            storeEventos.getProxy().extraParams["semestreId"] = semestres.getValue();
+            storeEventos.getProxy().extraParams["grupoId"] = grupos.getValue();
+            storeEventos.getProxy().extraParams["calendariosIds"] = calendarios;
+
+            var storeConfiguracion = this.getStoreConfiguracionStore();
+
+            var ref = this;
+            storeConfiguracion.load(
+            {
+                params :
+                {
+                    estudioId : titulaciones.getValue(),
+                    cursoId : cursos.getValue(),
+                    semestreId : semestres.getValue(),
+                    grupoId : grupos.getValue()
+                },
+                scope : this,
+                callback : function(records, operation, success)
+                {
+                    if (success)
+                    {
+                        var record = records[0];
+                        var fechaInicio = record.get('horaInicio');
+                        var fechaFin = record.get('horaFin');
+
+                        var inicio = Ext.Date.parse(fechaInicio, 'd/m/Y H:i:s', true);
+                        var fin = Ext.Date.parse(fechaFin, 'd/m/Y H:i:s', true);
+                        var horaInicio = Ext.Date.format(inicio, 'H');
+                        var horaFin = Ext.Date.format(fin, 'H');
+
+                        var panelCalendario = ref.getPanelCalendario();
+                        if (!panelCalendario)
+                        {
+                            panelCalendario = ref.getPanelCalendarioDetalle();
+                        }
+                        var panelPadre = panelCalendario.up('panel');
+
+                        Ext.Array.each(Ext.ComponentQuery.query('panelCalendario'), function(panel)
+                        {
+                            panel.destroy();
+                        });
+
+                        Ext.Array.each(Ext.ComponentQuery.query('panelCalendarioDetalle'), function(panel)
+                        {
+                            panel.destroy();
+                        });
+
+                        var eventos = Ext.create('HOR.store.StoreEventos');
+                        Extensible.calendar.data.EventModel.reconfigure();
+
+                        panelPadre.add(
+                        {
+                            xtype : 'panelCalendarioDetalle',
+                            eventStore : eventos,
+                            showMultiDayView : true,
+                            viewConfig :
+                            {
+                                viewStartHour : horaInicio,
+                                viewEndHour : horaFin
+                            },
+                            listeners :
+                            {
+                                afterrender : function()
+                                {
+                                    eventos.load();
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        }
     },
 
     refreshCalendar : function()
@@ -112,9 +213,18 @@ Ext.define('HOR.controller.ControllerCalendario',
                         var horaFin = Ext.Date.format(fin, 'H');
 
                         var panelCalendario = ref.getPanelCalendario();
+                        if (!panelCalendario)
+                        {
+                            panelCalendario = ref.getPanelCalendarioDetalle();
+                        }
                         var panelPadre = panelCalendario.up('panel');
 
                         Ext.Array.each(Ext.ComponentQuery.query('panelCalendario'), function(panel)
+                        {
+                            panel.destroy();
+                        });
+
+                        Ext.Array.each(Ext.ComponentQuery.query('panelCalendarioDetalle'), function(panel)
                         {
                             panel.destroy();
                         });
