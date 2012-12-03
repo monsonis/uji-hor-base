@@ -75,7 +75,7 @@
 <bounds x="860" y="550" width="261" height="131"/>
 </OView>
 <OView class="oracle.dbtools.crest.swingui.relational.TVView" oid="9245C953-D169-2F30-1B52-69DDFD1E6032" otype="View" vid="D868B209-C1B0-E94B-381B-39C00A9055A7">
-<bounds x="1440" y="840" width="170" height="101"/>
+<bounds x="1440" y="600" width="170" height="101"/>
 </OView>
 <OView class="oracle.dbtools.crest.swingui.relational.TVTable" oid="C1BEA0B2-D2BC-FCDD-BE9B-10FC623D4569" otype="Table" vid="9ACFDEA4-89CD-2295-1F98-1307BC317A01">
 <bounds x="93" y="773" width="188" height="91"/>
@@ -85,6 +85,12 @@
 </OView>
 <OView class="oracle.dbtools.crest.swingui.relational.TVTable" oid="C906ADA9-782D-12A1-CC1D-AF983EE55B6E" otype="Table" vid="586FB8F0-785B-C9C0-A7CF-995E8C90988D">
 <bounds x="803" y="1063" width="228" height="72"/>
+</OView>
+<OView class="oracle.dbtools.crest.swingui.relational.TVTable" oid="D5254B60-789C-5FA9-121B-035A3DDA5579" otype="Table" vid="0C62A399-2D31-C3BC-6AFD-8348486FDAC7">
+<bounds x="1350" y="842" width="271" height="110"/>
+<useDefaultColor>false</useDefaultColor>
+<backgroundColor>-6684775</backgroundColor>
+<foregroundColor>-16776961</foregroundColor>
 </OView>
 <OView class="oracle.dbtools.crest.swingui.relational.TVTable" oid="E1B6EB21-A59E-74E6-D702-E478C110425F" otype="Table" vid="69E6119E-0E16-BC82-7B29-CAE4844C7EA0">
 <bounds x="1023" y="843" width="191" height="77"/>

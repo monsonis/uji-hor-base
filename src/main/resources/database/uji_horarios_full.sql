@@ -1,5 +1,5 @@
 -- Generado por Oracle SQL Developer Data Modeler 3.1.1.703
---   en:        2012-11-19 14:42:14 CET
+--   en:        2012-12-03 16:16:57 CET
 --   sitio:      Oracle Database 11g
 --   tipo:      Oracle Database 11g
 
@@ -26,6 +26,8 @@ DROP TABLE uji_horarios.hor_departamentos CASCADE CONSTRAINTS
 DROP TABLE uji_horarios.hor_dias_semana CASCADE CONSTRAINTS 
 ;
 DROP TABLE uji_horarios.hor_estudios CASCADE CONSTRAINTS 
+;
+DROP TABLE uji_horarios.hor_ext_asignaturas_comunes CASCADE CONSTRAINTS 
 ;
 DROP TABLE uji_horarios.hor_ext_calendario CASCADE CONSTRAINTS 
 ;
@@ -205,6 +207,34 @@ ALTER TABLE uji_horarios.hor_estudios
 
 
 
+CREATE TABLE uji_horarios.hor_ext_asignaturas_comunes 
+    ( 
+     id NUMBER  NOT NULL , 
+     grupo_comun_id NUMBER  NOT NULL , 
+     nombre VARCHAR2 (1000)  NOT NULL , 
+     curso_academico_id NUMBER  NOT NULL , 
+     asignatura_id VARCHAR2 (10)  NOT NULL 
+    ) 
+;
+
+
+CREATE INDEX uji_horarios.hor_ext_asi_comunes_nom_IDX ON uji_horarios.hor_ext_asignaturas_comunes 
+    ( 
+     nombre ASC 
+    ) 
+;
+CREATE INDEX uji_horarios.hor_ext_asi_comunes_ca_IDX ON uji_horarios.hor_ext_asignaturas_comunes 
+    ( 
+     curso_academico_id ASC , 
+     asignatura_id ASC 
+    ) 
+;
+
+ALTER TABLE uji_horarios.hor_ext_asignaturas_comunes 
+    ADD CONSTRAINT hor_ext_asignaturas_comunes_PK PRIMARY KEY ( id ) ;
+
+
+
 CREATE TABLE uji_horarios.hor_ext_calendario 
     ( 
      id NUMBER  NOT NULL , 
@@ -352,6 +382,7 @@ CREATE TABLE uji_horarios.hor_items
      profesor_id NUMBER , 
      comun NUMBER DEFAULT 0  NOT NULL CHECK ( comun IN (0, 1)) , 
      porcentaje_comun NUMBER , 
+     comun_texto VARCHAR2 (1000) , 
      grupo_id VARCHAR2 (10)  NOT NULL , 
      tipo_subgrupo_id VARCHAR2 (10)  NOT NULL , 
      tipo_subgrupo VARCHAR2 (100) , 
@@ -1061,9 +1092,9 @@ AND c.fecha = d.inicio(+) ;
 
 -- Informe de Resumen de Oracle SQL Developer Data Modeler: 
 -- 
--- CREATE TABLE                            22
--- CREATE INDEX                            10
--- ALTER TABLE                             56
+-- CREATE TABLE                            23
+-- CREATE INDEX                            12
+-- ALTER TABLE                             57
 -- CREATE VIEW                              3
 -- CREATE PACKAGE                           0
 -- CREATE PACKAGE BODY                      0

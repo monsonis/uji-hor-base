@@ -195,6 +195,17 @@
 <domain>B784D6D2-343C-97AF-8447-8FE7645FA837</domain>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
+<Column class="oracle.dbtools.crest.model.design.relational.Column" name="comun_texto" id="E2A780B8-9AD9-1034-153C-BE8560A22F67">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-12-03 14:57:55 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<use>0</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<domain>E1ADD657-6E07-28E9-9235-7BBC823C4297</domain>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
 <Column class="oracle.dbtools.crest.model.design.relational.Column" name="grupo_id" id="84B95FFD-EC47-7819-8889-9F9F339A221D">
 <createdBy>ferrerq</createdBy>
 <createdTime>2012-05-28 14:28:56 UTC</createdTime>
