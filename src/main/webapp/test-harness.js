@@ -46,11 +46,15 @@ Harness.start({
 	},
 	 {
 		hostPageUrl : 'index.html',
-		url : 'tests/900-Aplicacion/900-020_assignacioaules_combos.t.js'
+		url : 'tests/900-Aplicacion/900-020_assial_combos.t.js'
 	},
 	{
 		hostPageUrl : 'index.html',
-		url : 'tests/900-Aplicacion/900-030_assignacioaules_tree.t.js'
+		url : 'tests/900-Aplicacion/900-030_assial_add.t.js'
+	},
+	{
+		hostPageUrl : 'index.html',
+		url : 'tests/900-Aplicacion/900-040_assial_delete.t.js'
 	}
 	]
 }

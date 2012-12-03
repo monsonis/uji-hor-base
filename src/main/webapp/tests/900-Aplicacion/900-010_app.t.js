@@ -1,4 +1,8 @@
 StartTest(function(t) {
+	
+    t.diag("Dates curs academic carga ok");
+
+	
 	t.waitForCQ('splitbutton', function(splitbutton) {
 			
 		var steps = [

@@ -1,4 +1,8 @@
 StartTest(function(t) {
+	
+    t.diag("Comprobación lógica filtros asignación aulas");
+
+	
 	t.waitForCQ('splitbutton', function(splitbutton) {
 		
 		var centro_seleccionado = 2;
