@@ -1,10 +1,11 @@
 Ext.define('HOR.view.horarios.PanelCalendario',
 {
     extend : 'Extensible.calendar.CalendarPanel',
-    alias : 'widget.panelCalendario',    
+    alias : 'widget.panelCalendario',
     region : 'center',
     title : 'Calendari',
     depends : [ 'HOR.store.StoreCalendarios', 'HOR.store.StoreEventos' ],
+    requires : [ 'HOR.view.aulas.asignacion.FormAsignacionAulas' ],
     calendarStore : Ext.create('HOR.store.StoreCalendarios'),
     eventStore : Ext.create('HOR.store.StoreEventos'),
     editModal : true,
@@ -47,11 +48,6 @@ Ext.define('HOR.view.horarios.PanelCalendario',
         return 'Setmana genèrica';
     },
 
-    initComponent : function()
-    {
-        this.callParent(arguments);
-    },
-
     limpiaCalendario : function()
     {
         this.store.removeAll(false);
@@ -67,7 +63,16 @@ Ext.define('HOR.view.horarios.PanelCalendario',
         });
 
         this.callParent(arguments);
+
+        this.add([
+        {
+            xtype : 'formAsignacionAulas',
+            id: this.id+'-aula',
+        } ]);
+
+        console.log(this);
     },
-    onStoreUpdate: function() {
+    onStoreUpdate : function()
+    {
     }
 });

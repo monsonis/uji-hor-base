@@ -66,6 +66,10 @@ Ext.define('HOR.controller.ControllerCalendario',
                 rangeselect : function()
                 {
                     return false;
+                },
+                eventasignaaula : function(cal, rec)
+                {
+                    this.mostrarVentanaAsignarAulaAEvento(cal, rec);
                 }
             },
             'panelHorarios button[name=calendarioDetalle]' :
@@ -327,6 +331,7 @@ Ext.define('HOR.controller.ControllerCalendario',
             }
         });
     },
+    
     onPanelCalendarioRendered : function()
     {
         var ref = this;
@@ -353,6 +358,12 @@ Ext.define('HOR.controller.ControllerCalendario',
                 viewEndHour : 22
             }
         });
+    },
+    
+    mostrarVentanaAsignarAulaAEvento : function(calendario, registro)
+    {
+        //Ext.ComponentQuery.query('panelCalendario')
+        Ext.ComponentQuery.query('panelCalendario formAsignacionAulas')[0].prueba();
     }
 
 });

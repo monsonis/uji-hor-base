@@ -72,7 +72,7 @@ Ext.application(
     autoCreateViewport : false,
 
     views : [ 'dashboard.PanelDashboard', 'horarios.PanelHorarios', 'horarios.FiltroGrupos', 'horarios.PanelCalendario', 'horarios.PanelCalendarioDetalle', 'horarios.SelectorIntervaloHorario', 'commons.MenuSuperior', 'semestres.PanelSemestres', 
-            'ApplicationViewport' ],
+            'ApplicationViewport', 'aulas.asignacion.FormAsignacionAulas' ],
     controllers : [ 'ControllerDashboards', 'ControllerCalendario', 'ControllerGrupoAsignatura', 'ControllerFiltroCalendario', 'ControllerConfiguracion', 'ControllerPrincipal', 'ControllerSemestreDetalle', 'ControllerFiltroAsignacionAulas' ],
 
     launch : function()

@@ -23,8 +23,11 @@ Extensible.calendar.menu.Event.override(
             {
                 text : 'Assignar aula',
                 iconCls : 'extensible-cal-icon-evt-edit',
-                menu : me.dateMenu
-
+                scope : me,
+                handler : function()
+                {
+                    Ext.ComponentQuery.query("panelCalendario")[0].fireEvent('eventasignaaula', me, me.rec);
+                }
             },
             {
                 text : 'Assignar a circuit',
