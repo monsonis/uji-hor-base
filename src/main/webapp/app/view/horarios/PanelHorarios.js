@@ -37,7 +37,7 @@ Ext.define('HOR.view.horarios.PanelHorarios',
             },
             items : [
             {
-                xtype : 'selectorGrupos',
+                xtype : 'selectorGrupos'
             },
             {
                 xtype : 'selectorCalendarios'
