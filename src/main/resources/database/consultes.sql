@@ -331,9 +331,15 @@ select rownum id, asignatura_id, estudio_id, curso_id, caracter_id, semestre_id,
         from   pod_comunes com,
                pod_grp_comunes gc
         where  gc.id = com.gco_id
-        and    curso_aca = 2011
-        and    asi_id = asignatura_id) comun, grupo_id, tipo_subgrupo_id, subgrupo_id, dia_semana_id, hora_inicio,
-       hora_fin, null desde_el_dia, null hasta_el_dia, 'N' modifica_detalle
+        and    curso_aca = 2012
+        and    asi_id = asignatura_id) comun,
+       (select distinct gc.nombre
+        from            pod_comunes com,
+                        pod_grp_comunes gc
+        where           gc.id = com.gco_id
+        and             curso_aca = 2012
+        and             asi_id = asignatura_id) comun_texto, grupo_id, tipo_subgrupo_id, subgrupo_id, dia_semana_id,
+       hora_inicio, hora_fin, null desde_el_dia, null hasta_el_dia, 'N' modifica_detalle
 from   (select 0 id, asit.tit_id estudio_id, cur_id curso_id, grp_asi_id asignatura_id, caracter caracter_id,
                grp_id grupo_id, to_number (semestre) semestre_id, grp_curso_aca curso_aca, tipo tipo_subgrupo_id,
                s.id subgrupo_id, null dia_semana_id, null hora_inicio, null hora_fin, null persona_id,
@@ -348,7 +354,7 @@ from   (select 0 id, asit.tit_id estudio_id, cur_id curso_id, grp_asi_id asignat
         and    s.grp_asi_id = asit.asi_id
         --and    grp_asi_id = 'AE1008'
         --and    grp_id = 'A'
-        and    grp_curso_aca = 2011
+        and    grp_curso_aca = 2012
         and    grp_curso_aca = ac.curso_aca
         and    grp_asi_id = ac.asi_id
         and    asit.tit_id = ac.cur_tit_id
@@ -371,7 +377,7 @@ from   (select 0 id, asit.tit_id estudio_id, cur_id curso_id, grp_asi_id asignat
         from   pod_horarios h,
                pod_circuitos_det cir,
                pod_asi_cursos ac
-        where  sgr_grp_curso_aca = 2011
+        where  sgr_grp_curso_aca = 2012
         --and    sgr_grp_asi_id = 'AE1008'
         --and    sgr_grp_id = 'A'
         and    sgr_grp_curso_aca = ac.curso_aca
@@ -383,7 +389,7 @@ from   (select 0 id, asit.tit_id estudio_id, cur_id curso_id, grp_asi_id asignat
         and    sgr_grp_asi_id = sgd_sgr_grp_asi_id(+)
         and    sgr_grp_id = SGD_SGR_GRP_ID(+)
         and    sgr_tipo = SGD_SGR_TIPO(+)
-        and    sgr_id = SGD_SGR_ID(+))      
+        and    sgr_id = SGD_SGR_ID(+))
                 
 		
 ==> hor_ext_calendario
