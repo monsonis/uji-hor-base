@@ -20,6 +20,7 @@ Ext.define('HOR.view.aulas.asignacion.FormAsignacionAulas',
     },
     {
         text : 'Tancar',
+        name : 'close',
         handler : function()
         {
             console.log(this.text);
@@ -29,6 +30,15 @@ Ext.define('HOR.view.aulas.asignacion.FormAsignacionAulas',
     prueba : function()
     {
         console.log('Entramos');
-    }
+    },
+    
+    setStartDate: function(dt) {
+        this.startDate = dt;
+        return this;
+    },
+    
+    getStartDate: function() {
+        return this.startDate || Extensible.Date.today();
+    },
 
 });

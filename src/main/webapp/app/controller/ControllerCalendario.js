@@ -363,7 +363,11 @@ Ext.define('HOR.controller.ControllerCalendario',
     mostrarVentanaAsignarAulaAEvento : function(calendario, registro)
     {
         //Ext.ComponentQuery.query('panelCalendario')
-        Ext.ComponentQuery.query('panelCalendario formAsignacionAulas')[0].prueba();
+        //Ext.ComponentQuery.query('panelCalendario formAsignacionAulas')[0].prueba();
+    	
+    	var panelCalendario = Ext.ComponentQuery.query('panelCalendario')[0];
+    	panelCalendario.showAsignarAulaView();
+    	//var asignarAulaId = panelCalendario.id + 
     }
 
 });

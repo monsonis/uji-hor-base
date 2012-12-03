@@ -69,10 +69,67 @@ Ext.define('HOR.view.horarios.PanelCalendario',
             xtype : 'formAsignacionAulas',
             id: this.id+'-aula',
         } ]);
-
-        console.log(this);
     },
     onStoreUpdate : function()
     {
-    }
+    },
+    
+    showAsignarAulaView : function()
+    {
+    	var asignarAulaId = this.id + '-aula';
+    	var layout = this.layout;
+    	
+    	this.preAsignarAulaView = this.layout.getActiveItem().id;
+    	this.setActiveViewForAsignarAula(asignarAulaId);
+    	return this;
+    },
+    
+    hideAsignarAulaView : function()
+    {
+    	if(this.preAsignarAulaView){
+            this.setActiveViewForAsignarAula(this.preAsignarAulaView);
+            delete this.preEditView;
+        }
+        return this;
+    },
+    
+    setActiveViewForAsignarAula: function(id, startDate){
+        var me = this,
+            layout = me.layout,
+            asignarAulaViewId = me.id + '-aula',
+            toolbar;
+        
+        if (startDate) {
+            me.startDate = startDate;
+        }
+        
+        // Make sure we're actually changing views
+        if (id !== layout.getActiveItem().id) {
+            // Show/hide the toolbar first so that the layout will calculate the correct item size
+            toolbar = me.getDockedItems('toolbar')[0];
+            if (toolbar) {
+                toolbar[id === asignarAulaViewId ? 'hide' : 'show']();
+            }
+            
+            // Activate the new view and refresh the layout
+            layout.setActiveItem(id || me.activeItem);
+            me.doComponentLayout();
+            me.activeView = layout.getActiveItem();
+            
+            if (id !== asignarAulaViewId) {
+                if (id && id !== me.preAsignarAulaView) {
+                    // We're changing to a different view, so the view dates are likely different.
+                    // Re-set the start date so that the view range will be updated if needed.
+                    // If id is undefined, it means this is the initial pass after render so we can
+                    // skip this (as we don't want to cause a duplicate forced reload).
+                    layout.activeItem.setStartDate(me.startDate, true);
+                }
+                // Switching to a view that's not the edit view (i.e., the nav bar will be visible)
+                // so update the nav bar's selected view button
+                me.updateNavState();
+            }
+            // Notify any listeners that the view changed
+            me.fireViewChange();
+        }
+    },
 });
