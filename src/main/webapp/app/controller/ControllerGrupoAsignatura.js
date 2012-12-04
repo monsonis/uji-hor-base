@@ -54,6 +54,12 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
                     me.getSelectorGrupos().setDisabled(false);
                     me.getSelectorCalendarios().setDisabled(false);
 
+                },
+                eventasignaaula : function()
+                {
+                    me.getFiltroGrupos().setDisabled(true);
+                    me.getSelectorGrupos().setDisabled(true);
+                    me.getSelectorCalendarios().setDisabled(true);
                 }
             }
         });
