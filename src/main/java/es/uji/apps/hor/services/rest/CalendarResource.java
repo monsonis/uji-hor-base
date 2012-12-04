@@ -312,6 +312,7 @@ public class CalendarResource
             eventoUI.put("end_rep_number_comp", evento.getNumeroIteraciones());
             eventoUI.put("detalle_manual", evento.getDetalleManual());
             eventoUI.put("comunes", evento.getComunes());
+            eventoUI.put("aula_planificacion_id", evento.getAulaPlanificacionId());
 
             if (evento.getInicio() != null)
             {

@@ -129,9 +129,12 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         evento.setDesdeElDia(itemDTO.getDesdeElDia());
         evento.setHastaElDia(itemDTO.getHastaElDia());
         evento.setComunes(itemDTO.getComunes());
+        if (itemDTO.getAulasPlanificacion() != null)
+        {
+            evento.setAulaPlanificacionId(itemDTO.getAulasPlanificacion().getId());
+        }
 
         return evento;
-
     }
 
     private Calendar generaItemCalendarioSemanaGenerica(Integer dia, Date fecha)

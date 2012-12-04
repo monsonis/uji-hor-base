@@ -161,6 +161,16 @@ Extensible.calendar.data.EventMappings.PosteoDetalle =
     type : 'int',
     defaultValue : 0
 };
+Extensible.calendar.data.EventMappings.Comunes =
+{
+    name : 'Comunes',
+    mapping : 'comunes',
+};
+Extensible.calendar.data.EventMappings.AulaPlanificacionId =
+{
+    name : 'AulaPlanificacionId',
+    mapping : 'aula_planificacion_id',
+};
 Extensible.calendar.data.EventModel.reconfigure();
 
 Extensible.calendar.form.EventDetails.override(

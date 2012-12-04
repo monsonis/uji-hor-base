@@ -16,6 +16,7 @@ public class Evento
     private Date desdeElDia;
     private Date hastaElDia;
     private String comunes;
+    private Long aulaPlanificacionId;
 
     public Evento(Long id, Calendario calendario, String titulo, Date inicio, Date fin)
     {
@@ -144,5 +145,15 @@ public class Evento
     public void setComunes(String comunes)
     {
         this.comunes = comunes;
+    }
+
+    public Long getAulaPlanificacionId()
+    {
+        return aulaPlanificacionId;
+    }
+
+    public void setAulaPlanificacionId(Long aulaPlanificacionId)
+    {
+        this.aulaPlanificacionId = aulaPlanificacionId;
     }
 }

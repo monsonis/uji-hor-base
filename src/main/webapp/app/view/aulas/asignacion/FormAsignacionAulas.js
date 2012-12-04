@@ -26,14 +26,24 @@ Ext.define('HOR.view.aulas.asignacion.FormAsignacionAulas',
     {
         xtype : 'combobox',
         fieldLabel : 'Aula assignada',
-        displayField : 'aula',
-        valueField : 'id',
+        name : 'aulaPlanificacion',
         anchor : '90%',
         style :
         {
             marginTop : '20px',
-            marginBottom : '30px'
-        }
+        },
+        store : 'StoreAulasAsignadas',
+        displayField : 'nombre',
+        valueField : 'id',
+        queryMode : 'local',
+        emptyText : 'Sense assignar...'
+    },
+    {
+        xtype : 'button',
+        name : 'borrarAsignacion',
+        text : 'Desassignar aula',
+        iconCls : 'application-delete',
+        hidden : true
     },
     {
         xtype : 'checkbox',
@@ -41,6 +51,10 @@ Ext.define('HOR.view.aulas.asignacion.FormAsignacionAulas',
         inputValue : true,
         checked : true,
         anchor : '90%',
+        style :
+        {
+            marginTop : '30px'
+        }
     },
     {
         xtype : 'fieldset',
@@ -53,7 +67,9 @@ Ext.define('HOR.view.aulas.asignacion.FormAsignacionAulas',
         items : [
         {
             xtype : 'displayfield',
-            value : ''
+            name : 'comunes',
+            value : '',
+            hidden : true
         } ]
     } ],
 

@@ -69,7 +69,7 @@ Ext.define('HOR.controller.ControllerCalendario',
                 },
                 eventasignaaula : function(cal, rec)
                 {
-                    this.mostrarVentanaAsignarAulaAEvento(cal, rec);
+                    this.mostrarVentanaAsignarAulaAEvento();
                 }
             },
             'panelHorarios button[name=calendarioDetalle]' :
@@ -360,14 +360,10 @@ Ext.define('HOR.controller.ControllerCalendario',
         });
     },
     
-    mostrarVentanaAsignarAulaAEvento : function(calendario, registro)
+    mostrarVentanaAsignarAulaAEvento : function()
     {
-        //Ext.ComponentQuery.query('panelCalendario')
-        //Ext.ComponentQuery.query('panelCalendario formAsignacionAulas')[0].prueba();
-    	
-    	var panelCalendario = Ext.ComponentQuery.query('panelCalendario')[0];
-    	panelCalendario.showAsignarAulaView();
-    	//var asignarAulaId = panelCalendario.id + 
+        Ext.ComponentQuery.query('panelCalendario')[0].showAsignarAulaView();
+        
     }
 
 });
