@@ -311,6 +311,7 @@ public class CalendarResource
             eventoUI.put("end_date_rep_comp", evento.getHastaElDia());
             eventoUI.put("end_rep_number_comp", evento.getNumeroIteraciones());
             eventoUI.put("detalle_manual", evento.getDetalleManual());
+            eventoUI.put("comunes", evento.getComunes());
 
             if (evento.getInicio() != null)
             {

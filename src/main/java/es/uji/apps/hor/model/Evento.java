@@ -15,6 +15,7 @@ public class Evento
     private Integer repetirCadaSemanas;
     private Date desdeElDia;
     private Date hastaElDia;
+    private String comunes;
 
     public Evento(Long id, Calendario calendario, String titulo, Date inicio, Date fin)
     {
@@ -24,7 +25,7 @@ public class Evento
         this.inicio = inicio;
         this.fin = fin;
     }
-    
+
     public Long getId()
     {
         return id;
@@ -133,5 +134,15 @@ public class Evento
     public void setHastaElDia(Date hastaElDia)
     {
         this.hastaElDia = hastaElDia;
+    }
+
+    public String getComunes()
+    {
+        return comunes;
+    }
+
+    public void setComunes(String comunes)
+    {
+        this.comunes = comunes;
     }
 }

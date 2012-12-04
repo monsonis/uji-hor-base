@@ -127,14 +127,17 @@ public class ItemDTO implements Serializable
     @OneToMany(mappedBy = "item")
     private Set<ItemDetalleDTO> itemsDetalles;
 
-    @Column(name="DETALLE_MANUAL")
+    @Column(name = "DETALLE_MANUAL")
     private Boolean detalleManual;
-    
-    @Column(name="NUMERO_ITERACIONES")
+
+    @Column(name = "NUMERO_ITERACIONES")
     private Integer numeroIteraciones;
-    
-    @Column(name="REPETIR_CADA_SEMANAS")
+
+    @Column(name = "REPETIR_CADA_SEMANAS")
     private Integer repetirCadaSemanas;
+
+    @Column(name = "COMUN_TEXTO")
+    private String comunes;
 
     public ItemDTO()
     {
@@ -464,5 +467,15 @@ public class ItemDTO implements Serializable
     public void setRepetirCadaSemanas(Integer repetirCadaSemanas)
     {
         this.repetirCadaSemanas = repetirCadaSemanas;
+    }
+
+    public String getComunes()
+    {
+        return comunes;
+    }
+
+    public void setComunes(String comunes)
+    {
+        this.comunes = comunes;
     }
 }
