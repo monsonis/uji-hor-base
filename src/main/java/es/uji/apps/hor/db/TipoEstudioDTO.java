@@ -27,7 +27,7 @@ public class TipoEstudioDTO implements Serializable
     private Long orden;
 
     // bi-directional many-to-one association to EstudioDTO
-    @OneToMany(mappedBy = "tiposEstudio")
+    @OneToMany(mappedBy = "tipoEstudio")
     private Set<EstudioDTO> estudios;
 
     // bi-directional many-to-one association to DetalleSemestreDTO

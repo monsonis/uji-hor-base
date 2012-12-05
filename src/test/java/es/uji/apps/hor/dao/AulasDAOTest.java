@@ -53,7 +53,7 @@ public class AulasDAOTest
 
         estudio = new EstudioDTO();
         estudio.setNombre("Estudio de prueba");
-        estudio.setTiposEstudio(tipoEstudio);
+        estudio.setTipoEstudio(tipoEstudio);
         estudio.setCentro(centro);
         estudio.setOficial(new Long(1));
 

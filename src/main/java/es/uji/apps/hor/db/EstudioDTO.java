@@ -43,7 +43,7 @@ public class EstudioDTO implements Serializable
     // bi-directional many-to-one association to TipoEstudioDTO
     @ManyToOne
     @JoinColumn(name = "TIPO_ID")
-    private TipoEstudioDTO tiposEstudio;
+    private TipoEstudioDTO tipoEstudio;
 
     // bi-directional many-to-one association to CargoPersonaDTO
     @OneToMany(mappedBy = "estudio")
@@ -114,14 +114,14 @@ public class EstudioDTO implements Serializable
         this.centro = centro;
     }
 
-    public TipoEstudioDTO getTiposEstudio()
+    public TipoEstudioDTO getTipoEstudio()
     {
-        return this.tiposEstudio;
+        return this.tipoEstudio;
     }
 
-    public void setTiposEstudio(TipoEstudioDTO tiposEstudio)
+    public void setTipoEstudio(TipoEstudioDTO tipoEstudio)
     {
-        this.tiposEstudio = tiposEstudio;
+        this.tipoEstudio = tipoEstudio;
     }
 
     public Set<CargoPersonaDTO> getCargosPersona()

@@ -67,24 +67,19 @@ public class SemestresDetalleDAODatabaseImpl extends BaseDAODatabaseImpl impleme
     }
 
     @Override
-    public List<SemestreDetalle> getSemestresDetallesPorEstudioIdYSemestreId(
-            Long estudioId, Long semestreId)
+    public List<SemestreDetalle> getSemestresDetallesPorEstudioIdYSemestreId(Long estudioId,
+            Long semestreId)
     {
         JPAQuery query = new JPAQuery(entityManager);
         QDetalleSemestreDTO detalleSemestre = QDetalleSemestreDTO.detalleSemestreDTO;
-        QSemestreDTO semestre = QSemestreDTO.semestreDTO;
         QTipoEstudioDTO tipoEstudio = QTipoEstudioDTO.tipoEstudioDTO;
         QEstudioDTO estudio = QEstudioDTO.estudioDTO;
 
-        List<DetalleSemestreDTO> query_result = query
-                .from(detalleSemestre, estudio)
-                .join(detalleSemestre.semestre, semestre)
-                .fetch()
-                .join(detalleSemestre.tiposEstudio, tipoEstudio)
-                .fetch()
-                .join(estudio.tiposEstudio, tipoEstudio)
-                .where(estudio.id.eq(estudioId).and(
-                        detalleSemestre.semestre.id.eq(semestreId))).list(detalleSemestre);
+        List<DetalleSemestreDTO> query_result = query.from(detalleSemestre, estudio)
+                .join(estudio.tipoEstudio, tipoEstudio)
+                .join(detalleSemestre.tiposEstudio, tipoEstudio).fetch()
+                .where(estudio.id.eq(estudioId).and(estudio.tipoEstudio.eq(tipoEstudio).and(detalleSemestre.semestre.id.eq(semestreId))))
+                .list(detalleSemestre);
 
         List<SemestreDetalle> semestresDetalle = new ArrayList<SemestreDetalle>();
         for (DetalleSemestreDTO detalle : query_result)
