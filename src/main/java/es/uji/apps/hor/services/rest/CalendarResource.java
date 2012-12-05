@@ -189,9 +189,14 @@ public class CalendarResource
     public List<UIEntity> getEventosDetalle(@QueryParam("estudioId") String estudioId,
             @QueryParam("cursoId") String cursoId, @QueryParam("semestreId") String semestreId,
             @QueryParam("grupoId") String grupoId,
-            @QueryParam("calendariosIds") String calendariosIds, @QueryParam("startDate") String startDate, @QueryParam("endDate") String endDate) throws ParseException
+            @QueryParam("calendariosIds") String calendariosIds,
+            @QueryParam("startDate") String startDate, @QueryParam("endDate") String endDate)
+            throws ParseException
     {
-        ParamUtils.checkNotNull(estudioId, cursoId, semestreId, grupoId);
+        ParamUtils.checkNotNull(estudioId, cursoId, semestreId, grupoId, startDate, endDate);
+
+        Date rangoFechaInicio = shortDateFormat.parse(startDate);
+        Date rangoFechaFin = shortDateFormat.parse(endDate);
 
         String[] calendarios = calendariosIds.split(";");
         List<Long> calendariosList = new ArrayList<Long>();
@@ -209,9 +214,9 @@ public class CalendarResource
 
         if (calendariosList.size() != 0)
         {
-            eventos = eventosService.eventosDetalleDeUnEstudio(
-                    ParamUtils.parseLong(estudioId), ParamUtils.parseLong(cursoId),
-                    ParamUtils.parseLong(semestreId), grupoId, calendariosList);
+            eventos = eventosService.eventosDetalleDeUnEstudio(ParamUtils.parseLong(estudioId),
+                    ParamUtils.parseLong(cursoId), ParamUtils.parseLong(semestreId), grupoId,
+                    calendariosList, rangoFechaInicio, rangoFechaFin);
         }
 
         return toUI(eventos);

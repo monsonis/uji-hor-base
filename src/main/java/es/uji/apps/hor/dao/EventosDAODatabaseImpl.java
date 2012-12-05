@@ -645,7 +645,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
 
     @Override
     public List<Evento> getEventosDetalle(Long estudioId, Long cursoId, Long semestreId,
-            String grupoId, List<Long> calendariosIds)
+            String grupoId, List<Long> calendariosIds, Date rangoFechaInicio, Date rangoFechaFin)
     {
         JPAQuery query = new JPAQuery(entityManager);
         QItemDTO item = QItemDTO.itemDTO;
@@ -656,6 +656,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
                 .from(item, itemDetalle)
                 .where(itemDetalle.item.id.eq(item.id).and(item.estudio.id.eq(estudioId).and(
                         item.cursoId.eq(cursoId).and(item.semestre.id.eq(semestreId))
+                        .and(itemDetalle.inicio.goe(rangoFechaInicio)).and(itemDetalle.fin.loe(rangoFechaFin))
                                 .and(item.grupoId.eq(grupoId)).and(item.diaSemana.isNotNull())
                                 .and(item.tipoSubgrupoId.in(tiposCalendarios))))).list(new QTuple(itemDetalle.id, itemDetalle.inicio, itemDetalle.fin, item.asignaturaId, item.tipoSubgrupoId, item.subgrupoId));
 

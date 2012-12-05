@@ -128,9 +128,9 @@ public class EventosService
     }
 
     public List<Evento> eventosDetalleDeUnEstudio(Long estudioId, Long cursoId,
-            Long semestreId, String grupoId, List<Long> calendariosIds)
+            Long semestreId, String grupoId, List<Long> calendariosIds, Date rangoFechaInicio, Date rangoFechaFin)
     {
         return eventosDAO.getEventosDetalle(estudioId, cursoId, semestreId, grupoId,
-                calendariosIds);
+                calendariosIds, rangoFechaInicio, rangoFechaFin);
     }
 }

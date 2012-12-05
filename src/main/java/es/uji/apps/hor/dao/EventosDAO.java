@@ -43,6 +43,6 @@ public interface EventosDAO extends BaseDAO
             throws RegistroNoEncontradoException;
 
     List<Evento> getEventosDetalle(Long estudioId, Long cursoId, Long semestreId, String grupoId,
-            List<Long> calendariosIds);
+            List<Long> calendariosIds, Date rangoFechaInicio, Date rangoFechaFin);
     
 }
