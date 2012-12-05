@@ -1213,3 +1213,20 @@ begin
 end mutante_3_final;
 
 
+
+update uji_horarios.hor_items
+set aula_planificacion_id = null
+where aula_planificacion_id in (select id from uji_horarios.hor_aulas_planificacion where estudio_id is null);
+
+commit;
+
+
+delete UJI_HORARIOS.HOR_AULAS_PLANIFICACION
+where estudio_id is null;
+
+commit;
+
+ALTER TABLE UJI_HORARIOS.HOR_AULAS_PLANIFICACION
+MODIFY(ESTUDIO_ID  NOT NULL)
+;
+
