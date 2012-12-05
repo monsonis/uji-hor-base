@@ -1,7 +1,7 @@
 Ext.define('HOR.controller.ControllerCalendario',
 {
     extend : 'Ext.app.Controller',
-    stores : [ 'StoreCalendarios', 'StoreEventos', 'StoreGruposAsignaturasSinAsignar', 'StoreConfiguracion' ],
+    stores : [ 'StoreCalendarios', 'StoreEventos', 'StoreEventosDetalle', 'StoreGruposAsignaturasSinAsignar', 'StoreConfiguracion' ],
     model : [ 'Configuracion' ],
     refs : [
     {
@@ -94,14 +94,6 @@ Ext.define('HOR.controller.ControllerCalendario',
         if (grupos.getValue() != null)
         {
             var calendarios = this.getSelectorCalendarios().getCalendarsSelected();
-
-            var storeEventos = this.getStoreEventosStore();
-            storeEventos.getProxy().extraParams["estudioId"] = titulaciones.getValue();
-            storeEventos.getProxy().extraParams["cursoId"] = cursos.getValue();
-            storeEventos.getProxy().extraParams["semestreId"] = semestres.getValue();
-            storeEventos.getProxy().extraParams["grupoId"] = grupos.getValue();
-            storeEventos.getProxy().extraParams["calendariosIds"] = calendarios;
-
             var storeConfiguracion = this.getStoreConfiguracionStore();
 
             var ref = this;
@@ -145,8 +137,20 @@ Ext.define('HOR.controller.ControllerCalendario',
                             panel.destroy();
                         });
 
-                        var eventos = Ext.create('HOR.store.StoreEventos');
+                        var eventos = Ext.create('HOR.store.StoreEventosDetalle');
+
                         Extensible.calendar.data.EventModel.reconfigure();
+
+                        params =
+                        {
+                            estudioId : titulaciones.getValue(),
+                            cursoId : cursos.getValue(),
+                            semestreId : semestres.getValue(),
+                            calendariosIds: calendarios,
+                            grupoId : grupos.getValue()
+                        };
+                        
+                        eventos.getProxy().extraParams = params;
 
                         panelPadre.add(
                         {
@@ -182,14 +186,6 @@ Ext.define('HOR.controller.ControllerCalendario',
         if (grupos.getValue() != null)
         {
             var calendarios = this.getSelectorCalendarios().getCalendarsSelected();
-
-            var storeEventos = this.getStoreEventosStore();
-            storeEventos.getProxy().extraParams["estudioId"] = titulaciones.getValue();
-            storeEventos.getProxy().extraParams["cursoId"] = cursos.getValue();
-            storeEventos.getProxy().extraParams["semestreId"] = semestres.getValue();
-            storeEventos.getProxy().extraParams["grupoId"] = grupos.getValue();
-            storeEventos.getProxy().extraParams["calendariosIds"] = calendarios;
-
             var storeConfiguracion = this.getStoreConfiguracionStore();
 
             var ref = this;
@@ -235,6 +231,16 @@ Ext.define('HOR.controller.ControllerCalendario',
 
                         var eventos = Ext.create('HOR.store.StoreEventos');
                         Extensible.calendar.data.EventModel.reconfigure();
+                        
+                        params =
+                        {
+                            estudioId : titulaciones.getValue(),
+                            cursoId : cursos.getValue(),
+                            semestreId : semestres.getValue(),
+                            calendariosIds: calendarios,
+                            grupoId : grupos.getValue()
+                        };
+                        eventos.getProxy().extraParams = params;
 
                         panelPadre.add(
                         {

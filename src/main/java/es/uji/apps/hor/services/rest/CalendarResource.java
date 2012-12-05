@@ -183,6 +183,40 @@ public class CalendarResource
         return toUI(eventos);
     }
 
+    @GET
+    @Path("eventos/detalle")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<UIEntity> getEventosDetalle(@QueryParam("estudioId") String estudioId,
+            @QueryParam("cursoId") String cursoId, @QueryParam("semestreId") String semestreId,
+            @QueryParam("grupoId") String grupoId,
+            @QueryParam("calendariosIds") String calendariosIds, @QueryParam("startDate") String startDate, @QueryParam("endDate") String endDate) throws ParseException
+    {
+        ParamUtils.checkNotNull(estudioId, cursoId, semestreId, grupoId);
+
+        String[] calendarios = calendariosIds.split(";");
+        List<Long> calendariosList = new ArrayList<Long>();
+
+        for (String calendario : calendarios)
+        {
+            calendario = calendario.trim();
+            if (!calendario.equals(""))
+            {
+                calendariosList.add(ParamUtils.parseLong(calendario));
+            }
+        }
+
+        List<Evento> eventos = new ArrayList<Evento>();
+
+        if (calendariosList.size() != 0)
+        {
+            eventos = eventosService.eventosDetalleDeUnEstudio(
+                    ParamUtils.parseLong(estudioId), ParamUtils.parseLong(cursoId),
+                    ParamUtils.parseLong(semestreId), grupoId, calendariosList);
+        }
+
+        return toUI(eventos);
+    }
+
     @PUT
     @Path("eventos/generica/{id}")
     @Produces(MediaType.APPLICATION_JSON)

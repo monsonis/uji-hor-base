@@ -41,4 +41,8 @@ public interface EventosDAO extends BaseDAO
 
     Evento updateHorasEventoDetalleManual(Long eventoId, Date inicio, Date fin)
             throws RegistroNoEncontradoException;
+
+    List<Evento> getEventosDetalle(Long estudioId, Long cursoId, Long semestreId, String grupoId,
+            List<Long> calendariosIds);
+    
 }

@@ -126,4 +126,11 @@ public class EventosService
     {
         return eventosDAO.updateHorasEventoDetalleManual(eventoId, inicio, fin);
     }
+
+    public List<Evento> eventosDetalleDeUnEstudio(Long estudioId, Long cursoId,
+            Long semestreId, String grupoId, List<Long> calendariosIds)
+    {
+        return eventosDAO.getEventosDetalle(estudioId, cursoId, semestreId, grupoId,
+                calendariosIds);
+    }
 }

@@ -1,5 +1,6 @@
 package es.uji.apps.hor.dao;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -8,7 +9,9 @@ import java.util.List;
 import org.hsqldb.lib.HashMap;
 import org.springframework.stereotype.Repository;
 
+import com.mysema.query.Tuple;
 import com.mysema.query.jpa.impl.JPAQuery;
+import com.mysema.query.types.QTuple;
 
 import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.db.DiaSemanaDTO;
@@ -638,5 +641,34 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         }
 
         return creaEventoDesde(evento);
+    }
+
+    @Override
+    public List<Evento> getEventosDetalle(Long estudioId, Long cursoId, Long semestreId,
+            String grupoId, List<Long> calendariosIds)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        QItemDTO item = QItemDTO.itemDTO;
+        QItemDetalleDTO itemDetalle = QItemDetalleDTO.itemDetalleDTO;
+        List<String> tiposCalendarios = TipoSubgrupo.getTiposSubgrupos(calendariosIds);
+
+        List<Tuple> listaTuplas = query
+                .from(item, itemDetalle)
+                .where(itemDetalle.item.id.eq(item.id).and(item.estudio.id.eq(estudioId).and(
+                        item.cursoId.eq(cursoId).and(item.semestre.id.eq(semestreId))
+                                .and(item.grupoId.eq(grupoId)).and(item.diaSemana.isNotNull())
+                                .and(item.tipoSubgrupoId.in(tiposCalendarios))))).list(new QTuple(itemDetalle.id, itemDetalle.inicio, itemDetalle.fin, item.asignaturaId, item.tipoSubgrupoId, item.subgrupoId));
+
+        System.out.println(listaTuplas);
+        List<Evento> eventos = new ArrayList<Evento>();
+        
+        for (Tuple tupla : listaTuplas)
+        {
+            String titulo = MessageFormat.format("{0} {1}{2}", tupla.get(item.asignaturaId), tupla.get(item.tipoSubgrupoId), tupla.get(item.subgrupoId));
+            Calendario calendario = new Calendario(TipoSubgrupo.valueOf(tupla.get(item.tipoSubgrupoId)).getCalendarioAsociado());
+            eventos.add(new Evento(tupla.get(itemDetalle.id), calendario, titulo, tupla.get(itemDetalle.inicio), tupla.get(itemDetalle.fin)));
+        }
+        return eventos;
+
     }
 }

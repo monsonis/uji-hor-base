@@ -1,11 +1,11 @@
-Ext.define('HOR.store.StoreEventos',
+Ext.define('HOR.store.StoreEventosDetalle',
 {
     extend : 'Extensible.calendar.data.EventStore',
     autoLoad : false,
     proxy :
     {
         type : 'rest',
-        url : '/hor/rest/calendario/eventos/generica',
+        url : '/hor/rest/calendario/eventos/detalle',
         noCache : false,
 
         reader :
@@ -39,6 +39,12 @@ Ext.define('HOR.store.StoreEventos',
         }
     },
 
+    listeners :
+    {
+        'write' : function(store, operation)
+        {
+        }
+    },
     initComponent : function(cfg)
     {
         this.initConfig(cfg);
