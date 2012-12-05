@@ -31,6 +31,7 @@ import org.codehaus.jettison.json.JSONException;
 
 import com.sun.jersey.api.core.InjectParam;
 
+import es.uji.apps.hor.AulaNoAsignadaAEstudioDelEventoException;
 import es.uji.apps.hor.DuracionEventoIncorrectaException;
 import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.RangoHorarioFueradeLimites;
@@ -431,5 +432,20 @@ public class CalendarResource
                 .getEventosDocenciaByEventoId(ParamUtils.parseLong(eventoId));
 
         return UIEntity.toUI(eventosDocencia);
+    }
+
+    @PUT
+    @Path("eventos/aula/evento/{id}")
+    public List<UIEntity> actualizaAulaAsignadaAEvento(@PathParam("id") String eventoId,
+            @FormParam("aulaId") String aulaId, @FormParam("tipoAccion") String tipoAccion)
+            throws RegistroNoEncontradoException, AulaNoAsignadaAEstudioDelEventoException,
+            NumberFormatException
+    {
+        boolean propagarComunes = tipoAccion.equals("T");
+
+        Evento evento = eventosService.actualizaAulaAsignadaAEvento(Long.parseLong(eventoId),
+                Long.parseLong(aulaId), propagarComunes);
+
+        return toUI(Collections.singletonList(evento));
     }
 }

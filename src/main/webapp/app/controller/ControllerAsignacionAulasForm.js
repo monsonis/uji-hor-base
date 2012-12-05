@@ -44,7 +44,11 @@ Ext.define('HOR.controller.ControllerAsignacionAulasForm',
                         Ext.ComponentQuery.query('formAsignacionAulas')[0].down('button[name=close]').setText('Tancar');
                     }
                 }
-            }
+            },
+            'formAsignacionAulas button[name=save]' :
+            {
+                click : this.guardarDatosFormulario
+            },
         });
     },
 
@@ -127,10 +131,48 @@ Ext.define('HOR.controller.ControllerAsignacionAulasForm',
     {
         Ext.ComponentQuery.query('formAsignacionAulas')[0].down('combobox').clearValue();
     },
-    
+
     guardarDatosFormulario : function()
     {
-        
+        var formulario = Ext.ComponentQuery.query('formAsignacionAulas')[0];
+
+        var eventoId = formulario.down('hiddenfield[name=eventId]').getValue();
+        var aulaId = formulario.down('combobox[name=aulaPlanificacion]').getValue();
+        var tipoAccion = formulario.down('combobox[name=tipoAccion]').getValue()
+
+        Ext.Ajax.request(
+        {
+            url : '/hor/rest/calendario/eventos/aula/evento/' + eventoId,
+            method : 'PUT',
+            params :
+            {
+                aulaId : aulaId,
+                tipoAccion : tipoAccion
+            },
+            success : function(response, aa)
+            {
+                console.log(response);
+                formulario.getForm().setValues(formulario.getForm().getValues());
+            },
+            failure : function(response)
+            {
+                if (response.responseXML)
+                {
+                    var msgList = response.responseXML.getElementsByTagName("msg");
+
+                    if (msgList && msgList[0] && msgList[0].firstChild)
+                    {
+                        Ext.MessageBox.show(
+                        {
+                            title : 'Server error',
+                            msg : msgList[0].firstChild.nodeValue,
+                            icon : Ext.MessageBox.ERROR,
+                            buttons : Ext.Msg.OK
+                        });
+                    }
+                }
+            }
+        })
     }
 
 });

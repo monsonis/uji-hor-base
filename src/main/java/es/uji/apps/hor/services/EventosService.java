@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import es.uji.apps.hor.AulaNoAsignadaAEstudioDelEventoException;
 import es.uji.apps.hor.DuracionEventoIncorrectaException;
 import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.dao.EventosDAO;
@@ -74,8 +75,8 @@ public class EventosService
     }
 
     public Evento modificaDetallesGrupoAsignatura(Long grupoAsignaturaId, Date inicio, Date fin,
-            Date desdeElDia, Integer numeroIteraciones, Integer repetirCadaSemanas, Date hastaElDia, Boolean detalleManual)    
-            throws DuracionEventoIncorrectaException
+            Date desdeElDia, Integer numeroIteraciones, Integer repetirCadaSemanas,
+            Date hastaElDia, Boolean detalleManual) throws DuracionEventoIncorrectaException
     {
         Calendar calInicio = Calendar.getInstance();
         Calendar calFin = Calendar.getInstance();
@@ -127,10 +128,16 @@ public class EventosService
         return eventosDAO.updateHorasEventoDetalleManual(eventoId, inicio, fin);
     }
 
-    public List<Evento> eventosDetalleDeUnEstudio(Long estudioId, Long cursoId,
-            Long semestreId, String grupoId, List<Long> calendariosIds, Date rangoFechaInicio, Date rangoFechaFin)
+    public List<Evento> eventosDetalleDeUnEstudio(Long estudioId, Long cursoId, Long semestreId,
+            String grupoId, List<Long> calendariosIds, Date rangoFechaInicio, Date rangoFechaFin)
     {
         return eventosDAO.getEventosDetalle(estudioId, cursoId, semestreId, grupoId,
                 calendariosIds, rangoFechaInicio, rangoFechaFin);
+    }
+
+    public Evento actualizaAulaAsignadaAEvento(Long eventoId, Long aulaId, boolean propagarComunes)
+            throws RegistroNoEncontradoException, AulaNoAsignadaAEstudioDelEventoException
+    {
+        return eventosDAO.actualizaAulaAsignadaAEvento(eventoId, aulaId, propagarComunes);
     }
 }

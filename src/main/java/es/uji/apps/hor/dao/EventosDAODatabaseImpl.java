@@ -13,7 +13,9 @@ import com.mysema.query.Tuple;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.types.QTuple;
 
+import es.uji.apps.hor.AulaNoAsignadaAEstudioDelEventoException;
 import es.uji.apps.hor.EventoNoDivisibleException;
+import es.uji.apps.hor.db.AulaPlanificacionDTO;
 import es.uji.apps.hor.db.DiaSemanaDTO;
 import es.uji.apps.hor.db.ItemCircuitoDTO;
 import es.uji.apps.hor.db.ItemDTO;
@@ -638,9 +640,6 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             itemDetalle.setFin(calendar.getTime());
 
             itemDetalle = update(itemDetalle);
-
-            System.out.println(itemDetalle.getInicio());
-            System.out.println(itemDetalle.getFin());
         }
 
         return creaEventoDesde(evento);
@@ -657,22 +656,78 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
 
         List<Tuple> listaTuplas = query
                 .from(item, itemDetalle)
-                .where(itemDetalle.item.id.eq(item.id).and(item.estudio.id.eq(estudioId).and(
-                        item.cursoId.eq(cursoId).and(item.semestre.id.eq(semestreId))
-                        .and(itemDetalle.inicio.goe(rangoFechaInicio)).and(itemDetalle.fin.loe(rangoFechaFin))
-                                .and(item.grupoId.eq(grupoId)).and(item.diaSemana.isNotNull())
-                                .and(item.tipoSubgrupoId.in(tiposCalendarios))))).list(new QTuple(itemDetalle.id, itemDetalle.inicio, itemDetalle.fin, item.asignaturaId, item.tipoSubgrupoId, item.subgrupoId));
+                .where(itemDetalle.item.id.eq(item.id).and(
+                        item.estudio.id.eq(estudioId).and(
+                                item.cursoId.eq(cursoId).and(item.semestre.id.eq(semestreId))
+                                        .and(itemDetalle.inicio.goe(rangoFechaInicio))
+                                        .and(itemDetalle.fin.loe(rangoFechaFin))
+                                        .and(item.grupoId.eq(grupoId))
+                                        .and(item.diaSemana.isNotNull())
+                                        .and(item.tipoSubgrupoId.in(tiposCalendarios)))))
+                .list(new QTuple(itemDetalle.id, itemDetalle.inicio, itemDetalle.fin,
+                        item.asignaturaId, item.tipoSubgrupoId, item.subgrupoId));
 
         System.out.println(listaTuplas);
         List<Evento> eventos = new ArrayList<Evento>();
-        
+
         for (Tuple tupla : listaTuplas)
         {
-            String titulo = MessageFormat.format("{0} {1}{2}", tupla.get(item.asignaturaId), tupla.get(item.tipoSubgrupoId), tupla.get(item.subgrupoId));
-            Calendario calendario = new Calendario(TipoSubgrupo.valueOf(tupla.get(item.tipoSubgrupoId)).getCalendarioAsociado());
-            eventos.add(new Evento(tupla.get(itemDetalle.id), calendario, titulo, tupla.get(itemDetalle.inicio), tupla.get(itemDetalle.fin)));
+            String titulo = MessageFormat.format("{0} {1}{2}", tupla.get(item.asignaturaId),
+                    tupla.get(item.tipoSubgrupoId), tupla.get(item.subgrupoId));
+            Calendario calendario = new Calendario(TipoSubgrupo.valueOf(
+                    tupla.get(item.tipoSubgrupoId)).getCalendarioAsociado());
+            eventos.add(new Evento(tupla.get(itemDetalle.id), calendario, titulo, tupla
+                    .get(itemDetalle.inicio), tupla.get(itemDetalle.fin)));
         }
         return eventos;
 
+    }
+
+    @Override
+    public Evento actualizaAulaAsignadaAEvento(Long eventoId, Long aulaId, boolean propagarComunes)
+            throws RegistroNoEncontradoException, AulaNoAsignadaAEstudioDelEventoException
+    {
+        ItemDTO item;
+        try
+        {
+            item = get(ItemDTO.class, eventoId).get(0);
+        }
+        catch (Exception e)
+        {
+            throw new RegistroNoEncontradoException();
+        }
+
+        if (aulaId != null) // Comprobamos que el aula está asignada al estudio del evento
+        {
+            AulaPlanificacionDTO aula;
+            try
+            {
+                aula = get(AulaPlanificacionDTO.class, aulaId).get(0);
+            }
+            catch (Exception e)
+            {
+                throw new RegistroNoEncontradoException();
+            }
+
+            if (!aula.getEstudio().getId().equals(item.getEstudio().getId()))
+            {
+                throw new AulaNoAsignadaAEstudioDelEventoException();
+            }
+
+            item.setAulasPlanificacion(aula);
+        }
+        else
+        {
+            item.setAulasPlanificacion(null);
+        }
+
+        Evento evento = creaEventoDesde(update(item));
+
+        if (propagarComunes) // Actualizamos el aula para todas las comunes
+        {
+
+        }
+
+        return evento;
     }
 }

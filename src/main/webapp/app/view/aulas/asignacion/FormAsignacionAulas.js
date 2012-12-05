@@ -88,18 +88,11 @@ Ext.define('HOR.view.aulas.asignacion.FormAsignacionAulas',
     buttons : [
     {
         text : 'Guardar',
-        handler : function()
-        {
-            // console.log('Guardar');
-        }
+        name : 'save',
     },
     {
         text : 'Tancar',
         name : 'close',
-        handler : function()
-        {
-            // console.log(this.text);
-        }
     } ],
 
     setStartDate : function(dt)
