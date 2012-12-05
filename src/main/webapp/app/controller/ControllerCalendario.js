@@ -140,34 +140,49 @@ Ext.define('HOR.controller.ControllerCalendario',
                         var eventos = Ext.create('HOR.store.StoreEventosDetalle');
 
                         Extensible.calendar.data.EventModel.reconfigure();
-
-                        params =
+                        Ext.Ajax.request(
                         {
-                            estudioId : titulaciones.getValue(),
-                            cursoId : cursos.getValue(),
-                            semestreId : semestres.getValue(),
-                            calendariosIds: calendarios,
-                            grupoId : grupos.getValue()
-                        };
-                        
-                        eventos.getProxy().extraParams = params;
+                            url : '/hor/rest/semestredetalle/estudio/' + titulaciones.getValue() + "/semestre/" + semestres.getValue(),
+                            method : 'GET',
+                            success : function(response)
+                            {
+                                var jsonResp = Ext.decode(response.responseText);
+                                var cadenaFechaInicio = jsonResp.data[0].fecha_inicio;
+                                var inicio = Ext.Date.parse(cadenaFechaInicio, 'd/m/Y H:i:s', true);
+                                var fin = new Date();
+                                fin.setDate(inicio.getDate()+7);
 
-                        panelPadre.add(
-                        {
-                            xtype : 'panelCalendarioDetalle',
-                            eventStore : eventos,
-                            showMultiDayView : true,
-                            viewConfig :
-                            {
-                                viewStartHour : horaInicio,
-                                viewEndHour : horaFin
-                            },
-                            listeners :
-                            {
-                                afterrender : function()
+                                panelPadre.add(
                                 {
-                                    eventos.load();
-                                }
+                                    xtype : 'panelCalendarioDetalle',
+                                    eventStore : eventos,
+                                    showMultiDayView : true,
+                                    startDate: inicio,
+                                    viewConfig :
+                                    {
+                                        viewStartHour : horaInicio,
+                                        viewEndHour : horaFin
+                                    },
+                                    listeners :
+                                    {
+                                        afterrender : function()
+                                        {
+                                            params =
+                                            {
+                                                estudioId : titulaciones.getValue(),
+                                                cursoId : cursos.getValue(),
+                                                semestreId : semestres.getValue(),
+                                                calendariosIds : calendarios,
+                                                grupoId : grupos.getValue(),
+                                                startDate : inicio,
+                                                endDate : fin
+                                            };
+
+                                            eventos.getProxy().extraParams = params;
+                                            this.setStartDate(inicio);
+                                        }
+                                    }
+                                });
                             }
                         });
                     }
@@ -231,13 +246,13 @@ Ext.define('HOR.controller.ControllerCalendario',
 
                         var eventos = Ext.create('HOR.store.StoreEventos');
                         Extensible.calendar.data.EventModel.reconfigure();
-                        
+
                         params =
                         {
                             estudioId : titulaciones.getValue(),
                             cursoId : cursos.getValue(),
                             semestreId : semestres.getValue(),
-                            calendariosIds: calendarios,
+                            calendariosIds : calendarios,
                             grupoId : grupos.getValue()
                         };
                         eventos.getProxy().extraParams = params;
@@ -337,7 +352,7 @@ Ext.define('HOR.controller.ControllerCalendario',
             }
         });
     },
-    
+
     onPanelCalendarioRendered : function()
     {
         var ref = this;
@@ -365,11 +380,11 @@ Ext.define('HOR.controller.ControllerCalendario',
             }
         });
     },
-    
+
     mostrarVentanaAsignarAulaAEvento : function()
     {
         Ext.ComponentQuery.query('panelCalendario')[0].showAsignarAulaView();
-        
+
     }
 
 });

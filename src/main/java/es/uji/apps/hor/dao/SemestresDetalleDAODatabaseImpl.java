@@ -9,6 +9,7 @@ import com.mysema.query.jpa.impl.JPAQuery;
 
 import es.uji.apps.hor.db.DetalleSemestreDTO;
 import es.uji.apps.hor.db.QDetalleSemestreDTO;
+import es.uji.apps.hor.db.QEstudioDTO;
 import es.uji.apps.hor.db.QSemestreDTO;
 import es.uji.apps.hor.db.QTipoEstudioDTO;
 import es.uji.apps.hor.db.SemestreDTO;
@@ -63,6 +64,34 @@ public class SemestresDetalleDAODatabaseImpl extends BaseDAODatabaseImpl impleme
     private TipoEstudio convierteTiposEstudioDTOenTiposEstudioModelo(TipoEstudioDTO tipoEstudioDTO)
     {
         return new TipoEstudio(tipoEstudioDTO.getId(), tipoEstudioDTO.getNombre());
+    }
+
+    @Override
+    public List<SemestreDetalle> getSemestresDetallesPorEstudioIdYSemestreId(
+            Long estudioId, Long semestreId)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        QDetalleSemestreDTO detalleSemestre = QDetalleSemestreDTO.detalleSemestreDTO;
+        QSemestreDTO semestre = QSemestreDTO.semestreDTO;
+        QTipoEstudioDTO tipoEstudio = QTipoEstudioDTO.tipoEstudioDTO;
+        QEstudioDTO estudio = QEstudioDTO.estudioDTO;
+
+        List<DetalleSemestreDTO> query_result = query
+                .from(detalleSemestre, estudio)
+                .join(detalleSemestre.semestre, semestre)
+                .fetch()
+                .join(detalleSemestre.tiposEstudio, tipoEstudio)
+                .fetch()
+                .join(estudio.tiposEstudio, tipoEstudio)
+                .where(estudio.id.eq(estudioId).and(
+                        detalleSemestre.semestre.id.eq(semestreId))).list(detalleSemestre);
+
+        List<SemestreDetalle> semestresDetalle = new ArrayList<SemestreDetalle>();
+        for (DetalleSemestreDTO detalle : query_result)
+        {
+            semestresDetalle.add(convierteDetalleDTOEnDetalleModelo(detalle));
+        }
+        return semestresDetalle;
     }
 
 }

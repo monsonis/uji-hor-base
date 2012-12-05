@@ -25,4 +25,9 @@ public class SemestresDetalleService
         return semestresDetalleDAO.getSemestresDetalleTodos();
     }
 
+    public List<SemestreDetalle> getSemestresDetallesPorEstudioIdYSemestreId(Long estudioId, Long semestreId)
+    {
+        return semestresDetalleDAO.getSemestresDetallesPorEstudioIdYSemestreId(estudioId, semestreId);
+    }
+
 }
