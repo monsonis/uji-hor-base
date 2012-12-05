@@ -383,8 +383,7 @@ Ext.define('HOR.controller.ControllerCalendario',
 
     mostrarVentanaAsignarAulaAEvento : function()
     {
-        Ext.ComponentQuery.query('panelCalendario')[0].showAsignarAulaView();
-
+        Ext.ComponentQuery.query('panelCalendario')[0].showAsignarAulaView();      
     }
 
 });

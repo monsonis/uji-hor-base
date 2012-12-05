@@ -131,7 +131,10 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         evento.setRepetirCadaSemanas(itemDTO.getRepetirCadaSemanas());
         evento.setDesdeElDia(itemDTO.getDesdeElDia());
         evento.setHastaElDia(itemDTO.getHastaElDia());
-        evento.setComunes(itemDTO.getComunes());
+        if (itemDTO.getComun() > 0)
+        {
+            evento.setComunes(itemDTO.getComunes());
+        }
         if (itemDTO.getAulasPlanificacion() != null)
         {
             evento.setAulaPlanificacionId(itemDTO.getAulasPlanificacion().getId());

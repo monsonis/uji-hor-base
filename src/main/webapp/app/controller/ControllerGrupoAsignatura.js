@@ -15,6 +15,10 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
     {
         selector : 'selectorCalendarios',
         ref : 'selectorCalendarios'
+    },
+    {
+        selector : 'panelHorarios formAsignacionAulas',
+        ref : 'formAsignacionAulas'
     } ],
 
     initComponent : function()
@@ -60,6 +64,15 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
                     me.getFiltroGrupos().setDisabled(true);
                     me.getSelectorGrupos().setDisabled(true);
                     me.getSelectorCalendarios().setDisabled(true);
+                }
+            },
+            'formAsignacionAulas' :
+            {
+                eventasigaaulacancel : function()
+                {
+                    me.getFiltroGrupos().setDisabled(false);
+                    me.getSelectorGrupos().setDisabled(false);
+                    me.getSelectorCalendarios().setDisabled(false);
                 }
             }
         });

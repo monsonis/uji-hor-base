@@ -11,6 +11,7 @@ Ext.define('HOR.view.aulas.asignacion.FormAsignacionAulas',
     buttonAlign : 'center',
     autoHeight : true,
     cls : 'ext-evt-edit-form',
+    trackResetOnLoad : true,
 
     items : [
     {
@@ -43,18 +44,29 @@ Ext.define('HOR.view.aulas.asignacion.FormAsignacionAulas',
         name : 'borrarAsignacion',
         text : 'Desassignar aula',
         iconCls : 'application-delete',
-        hidden : true
+        hidden : true,
+        style :
+        {
+            marginLeft : '105px'
+        }
     },
     {
-        xtype : 'checkbox',
-        boxLabel : 'Assignar a tots els subgrups',
-        inputValue : true,
-        checked : true,
+        xtype : 'combobox',
+        name : 'tipoAccion',
+        fieldLabel : "Tipus d'acció",
         anchor : '90%',
         style :
         {
             marginTop : '30px'
-        }
+        },
+        valueField : 'id',
+        displayField : 'tipo',
+        store : Ext.create('Ext.data.ArrayStore',
+        {
+            fields : [ 'id', 'tipo' ],
+            data : [ [ 'T', 'Assignar a totes les classes del subgrup' ], [ 'U', 'Assignar només a aquesta classe' ] ]
+        }),
+        value : 'T'
     },
     {
         xtype : 'fieldset',
