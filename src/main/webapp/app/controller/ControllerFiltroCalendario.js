@@ -46,6 +46,7 @@ Ext.define('HOR.controller.ControllerFiltroCalendario',
         this.getFiltroGrupos().down('button[name=intervaloHorario]').hide();
         this.getFiltroGrupos().down('button[name=calendarioDetalle]').hide();
         this.getFiltroGrupos().down('button[name=calendarioGenerica]').hide();
+        this.getFiltroGrupos().down('button[name=imprimir]').hide();
 
         this.getPanelCalendario().limpiaCalendario();
         this.getSelectorGrupos().limpiaGrupos();
@@ -74,6 +75,7 @@ Ext.define('HOR.controller.ControllerFiltroCalendario',
         this.getFiltroGrupos().down('button[name=intervaloHorario]').hide();
         this.getFiltroGrupos().down('button[name=calendarioDetalle]').hide();
         this.getFiltroGrupos().down('button[name=calendarioGenerica]').hide();
+        this.getFiltroGrupos().down('button[name=imprimir]').hide();
 
         this.getPanelCalendario().limpiaCalendario();
         this.getSelectorGrupos().limpiaGrupos();
@@ -103,7 +105,8 @@ Ext.define('HOR.controller.ControllerFiltroCalendario',
         this.getFiltroGrupos().down('button[name=intervaloHorario]').hide();
         this.getFiltroGrupos().down('button[name=calendarioDetalle]').hide();
         this.getFiltroGrupos().down('button[name=calendarioGenerica]').hide();
-
+        this.getFiltroGrupos().down('button[name=imprimir]').hide();
+        
         this.getPanelCalendario().limpiaCalendario();
         this.getSelectorGrupos().limpiaGrupos();
 

@@ -23,6 +23,14 @@ Ext.define('HOR.controller.ControllerCalendario',
     {
         selector : 'selectorCalendarios',
         ref : 'selectorCalendarios'
+    },
+    {
+        selector : 'button[name=calendarioDetalle]',
+        ref : 'botonCalendarioDetalle'
+    },
+    {
+        selector : 'button[name=calendarioGenerica]',
+        ref : 'botonCalendarioGenerica'
     } ],
 
     init : function()
@@ -74,12 +82,40 @@ Ext.define('HOR.controller.ControllerCalendario',
             },
             'panelHorarios button[name=calendarioDetalle]' :
             {
-                click : this.refreshCalendarDetalle
+                click : function(button)
+                {
+                    if (!button.pressed)
+                    {
+                        button.toggle();
+                    }
+                    var otherButton = this.getBotonCalendarioGenerica();
+                    if (otherButton.pressed)
+                    {
+                        otherButton.toggle();
+                    }
+                    this.refreshCalendarDetalle();
+                }
 
             },
             'panelHorarios button[name=calendarioGenerica]' :
             {
-                click : this.refreshCalendar
+                click : function(button)
+                {
+                    if (!button.pressed)
+                    {
+                        button.toggle();
+                    }
+                    var otherButton = this.getBotonCalendarioDetalle();
+                    if (otherButton.pressed)
+                    {
+                        otherButton.toggle();
+                    }
+                    this.refreshCalendar();
+                }
+            },
+            'panelHorarios button[name=imprimir]' :
+            {
+                click : this.imprimirCalendario
             }
         });
     },
@@ -150,14 +186,14 @@ Ext.define('HOR.controller.ControllerCalendario',
                                 var cadenaFechaInicio = jsonResp.data[0].fecha_inicio;
                                 var inicio = Ext.Date.parse(cadenaFechaInicio, 'd/m/Y H:i:s', true);
                                 var fin = new Date();
-                                fin.setDate(inicio.getDate()+7);
+                                fin.setDate(inicio.getDate() + 7);
 
                                 panelPadre.add(
                                 {
                                     xtype : 'panelCalendarioDetalle',
                                     eventStore : eventos,
                                     showMultiDayView : true,
-                                    startDate: inicio,
+                                    startDate : inicio,
                                     viewConfig :
                                     {
                                         viewStartHour : horaInicio,
@@ -383,7 +419,22 @@ Ext.define('HOR.controller.ControllerCalendario',
 
     mostrarVentanaAsignarAulaAEvento : function()
     {
-        Ext.ComponentQuery.query('panelCalendario')[0].showAsignarAulaView();      
+        Ext.ComponentQuery.query('panelCalendario')[0].showAsignarAulaView();
+    },
+
+    imprimirCalendario : function()
+    {
+        var titulacion = this.getFiltroGrupos().down('combobox[name=estudio]').getValue();
+        var curso = this.getFiltroGrupos().down('combobox[name=curso]').getValue();
+        var semestre = this.getFiltroGrupos().down('combobox[name=semestre]').getValue();
+        var grupo = this.getFiltroGrupos().down('combobox[name=grupo]').getValue();
+
+        if (this.getBotonCalendarioGenerica().pressed)
+        {
+            window.open("http://www.uji.es/cocoon/xxxx/" + titulacion + "/" + curso + "/" + semestre + "/" + grupo + "/horario-semana-generica.pdf");
+        } else {
+            console.log("calendario detalle");
+        }
     }
 
 });

@@ -43,6 +43,7 @@ Ext.define('HOR.controller.ControllerConfiguracion',
                     combo.up('filtroGrupos').down('button[name=intervaloHorario]').setVisible(true);
                     combo.up('filtroGrupos').down('button[name=calendarioDetalle]').setVisible(true);
                     combo.up('filtroGrupos').down('button[name=calendarioGenerica]').setVisible(true);
+                    combo.up('filtroGrupos').down('button[name=imprimir]').setVisible(true);
                 }
             }
         });

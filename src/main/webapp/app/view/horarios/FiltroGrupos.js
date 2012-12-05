@@ -77,49 +77,29 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
             hidden : true,
             width : '40',
             flex : 0,
-            text : 'Setmana detallada',
-            listeners :
-            {
-                click : function()
-                {
-                    if (!this.pressed)
-                    {
-                        this.toggle();
-                    }
-                    var otherButton = Ext.ComponentQuery.query("button[name=calendarioGenerica]")[0];
-                    if (otherButton.pressed)
-                    {
-                        otherButton.toggle();
-                    }
-                }
-            }
+            text : 'Setmana detallada'
         },
         {
-            margin : '0 0 0 0',
+            margin : '0 0 0 10',
             name : 'calendarioGenerica',
             xtype : 'button',
             enableToggle : true,
             pressed : true,
             hidden : true,
-            margin: '0 0 0 5',
+            margin : '0 0 0 5',
             width : '40',
             flex : 0,
-            text : 'Setmana genèrica',
-            listeners :
-            {
-                click : function()
-                {
-                    if (!this.pressed)
-                    {
-                        this.toggle();
-                    }
-                    var otherButton = Ext.ComponentQuery.query("button[name=calendarioDetalle]")[0];
-                    if (otherButton.pressed)
-                    {
-                        otherButton.toggle();
-                    }
-                }
-            }
+            text : 'Setmana genèrica'
+        },
+        {
+            margin : '0 0 0 0',
+            name : 'imprimir',
+            xtype : 'button',
+            hidden : true,
+            margin : '0 0 0 5',
+            width : '40',
+            flex : 0,
+            text : 'Imprimir calendario'
         } ]
     } ]
 });
