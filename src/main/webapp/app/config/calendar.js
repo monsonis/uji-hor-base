@@ -433,6 +433,11 @@ Extensible.calendar.form.EventDetails.override(
         {
             return;
         }
+        
+        if (this.detalleManualField.getValue() && this.detalleManualFechas.numer_seleccionados() == 0){
+        	Ext.Msg.alert('Error al detalle manual','És necessari marcar almenys una data en el detall manual de classes');
+        	return;
+        }
 
         if (!me.updateRecord(me.activeRecord))
         {
