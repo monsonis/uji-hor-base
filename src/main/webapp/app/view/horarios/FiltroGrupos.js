@@ -77,7 +77,8 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
             hidden : true,
             width : '40',
             flex : 0,
-            text : 'Setmana detallada'
+            text : 'Setmana detallada',
+            iconCls : 'calendar-week'
         },
         {
             margin : '0 0 0 10',
@@ -89,7 +90,8 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
             margin : '0 0 0 5',
             width : '40',
             flex : 0,
-            text : 'Setmana genèrica'
+            text : 'Setmana genèrica',
+            iconCls : 'calendar-edit'
         },
         {
             margin : '0 0 0 0',
