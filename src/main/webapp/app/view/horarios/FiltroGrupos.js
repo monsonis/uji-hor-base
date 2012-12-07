@@ -99,7 +99,8 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
             margin : '0 0 0 5',
             width : '40',
             flex : 0,
-            text : 'Imprimir calendario'
+            text : 'Imprimir calendario',
+            iconCls : 'printer'
         } ]
     } ]
 });
