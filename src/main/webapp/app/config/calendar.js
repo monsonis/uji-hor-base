@@ -594,6 +594,9 @@ Extensible.calendar.form.EventDetails.override(
         }
 
         var fechas = obj[Extensible.calendar.data.EventMappings.FechaDetalleManual.name];
+        if (! (fechas instanceof Array)){ // Si sólo hay un objeto no lo mapea a array y el servidor luego no lo entiende
+        	fechas = [fechas];
+        }
         obj[Extensible.calendar.data.EventMappings.FechaDetalleManualInt.name] = Ext.JSON.encode(fechas);
 
         record.set(obj);
