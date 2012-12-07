@@ -26,7 +26,7 @@ Ext.define('Event.form.field.DetalleManual',
         this.callParent(arguments);
 
     },
-
+   
     addPosiblesFechas : function(clases)
     {
         this.items.items[0].removeAll();
@@ -80,6 +80,21 @@ Ext.define('Event.form.field.DetalleManual',
                 checkboxes[i].setValue(true);
             }
         }
-    }
+    },
+    
+    numer_seleccionados : function(){
+    	var checkboxes = this.down('checkboxgroup').items.items;
+    	var nselecs = 0;
+
+        for ( var i = 0; i < checkboxes.length; i++)
+        {
+            if (checkboxes[i].getValue())
+            {
+               nselecs = nselecs +1;
+            }
+        }
+        return nselecs;
+    },
+
 
 });
