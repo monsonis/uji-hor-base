@@ -442,9 +442,18 @@ public class CalendarResource
             NumberFormatException
     {
         boolean propagarComunes = tipoAccion.equals("T");
+        Long aula;
+        try
+        {
+            aula = Long.parseLong(aulaId);
+        }
+        catch (Exception e)
+        {
+            aula = null;
+        }
 
-        Evento evento = eventosService.actualizaAulaAsignadaAEvento(Long.parseLong(eventoId),
-                Long.parseLong(aulaId), propagarComunes);
+        Evento evento = eventosService.actualizaAulaAsignadaAEvento(Long.parseLong(eventoId), aula,
+                propagarComunes);
 
         return toUI(Collections.singletonList(evento));
     }

@@ -132,4 +132,8 @@ Ext.define('HOR.view.horarios.PanelCalendario',
             me.fireViewChange();
         }
     },
+    
+    getEventStore : function() {
+        return this.store;
+    }
 });

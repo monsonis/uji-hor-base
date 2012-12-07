@@ -170,6 +170,7 @@ Extensible.calendar.data.EventMappings.AulaPlanificacionId =
 {
     name : 'AulaPlanificacionId',
     mapping : 'aula_planificacion_id',
+    type : 'int'
 };
 Extensible.calendar.data.EventModel.reconfigure();
 

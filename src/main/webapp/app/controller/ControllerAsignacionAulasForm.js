@@ -1,7 +1,7 @@
 Ext.define('HOR.controller.ControllerAsignacionAulasForm',
 {
     extend : 'Ext.app.Controller',
-    stores : [ 'StoreAulasAsignadas' ],
+    stores : [ 'StoreAulasAsignadas', 'StoreEventos' ],
     refs : [
     {
         selector : 'formAsignacionAulas',
@@ -11,6 +11,8 @@ Ext.define('HOR.controller.ControllerAsignacionAulasForm',
         selector : 'panelCalendario',
         ref : 'panelCalendario'
     } ],
+
+    dirty : false,
 
     init : function()
     {
@@ -31,33 +33,41 @@ Ext.define('HOR.controller.ControllerAsignacionAulasForm',
             {
                 click : this.borrarAsignacionAula
             },
-            'formAsignacionAulas' :
-            {
-                dirtychange : function(form, isDirty)
-                {
-                    if (isDirty)
-                    {
-                        Ext.ComponentQuery.query('formAsignacionAulas')[0].down('button[name=close]').setText('Tancar sense guardar');
-                    }
-                    else
-                    {
-                        Ext.ComponentQuery.query('formAsignacionAulas')[0].down('button[name=close]').setText('Tancar');
-                    }
-                }
-            },
             'formAsignacionAulas button[name=save]' :
             {
                 click : this.guardarDatosFormulario
             },
+            'formAsignacionAulas combobox[name=aulaPlanificacion]' :
+            {
+                change : function()
+                {
+                    this.setIsFormularioDirty(Ext.ComponentQuery.query('formAsignacionAulas')[0]);
+                    var boton = Ext.ComponentQuery.query('formAsignacionAulas button[name=borrarAsignacion]')[0];
+                    if (Ext.ComponentQuery.query('formAsignacionAulas combobox[name=aulaPlanificacion]')[0].getValue() != null)
+                    {
+                        boton.show();
+                    }
+                    else
+                    {
+                        boton.hide();
+                    }
+                }
+            },
+            'formAsignacionAulas combobox[name=tipoAccion]' :
+            {
+                change : function()
+                {
+                    this.setIsFormularioDirty(Ext.ComponentQuery.query('formAsignacionAulas')[0]);
+                }
+            }
         });
     },
 
     cerrarFormulario : function()
     {
-        var formulario = Ext.ComponentQuery.query('formAsignacionAulas')[0];
         var me = this;
 
-        if (formulario.getForm().isDirty())
+        if (this.dirty)
         {
             Ext.Msg.confirm('Dades sense guardar', 'Tens dades sense guardar en el event, estàs segur de voler tancar la edició?', function(btn, text)
             {
@@ -83,7 +93,9 @@ Ext.define('HOR.controller.ControllerAsignacionAulasForm',
 
     cargarDatosFormulario : function(rec)
     {
+        var me = this;
         var formulario = Ext.ComponentQuery.query('formAsignacionAulas')[0];
+        formulario.getForm().reset();
 
         formulario.down('displayfield[name=event]').setValue(rec.data[Extensible.calendar.data.EventMappings.Title.name]);
         formulario.down('hiddenfield[name=eventId]').setValue(rec.data[Extensible.calendar.data.EventMappings.EventId.name]);
@@ -110,21 +122,24 @@ Ext.define('HOR.controller.ControllerAsignacionAulasForm',
             params :
             {
                 semestreId : semestreId
+            },
+            callback : function(records, operation, success)
+            {
+                if (success && rec.data[Extensible.calendar.data.EventMappings.AulaPlanificacionId.name])
+                {
+                    formulario.down('combobox[name=aulaPlanificacion]').setValue(rec.data[Extensible.calendar.data.EventMappings.AulaPlanificacionId.name]);
+                    formulario.down('combobox[name=aulaPlanificacion]').lastValue = rec.data[Extensible.calendar.data.EventMappings.AulaPlanificacionId.name];
+                    formulario.down('button[name=borrarAsignacion]').show();
+                }
+                else
+                {
+                    formulario.down('combobox[name=aulaPlanificacion]').clearValue();
+                    formulario.down('button[name=borrarAsignacion]').hide();
+                }
+
+                me.resetForm(formulario);
             }
         });
-
-        if (rec.data[Extensible.calendar.data.EventMappings.AulaPlanificacionId.name])
-        {
-            formulario.down('combobox[name=aulaPlanificacion]').setValue(rec.data[Extensible.calendar.data.EventMappings.AulaPlanificacionId.name]);
-            formulario.down('button[name=borrarAsignacion]').show();
-        }
-        else
-        {
-            formulario.down('combobox[name=aulaPlanificacion]').clearValue();
-            formulario.down('button[name=borrarAsignacion]').hide();
-        }
-
-        formulario.getForm().setValues(formulario.getForm().getValues());
     },
 
     borrarAsignacionAula : function()
@@ -134,11 +149,13 @@ Ext.define('HOR.controller.ControllerAsignacionAulasForm',
 
     guardarDatosFormulario : function()
     {
+        var me = this;
         var formulario = Ext.ComponentQuery.query('formAsignacionAulas')[0];
+        var store = formulario.up("panelCalendario").getEventStore();
 
         var eventoId = formulario.down('hiddenfield[name=eventId]').getValue();
         var aulaId = formulario.down('combobox[name=aulaPlanificacion]').getValue();
-        var tipoAccion = formulario.down('combobox[name=tipoAccion]').getValue()
+        var tipoAccion = formulario.down('combobox[name=tipoAccion]').getValue();
 
         Ext.Ajax.request(
         {
@@ -149,10 +166,11 @@ Ext.define('HOR.controller.ControllerAsignacionAulasForm',
                 aulaId : aulaId,
                 tipoAccion : tipoAccion
             },
-            success : function(response, aa)
+            success : function(response)
             {
-                console.log(response);
-                formulario.getForm().setValues(formulario.getForm().getValues());
+                me.resetForm(formulario);
+                var record = store.getById(eventoId);
+                record.set(Extensible.calendar.data.EventMappings.AulaPlanificacionId.name, aulaId);
             },
             failure : function(response)
             {
@@ -172,7 +190,35 @@ Ext.define('HOR.controller.ControllerAsignacionAulasForm',
                     }
                 }
             }
-        })
-    }
+        });
+    },
 
+    setIsFormularioDirty : function(formulario)
+    {
+        var comboAulas = formulario.down('combobox[name=aulaPlanificacion]');
+        var comboAccion = formulario.down('combobox[name=tipoAccion]');
+
+        if (comboAulas.getValue() != comboAulas.originalValue || comboAccion.getValue() != comboAccion.originalValue)
+        {
+            this.dirty = true;
+            Ext.ComponentQuery.query('formAsignacionAulas')[0].down('button[name=close]').setText('Tancar sense guardar');
+        }
+        else
+        {
+            Ext.ComponentQuery.query('formAsignacionAulas')[0].down('button[name=close]').setText('Tancar');
+            this.dirty = false;
+        }
+    },
+
+    resetForm : function(formulario)
+    {
+        var comboAulas = formulario.down('combobox[name=aulaPlanificacion]');
+        var comboAccion = formulario.down('combobox[name=tipoAccion]');
+
+        comboAulas.originalValue = comboAulas.getValue();
+        comboAccion.originalValue = comboAccion.getValue();
+
+        Ext.ComponentQuery.query('formAsignacionAulas')[0].down('button[name=close]').setText('Tancar');
+        this.dirty = false;
+    }
 });
