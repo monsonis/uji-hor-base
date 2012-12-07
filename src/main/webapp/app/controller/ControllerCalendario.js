@@ -433,7 +433,7 @@ Ext.define('HOR.controller.ControllerCalendario',
         {
             window.open("http://www.uji.es/cocoon/xxxx/" + titulacion + "/" + curso + "/" + semestre + "/" + grupo + "/horario-semana-generica.pdf");
         } else {
-            console.log("calendario detalle");
+            window.open("http://www.uji.es/cocoon/xxxx/" + titulacion + "/" + curso + "/" + semestre + "/" + grupo + "/horario-semana-detalle.pdf");
         }
     }
 
