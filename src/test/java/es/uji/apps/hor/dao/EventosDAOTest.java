@@ -17,11 +17,17 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import es.uji.apps.hor.AulaNoAsignadaAEstudioDelEventoException;
 import es.uji.apps.hor.EventoNoDivisibleException;
+import es.uji.apps.hor.db.AsignaturaComunDTO;
+import es.uji.apps.hor.db.AulaDTO;
+import es.uji.apps.hor.db.AulaPlanificacionDTO;
+import es.uji.apps.hor.db.CentroDTO;
 import es.uji.apps.hor.db.DiaSemanaDTO;
 import es.uji.apps.hor.db.EstudioDTO;
 import es.uji.apps.hor.db.ItemDTO;
 import es.uji.apps.hor.db.SemestreDTO;
+import es.uji.apps.hor.db.TipoEstudioDTO;
 import es.uji.apps.hor.model.Evento;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
@@ -34,6 +40,14 @@ public class EventosDAOTest
     private EventosDAO eventosDAO;
 
     private ItemDTO item;
+
+    private CentroDTO centro;
+    private TipoEstudioDTO tipoEstudio;
+    private EstudioDTO estudio;
+    private AulaDTO aula;
+    private AulaPlanificacionDTO aulaPlanificacion;
+    private AsignaturaComunDTO asignaturaComun1;
+    private AsignaturaComunDTO asignaturaComun2;
 
     @Before
     public void rellenaItem() throws ParseException
@@ -194,6 +208,163 @@ public class EventosDAOTest
         eventosDAO.insert(item);
 
         eventosDAO.divideEventoSemanaGenerica(item.getId());
+    }
+
+    public void rellenaDatosTestsConAulas()
+    {
+        centro = new CentroDTO();
+        centro.setNombre("Centro de prueba");
+        eventosDAO.insert(centro);
+
+        tipoEstudio = new TipoEstudioDTO();
+        tipoEstudio.setId("PR");
+        tipoEstudio.setNombre("Pruebas");
+        eventosDAO.insert(tipoEstudio);
+
+        estudio = new EstudioDTO();
+        estudio.setNombre("Estudio de prueba");
+        estudio.setTipoEstudio(tipoEstudio);
+        estudio.setCentro(centro);
+        estudio.setOficial(new Long(1));
+        eventosDAO.insert(estudio);
+
+        aula = new AulaDTO();
+        aula.setNombre("Aula1000");
+        aula.setCentro(centro);
+        eventosDAO.insert(aula);
+
+        aulaPlanificacion = new AulaPlanificacionDTO();
+        aulaPlanificacion.setNombre("Aula1000-1");
+        aulaPlanificacion.setAula(aula);
+        aulaPlanificacion.setEstudio(estudio);
+        eventosDAO.insert(aulaPlanificacion);
+
+        asignaturaComun1 = new AsignaturaComunDTO();
+        asignaturaComun1.setAsignaturaId(item.getAsignaturaId());
+        asignaturaComun1.setCursoAcademicoId(new Long(2012));
+        asignaturaComun1.setGrupoComunId(new Long(1));
+        asignaturaComun1.setNombre(item.getAsignatura());
+        eventosDAO.insert(asignaturaComun1);
+
+        asignaturaComun2 = new AsignaturaComunDTO();
+        asignaturaComun2.setAsignaturaId("Comun");
+        asignaturaComun2.setCursoAcademicoId(new Long(2012));
+        asignaturaComun2.setGrupoComunId(new Long(1));
+        asignaturaComun2.setNombre("Prueba Comun");
+        eventosDAO.insert(asignaturaComun2);
+    }
+
+    @Test
+    public void actualizaAulaPlanificacionEventoConAsignaturasComunesTest()
+            throws RegistroNoEncontradoException, AulaNoAsignadaAEstudioDelEventoException
+    {
+        rellenaDatosTestsConAulas();
+
+        item.setEstudio(estudio);
+        eventosDAO.insert(item);
+
+        ItemDTO comun = new ItemDTO();
+        comun.setAsignaturaId("Comun");
+        comun.setAsignatura("Prueba Comun");
+        comun.setCaracter("Troncal");
+        comun.setCaracterId("TR");
+        comun.setComun(new Long(0));
+        comun.setCursoId(new Long(1));
+        comun.setDiaSemana((DiaSemanaDTO) eventosDAO.get(DiaSemanaDTO.class, new Long(1)).get(0));
+        comun.setEstudio(estudio);
+        comun.setEstudioDesc(estudio.getNombre());
+        comun.setGrupoId("A");
+        comun.setHoraFin(item.getHoraFin());
+        comun.setHoraInicio(item.getHoraInicio());
+        comun.setDetalleManual(false);
+        comun.setSemestre(item.getSemestre());
+        comun.setSubgrupoId(new Long(1));
+        comun.setTipoSubgrupoId("TU");
+        eventosDAO.insert(comun);
+
+        eventosDAO.actualizaAulaAsignadaAEvento(item.getId(), aulaPlanificacion.getId(), true);
+        item = eventosDAO.get(ItemDTO.class, item.getId()).get(0);
+
+        Assert.assertEquals(aulaPlanificacion, item.getAulasPlanificacion());
+
+        comun = eventosDAO.get(ItemDTO.class, comun.getId()).get(0);
+
+        Assert.assertEquals(item.getAulasPlanificacion(), comun.getAulasPlanificacion());
+    }
+
+    @Test
+    public void desasignaAulaPlanificacionEventoConAsignaturasComunesTest()
+            throws RegistroNoEncontradoException, AulaNoAsignadaAEstudioDelEventoException
+    {
+        rellenaDatosTestsConAulas();
+
+        item.setEstudio(estudio);
+        eventosDAO.insert(item);
+
+        ItemDTO comun = new ItemDTO();
+        comun.setAsignaturaId("Comun");
+        comun.setAsignatura("Prueba Comun");
+        comun.setCaracter("Troncal");
+        comun.setCaracterId("TR");
+        comun.setComun(new Long(0));
+        comun.setCursoId(new Long(1));
+        comun.setDiaSemana((DiaSemanaDTO) eventosDAO.get(DiaSemanaDTO.class, new Long(1)).get(0));
+        comun.setEstudio(estudio);
+        comun.setEstudioDesc(estudio.getNombre());
+        comun.setGrupoId("A");
+        comun.setHoraFin(item.getHoraFin());
+        comun.setHoraInicio(item.getHoraInicio());
+        comun.setDetalleManual(false);
+        comun.setSemestre(item.getSemestre());
+        comun.setSubgrupoId(new Long(1));
+        comun.setTipoSubgrupoId("TU");
+        eventosDAO.insert(comun);
+
+        eventosDAO.actualizaAulaAsignadaAEvento(item.getId(), null, true);
+        item = eventosDAO.get(ItemDTO.class, item.getId()).get(0);
+
+        Assert.assertNull(item.getAulasPlanificacion());
+
+        comun = eventosDAO.get(ItemDTO.class, comun.getId()).get(0);
+        Assert.assertEquals(item.getAulasPlanificacion(), comun.getAulasPlanificacion());
+    }
+
+    @Test
+    public void actualizaAulaPlanificacionEventoTest() throws RegistroNoEncontradoException,
+            AulaNoAsignadaAEstudioDelEventoException
+    {
+        rellenaDatosTestsConAulas();
+
+        item.setEstudio(estudio);
+        eventosDAO.insert(item);
+
+        ItemDTO comun = new ItemDTO();
+        comun.setAsignaturaId("Comun");
+        comun.setAsignatura("Prueba Comun");
+        comun.setCaracter("Troncal");
+        comun.setCaracterId("TR");
+        comun.setComun(new Long(0));
+        comun.setCursoId(new Long(1));
+        comun.setDiaSemana((DiaSemanaDTO) eventosDAO.get(DiaSemanaDTO.class, new Long(1)).get(0));
+        comun.setEstudio(estudio);
+        comun.setEstudioDesc(estudio.getNombre());
+        comun.setGrupoId("A");
+        comun.setHoraFin(item.getHoraFin());
+        comun.setHoraInicio(item.getHoraInicio());
+        comun.setDetalleManual(false);
+        comun.setSemestre(item.getSemestre());
+        comun.setSubgrupoId(new Long(1));
+        comun.setTipoSubgrupoId("TU");
+        eventosDAO.insert(comun);
+
+        eventosDAO.actualizaAulaAsignadaAEvento(item.getId(), aulaPlanificacion.getId(), false);
+        item = eventosDAO.get(ItemDTO.class, item.getId()).get(0);
+
+        Assert.assertEquals(aulaPlanificacion, item.getAulasPlanificacion());
+
+        comun = eventosDAO.get(ItemDTO.class, comun.getId()).get(0);
+
+        Assert.assertNull(comun.getAulasPlanificacion());
     }
 
 }

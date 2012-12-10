@@ -15,12 +15,14 @@ import com.mysema.query.types.QTuple;
 
 import es.uji.apps.hor.AulaNoAsignadaAEstudioDelEventoException;
 import es.uji.apps.hor.EventoNoDivisibleException;
+import es.uji.apps.hor.db.AsignaturaComunDTO;
 import es.uji.apps.hor.db.AulaPlanificacionDTO;
 import es.uji.apps.hor.db.DiaSemanaDTO;
 import es.uji.apps.hor.db.ItemCircuitoDTO;
 import es.uji.apps.hor.db.ItemDTO;
 import es.uji.apps.hor.db.ItemDetalleCompletoDTO;
 import es.uji.apps.hor.db.ItemDetalleDTO;
+import es.uji.apps.hor.db.QAsignaturaComunDTO;
 import es.uji.apps.hor.db.QDiaSemanaDTO;
 import es.uji.apps.hor.db.QItemCircuitoDTO;
 import es.uji.apps.hor.db.QItemDTO;
@@ -723,11 +725,54 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
 
         Evento evento = creaEventoDesde(update(item));
 
-        if (propagarComunes) // Actualizamos el aula para todas las comunes
+        if (propagarComunes)
         {
+            QItemDTO itemDTO = QItemDTO.itemDTO;
 
+            List<AsignaturaComunDTO> comunes = getAsignaturasComunesDe(item.getAsignaturaId());
+
+            for (AsignaturaComunDTO comun : comunes)
+            {
+                JPAQuery query = new JPAQuery(entityManager);
+                List<ItemDTO> items = query
+                        .from(itemDTO)
+                        .where(itemDTO.asignaturaId.eq(comun.getAsignaturaId())
+                                .and(itemDTO.semestre.id.eq(item.getSemestre().getId()))
+                                .and(itemDTO.horaInicio.eq(item.getHoraInicio()))
+                                .and(itemDTO.horaFin.eq(item.getHoraFin()))).list(itemDTO);
+
+                if (items.size() > 0)
+                {
+                    ItemDTO aux = items.get(0);
+                    aux.setAulasPlanificacion(item.getAulasPlanificacion());
+                    update(aux);
+                }
+            }
         }
 
         return evento;
+    }
+
+    private List<AsignaturaComunDTO> getAsignaturasComunesDe(String asignaturaId)
+            throws RegistroNoEncontradoException
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        JPAQuery queryAux = new JPAQuery(entityManager);
+        QAsignaturaComunDTO asignaturaDTO = QAsignaturaComunDTO.asignaturaComunDTO;
+
+        List<AsignaturaComunDTO> auxList = queryAux.from(asignaturaDTO)
+                .where(asignaturaDTO.asignaturaId.eq(asignaturaId)).list(asignaturaDTO);
+
+        if (auxList.size() == 0)
+        {
+            throw new RegistroNoEncontradoException();
+        }
+
+        List<AsignaturaComunDTO> asignaturasDTO = query
+                .from(asignaturaDTO)
+                .where(asignaturaDTO.grupoComunId.eq(auxList.get(0).getGrupoComunId()).and(
+                        asignaturaDTO.asignaturaId.ne(asignaturaId))).list(asignaturaDTO);
+
+        return asignaturasDTO;
     }
 }
