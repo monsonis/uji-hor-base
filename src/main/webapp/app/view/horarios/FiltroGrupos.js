@@ -67,7 +67,8 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
             xtype : 'button',
             hidden : true,
             width : '40',
-            text : 'Interval horari...'
+            text : 'Interval horari...',
+            iconCls : 'time'
         },
         {
             margin : '0 0 0 10',

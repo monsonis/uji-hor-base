@@ -22,3 +22,5 @@
 	color: grey;
 	font-style: italic;
 }
+
+.time { background-image: url(http://static.uji.es/js/extjs/uji-commons-extjs/img/time.png) !important; background-repeat: no-repeat; }
