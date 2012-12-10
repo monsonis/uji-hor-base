@@ -37,7 +37,8 @@ Ext.define('HOR.view.aulas.asignacion.FormAsignacionAulas',
         displayField : 'nombre',
         valueField : 'id',
         queryMode : 'local',
-        emptyText : 'Sense assignar...'
+        emptyText : 'Sense assignar...',
+        editable : false
     },
     {
         xtype : 'button',
@@ -66,7 +67,8 @@ Ext.define('HOR.view.aulas.asignacion.FormAsignacionAulas',
             fields : [ 'id', 'tipo' ],
             data : [ [ 'T', 'Assignar a totes les classes del subgrup' ], [ 'U', 'Assignar només a aquesta classe' ] ]
         }),
-        value : 'T'
+        value : 'T',
+        editable : false
     },
     {
         xtype : 'fieldset',
