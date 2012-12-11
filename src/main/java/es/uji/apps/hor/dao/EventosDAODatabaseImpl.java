@@ -186,11 +186,35 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         query2.from(qDiaSemana).where(qDiaSemana.nombre.eq(diaSemana));
         DiaSemanaDTO diaSemanaDTO = query2.list(qDiaSemana).get(0);
 
+        Date previousInicio = item.getHoraInicio();
+        Date previousFin = item.getHoraFin();
+
         item.setHoraInicio(inicio);
         item.setHoraFin(fin);
         item.setDiaSemana(diaSemanaDTO);
         item.setDetalleManual(false);
         item = update(item);
+
+        if (item.getComun().equals(new Long(1))) // Propagamos en las asignaturas comunes
+        {
+            try
+            {
+                List<AsignaturaComunDTO> comunes = getAsignaturasComunesDe(item.getAsignaturaId());
+                for (AsignaturaComunDTO comun : comunes)
+                {
+                    ItemDTO itemComun = getItemAsignaturaComun(comun.getAsignaturaId(), item
+                            .getSemestre().getId(), previousInicio, previousFin);
+                    itemComun.setHoraInicio(inicio);
+                    itemComun.setHoraFin(fin);
+                    itemComun.setDiaSemana(diaSemanaDTO);
+                    itemComun.setDetalleManual(false);
+                    update(itemComun);
+                }
+            }
+            catch (Exception e)
+            {
+            }
+        }
 
         return creaEventoDesde(item);
     }
@@ -371,6 +395,8 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             aux.setPlazas(itemCircuitoDTO.getPlazas());
             insert(aux);
         }
+
+        // ¿Lo mismo para cada común?
     }
 
     @Override
@@ -406,6 +432,18 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         item.setHastaElDia(hastaElDia);
         item.setDetalleManual(detalleManual);
         update(item);
+
+        /*
+         * if (item.getComun().equals(new Long(1))) // Propagamos en las asignaturas comunes { try {
+         * List<AsignaturaComunDTO> comunes = getAsignaturasComunesDe(item.getAsignaturaId()); for
+         * (AsignaturaComunDTO comun : comunes) { ItemDTO itemComun =
+         * getItemAsignaturaComun(comun.getAsignaturaId(), item); itemComun.setHoraInicio(inicio);
+         * itemComun.setHoraFin(fin); itemComun.setDiaSemana(diaSemanaDTO);
+         * itemComun.setDesdeElDia(desdeElDia); itemComun.setNumeroIteraciones(numeroIteraciones);
+         * itemComun.setRepetirCadaSemanas(repetirCadaSemanas); itemComun.setHastaElDia(hastaElDia);
+         * itemComun.setDetalleManual(detalleManual); update(itemComun); } } catch
+         * (RegistroNoEncontradoException e) { } }
+         */
 
         return creaEventoDesde(item);
     }
@@ -725,27 +763,19 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
 
         Evento evento = creaEventoDesde(update(item));
 
-        if (propagarComunes)
+        if (propagarComunes && item.getComun().equals(new Long(1)))
         {
-            QItemDTO itemDTO = QItemDTO.itemDTO;
-
             List<AsignaturaComunDTO> comunes = getAsignaturasComunesDe(item.getAsignaturaId());
 
             for (AsignaturaComunDTO comun : comunes)
             {
-                JPAQuery query = new JPAQuery(entityManager);
-                List<ItemDTO> items = query
-                        .from(itemDTO)
-                        .where(itemDTO.asignaturaId.eq(comun.getAsignaturaId())
-                                .and(itemDTO.semestre.id.eq(item.getSemestre().getId()))
-                                .and(itemDTO.horaInicio.eq(item.getHoraInicio()))
-                                .and(itemDTO.horaFin.eq(item.getHoraFin()))).list(itemDTO);
+                ItemDTO itemComun = getItemAsignaturaComun(comun.getAsignaturaId(), item
+                        .getSemestre().getId(), item.getHoraInicio(), item.getHoraFin());
 
-                if (items.size() > 0)
+                if (itemComun != null)
                 {
-                    ItemDTO aux = items.get(0);
-                    aux.setAulasPlanificacion(item.getAulasPlanificacion());
-                    update(aux);
+                    itemComun.setAulasPlanificacion(item.getAulasPlanificacion());
+                    update(itemComun);
                 }
             }
         }
@@ -774,5 +804,22 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
                         asignaturaDTO.asignaturaId.ne(asignaturaId))).list(asignaturaDTO);
 
         return asignaturasDTO;
+    }
+
+    private ItemDTO getItemAsignaturaComun(String asignaturaId, Long semestreId, Date horaInicio,
+            Date HoraFin)
+    {
+        QItemDTO itemDTO = QItemDTO.itemDTO;
+        JPAQuery query = new JPAQuery(entityManager);
+
+        ItemDTO itemComun = query
+                .from(itemDTO)
+                .where(itemDTO.asignaturaId
+                        .eq(asignaturaId)
+                        .and(itemDTO.semestre.id.eq(semestreId).and(
+                                itemDTO.horaInicio.eq(horaInicio).and(itemDTO.horaFin.eq(HoraFin)))))
+                .singleResult(itemDTO);
+
+        return itemComun;
     }
 }
