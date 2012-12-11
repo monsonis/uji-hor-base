@@ -532,6 +532,9 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             throw new RegistroNoEncontradoException();
         }
 
+        Date previousInicio = evento.getHoraInicio();
+        Date previousFin = evento.getHoraFin();
+
         evento.setDetalleManual(true);
         evento.setHoraInicio(inicio);
         evento.setHoraFin(fin);
@@ -569,6 +572,31 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             fechasValidas.add(itemDetalle.getFecha());
         }
 
+        // Si es común, obtenemos los ítems de las asignaturas comunes
+
+        List<ItemDTO> itemsComunes = new ArrayList<ItemDTO>();
+
+        if (evento.getComun().equals(new Long(1)))
+        {
+            List<AsignaturaComunDTO> comunes = getAsignaturasComunesDe(evento.getAsignaturaId());
+            for (AsignaturaComunDTO comun : comunes)
+            {
+                ItemDTO itemComun = getItemAsignaturaComun(comun.getAsignaturaId(), evento
+                        .getSemestre().getId(), previousInicio, previousFin);
+                if (itemComun != null)
+                {
+                    itemComun.setDetalleManual(true);
+                    itemComun.setHoraInicio(inicio);
+                    itemComun.setHoraFin(fin);
+                    itemComun = update(itemComun);
+
+                    delete(ItemDetalleDTO.class, "item_id=" + itemComun.getId());
+
+                    itemsComunes.add(itemComun);
+                }
+            }
+        }
+
         for (Date fecha : fechas)
         {
             calendar.setTime(fecha);
@@ -593,6 +621,16 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
                 eventoDetalle.setFin(fechaFin);
 
                 insert(eventoDetalle);
+
+                for (ItemDTO itemComun : itemsComunes)
+                {
+                    ItemDetalleDTO itemComunDetalle = new ItemDetalleDTO();
+                    itemComunDetalle.setItem(itemComun);
+                    itemComunDetalle.setInicio(fechaInicio);
+                    itemComunDetalle.setFin(fechaFin);
+
+                    insert(itemComunDetalle);
+                }
             }
         }
 
@@ -652,15 +690,15 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         {
             throw new RegistroNoEncontradoException();
         }
+        
+        Date previousInicio = evento.getHoraInicio();
+        Date previousFin = evento.getHoraFin();
 
         evento.setDetalleManual(true);
         evento.setHoraInicio(inicio);
         evento.setHoraFin(fin);
 
         evento = update(evento);
-
-        System.out.println(evento.getHoraInicio());
-        System.out.println(evento.getHoraFin());
 
         // Modificamos el detalle del evento según las fechas
 
@@ -697,6 +735,46 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
 
             itemDetalle = update(itemDetalle);
         }
+        
+        if (evento.getComun().equals(new Long(1))) // Propagamos en las asignaturas comunes
+        {
+            List<AsignaturaComunDTO> comunes = getAsignaturasComunesDe(evento.getAsignaturaId());
+            
+            for (AsignaturaComunDTO comun : comunes)
+            {
+                ItemDTO itemComun = getItemAsignaturaComun(comun.getAsignaturaId(), evento.getSemestre().getId(), previousInicio, previousFin);
+                
+                if (itemComun != null)
+                {
+                    itemComun.setDetalleManual(true);
+                    itemComun.setHoraInicio(inicio);
+                    itemComun.setHoraFin(fin);
+                    
+                    List<ItemDetalleDTO> itemComunDetalles = get(ItemDetalleDTO.class, "item_id=" + itemComun.getId());
+                    
+                    for (ItemDetalleDTO itemComunDetalle : itemComunDetalles)
+                    {
+                        calendar.setTime(itemComunDetalle.getInicio());
+                        calendar.set(Calendar.SECOND, segundoInicio);
+                        calendar.set(Calendar.MINUTE, minutoInicio);
+                        calendar.set(Calendar.HOUR_OF_DAY, horaInicio);
+
+                        itemComunDetalle.setInicio(calendar.getTime());
+
+                        calendar.setTime(itemComunDetalle.getFin());
+                        calendar.set(Calendar.SECOND, segundoFin);
+                        calendar.set(Calendar.MINUTE, minutoFin);
+                        calendar.set(Calendar.HOUR_OF_DAY, horaFin);
+
+                        itemComunDetalle.setFin(calendar.getTime());
+
+                        update(itemComunDetalle);
+                    }
+                }
+            }
+        }
+        
+        // Crear función para no repetir tanto código (o hacer una list de items)
 
         return creaEventoDesde(evento);
     }

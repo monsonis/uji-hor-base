@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +27,7 @@ import es.uji.apps.hor.db.CentroDTO;
 import es.uji.apps.hor.db.DiaSemanaDTO;
 import es.uji.apps.hor.db.EstudioDTO;
 import es.uji.apps.hor.db.ItemDTO;
+import es.uji.apps.hor.db.ItemDetalleDTO;
 import es.uji.apps.hor.db.SemestreDTO;
 import es.uji.apps.hor.db.TipoEstudioDTO;
 import es.uji.apps.hor.model.Evento;
@@ -392,6 +394,38 @@ public class EventosDAOTest
         comun = eventosDAO.get(ItemDTO.class, comun.getId()).get(0);
 
         Assert.assertEquals(new Integer(4), comun.getNumeroIteraciones());
+    }
+
+    @Test
+    public void updateEventoConDetalleManualYAsignaturasComunesTest()
+            throws RegistroNoEncontradoException
+    {
+        Calendar calendarIni = Calendar.getInstance();
+        calendarIni.set(Calendar.HOUR, 10);
+        calendarIni.set(Calendar.MINUTE, 0);
+
+        Calendar calendarFin = Calendar.getInstance();
+        calendarFin.set(Calendar.HOUR, 12);
+        calendarFin.set(Calendar.MINUTE, 0);
+
+        item.setComun(new Long(1));
+        item.setHoraInicio(calendarIni.getTime());
+        item.setHoraFin(calendarFin.getTime());
+        eventosDAO.insert(item);
+
+        rellenaDatosItemComun();
+        comun.setHoraInicio(item.getHoraInicio());
+        comun.setHoraFin(item.getHoraFin());
+        eventosDAO.insert(comun);
+
+        eventosDAO.updateEventoConDetalleManual(item.getId(),
+                Collections.singletonList(calendarIni.getTime()), item.getHoraInicio(),
+                item.getHoraFin());
+        
+        List<ItemDetalleDTO> detalleList = eventosDAO.get(ItemDetalleDTO.class, "item_id=" + item.getId());
+        List<ItemDetalleDTO> detalleComunList = eventosDAO.get(ItemDetalleDTO.class, "item_id=" + comun.getId());
+        
+        Assert.assertEquals(detalleList.size(), detalleComunList.size());
     }
 
 }
