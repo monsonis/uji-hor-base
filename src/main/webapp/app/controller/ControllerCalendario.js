@@ -93,6 +93,7 @@ Ext.define('HOR.controller.ControllerCalendario',
                     {
                         otherButton.toggle();
                     }
+                    this.getSelectorGrupos().setVisible(false);
                     this.refreshCalendarDetalle();
                 }
 
@@ -110,7 +111,8 @@ Ext.define('HOR.controller.ControllerCalendario',
                     {
                         otherButton.toggle();
                     }
-                    this.refreshCalendar();
+                    this.getSelectorGrupos().setVisible(true);
+                    this.refreshCalendar();                    
                 }
             },
             'panelHorarios button[name=imprimir]' :
