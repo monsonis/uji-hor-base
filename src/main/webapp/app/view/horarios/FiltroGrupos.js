@@ -23,87 +23,122 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
     {
         xtype : 'panel',
         border : 0,
-        anchor : '80%',
+        anchor : '100%',
         layout :
         {
             type : 'hbox',
-            align : 'fit'
+            align : 'fit',
         },
-        defaults :
-        {
-            xtype : 'combobox',
-            editable : false,
-            lastQuery : '',
-            width : 120,
-            labelWidth : 75,
-            labelAlign : 'left',
-            margin : '0 20 0 0'
-        },
+
         items : [
         {
-            fieldLabel : 'Curs',
-            store : 'StoreCursos',
-            displayField : 'curso',
-            valueField : 'curso',
-            name : 'curso'
+        	 xtype : 'panel',
+             border : 0,
+             anchor : '50%',
+             layout :
+             {
+                 type : 'hbox',
+                 align : 'fit',
+             },
+             defaults :
+             {
+                 xtype : 'combobox',
+                 editable : false,
+                 lastQuery : '',
+                 width : 120,
+                 labelWidth : 75,
+                 labelAlign : 'left',
+                 margin : '0 20 0 0'
+             },
+             items : [
+                      {
+                          fieldLabel : 'Curs',
+                          store : 'StoreCursos',
+                          displayField : 'curso',
+                          valueField : 'curso',
+                          name : 'curso'
+                      },
+                      {
+                          fieldLabel : 'Semestre',
+                          store : 'StoreSemestres',
+                          displayField : 'semestre',
+                          valueField : 'semestre',
+                          name : 'semestre'
+                      },
+                      {
+                          fieldLabel : 'Grup',
+                          store : 'StoreGrupos',
+                          displayField : 'grupo',
+                          valueField : 'grupo',
+                          name : 'grupo'
+                      },
+                      {
+                          margin : '0 0 0 0',
+                          name : 'intervaloHorario',
+                          xtype : 'button',
+                          hidden : true,
+                          width : '40',
+                          text : 'Interval horari...',
+                          iconCls : 'time'
+                      }
+                      ]
         },
         {
-            fieldLabel : 'Semestre',
-            store : 'StoreSemestres',
-            displayField : 'semestre',
-            valueField : 'semestre',
-            name : 'semestre'
-        },
-        {
-            fieldLabel : 'Grup',
-            store : 'StoreGrupos',
-            displayField : 'grupo',
-            valueField : 'grupo',
-            name : 'grupo'
-        },
-        {
-            margin : '0 0 0 0',
-            name : 'intervaloHorario',
-            xtype : 'button',
-            hidden : true,
-            width : '40',
-            text : 'Interval horari...',
-            iconCls : 'time'
-        },
-        {
-            margin : '0 0 0 10',
-            name : 'calendarioDetalle',
-            xtype : 'button',
-            enableToggle : true,
-            hidden : true,
-            width : '40',
-            flex : 0,
-            text : 'Setmana detallada',
-            iconCls : 'calendar-week'
-        },
-        {
-            margin : '0 0 0 10',
-            name : 'calendarioGenerica',
-            xtype : 'button',
-            enableToggle : true,
-            pressed : true,
-            hidden : true,
-            margin : '0 0 0 5',
-            width : '40',
-            flex : 0,
-            text : 'Setmana genèrica',
-            iconCls : 'calendar-edit'
-        },
-        {
-            margin : '0 0 0 0',
-            name : 'imprimir',
-            xtype : 'button',
-            hidden : true,
-            margin : '0 0 0 5',
-            width : '40',
-            flex : 0,
-            text : 'Imprimir calendario',
-            iconCls : 'printer'
-        } ]
+       	 xtype : 'panel',
+            border : 0,
+            anchor : '50%',
+            flex : 1,
+            layout :
+            {
+                type : 'hbox',
+                align : 'fit',
+                pack : 'end'
+            },
+            defaults :
+            {
+                width : 120,
+                labelWidth : 75,
+                labelAlign : 'left',
+                margin : '0 20 0 0'
+            },
+            items : [
+                     {
+                         margin : '0 0 0 0',
+                         name : 'imprimir',
+                         xtype : 'button',
+                         hidden : true,
+                         margin : '0 0 0 5',
+                         width : '40',
+                         flex : 0,
+                         text : 'Imprimir calendario',
+                         iconCls : 'printer'
+                     },
+                     {
+                         margin : '0 0 0 10',
+                         name : 'calendarioDetalle',
+                         xtype : 'button',
+                         enableToggle : true,
+                         hidden : true,
+                         width : '40',
+                         flex : 0,
+                         text : 'Setmana detallada',
+                         iconCls : 'calendar-week'
+                     },
+                     {
+                         margin : '0 0 0 10',
+                         name : 'calendarioGenerica',
+                         xtype : 'button',
+                         enableToggle : true,
+                         pressed : true,
+                         hidden : true,
+                         margin : '0 0 0 5',
+                         width : '40',
+                         flex : 0,
+                         text : 'Setmana genèrica',
+                         iconCls : 'calendar-edit'
+                     }                     
+                     ]
+       }]             
+       
     } ]
 });
