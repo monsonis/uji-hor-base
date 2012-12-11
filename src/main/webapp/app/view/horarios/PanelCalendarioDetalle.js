@@ -8,12 +8,14 @@ Ext.define('HOR.view.horarios.PanelCalendarioDetalle',
     calendarStore : Ext.create('HOR.store.StoreCalendarios'),
     eventStore : Ext.create('HOR.store.StoreEventosDetalle'),
     editModal : true,
+    readOnly : true,
     flex : 1,
     padding : 5,
-    showMultiDayView : false,
-    showMultiWeekView : false,
+    showMultiDayView : true,
+    showMultiWeekView : true,
     showMonthView : false,
     showWeekView : false,
+    activeItem : 1,
     multiDayViewCfg :
     {
         dayCount : 5,
@@ -31,7 +33,13 @@ Ext.define('HOR.view.horarios.PanelCalendarioDetalle',
             return params;
         }
     },
-
+    multiWeekViewCfg :
+    {
+    	weekCount : 4,       
+        showTime : false,
+        showMonth : true
+       
+    },
     limpiaCalendario : function()
     {
         this.store.removeAll(false);
@@ -50,6 +58,11 @@ Ext.define('HOR.view.horarios.PanelCalendarioDetalle',
     getMultiDayText : function()
     {
         return 'Setmana';
+    },
+    
+    getMultiWeekText : function()
+    {
+        return 'Mes';
     },
 
     onStoreUpdate: function() {
