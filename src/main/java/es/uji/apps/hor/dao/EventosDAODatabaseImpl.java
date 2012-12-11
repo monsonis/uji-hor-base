@@ -423,6 +423,9 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         query2.from(qDiaSemana).where(qDiaSemana.nombre.eq(diaSemana));
         DiaSemanaDTO diaSemanaDTO = query2.list(qDiaSemana).get(0);
 
+        Date previousInicio = item.getHoraInicio();
+        Date previousFin = item.getHoraFin();
+
         item.setHoraInicio(inicio);
         item.setHoraFin(fin);
         item.setDiaSemana(diaSemanaDTO);
@@ -433,17 +436,30 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         item.setDetalleManual(detalleManual);
         update(item);
 
-        /*
-         * if (item.getComun().equals(new Long(1))) // Propagamos en las asignaturas comunes { try {
-         * List<AsignaturaComunDTO> comunes = getAsignaturasComunesDe(item.getAsignaturaId()); for
-         * (AsignaturaComunDTO comun : comunes) { ItemDTO itemComun =
-         * getItemAsignaturaComun(comun.getAsignaturaId(), item); itemComun.setHoraInicio(inicio);
-         * itemComun.setHoraFin(fin); itemComun.setDiaSemana(diaSemanaDTO);
-         * itemComun.setDesdeElDia(desdeElDia); itemComun.setNumeroIteraciones(numeroIteraciones);
-         * itemComun.setRepetirCadaSemanas(repetirCadaSemanas); itemComun.setHastaElDia(hastaElDia);
-         * itemComun.setDetalleManual(detalleManual); update(itemComun); } } catch
-         * (RegistroNoEncontradoException e) { } }
-         */
+        if (item.getComun().equals(new Long(1))) // Propagamos en las asignaturas comunes
+        {
+            try
+            {
+                List<AsignaturaComunDTO> comunes = getAsignaturasComunesDe(item.getAsignaturaId());
+                for (AsignaturaComunDTO comun : comunes)
+                {
+                    ItemDTO itemComun = getItemAsignaturaComun(comun.getAsignaturaId(), item
+                            .getSemestre().getId(), previousInicio, previousFin);
+                    itemComun.setHoraInicio(inicio);
+                    itemComun.setHoraFin(fin);
+                    itemComun.setDiaSemana(diaSemanaDTO);
+                    itemComun.setDesdeElDia(desdeElDia);
+                    itemComun.setNumeroIteraciones(numeroIteraciones);
+                    itemComun.setRepetirCadaSemanas(repetirCadaSemanas);
+                    itemComun.setHastaElDia(hastaElDia);
+                    itemComun.setDetalleManual(detalleManual);
+                    update(itemComun);
+                }
+            }
+            catch (Exception e)
+            {
+            }
+        }
 
         return creaEventoDesde(item);
     }

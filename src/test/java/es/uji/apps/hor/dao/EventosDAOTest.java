@@ -317,7 +317,6 @@ public class EventosDAOTest
     {
         rellenaDatosTestsConAulas();
 
-        item.setEstudio(estudio);
         item.setComun(new Long(1));
         eventosDAO.insert(item);
 
@@ -340,7 +339,6 @@ public class EventosDAOTest
     {
         rellenaDatosTestsConAulas();
 
-        item.setEstudio(estudio);
         item.setComun(new Long(1));
         eventosDAO.insert(item);
 
@@ -362,7 +360,6 @@ public class EventosDAOTest
     {
         rellenaDatosTestsConAulas();
 
-        item.setEstudio(estudio);
         item.setComun(new Long(1));
         eventosDAO.insert(item);
 
@@ -377,6 +374,24 @@ public class EventosDAOTest
         comun = eventosDAO.get(ItemDTO.class, comun.getId()).get(0);
 
         Assert.assertNull(comun.getAulasPlanificacion());
+    }
+
+    @Test
+    public void modificaDetallesGrupoAsignaturaConComunesTest()
+    {
+        item.setComun(new Long(1));
+        eventosDAO.insert(item);
+
+        rellenaDatosItemComun();
+        eventosDAO.insert(comun);
+
+        eventosDAO.modificaDetallesGrupoAsignatura(item.getId(), item.getHoraFin(),
+                item.getHoraFin(), new Date(), new Integer(4), item.getRepetirCadaSemanas(),
+                item.getHastaElDia(), item.getDetalleManual());
+
+        comun = eventosDAO.get(ItemDTO.class, comun.getId()).get(0);
+
+        Assert.assertEquals(new Integer(4), comun.getNumeroIteraciones());
     }
 
 }
