@@ -63,14 +63,17 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
                           store : 'StoreSemestres',
                           displayField : 'semestre',
                           valueField : 'semestre',
-                          name : 'semestre'
+                          name : 'semestre'                        	  
                       },
                       {
                           fieldLabel : 'Grup',
                           store : 'StoreGrupos',
                           displayField : 'grupo',
                           valueField : 'grupo',
-                          name : 'grupo'
+                          name : 'grupo',
+                          labelWidth : 55,                          
+                          width : 100,
+                        	  
                       },
                       {
                           margin : '0 0 0 0',
@@ -78,7 +81,7 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
                           xtype : 'button',
                           hidden : true,
                           width : '40',
-                          text : 'Interval horari...',
+                          text : 'Interval',
                           iconCls : 'time'
                       }
                       ]
@@ -110,7 +113,7 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
                          margin : '0 0 0 5',
                          width : '40',
                          flex : 0,
-                         text : 'Imprimir calendario',
+                         text : 'Imprimir',
                          iconCls : 'printer'
                      },
                      {
@@ -121,7 +124,7 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
                          hidden : true,
                          width : '40',
                          flex : 0,
-                         text : 'Setmana detallada',
+                         text : 'Set. detallada',
                          iconCls : 'calendar-week'
                      },
                      {
@@ -134,7 +137,7 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
                          margin : '0 0 0 5',
                          width : '40',
                          flex : 0,
-                         text : 'Setmana genèrica',
+                         text : 'Set. genèrica',
                          iconCls : 'calendar-edit'
                      }                     
                      ]
