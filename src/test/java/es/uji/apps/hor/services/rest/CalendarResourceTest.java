@@ -1,6 +1,7 @@
 package es.uji.apps.hor.services.rest;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -68,9 +69,32 @@ public class CalendarResourceTest extends JerseyTest
     }
 
     @Test
-    public void getTodosSemestreDetalle() throws ParseException
+    public void getEventosDetalleUnDia() throws ParseException
     {
+        // Given
         String day_str = "2012-12-11";
+        String estudio_id = "210";
+        String curso_id = "1";
+        String semestre_id = "1";
+        String grupo_id = "A";
+        String calendarios_ids = "1%3B2%3B3%3B4%3B5%3B6";
+
+        // When
+        ClientResponse response = resource.path("calendario/eventos/detalle")
+                .queryParam("estudioId", estudio_id).queryParam("cursoId", curso_id)
+                .queryParam("semestreId", semestre_id).queryParam("grupoId", grupo_id)
+                .queryParam("startDate", day_str).queryParam("endDate", day_str)
+                .queryParam("calendariosIds", calendarios_ids)
+                .accept(MediaType.APPLICATION_JSON_TYPE).get(ClientResponse.class);
+
+        List<UIEntity> listaEventos = response.getEntity(new GenericType<List<UIEntity>>()
+        {
+        });
+
+        // Then
+        assertEquals("El servicio es accesible", Status.OK.getStatusCode(), response.getStatus());
+        assertEquals("El servicio devuelve datos", true, listaEventos.size() > 0);
+
         Date start_date_range = shortDateFormat.parse(day_str);
         Calendar c = Calendar.getInstance();
         c.setTime(start_date_range);
@@ -79,31 +103,16 @@ public class CalendarResourceTest extends JerseyTest
         c.set(Calendar.SECOND, 59);
         Date end_date_range = c.getTime();
 
-        ClientResponse response = resource.path("calendario/eventos/detalle")
-                .queryParam("estudioId", "210").queryParam("cursoId", "1")
-                .queryParam("semestreId", "1").queryParam("grupoId", "A")
-                .queryParam("startDate", day_str).queryParam("endDate", day_str)
-                .queryParam("calendariosIds", "1%3B2%3B3%3B4%3B5%3B6")
-                .accept(MediaType.APPLICATION_JSON_TYPE).get(ClientResponse.class);
-
-        List<UIEntity> listaEventos = response.getEntity(new GenericType<List<UIEntity>>()
-        {
-        });
-
-        assertEquals("El servicio es accesible", Status.OK.getStatusCode(), response.getStatus());
-        assertEquals("El servicio devuelve datos", true, listaEventos.size() > 0);
-
         for (UIEntity entidad : listaEventos)
         {
             String start_date_str = entidad.get("start");
             Date start_date = dateFormat.parse(start_date_str);
-            assertEquals("El servicio devuelve clases en el día especificado", true,
-                    start_date_range.before(start_date));
-
             String end_date_str = entidad.get("end");
             Date end_date = dateFormat.parse(end_date_str);
-            assertEquals("El servicio devuelve clases en el día especificado", true,
-                    end_date_range.after(end_date));
+
+            assertTrue("El servicio devuelve clases en el día especificado",
+                    start_date_range.before(start_date) && end_date_range.after(end_date));
+
         }
 
     }
