@@ -195,6 +195,14 @@ public class CalendarResource
         Date rangoFechaInicio = shortDateFormat.parse(startDate);
         Date rangoFechaFin = shortDateFormat.parse(endDate);
 
+        // Todos los eventos hasta el final del día
+        Calendar c = Calendar.getInstance();
+        c.setTime(rangoFechaFin);
+        c.set(Calendar.HOUR_OF_DAY, 23);
+        c.set(Calendar.MINUTE, 59);
+        c.set(Calendar.SECOND, 59);
+        rangoFechaFin = c.getTime();
+
         String[] calendarios = calendariosIds.split(";");
         List<Long> calendariosList = new ArrayList<Long>();
 
