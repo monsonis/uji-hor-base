@@ -94,3 +94,50 @@ MODIFY(ESTUDIO_ID  NOT NULL)
 ;
 
 
+
+ALTER TABLE UJI_HORARIOS.HOR_SEMESTRES_DETALLE
+ ADD (curso_academico_id  NUMBER);
+
+update UJI_HORARIOS.HOR_SEMESTRES_DETALLE
+set curso_academico_id = 2012;
+
+commit;
+
+ALTER TABLE UJI_HORARIOS.HOR_SEMESTRES_DETALLE
+MODIFY(CURSO_ACADEMICO_ID  NOT NULL);
+
+
+CREATE OR REPLACE FORCE VIEW UJI_HORARIOS.HOT_EXT_ASIGNATURAS_COMUNES (ID,
+                                                                       GRUPO_COMUN_ID,
+                                                                       NOMBRE,
+                                                                       ASIGNATURA_ID
+                                                                      ) AS
+select rownum id, id grupo_comun_id, nombre, asi_id asignatura_id
+   from   pod_grp_comunes g,
+          pod_comunes c
+   where  g.id = c.gco_id
+   and    curso_aca = (select max (curso_academico_id)
+                       from   uji_horarios.hor_semestres_detalle);
+
+
+					   
+CREATE OR REPLACE FORCE VIEW UJI_HORARIOS.HOR_V_ITEMS_COMUNES (ID, ASIGNATURA_ID, ASIGNATURA_COMUN_ID, ITEM_COMUN_ID) AS
+   select i.id, i.asignatura_id, c.asignatura_id asignatura_comun_id, x.id item_comun_id
+   from   hor_items i,
+          hor_ext_asignaturas_comunes c,
+          hor_items x
+   where  c.nombre like '%' || i.asignatura_id || '%'
+   and    c.asignatura_id <> i.asignatura_id
+   and    c.asignatura_id = x.asignatura_id
+   and    i.curso_id = x.curso_id
+   and    i.semestre_id = x.semestre_id
+   and    i.grupo_id = x.grupo_id
+   and    i.tipo_subgrupo_id = x.tipo_subgrupo_id
+   and    i.subgrupo_id = x.subgrupo_id
+   and    i.dia_semana_id = x.dia_Semana_id
+   and    to_char (i.hora_inicio, 'hh24:mi') = to_char (x.hora_inicio, 'hh24:mi');
+
+
+
+
+ 

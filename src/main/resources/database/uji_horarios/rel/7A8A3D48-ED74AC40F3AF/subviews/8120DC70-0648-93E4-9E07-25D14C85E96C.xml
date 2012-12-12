@@ -71,6 +71,9 @@
 <OView class="oracle.dbtools.crest.swingui.relational.TVTable" oid="7F482D2E-84ED-CEF3-F18C-A97E5341B141" otype="Table" vid="7B510CAE-580B-B38F-BB52-C579FAD8B179">
 <bounds x="1113" y="163" width="189" height="178"/>
 </OView>
+<OView class="oracle.dbtools.crest.swingui.relational.TVView" oid="860CC2DB-8695-8D21-9EC3-5F13232ACDF6" otype="View" vid="5CDE4EA6-0A22-118C-2189-AA91E94CC4EB">
+<bounds x="127" y="1076" width="170" height="110"/>
+</OView>
 <OView class="oracle.dbtools.crest.swingui.relational.TVTable" oid="8E96C882-5066-EB5B-95BD-4AAD6AFC21CD" otype="Table" vid="D322E438-0BC0-91DA-496C-C2A8035336E2">
 <bounds x="860" y="550" width="261" height="131"/>
 </OView>

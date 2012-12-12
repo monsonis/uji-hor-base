@@ -1,5 +1,5 @@
 -- Generado por Oracle SQL Developer Data Modeler 3.1.1.703
---   en:        2012-12-03 17:49:44 CET
+--   en:        2012-12-12 12:59:53 CET
 --   sitio:      Oracle Database 11g
 --   tipo:      Oracle Database 11g
 
@@ -8,6 +8,8 @@
 DROP VIEW uji_horarios.hor_v_cursos 
 ;
 DROP VIEW uji_horarios.hor_v_grupos 
+;
+DROP VIEW hor_v_items_comunes 
 ;
 DROP VIEW uji_horarios.hor_v_items_detalle 
 ;
@@ -212,7 +214,6 @@ CREATE TABLE uji_horarios.hor_ext_asignaturas_comunes
      id NUMBER  NOT NULL , 
      grupo_comun_id NUMBER  NOT NULL , 
      nombre VARCHAR2 (1000)  NOT NULL , 
-     curso_academico_id NUMBER  NOT NULL , 
      asignatura_id VARCHAR2 (10)  NOT NULL 
     ) 
 ;
@@ -225,7 +226,6 @@ CREATE INDEX uji_horarios.hor_ext_asi_comunes_nom_IDX ON uji_horarios.hor_ext_as
 ;
 CREATE INDEX uji_horarios.hor_ext_asi_comunes_ca_IDX ON uji_horarios.hor_ext_asignaturas_comunes 
     ( 
-     curso_academico_id ASC , 
      asignatura_id ASC 
     ) 
 ;
@@ -533,7 +533,8 @@ CREATE TABLE uji_horarios.hor_semestres_detalle
      fecha_fin DATE  NOT NULL , 
      fecha_examenes_inicio DATE , 
      fecha_examenes_fin DATE , 
-     numero_semanas NUMBER  NOT NULL 
+     numero_semanas NUMBER  NOT NULL , 
+     curso_academico_id NUMBER  NOT NULL 
     ) 
 ;
 
@@ -947,6 +948,29 @@ FROM uji_horarios.hor_items ;
 
 
 
+CREATE OR REPLACE VIEW hor_v_items_comunes AS
+SELECT i.id id,
+  i.asignatura_id asignatura_id,
+  c.asignatura_id asignatura_comun_id,
+  x.id item_comun_id
+FROM hor_items i,
+  hor_ext_asignaturas_comunes c,
+  hor_items x
+WHERE c.asignatura_id                <> i.asignatura_id
+AND c.asignatura_id                   = x.asignatura_id
+AND i.curso_id                        = x.curso_id
+AND i.semestre_id                     = x.semestre_id
+AND i.grupo_id                        = x.grupo_id
+AND i.tipo_subgrupo_id                = x.tipo_subgrupo_id
+AND i.subgrupo_id                     = x.subgrupo_id
+AND i.dia_semana_id                   = x.dia_Semana_id
+AND TO_CHAR(i.hora_inicio, 'hh24:mi') = TO_CHAR(x.hora_inicio, 'hh24:mi')
+AND (c.nombre LIKE '%'
+  || i.asignatura_id
+  || '%') ;
+
+
+
 CREATE OR REPLACE VIEW uji_horarios.hor_v_items_detalle AS
 SELECT i.id,
   d.fecha,
@@ -1095,7 +1119,7 @@ AND c.fecha = d.inicio(+) ;
 -- CREATE TABLE                            23
 -- CREATE INDEX                            12
 -- ALTER TABLE                             57
--- CREATE VIEW                              3
+-- CREATE VIEW                              4
 -- CREATE PACKAGE                           0
 -- CREATE PACKAGE BODY                      0
 -- CREATE PROCEDURE                         0
