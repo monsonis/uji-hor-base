@@ -19,12 +19,14 @@ import es.uji.apps.hor.db.AsignaturaComunDTO;
 import es.uji.apps.hor.db.AulaPlanificacionDTO;
 import es.uji.apps.hor.db.DiaSemanaDTO;
 import es.uji.apps.hor.db.ItemCircuitoDTO;
+import es.uji.apps.hor.db.ItemComunDTO;
 import es.uji.apps.hor.db.ItemDTO;
 import es.uji.apps.hor.db.ItemDetalleCompletoDTO;
 import es.uji.apps.hor.db.ItemDetalleDTO;
 import es.uji.apps.hor.db.QAsignaturaComunDTO;
 import es.uji.apps.hor.db.QDiaSemanaDTO;
 import es.uji.apps.hor.db.QItemCircuitoDTO;
+import es.uji.apps.hor.db.QItemComunDTO;
 import es.uji.apps.hor.db.QItemDTO;
 import es.uji.apps.hor.db.QItemDetalleCompletoDTO;
 import es.uji.apps.hor.db.QItemDetalleDTO;
@@ -897,5 +899,14 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
                 .singleResult(itemDTO);
 
         return itemComun;
+    }
+    
+    private List<ItemDTO> getItemsAsignaturasComunes(Long itemId)
+    {        
+        List<ItemComunDTO> itemsComunes = get(ItemComunDTO.class, itemId);
+        
+        // Obtenemos la lista
+        
+        return null;
     }
 }

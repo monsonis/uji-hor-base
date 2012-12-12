@@ -56,5 +56,6 @@
     <class>es.uji.apps.hor.db.GrupoHorarioDTO</class>
     <class>es.uji.apps.hor.db.ItemDetalleCompletoDTO</class>
     <class>es.uji.apps.hor.db.AsignaturaComunDTO</class>
+    <class>es.uji.apps.hor.db.ItemComunDTO</class>
   </persistence-unit>
 </persistence>
