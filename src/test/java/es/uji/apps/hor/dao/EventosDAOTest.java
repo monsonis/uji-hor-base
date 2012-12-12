@@ -397,7 +397,7 @@ public class EventosDAOTest
     }
 
     @Test
-    public void updateEventoConDetalleManualYAsignaturasComunesTest()
+    public void updateHorasEventoDetalleManualConAsignaturasComunesTest()
             throws RegistroNoEncontradoException
     {
         Calendar calendarIni = Calendar.getInstance();
@@ -412,20 +412,39 @@ public class EventosDAOTest
         item.setHoraInicio(calendarIni.getTime());
         item.setHoraFin(calendarFin.getTime());
         eventosDAO.insert(item);
+        
+        ItemDetalleDTO itemDetalle = new ItemDetalleDTO();
+        itemDetalle.setItem(item);
+        itemDetalle.setInicio(item.getHoraInicio());
+        itemDetalle.setFin(item.getHoraFin());
+        eventosDAO.insert(itemDetalle);
 
         rellenaDatosItemComun();
         comun.setHoraInicio(item.getHoraInicio());
         comun.setHoraFin(item.getHoraFin());
         eventosDAO.insert(comun);
+        
+        ItemDetalleDTO itemDetalleComun = new ItemDetalleDTO();
+        itemDetalleComun.setItem(comun);
+        itemDetalleComun.setInicio(comun.getHoraInicio());
+        itemDetalleComun.setFin(comun.getHoraFin());
+        eventosDAO.insert(itemDetalleComun);
+        
+        calendarIni.set(Calendar.HOUR, 15);
+        calendarIni.set(Calendar.MINUTE, 0);
 
-        eventosDAO.updateEventoConDetalleManual(item.getId(),
-                Collections.singletonList(calendarIni.getTime()), item.getHoraInicio(),
-                item.getHoraFin());
+        calendarFin.set(Calendar.HOUR, 17);
+        calendarFin.set(Calendar.MINUTE, 0);
+
+        eventosDAO.updateHorasEventoDetalleManual(item.getId(), calendarIni.getTime(), calendarFin.getTime());
+        
+        item = eventosDAO.get(ItemDTO.class, item.getId()).get(0);
+        Assert.assertEquals(calendarIni.getTime(), item.getHoraInicio());
         
         List<ItemDetalleDTO> detalleList = eventosDAO.get(ItemDetalleDTO.class, "item_id=" + item.getId());
         List<ItemDetalleDTO> detalleComunList = eventosDAO.get(ItemDetalleDTO.class, "item_id=" + comun.getId());
         
-        Assert.assertEquals(detalleList.size(), detalleComunList.size());
+        Assert.assertEquals(detalleList.get(0).getInicio(), detalleComunList.get(0).getInicio());
     }
 
 }
