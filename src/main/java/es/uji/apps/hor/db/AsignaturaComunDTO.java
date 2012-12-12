@@ -25,9 +25,6 @@ public class AsignaturaComunDTO implements Serializable
     @Column(name = "ASIGNATURA_ID")
     private String asignaturaId;
 
-    @Column(name = "CURSO_ACADEMICO_ID")
-    private Long cursoAcademicoId;
-
     @Column(name = "GRUPO_COMUN_ID")
     private Long grupoComunId;
 
@@ -55,16 +52,6 @@ public class AsignaturaComunDTO implements Serializable
     public void setAsignaturaId(String asignaturaId)
     {
         this.asignaturaId = asignaturaId;
-    }
-
-    public Long getCursoAcademicoId()
-    {
-        return this.cursoAcademicoId;
-    }
-
-    public void setCursoAcademicoId(Long cursoAcademicoId)
-    {
-        this.cursoAcademicoId = cursoAcademicoId;
     }
 
     public Long getGrupoComunId()

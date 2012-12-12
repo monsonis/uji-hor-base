@@ -203,7 +203,8 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
                 for (AsignaturaComunDTO comun : comunes)
                 {
                     ItemDTO itemComun = getItemAsignaturaComun(comun.getAsignaturaId(), item
-                            .getSemestre().getId(), previousInicio, previousFin);
+                            .getSemestre().getId(), previousInicio, previousFin, item.getCursoId(),
+                            item.getGrupoId(), item.getTipoSubgrupoId(), item.getSubgrupoId());
                     itemComun.setHoraInicio(inicio);
                     itemComun.setHoraFin(fin);
                     itemComun.setDiaSemana(diaSemanaDTO);
@@ -444,7 +445,8 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
                 for (AsignaturaComunDTO comun : comunes)
                 {
                     ItemDTO itemComun = getItemAsignaturaComun(comun.getAsignaturaId(), item
-                            .getSemestre().getId(), previousInicio, previousFin);
+                            .getSemestre().getId(), previousInicio, previousFin, item.getCursoId(),
+                            item.getGrupoId(), item.getTipoSubgrupoId(), item.getSubgrupoId());
                     itemComun.setHoraInicio(inicio);
                     itemComun.setHoraFin(fin);
                     itemComun.setDiaSemana(diaSemanaDTO);
@@ -543,7 +545,35 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
 
         delete(ItemDetalleDTO.class, "item_id=" + eventoId);
 
-        // Insertamos el detalle del evento según las fechas
+        List<ItemDTO> itemsActualizar = new ArrayList<ItemDTO>();
+        itemsActualizar.add(evento);
+
+        if (evento.getComun().equals(new Long(1))) // Propagamos en las asignaturas comunes
+        {
+            List<AsignaturaComunDTO> comunes = getAsignaturasComunesDe(evento.getAsignaturaId());
+
+            for (AsignaturaComunDTO comun : comunes)
+            {
+                ItemDTO itemComun = getItemAsignaturaComun(comun.getAsignaturaId(), evento
+                        .getSemestre().getId(), previousInicio, previousFin, evento.getCursoId(),
+                        evento.getGrupoId(), evento.getTipoSubgrupoId(), evento.getSubgrupoId());
+
+                if (itemComun != null)
+                {
+                    itemsActualizar.add(itemComun);
+
+                    itemComun.setDetalleManual(true);
+                    itemComun.setHoraInicio(inicio);
+                    itemComun.setHoraFin(fin);
+
+                    update(itemComun);
+
+                    delete(ItemDetalleDTO.class, "item_id=" + itemComun.getId());
+                }
+            }
+        }
+
+        // Insertamos el detalle del evento y sus comunes según las fechas
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(evento.getHoraInicio());
@@ -561,40 +591,17 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         // Obtenemos las fechas válidas y que no caigan en festivo
 
         JPAQuery query = new JPAQuery(entityManager);
-        QItemDetalleCompletoDTO item = QItemDetalleCompletoDTO.itemDetalleCompletoDTO;
+        QItemDetalleCompletoDTO itemDetalleCompleto = QItemDetalleCompletoDTO.itemDetalleCompletoDTO;
 
-        List<ItemDetalleCompletoDTO> listaItemsDetalleCompletoDTO = query.from(item)
-                .where(item.id.eq(eventoId).and(item.tipoDia.ne("F"))).list(item);
+        List<ItemDetalleCompletoDTO> listaItemsDetalleCompletoDTO = query
+                .from(itemDetalleCompleto)
+                .where(itemDetalleCompleto.id.eq(eventoId).and(itemDetalleCompleto.tipoDia.ne("F")))
+                .list(itemDetalleCompleto);
 
         List<Date> fechasValidas = new ArrayList<Date>();
         for (ItemDetalleCompletoDTO itemDetalle : listaItemsDetalleCompletoDTO)
         {
             fechasValidas.add(itemDetalle.getFecha());
-        }
-
-        // Si es común, obtenemos los ítems de las asignaturas comunes
-
-        List<ItemDTO> itemsComunes = new ArrayList<ItemDTO>();
-
-        if (evento.getComun().equals(new Long(1)))
-        {
-            List<AsignaturaComunDTO> comunes = getAsignaturasComunesDe(evento.getAsignaturaId());
-            for (AsignaturaComunDTO comun : comunes)
-            {
-                ItemDTO itemComun = getItemAsignaturaComun(comun.getAsignaturaId(), evento
-                        .getSemestre().getId(), previousInicio, previousFin);
-                if (itemComun != null)
-                {
-                    itemComun.setDetalleManual(true);
-                    itemComun.setHoraInicio(inicio);
-                    itemComun.setHoraFin(fin);
-                    itemComun = update(itemComun);
-
-                    delete(ItemDetalleDTO.class, "item_id=" + itemComun.getId());
-
-                    itemsComunes.add(itemComun);
-                }
-            }
         }
 
         for (Date fecha : fechas)
@@ -613,24 +620,14 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
 
             Date fechaFin = calendar.getTime();
 
-            if (fechasValidas.contains(fecha))
+            for (ItemDTO item : itemsActualizar)
             {
-                ItemDetalleDTO eventoDetalle = new ItemDetalleDTO();
-                eventoDetalle.setItem(evento);
-                eventoDetalle.setInicio(fechaInicio);
-                eventoDetalle.setFin(fechaFin);
+                ItemDetalleDTO itemDetalle = new ItemDetalleDTO();
+                itemDetalle.setItem(item);
+                itemDetalle.setInicio(fechaInicio);
+                itemDetalle.setFin(fechaFin);
 
-                insert(eventoDetalle);
-
-                for (ItemDTO itemComun : itemsComunes)
-                {
-                    ItemDetalleDTO itemComunDetalle = new ItemDetalleDTO();
-                    itemComunDetalle.setItem(itemComun);
-                    itemComunDetalle.setInicio(fechaInicio);
-                    itemComunDetalle.setFin(fechaFin);
-
-                    insert(itemComunDetalle);
-                }
+                insert(itemDetalle);
             }
         }
 
@@ -688,7 +685,6 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         }
         catch (Exception e)
         {
-            e.printStackTrace();
             throw new RegistroNoEncontradoException();
         }
 
@@ -705,7 +701,8 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             for (AsignaturaComunDTO comun : comunes)
             {
                 ItemDTO itemComun = getItemAsignaturaComun(comun.getAsignaturaId(), evento
-                        .getSemestre().getId(), previousInicio, previousFin);
+                        .getSemestre().getId(), previousInicio, previousFin, evento.getCursoId(),
+                        evento.getGrupoId(), evento.getTipoSubgrupoId(), evento.getSubgrupoId());
 
                 if (itemComun != null)
                 {
@@ -728,8 +725,6 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         int horaFin = calendar.get(Calendar.HOUR_OF_DAY);
         int minutoFin = calendar.get(Calendar.MINUTE);
         int segundoFin = calendar.get(Calendar.SECOND);
-
-        evento = itemsActualizar.get(0);
 
         for (ItemDTO item : itemsActualizar)
         {
@@ -848,7 +843,9 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             for (AsignaturaComunDTO comun : comunes)
             {
                 ItemDTO itemComun = getItemAsignaturaComun(comun.getAsignaturaId(), item
-                        .getSemestre().getId(), item.getHoraInicio(), item.getHoraFin());
+                        .getSemestre().getId(), item.getHoraInicio(), item.getHoraFin(),
+                        item.getCursoId(), item.getGrupoId(), item.getTipoSubgrupoId(),
+                        item.getSubgrupoId());
 
                 if (itemComun != null)
                 {
@@ -884,17 +881,19 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
     }
 
     private ItemDTO getItemAsignaturaComun(String asignaturaId, Long semestreId, Date horaInicio,
-            Date HoraFin)
+            Date HoraFin, Long cursoId, String grupoId, String tipoSubgrupoId, Long subgrupoId)
     {
         QItemDTO itemDTO = QItemDTO.itemDTO;
         JPAQuery query = new JPAQuery(entityManager);
 
         ItemDTO itemComun = query
                 .from(itemDTO)
-                .where(itemDTO.asignaturaId
-                        .eq(asignaturaId)
-                        .and(itemDTO.semestre.id.eq(semestreId).and(
-                                itemDTO.horaInicio.eq(horaInicio).and(itemDTO.horaFin.eq(HoraFin)))))
+                .where(itemDTO.asignaturaId.eq(asignaturaId)
+                        .and(itemDTO.semestre.id.eq(semestreId)).and(itemDTO.cursoId.eq(cursoId))
+                        .and(itemDTO.grupoId.eq(grupoId))
+                        .and(itemDTO.tipoSubgrupoId.eq(tipoSubgrupoId))
+                        .and(itemDTO.subgrupoId.eq(subgrupoId))
+                        .and(itemDTO.horaInicio.eq(horaInicio)).and(itemDTO.horaFin.eq(HoraFin)))
                 .singleResult(itemDTO);
 
         return itemComun;

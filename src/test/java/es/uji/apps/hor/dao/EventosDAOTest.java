@@ -4,7 +4,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -282,14 +281,12 @@ public class EventosDAOTest
     {
         asignaturaComun1 = new AsignaturaComunDTO();
         asignaturaComun1.setAsignaturaId(item.getAsignaturaId());
-        asignaturaComun1.setCursoAcademicoId(new Long(2012));
         asignaturaComun1.setGrupoComunId(new Long(1));
         asignaturaComun1.setNombre(item.getAsignatura());
         eventosDAO.insert(asignaturaComun1);
 
         asignaturaComun2 = new AsignaturaComunDTO();
         asignaturaComun2.setAsignaturaId("Comun");
-        asignaturaComun2.setCursoAcademicoId(new Long(2012));
         asignaturaComun2.setGrupoComunId(new Long(1));
         asignaturaComun2.setNombre("Prueba Comun");
         eventosDAO.insert(asignaturaComun2);
@@ -412,7 +409,7 @@ public class EventosDAOTest
         item.setHoraInicio(calendarIni.getTime());
         item.setHoraFin(calendarFin.getTime());
         eventosDAO.insert(item);
-        
+
         ItemDetalleDTO itemDetalle = new ItemDetalleDTO();
         itemDetalle.setItem(item);
         itemDetalle.setInicio(item.getHoraInicio());
@@ -423,27 +420,31 @@ public class EventosDAOTest
         comun.setHoraInicio(item.getHoraInicio());
         comun.setHoraFin(item.getHoraFin());
         eventosDAO.insert(comun);
-        
+
         ItemDetalleDTO itemDetalleComun = new ItemDetalleDTO();
         itemDetalleComun.setItem(comun);
         itemDetalleComun.setInicio(comun.getHoraInicio());
         itemDetalleComun.setFin(comun.getHoraFin());
         eventosDAO.insert(itemDetalleComun);
-        
+
         calendarIni.set(Calendar.HOUR, 15);
         calendarIni.set(Calendar.MINUTE, 0);
 
         calendarFin.set(Calendar.HOUR, 17);
         calendarFin.set(Calendar.MINUTE, 0);
 
-        eventosDAO.updateHorasEventoDetalleManual(item.getId(), calendarIni.getTime(), calendarFin.getTime());
-        
+        Evento evento = eventosDAO.updateHorasEventoDetalleManual(item.getId(),
+                calendarIni.getTime(), calendarFin.getTime());
+        System.out.println(evento.getInicio());
+
         item = eventosDAO.get(ItemDTO.class, item.getId()).get(0);
         Assert.assertEquals(calendarIni.getTime(), item.getHoraInicio());
-        
-        List<ItemDetalleDTO> detalleList = eventosDAO.get(ItemDetalleDTO.class, "item_id=" + item.getId());
-        List<ItemDetalleDTO> detalleComunList = eventosDAO.get(ItemDetalleDTO.class, "item_id=" + comun.getId());
-        
+
+        List<ItemDetalleDTO> detalleList = eventosDAO.get(ItemDetalleDTO.class,
+                "item_id=" + item.getId());
+        List<ItemDetalleDTO> detalleComunList = eventosDAO.get(ItemDetalleDTO.class, "item_id="
+                + comun.getId());
+
         Assert.assertEquals(detalleList.get(0).getInicio(), detalleComunList.get(0).getInicio());
     }
 
