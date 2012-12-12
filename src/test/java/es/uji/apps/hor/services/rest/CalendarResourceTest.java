@@ -77,7 +77,7 @@ public class CalendarResourceTest extends JerseyTest
         String curso_id = "1";
         String semestre_id = "1";
         String grupo_id = "A";
-        String calendarios_ids = "1%3B2%3B3%3B4%3B5%3B6";
+        String calendarios_ids = "1;2;3;4;5;6";
 
         // When
         ClientResponse response = resource.path("calendario/eventos/detalle")
@@ -93,7 +93,8 @@ public class CalendarResourceTest extends JerseyTest
 
         // Then
         assertEquals("El servicio es accesible", Status.OK.getStatusCode(), response.getStatus());
-        assertEquals("El servicio devuelve datos", true, listaEventos.size() > 0);
+        assertTrue("El servicio devuelve datos", listaEventos.size() > 0);
+        assertEquals("El servicio devuelve el número de datos correctos", 6, listaEventos.size());
 
         Date start_date_range = shortDateFormat.parse(day_str);
         Calendar c = Calendar.getInstance();
@@ -115,5 +116,161 @@ public class CalendarResourceTest extends JerseyTest
 
         }
 
+    }
+
+    @Test
+    public void getEventosDetalleUnaSemana() throws ParseException
+    {
+        // Given
+        String day_start_str = "2012-12-10";
+        String day_end_str = "2012-12-14";
+        String estudio_id = "210";
+        String curso_id = "1";
+        String semestre_id = "1";
+        String grupo_id = "A";
+        String calendarios_ids = "1;2;3;4;5;6";
+
+        // When
+        ClientResponse response = resource.path("calendario/eventos/detalle")
+                .queryParam("estudioId", estudio_id).queryParam("cursoId", curso_id)
+                .queryParam("semestreId", semestre_id).queryParam("grupoId", grupo_id)
+                .queryParam("startDate", day_start_str).queryParam("endDate", day_end_str)
+                .queryParam("calendariosIds", calendarios_ids)
+                .accept(MediaType.APPLICATION_JSON_TYPE).get(ClientResponse.class);
+
+        List<UIEntity> listaEventos = response.getEntity(new GenericType<List<UIEntity>>()
+        {
+        });
+
+        // Then
+        assertEquals("El servicio es accesible", Status.OK.getStatusCode(), response.getStatus());
+        assertTrue("El servicio devuelve datos", listaEventos.size() > 0);
+        assertEquals("El servicio devuelve el número de datos correctos", 49, listaEventos.size());
+
+        Date start_date_range = shortDateFormat.parse(day_start_str);
+        Date end_date_range = shortDateFormat.parse(day_end_str);
+        Calendar c = Calendar.getInstance();
+        c.setTime(end_date_range);
+        c.set(Calendar.HOUR_OF_DAY, 23);
+        c.set(Calendar.MINUTE, 59);
+        c.set(Calendar.SECOND, 59);
+        end_date_range = c.getTime();
+
+        for (UIEntity entidad : listaEventos)
+        {
+            String start_date_str = entidad.get("start");
+            Date start_date = dateFormat.parse(start_date_str);
+            String end_date_str = entidad.get("end");
+            Date end_date = dateFormat.parse(end_date_str);
+
+            assertTrue("El servicio devuelve clases en el día especificado",
+                    start_date_range.before(start_date) && end_date_range.after(end_date));
+
+        }
+
+    }
+
+    @Test
+    public void getEventosDetalleCuatroSemanas() throws ParseException
+    {
+        // Given
+        String day_start_str = "2012-11-12";
+        String day_end_str = "2012-12-09";
+        String estudio_id = "210";
+        String curso_id = "1";
+        String semestre_id = "1";
+        String grupo_id = "A";
+        String calendarios_ids = "1;2;3;4;5;6";
+
+        // When
+        ClientResponse response = resource.path("calendario/eventos/detalle")
+                .queryParam("estudioId", estudio_id).queryParam("cursoId", curso_id)
+                .queryParam("semestreId", semestre_id).queryParam("grupoId", grupo_id)
+                .queryParam("startDate", day_start_str).queryParam("endDate", day_end_str)
+                .queryParam("calendariosIds", calendarios_ids)
+                .accept(MediaType.APPLICATION_JSON_TYPE).get(ClientResponse.class);
+
+        List<UIEntity> listaEventos = response.getEntity(new GenericType<List<UIEntity>>()
+        {
+        });
+
+        // Then
+        assertEquals("El servicio es accesible", Status.OK.getStatusCode(), response.getStatus());
+        assertTrue("El servicio devuelve datos", listaEventos.size() > 0);
+        assertEquals("El servicio devuelve el número de datos correctos", 193, listaEventos.size());
+
+        Date start_date_range = shortDateFormat.parse(day_start_str);
+        Date end_date_range = shortDateFormat.parse(day_end_str);
+        Calendar c = Calendar.getInstance();
+        c.setTime(end_date_range);
+        c.set(Calendar.HOUR_OF_DAY, 23);
+        c.set(Calendar.MINUTE, 59);
+        c.set(Calendar.SECOND, 59);
+        end_date_range = c.getTime();
+
+        for (UIEntity entidad : listaEventos)
+        {
+            String start_date_str = entidad.get("start");
+            Date start_date = dateFormat.parse(start_date_str);
+            String end_date_str = entidad.get("end");
+            Date end_date = dateFormat.parse(end_date_str);
+
+            assertTrue("El servicio devuelve clases en el día especificado",
+                    start_date_range.before(start_date) && end_date_range.after(end_date));
+
+        }
+
+    }
+
+    @Test
+    public void deleteEventoGenerico() throws ParseException
+    {
+        // Given
+        String evento_id = "6595";
+
+        assertTrue("El evento genérico está", existeEventoGenericoConId(evento_id));
+
+        // When
+        ClientResponse response = resource.path("calendario/eventos/generica/" + evento_id)
+                .accept(MediaType.APPLICATION_JSON_TYPE).delete(ClientResponse.class);
+
+        // Then
+        assertEquals("El servicio es accesible", Status.OK.getStatusCode(), response.getStatus());
+        assertTrue("El evento genérico no está", !existeEventoGenericoConId(evento_id));
+
+    }
+
+    private boolean existeEventoGenericoConId(String evento_id)
+    {
+        String estudio_id = "210";
+        String curso_id = "1";
+        String semestre_id = "1";
+        String grupo_id = "A";
+        String calendarios_ids = "1;2;3;4;5;6";
+        System.out.println("---- Buscando");
+
+        ClientResponse response = resource.path("calendario/eventos/generica")
+                .queryParam("estudioId", estudio_id).queryParam("cursoId", curso_id)
+                .queryParam("semestreId", semestre_id).queryParam("grupoId", grupo_id)
+                .queryParam("calendariosIds", calendarios_ids)
+                .accept(MediaType.APPLICATION_JSON_TYPE).get(ClientResponse.class);
+
+        List<UIEntity> listaEventos = response.getEntity(new GenericType<List<UIEntity>>()
+        {
+        });
+
+        for (UIEntity entidad : listaEventos)
+        {
+            String id = entidad.get("id");
+            String title = entidad.get("title");
+            System.out.println(id + " " + title);
+            if (id.equals(evento_id))
+            {
+                System.out.println("^ Aquí");
+                return true;
+            }
+        }
+
+        return false;
     }
 }
