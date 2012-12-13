@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.mysema.query.jpa.impl.JPAQuery;
 
 import es.uji.apps.hor.db.DiaSemanaDTO;
+import es.uji.apps.hor.db.ItemComunDTO;
 import es.uji.apps.hor.db.ItemDTO;
 import es.uji.apps.hor.db.QDiaSemanaDTO;
 import es.uji.apps.hor.db.QItemDTO;
@@ -34,8 +35,8 @@ public class GrupoAsignaturaDAODatabaseImpl extends BaseDAODatabaseImpl implemen
         List<ItemDTO> listaItemsDTO = query
                 .from(item)
                 .where(item.estudio.id.eq(estudioId).and(
-                        item.cursoId.eq(cursoId)
-                                .and(item.semestre.id.eq(semestreId)).and(item.grupoId.eq(grupoId))
+                        item.cursoId.eq(cursoId).and(item.semestre.id.eq(semestreId))
+                                .and(item.grupoId.eq(grupoId))
                                 .and(item.tipoSubgrupoId.in(tiposCalendarios))
                                 .and(item.diaSemana.isNull()))).list(item);
 
@@ -68,7 +69,10 @@ public class GrupoAsignaturaDAODatabaseImpl extends BaseDAODatabaseImpl implemen
         query2.from(qDiaSemana).where(qDiaSemana.nombre.eq("Dilluns"));
         DiaSemanaDTO lunes = query2.list(qDiaSemana).get(0);
 
+        List<ItemComunDTO> comunes = get(ItemComunDTO.class, grupoAsignaturaId);
+
         item.setDiaSemana(lunes);
+
         Calendar inicio = Calendar.getInstance();
         Calendar fin = Calendar.getInstance();
         inicio.set(Calendar.HOUR_OF_DAY, 8);
@@ -77,9 +81,28 @@ public class GrupoAsignaturaDAODatabaseImpl extends BaseDAODatabaseImpl implemen
         fin.set(Calendar.HOUR_OF_DAY, 10);
         fin.set(Calendar.MINUTE, 0);
         fin.set(Calendar.SECOND, 0);
+
         item.setHoraInicio(inicio.getTime());
         item.setHoraFin(fin.getTime());
         update(item);
+
+        if (item.getComun().equals(new Long(1)))
+        {
+            for (ItemComunDTO comun : comunes)
+            {
+                try
+                {
+                    ItemDTO itemComun = get(ItemDTO.class, comun.getItemComunId()).get(0);
+                    itemComun.setHoraInicio(inicio.getTime());
+                    itemComun.setHoraFin(fin.getTime());
+                    itemComun.setDiaSemana(lunes);
+                    update(itemComun);
+                }
+                catch (Exception e)
+                {
+                }
+            }
+        }
 
         return creaGrupoAsignaturaDesde(item);
     }
