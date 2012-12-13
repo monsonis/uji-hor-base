@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 
 import org.junit.Test;
 import org.springframework.web.context.ContextLoaderListener;
@@ -22,6 +23,7 @@ import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.core.util.StringKeyStringValueIgnoreCaseMultivaluedMap;
 import com.sun.jersey.spi.spring.container.servlet.SpringServlet;
 import com.sun.jersey.test.framework.JerseyTest;
 import com.sun.jersey.test.framework.WebAppDescriptor;
@@ -39,6 +41,12 @@ public class CalendarResourceTest extends JerseyTest
 
     static final SimpleDateFormat dateFormat = new SimpleDateFormat("\"yyyy-MM-dd'T'HH:mm:ss\"");
     static final SimpleDateFormat shortDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+    String estudio_id = "210";
+    String curso_id = "1";
+    String semestre_id = "1";
+    String grupo_id = "A";
+    String calendarios_ids = "1;2;3;4;5;6";
 
     public CalendarResourceTest()
     {
@@ -68,23 +76,62 @@ public class CalendarResourceTest extends JerseyTest
         return config;
     }
 
+    private MultivaluedMap<String, String> getDefaulQueryParams()
+    {
+        MultivaluedMap<String, String> params = new StringKeyStringValueIgnoreCaseMultivaluedMap();
+        params.putSingle("estudioId", estudio_id);
+        params.putSingle("cursoId", curso_id);
+        params.putSingle("semestreId", semestre_id);
+        params.putSingle("grupoId", grupo_id);
+        params.putSingle("calendariosIds", calendarios_ids);
+        return params;
+    }
+
+    private List<UIEntity> getDefaultListaEventosGenericosWithParams(
+            MultivaluedMap<String, String> params)
+    {
+        ClientResponse response = resource.path("calendario/eventos/generica").queryParams(params)
+                .accept(MediaType.APPLICATION_JSON_TYPE).get(ClientResponse.class);
+
+        return response.getEntity(new GenericType<List<UIEntity>>()
+        {
+        });
+    }
+
+    private List<UIEntity> getDefaultListaEventosGenericos()
+    {
+        return getDefaultListaEventosGenericosWithParams(getDefaulQueryParams());
+    }
+
+    private UIEntity getDatosEventoGenerico(String evento_id)
+    {
+
+        List<UIEntity> listaEventos = getDefaultListaEventosGenericos();
+
+        for (UIEntity entidad : listaEventos)
+        {
+            String id = entidad.get("id");
+            if (id.equals(evento_id))
+            {
+                return entidad;
+            }
+        }
+
+        return null;
+    }
+
     @Test
     public void getEventosDetalleUnDia() throws ParseException
     {
         // Given
         String day_str = "2012-12-11";
-        String estudio_id = "210";
-        String curso_id = "1";
-        String semestre_id = "1";
-        String grupo_id = "A";
-        String calendarios_ids = "1;2;3;4;5;6";
+
+        MultivaluedMap<String, String> params = getDefaulQueryParams();
+        params.putSingle("startDate", day_str);
+        params.putSingle("endDate", day_str);
 
         // When
-        ClientResponse response = resource.path("calendario/eventos/detalle")
-                .queryParam("estudioId", estudio_id).queryParam("cursoId", curso_id)
-                .queryParam("semestreId", semestre_id).queryParam("grupoId", grupo_id)
-                .queryParam("startDate", day_str).queryParam("endDate", day_str)
-                .queryParam("calendariosIds", calendarios_ids)
+        ClientResponse response = resource.path("calendario/eventos/detalle").queryParams(params)
                 .accept(MediaType.APPLICATION_JSON_TYPE).get(ClientResponse.class);
 
         List<UIEntity> listaEventos = response.getEntity(new GenericType<List<UIEntity>>()
@@ -124,18 +171,13 @@ public class CalendarResourceTest extends JerseyTest
         // Given
         String day_start_str = "2012-12-10";
         String day_end_str = "2012-12-14";
-        String estudio_id = "210";
-        String curso_id = "1";
-        String semestre_id = "1";
-        String grupo_id = "A";
-        String calendarios_ids = "1;2;3;4;5;6";
 
         // When
-        ClientResponse response = resource.path("calendario/eventos/detalle")
-                .queryParam("estudioId", estudio_id).queryParam("cursoId", curso_id)
-                .queryParam("semestreId", semestre_id).queryParam("grupoId", grupo_id)
-                .queryParam("startDate", day_start_str).queryParam("endDate", day_end_str)
-                .queryParam("calendariosIds", calendarios_ids)
+        MultivaluedMap<String, String> params = getDefaulQueryParams();
+        params.putSingle("startDate", day_start_str);
+        params.putSingle("endDate", day_end_str);
+
+        ClientResponse response = resource.path("calendario/eventos/detalle").queryParams(params)
                 .accept(MediaType.APPLICATION_JSON_TYPE).get(ClientResponse.class);
 
         List<UIEntity> listaEventos = response.getEntity(new GenericType<List<UIEntity>>()
@@ -176,18 +218,13 @@ public class CalendarResourceTest extends JerseyTest
         // Given
         String day_start_str = "2012-11-12";
         String day_end_str = "2012-12-09";
-        String estudio_id = "210";
-        String curso_id = "1";
-        String semestre_id = "1";
-        String grupo_id = "A";
-        String calendarios_ids = "1;2;3;4;5;6";
+
+        MultivaluedMap<String, String> params = getDefaulQueryParams();
+        params.putSingle("startDate", day_start_str);
+        params.putSingle("endDate", day_end_str);
 
         // When
-        ClientResponse response = resource.path("calendario/eventos/detalle")
-                .queryParam("estudioId", estudio_id).queryParam("cursoId", curso_id)
-                .queryParam("semestreId", semestre_id).queryParam("grupoId", grupo_id)
-                .queryParam("startDate", day_start_str).queryParam("endDate", day_end_str)
-                .queryParam("calendariosIds", calendarios_ids)
+        ClientResponse response = resource.path("calendario/eventos/detalle").queryParams(params)
                 .accept(MediaType.APPLICATION_JSON_TYPE).get(ClientResponse.class);
 
         List<UIEntity> listaEventos = response.getEntity(new GenericType<List<UIEntity>>()
@@ -242,35 +279,46 @@ public class CalendarResourceTest extends JerseyTest
 
     private boolean existeEventoGenericoConId(String evento_id)
     {
-        String estudio_id = "210";
-        String curso_id = "1";
-        String semestre_id = "1";
-        String grupo_id = "A";
-        String calendarios_ids = "1;2;3;4;5;6";
-        System.out.println("---- Buscando");
+        return getDatosEventoGenerico(evento_id) != null;
+    }
 
-        ClientResponse response = resource.path("calendario/eventos/generica")
-                .queryParam("estudioId", estudio_id).queryParam("cursoId", curso_id)
-                .queryParam("semestreId", semestre_id).queryParam("grupoId", grupo_id)
-                .queryParam("calendariosIds", calendarios_ids)
-                .accept(MediaType.APPLICATION_JSON_TYPE).get(ClientResponse.class);
+    @Test
+    public void divideEventoGenerico() throws ParseException
+    {
+        // Given
+        String evento_id = "6595";
 
-        List<UIEntity> listaEventos = response.getEntity(new GenericType<List<UIEntity>>()
+        UIEntity evento_original = getDatosEventoGenerico(evento_id);
+
+        // When
+        ClientResponse response = resource.path("calendario/eventos/generica/divide/" + evento_id)
+                .accept(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class);
+
+        // Then
+        assertEquals("El servicio es accesible", Status.OK.getStatusCode(), response.getStatus());
+        assertTrue("Existe un duplicado", existeDuplicadoDeEventoGenerico(evento_original));
+
+    }
+
+    private boolean existeDuplicadoDeEventoGenerico(UIEntity evento_original)
+    {
+        String orig_id = evento_original.get("id");
+        String orig_title = evento_original.get("title");
+        String orig_start_str = evento_original.get("start");
+        for (UIEntity entity : getDefaultListaEventosGenericos())
         {
-        });
+            String entity_id = entity.get("id");
+            String entity_title = entity.get("title");
+            String entity_start_str = entity.get("start");
 
-        for (UIEntity entidad : listaEventos)
-        {
-            String id = entidad.get("id");
-            String title = entidad.get("title");
-            System.out.println(id + " " + title);
-            if (id.equals(evento_id))
+            if (entity_title.equals(orig_title) && entity_start_str.equals(orig_start_str)
+                    && !entity_id.equals(orig_id))
             {
-                System.out.println("^ Aquí");
                 return true;
             }
         }
 
         return false;
     }
+
 }
