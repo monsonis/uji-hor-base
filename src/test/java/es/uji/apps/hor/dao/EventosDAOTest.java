@@ -282,32 +282,32 @@ public class EventosDAOTest
         asignaturaComun1 = new AsignaturaComunDTO();
         asignaturaComun1.setAsignaturaId(item.getAsignaturaId());
         asignaturaComun1.setGrupoComunId(new Long(1));
-        asignaturaComun1.setNombre(item.getAsignatura());
+        asignaturaComun1.setNombre("PR1001 i Comun");
         eventosDAO.insert(asignaturaComun1);
 
         asignaturaComun2 = new AsignaturaComunDTO();
         asignaturaComun2.setAsignaturaId("Comun");
         asignaturaComun2.setGrupoComunId(new Long(1));
-        asignaturaComun2.setNombre("Prueba Comun");
+        asignaturaComun2.setNombre("PR1001 i Comun");
         eventosDAO.insert(asignaturaComun2);
 
         comun = new ItemDTO();
         comun.setAsignaturaId(asignaturaComun2.getAsignaturaId());
-        comun.setAsignatura(asignaturaComun2.getNombre());
-        comun.setCaracter("Troncal");
-        comun.setCaracterId("TR");
+        comun.setAsignatura(asignaturaComun2.getAsignaturaId());
+        comun.setCaracter(item.getCaracter());
+        comun.setCaracterId(item.getCaracterId());
         comun.setComun(new Long(1));
-        comun.setCursoId(new Long(1));
-        comun.setDiaSemana(diaSemana);
+        comun.setCursoId(item.getCursoId());
+        comun.setDiaSemana(item.getDiaSemana());
         comun.setEstudio(estudio);
         comun.setEstudioDesc(estudio.getNombre());
-        comun.setGrupoId("A");
+        comun.setGrupoId(item.getGrupoId());
         comun.setHoraFin(item.getHoraFin());
         comun.setHoraInicio(item.getHoraInicio());
         comun.setDetalleManual(false);
-        comun.setSemestre(semestre);
-        comun.setSubgrupoId(new Long(1));
-        comun.setTipoSubgrupoId("TU");
+        comun.setSemestre(item.getSemestre());
+        comun.setSubgrupoId(item.getSubgrupoId());
+        comun.setTipoSubgrupoId(item.getTipoSubgrupoId());
     }
 
     @Test
