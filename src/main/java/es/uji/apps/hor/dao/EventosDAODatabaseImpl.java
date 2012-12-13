@@ -26,7 +26,6 @@ import es.uji.apps.hor.db.ItemDetalleDTO;
 import es.uji.apps.hor.db.QAsignaturaComunDTO;
 import es.uji.apps.hor.db.QDiaSemanaDTO;
 import es.uji.apps.hor.db.QItemCircuitoDTO;
-import es.uji.apps.hor.db.QItemComunDTO;
 import es.uji.apps.hor.db.QItemDTO;
 import es.uji.apps.hor.db.QItemDetalleCompletoDTO;
 import es.uji.apps.hor.db.QItemDetalleDTO;
