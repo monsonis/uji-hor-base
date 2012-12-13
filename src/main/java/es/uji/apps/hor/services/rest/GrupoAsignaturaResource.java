@@ -7,6 +7,7 @@ import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -65,11 +66,13 @@ public class GrupoAsignaturaResource
     @PUT
     @Path("sinAsignar/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UIEntity> updateGruposAsignaturasSinAsignar(UIEntity entity) throws RegistroNoEncontradoException, NumberFormatException
+    public List<UIEntity> updateGruposAsignaturasSinAsignar(@PathParam("id") String id)
+            throws RegistroNoEncontradoException, NumberFormatException
     {
-        GrupoAsignatura grupoAsignatura = gruposAsignaturasService.asignaDiaYHoraPorDefecto(Long.parseLong(entity.get("id")));
+        GrupoAsignatura grupoAsignatura = gruposAsignaturasService.asignaDiaYHoraPorDefecto(Long
+                .parseLong(id));
         return Collections.singletonList(UIEntity.toUI(grupoAsignatura));
-        
+
     }
 
 }

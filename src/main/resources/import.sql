@@ -1,3 +1,8 @@
+-- Limpiar inserts generados por oracle con vim
+-- :%s/\n//g 
+-- :%s/\;/\;\r/g 
+-- :%s/TO_DATE('\([^']*\)', '[^']*')/parsedatetime('\1', 'MM\/dd\/yyy HH:mm:ss')/g
+
 
 -- Datos para (al menos) es.uji.apps.hor.services.rest.SemestreDetalleResourceTest
 -- HOR_TIPOS_ESTUDIOS
