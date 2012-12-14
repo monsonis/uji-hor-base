@@ -201,7 +201,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             {
                 try
                 {
-                    ItemDTO itemComun = get(ItemDTO.class, comun.getItemComunId()).get(0);
+                    ItemDTO itemComun = get(ItemDTO.class, comun.getItemComun().getId()).get(0);
                     itemComun.setHoraInicio(inicio);
                     itemComun.setHoraFin(fin);
                     itemComun.setDiaSemana(diaSemanaDTO);
@@ -439,7 +439,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             {
                 try
                 {
-                    ItemDTO itemComun = get(ItemDTO.class, comun.getItemComunId()).get(0);
+                    ItemDTO itemComun = get(ItemDTO.class, comun.getItemComun().getId()).get(0);
                     itemComun.setHoraInicio(inicio);
                     itemComun.setHoraFin(fin);
                     itemComun.setDiaSemana(diaSemanaDTO);
@@ -546,7 +546,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             {
                 try
                 {
-                    ItemDTO itemComun = get(ItemDTO.class, comun.getItemComunId()).get(0);
+                    ItemDTO itemComun = get(ItemDTO.class, comun.getItemComun().getId()).get(0);
                     itemsActualizar.add(itemComun);
                     itemComun.setDetalleManual(true);
                     itemComun.setHoraInicio(inicio);
@@ -688,7 +688,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             {
                 try
                 {
-                    ItemDTO itemComun = get(ItemDTO.class, comun.getItemComunId()).get(0);
+                    ItemDTO itemComun = get(ItemDTO.class, comun.getItemComun().getId()).get(0);
                     itemsActualizar.add(itemComun);
                 }
                 catch (Exception e)
@@ -830,7 +830,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             {
                 try
                 {
-                    ItemDTO itemComun = get(ItemDTO.class, comun.getItemComunId()).get(0);
+                    ItemDTO itemComun = get(ItemDTO.class, comun.getItemComun().getId()).get(0);
                     itemComun.setAulasPlanificacion(item.getAulasPlanificacion());
                     update(itemComun);
                 }

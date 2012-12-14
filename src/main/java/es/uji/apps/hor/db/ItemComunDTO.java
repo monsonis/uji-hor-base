@@ -1,7 +1,13 @@
 package es.uji.apps.hor.db;
 
 import java.io.Serializable;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * The persistent class for the HOR_V_ITEMS_COMUNES database table.
@@ -9,8 +15,7 @@ import javax.persistence.*;
  */
 @SuppressWarnings("serial")
 @Entity
-@IdClass(ItemComunDTOId.class)
-@Table(name = "HOR_V_ITEMS_COMUNES")
+@Table(name = "HOR_ITEMS_COMUNES")
 public class ItemComunDTO implements Serializable
 {
     @Column(name = "ASIGNATURA_COMUN_ID")
@@ -22,9 +27,13 @@ public class ItemComunDTO implements Serializable
     @Id
     private Long id;
 
-    @Id
-    @Column(name = "ITEM_COMUN_ID")
-    private Long itemComunId;
+    @ManyToOne
+    @JoinColumn(name = "ITEM_ID")
+    private ItemDTO item;
+
+    @ManyToOne
+    @JoinColumn(name = "ITEM_COMUN_ID")
+    private ItemDTO itemComun;
 
     public ItemComunDTO()
     {
@@ -60,14 +69,24 @@ public class ItemComunDTO implements Serializable
         this.id = id;
     }
 
-    public Long getItemComunId()
+    public ItemDTO getItem()
     {
-        return this.itemComunId;
+        return item;
     }
 
-    public void setItemComunId(Long itemComunId)
+    public void setItem(ItemDTO item)
     {
-        this.itemComunId = itemComunId;
+        this.item = item;
+    }
+
+    public ItemDTO getItemComun()
+    {
+        return itemComun;
+    }
+
+    public void setItemComun(ItemDTO itemComun)
+    {
+        this.itemComun = itemComun;
     }
 
 }

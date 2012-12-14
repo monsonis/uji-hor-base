@@ -71,6 +71,7 @@ public class EventosService
     public void divideEventoSemanaGenerica(Long eventoId) throws RegistroNoEncontradoException,
             EventoNoDivisibleException
     {
+        
         eventosDAO.divideEventoSemanaGenerica(eventoId);
     }
 
