@@ -445,7 +445,7 @@ public class CalendarResource
             throws RegistroNoEncontradoException, AulaNoAsignadaAEstudioDelEventoException,
             NumberFormatException
     {
-        boolean propagarComunes = tipoAccion.equals("T");
+        boolean propagar = tipoAccion.equals("T");
         Long aula;
         try
         {
@@ -457,7 +457,7 @@ public class CalendarResource
         }
 
         Evento evento = eventosService.actualizaAulaAsignadaAEvento(Long.parseLong(eventoId), aula,
-                propagarComunes);
+                propagar);
 
         return toUI(Collections.singletonList(evento));
     }

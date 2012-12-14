@@ -15,7 +15,6 @@ import com.mysema.query.types.QTuple;
 
 import es.uji.apps.hor.AulaNoAsignadaAEstudioDelEventoException;
 import es.uji.apps.hor.EventoNoDivisibleException;
-import es.uji.apps.hor.db.AsignaturaComunDTO;
 import es.uji.apps.hor.db.AulaPlanificacionDTO;
 import es.uji.apps.hor.db.DiaSemanaDTO;
 import es.uji.apps.hor.db.ItemCircuitoDTO;
@@ -23,9 +22,9 @@ import es.uji.apps.hor.db.ItemComunDTO;
 import es.uji.apps.hor.db.ItemDTO;
 import es.uji.apps.hor.db.ItemDetalleCompletoDTO;
 import es.uji.apps.hor.db.ItemDetalleDTO;
-import es.uji.apps.hor.db.QAsignaturaComunDTO;
 import es.uji.apps.hor.db.QDiaSemanaDTO;
 import es.uji.apps.hor.db.QItemCircuitoDTO;
+import es.uji.apps.hor.db.QItemComunDTO;
 import es.uji.apps.hor.db.QItemDTO;
 import es.uji.apps.hor.db.QItemDetalleCompletoDTO;
 import es.uji.apps.hor.db.QItemDetalleDTO;
@@ -140,9 +139,9 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         {
             evento.setComunes(itemDTO.getComunes());
         }
-        if (itemDTO.getAulasPlanificacion() != null)
+        if (itemDTO.getAulaPlanificacion() != null)
         {
-            evento.setAulaPlanificacionId(itemDTO.getAulasPlanificacion().getId());
+            evento.setAulaPlanificacionId(itemDTO.getAulaPlanificacion().getId());
         }
 
         return evento;
@@ -187,7 +186,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         query2.from(qDiaSemana).where(qDiaSemana.nombre.eq(diaSemana));
         DiaSemanaDTO diaSemanaDTO = query2.list(qDiaSemana).get(0);
 
-        List<ItemComunDTO> comunes = get(ItemComunDTO.class, grupoAsignaturaId);
+        List<ItemComunDTO> comunes = getItemsComunes(grupoAsignaturaId);
 
         item.setHoraInicio(inicio);
         item.setHoraFin(fin);
@@ -346,7 +345,8 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         ItemDTO itemDTO = new ItemDTO();
         itemDTO.setAsignatura(evento.getAsignatura());
         itemDTO.setAsignaturaId(evento.getAsignaturaId());
-        itemDTO.setAulasPlanificacion(evento.getAulasPlanificacion());
+        itemDTO.setAulaPlanificacion(evento.getAulaPlanificacion());
+        itemDTO.setAulaPlanificacionNombre(evento.getAulaPlanificacionNombre());
         itemDTO.setCaracter(evento.getCaracter());
         itemDTO.setCaracterId(evento.getCaracterId());
         itemDTO.setComun(evento.getComun());
@@ -421,7 +421,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         query2.from(qDiaSemana).where(qDiaSemana.nombre.eq(diaSemana));
         DiaSemanaDTO diaSemanaDTO = query2.list(qDiaSemana).get(0);
 
-        List<ItemComunDTO> comunes = get(ItemComunDTO.class, grupoAsignaturaId);
+        List<ItemComunDTO> comunes = getItemsComunes(grupoAsignaturaId);
 
         item.setHoraInicio(inicio);
         item.setHoraFin(fin);
@@ -527,7 +527,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             throw new RegistroNoEncontradoException();
         }
 
-        List<ItemComunDTO> comunes = get(ItemComunDTO.class, eventoId);
+        List<ItemComunDTO> comunes = getItemsComunes(eventoId);
 
         evento.setDetalleManual(true);
         evento.setHoraInicio(inicio);
@@ -682,7 +682,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
 
         if (evento.getComun().equals(new Long(1))) // Propagamos en las asignaturas comunes
         {
-            List<ItemComunDTO> comunes = get(ItemComunDTO.class, eventoId);
+            List<ItemComunDTO> comunes = getItemsComunes(eventoId);
 
             for (ItemComunDTO comun : comunes)
             {
@@ -783,7 +783,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
     }
 
     @Override
-    public Evento actualizaAulaAsignadaAEvento(Long eventoId, Long aulaId, boolean propagarComunes)
+    public Evento actualizaAulaAsignadaAEvento(Long eventoId, Long aulaId, boolean propagar)
             throws RegistroNoEncontradoException, AulaNoAsignadaAEstudioDelEventoException
     {
         ItemDTO item;
@@ -796,42 +796,62 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             throw new RegistroNoEncontradoException();
         }
 
+        AulaPlanificacionDTO aulaPlanificacion = null;
+        String nombreAula = null;
+
         if (aulaId != null) // Comprobamos que el aula está asignada al estudio del evento
         {
-            AulaPlanificacionDTO aula;
             try
             {
-                aula = get(AulaPlanificacionDTO.class, aulaId).get(0);
+                aulaPlanificacion = get(AulaPlanificacionDTO.class, aulaId).get(0);
+                nombreAula = aulaPlanificacion.getAula().getNombre();
             }
             catch (Exception e)
             {
                 throw new RegistroNoEncontradoException();
             }
 
-            if (!aula.getEstudio().getId().equals(item.getEstudio().getId()))
+            if (!aulaPlanificacion.getEstudio().getId().equals(item.getEstudio().getId()))
             {
                 throw new AulaNoAsignadaAEstudioDelEventoException();
             }
-
-            item.setAulasPlanificacion(aula);
-        }
-        else
-        {
-            item.setAulasPlanificacion(null);
         }
 
-        Evento evento = creaEventoDesde(update(item));
+        List<ItemDTO> items = new ArrayList<ItemDTO>();
 
-        if (propagarComunes && item.getComun().equals(new Long(1)))
+        if (propagar)
         {
-            List<ItemComunDTO> comunes = get(ItemComunDTO.class, eventoId);
+            JPAQuery query = new JPAQuery(entityManager);
+            QItemDTO itemDTO = QItemDTO.itemDTO;
+            items = query
+                    .from(itemDTO)
+                    .where(itemDTO.asignaturaId.eq(item.getAsignaturaId())
+                            .and(itemDTO.estudio.id.eq(item.getEstudio().getId()))
+                            .and(itemDTO.cursoId.eq(item.getCursoId()))
+                            .and(itemDTO.semestre.id.eq(item.getSemestre().getId()))
+                            .and(itemDTO.grupoId.eq(item.getGrupoId()))
+                            .and(itemDTO.tipoSubgrupoId.eq(item.getTipoSubgrupoId()))
+                            .and(itemDTO.subgrupoId.eq(item.getSubgrupoId()))
+                            .and(itemDTO.id.ne(item.getId()))).list(itemDTO);
+        }
+
+        items.add(0, item);
+
+        for (ItemDTO itemAux : items)
+        {
+            itemAux.setAulaPlanificacion(aulaPlanificacion);
+            itemAux.setAulaPlanificacionNombre(nombreAula);
+            update(itemAux);
+
+            List<ItemComunDTO> comunes = getItemsComunes(itemAux.getId());
 
             for (ItemComunDTO comun : comunes)
             {
                 try
                 {
                     ItemDTO itemComun = get(ItemDTO.class, comun.getItemComun().getId()).get(0);
-                    itemComun.setAulasPlanificacion(item.getAulasPlanificacion());
+                    itemComun.setAulaPlanificacion(aulaPlanificacion);
+                    itemComun.setAulaPlanificacionNombre(nombreAula);
                     update(itemComun);
                 }
                 catch (Exception e)
@@ -840,6 +860,18 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             }
         }
 
+        Evento evento = creaEventoDesde(item);
+
         return evento;
+    }
+
+    private List<ItemComunDTO> getItemsComunes(Long itemId)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        QItemComunDTO itemComunDTO = QItemComunDTO.itemComunDTO;
+
+        query.from(itemComunDTO).where(itemComunDTO.item.id.eq(itemId));
+
+        return query.list(itemComunDTO);
     }
 }

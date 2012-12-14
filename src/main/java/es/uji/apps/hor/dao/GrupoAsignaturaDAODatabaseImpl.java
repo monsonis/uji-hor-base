@@ -92,7 +92,7 @@ public class GrupoAsignaturaDAODatabaseImpl extends BaseDAODatabaseImpl implemen
             {
                 try
                 {
-                    ItemDTO itemComun = get(ItemDTO.class, comun.getItemComunId()).get(0);
+                    ItemDTO itemComun = get(ItemDTO.class, comun.getItemComun().getId()).get(0);
                     itemComun.setHoraInicio(inicio.getTime());
                     itemComun.setHoraFin(fin.getTime());
                     itemComun.setDiaSemana(lunes);

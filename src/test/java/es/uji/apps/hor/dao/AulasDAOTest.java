@@ -198,7 +198,7 @@ public class AulasDAOTest
         item.setDetalleManual(false);
 
         AulaPlanificacionDTO aula = aulas.get(0);
-        item.setAulasPlanificacion(aula);
+        item.setAulaPlanificacion(aula);
         item = aulasDAO.insert(item);
 
         aulasDAO.deleteAulaAsignadaToEstudio(aulas.get(0).getId());

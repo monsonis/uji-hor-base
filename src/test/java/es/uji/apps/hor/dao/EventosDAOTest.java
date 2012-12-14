@@ -25,6 +25,7 @@ import es.uji.apps.hor.db.AulaPlanificacionDTO;
 import es.uji.apps.hor.db.CentroDTO;
 import es.uji.apps.hor.db.DiaSemanaDTO;
 import es.uji.apps.hor.db.EstudioDTO;
+import es.uji.apps.hor.db.ItemComunDTO;
 import es.uji.apps.hor.db.ItemDTO;
 import es.uji.apps.hor.db.ItemDetalleDTO;
 import es.uji.apps.hor.db.SemestreDTO;
@@ -52,6 +53,8 @@ public class EventosDAOTest
     private AulaPlanificacionDTO aulaPlanificacion;
     private AsignaturaComunDTO asignaturaComun1;
     private AsignaturaComunDTO asignaturaComun2;
+    private ItemComunDTO itemComun1;
+    private ItemComunDTO itemComun2;
 
     @Before
     public void rellenaItem() throws ParseException
@@ -105,6 +108,21 @@ public class EventosDAOTest
         item.setSubgrupoId(new Long(1));
         item.setTipoSubgrupoId("TU");
     }
+    
+    private void rellenaItemsComunes(ItemDTO item1, ItemDTO item2)
+    {
+        itemComun1 = new ItemComunDTO();
+        itemComun1.setItem(item1);
+        itemComun1.setAsignaturaId(item1.getAsignaturaId());
+        itemComun1.setItemComun(item2);
+        itemComun1.setAsignaturaComunId(item2.getAsignaturaId());
+        
+        itemComun2 = new ItemComunDTO();
+        itemComun2.setItem(item2);
+        itemComun2.setAsignaturaId(item2.getAsignaturaId());
+        itemComun2.setItemComun(item1);
+        itemComun2.setAsignaturaComunId(item1.getAsignaturaId());
+    }
 
     @Test
     public void getEventosSemanaGenericaTest()
@@ -149,6 +167,10 @@ public class EventosDAOTest
 
         rellenaDatosItemComun();
         eventosDAO.insert(comun);
+        
+        rellenaItemsComunes(item, comun);
+        eventosDAO.insert(itemComun1);
+        eventosDAO.insert(itemComun2);
 
         Calendar calendarIni = Calendar.getInstance();
         calendarIni.set(Calendar.HOUR, 10);
@@ -321,15 +343,19 @@ public class EventosDAOTest
 
         rellenaDatosItemComun();
         eventosDAO.insert(comun);
+        
+        rellenaItemsComunes(item, comun);
+        eventosDAO.insert(itemComun1);
+        eventosDAO.insert(itemComun2);
 
-        eventosDAO.actualizaAulaAsignadaAEvento(item.getId(), aulaPlanificacion.getId(), true);
+        eventosDAO.actualizaAulaAsignadaAEvento(item.getId(), aulaPlanificacion.getId(), false);
         item = eventosDAO.get(ItemDTO.class, item.getId()).get(0);
 
-        Assert.assertEquals(aulaPlanificacion, item.getAulasPlanificacion());
+        Assert.assertEquals(aulaPlanificacion, item.getAulaPlanificacion());
 
         comun = eventosDAO.get(ItemDTO.class, comun.getId()).get(0);
 
-        Assert.assertEquals(item.getAulasPlanificacion(), comun.getAulasPlanificacion());
+        Assert.assertEquals(item.getAulaPlanificacion(), comun.getAulaPlanificacion());
     }
 
     @Test
@@ -344,35 +370,50 @@ public class EventosDAOTest
         rellenaDatosItemComun();
         eventosDAO.insert(comun);
 
-        eventosDAO.actualizaAulaAsignadaAEvento(item.getId(), null, true);
+        eventosDAO.actualizaAulaAsignadaAEvento(item.getId(), null, false);
         item = eventosDAO.get(ItemDTO.class, item.getId()).get(0);
 
-        Assert.assertNull(item.getAulasPlanificacion());
+        Assert.assertNull(item.getAulaPlanificacion());
 
         comun = eventosDAO.get(ItemDTO.class, comun.getId()).get(0);
-        Assert.assertEquals(item.getAulasPlanificacion(), comun.getAulasPlanificacion());
+        Assert.assertEquals(item.getAulaPlanificacion(), comun.getAulaPlanificacion());
     }
 
     @Test
-    public void actualizaAulaPlanificacionEventoTest() throws RegistroNoEncontradoException,
+    public void actualizaAulaPlanificacionEventoConGruposComunesTest() throws RegistroNoEncontradoException,
             AulaNoAsignadaAEstudioDelEventoException
     {
         rellenaDatosTestsConAulas();
+        
+        ItemDTO grupoComun = new ItemDTO();
+        grupoComun.setAsignaturaId(item.getAsignaturaId());
+        grupoComun.setAsignatura(item.getAsignatura());
+        grupoComun.setCaracter(item.getCaracter());
+        grupoComun.setCaracterId(item.getCaracterId());
+        grupoComun.setComun(new Long(0));
+        grupoComun.setCursoId(item.getCursoId());
+        grupoComun.setDiaSemana(item.getDiaSemana());
+        grupoComun.setEstudio(item.getEstudio());
+        grupoComun.setEstudioDesc(item.getEstudioDesc());
+        grupoComun.setGrupoId(item.getGrupoId());
+        grupoComun.setHoraFin(new Date());
+        grupoComun.setHoraInicio(new Date());
+        grupoComun.setDetalleManual(false);
+        grupoComun.setSemestre(item.getSemestre());
+        grupoComun.setSubgrupoId(item.getSubgrupoId());
+        grupoComun.setTipoSubgrupoId(item.getTipoSubgrupoId());
 
-        item.setComun(new Long(1));
         eventosDAO.insert(item);
+        eventosDAO.insert(grupoComun);
 
-        rellenaDatosItemComun();
-        eventosDAO.insert(comun);
-
-        eventosDAO.actualizaAulaAsignadaAEvento(item.getId(), aulaPlanificacion.getId(), false);
+        eventosDAO.actualizaAulaAsignadaAEvento(item.getId(), aulaPlanificacion.getId(), true);
         item = eventosDAO.get(ItemDTO.class, item.getId()).get(0);
 
-        Assert.assertEquals(aulaPlanificacion, item.getAulasPlanificacion());
+        Assert.assertEquals(aulaPlanificacion, item.getAulaPlanificacion());
 
-        comun = eventosDAO.get(ItemDTO.class, comun.getId()).get(0);
+        grupoComun = eventosDAO.get(ItemDTO.class, grupoComun.getId()).get(0);
 
-        Assert.assertNull(comun.getAulasPlanificacion());
+        Assert.assertEquals(item.getAulaPlanificacion(), grupoComun.getAulaPlanificacion());
     }
 
     @Test
@@ -383,6 +424,10 @@ public class EventosDAOTest
 
         rellenaDatosItemComun();
         eventosDAO.insert(comun);
+        
+        rellenaItemsComunes(item, comun);
+        eventosDAO.insert(itemComun1);
+        eventosDAO.insert(itemComun2);
 
         eventosDAO.modificaDetallesGrupoAsignatura(item.getId(), item.getHoraFin(),
                 item.getHoraFin(), new Date(), new Integer(4), item.getRepetirCadaSemanas(),

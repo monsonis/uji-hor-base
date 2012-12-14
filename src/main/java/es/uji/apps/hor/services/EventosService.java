@@ -136,9 +136,9 @@ public class EventosService
                 calendariosIds, rangoFechaInicio, rangoFechaFin);
     }
 
-    public Evento actualizaAulaAsignadaAEvento(Long eventoId, Long aulaId, boolean propagarComunes)
+    public Evento actualizaAulaAsignadaAEvento(Long eventoId, Long aulaId, boolean propagar)
             throws RegistroNoEncontradoException, AulaNoAsignadaAEstudioDelEventoException
     {
-        return eventosDAO.actualizaAulaAsignadaAEvento(eventoId, aulaId, propagarComunes);
+        return eventosDAO.actualizaAulaAsignadaAEvento(eventoId, aulaId, propagar);
     }
 }

@@ -96,7 +96,10 @@ public class ItemDTO implements Serializable
     // bi-directional many-to-one association to AulaPlanificacionDTO
     @ManyToOne
     @JoinColumn(name = "AULA_PLANIFICACION_ID")
-    private AulaPlanificacionDTO aulasPlanificacion;
+    private AulaPlanificacionDTO aulaPlanificacion;
+    
+    @Column(name = "AULA_PLANIFICACION_NOMBRE")
+    private String aulaPlanificacionNombre;
 
     // bi-directional many-to-one association to DiaSemanaDTO
     @ManyToOne
@@ -362,14 +365,24 @@ public class ItemDTO implements Serializable
         this.tipoSubgrupoId = tipoSubgrupoId;
     }
 
-    public AulaPlanificacionDTO getAulasPlanificacion()
+    public AulaPlanificacionDTO getAulaPlanificacion()
     {
-        return this.aulasPlanificacion;
+        return this.aulaPlanificacion;
     }
 
-    public void setAulasPlanificacion(AulaPlanificacionDTO aulasPlanificacion)
+    public void setAulaPlanificacion(AulaPlanificacionDTO aulaPlanificacion)
     {
-        this.aulasPlanificacion = aulasPlanificacion;
+        this.aulaPlanificacion = aulaPlanificacion;
+    }
+
+    public String getAulaPlanificacionNombre()
+    {
+        return aulaPlanificacionNombre;
+    }
+
+    public void setAulaPlanificacionNombre(String aulaPlanificacionNombre)
+    {
+        this.aulaPlanificacionNombre = aulaPlanificacionNombre;
     }
 
     public DiaSemanaDTO getDiaSemana()
