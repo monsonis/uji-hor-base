@@ -804,7 +804,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             try
             {
                 aulaPlanificacion = get(AulaPlanificacionDTO.class, aulaId).get(0);
-                nombreAula = aulaPlanificacion.getAula().getNombre();
+                nombreAula = aulaPlanificacion.getAula().getCodigo();
             }
             catch (Exception e)
             {

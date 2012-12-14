@@ -453,6 +453,12 @@ public class ItemDTO implements Serializable
         if (comun == 1) {
             titulo = MessageFormat.format("{0} - C", titulo);
         }
+        
+        if (aulaPlanificacion != null)
+        {
+            titulo = MessageFormat.format("{0} {1}", titulo, aulaPlanificacionNombre);
+        }
+        
         return titulo;
     }
 
