@@ -1261,3 +1261,8 @@ CREATE OR REPLACE FORCE VIEW UJI_HORARIOS.HOR_V_ITEMS_COMUNES (ID, ASIGNATURA_ID
    and    i.dia_semana_id = x.dia_Semana_id
    and    to_char (i.hora_inicio, 'hh24:mi') = to_char (x.hora_inicio, 'hh24:mi');
 
+ALTER TABLE UJI_HORARIOS.HOR_ITEMS
+ ADD (aula_planificacion_nombre  VARCHAR2(100));
+
+ 
+ 

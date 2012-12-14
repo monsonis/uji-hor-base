@@ -1,5 +1,5 @@
 -- Generado por Oracle SQL Developer Data Modeler 3.1.1.703
---   en:        2012-12-12 12:59:53 CET
+--   en:        2012-12-14 09:00:46 CET
 --   sitio:      Oracle Database 11g
 --   tipo:      Oracle Database 11g
 
@@ -379,6 +379,7 @@ CREATE TABLE uji_horarios.hor_items
      caracter VARCHAR2 (100) , 
      semestre_id NUMBER  NOT NULL , 
      aula_planificacion_id NUMBER , 
+     aula_planificacion_nombre VARCHAR2 (100) , 
      profesor_id NUMBER , 
      comun NUMBER DEFAULT 0  NOT NULL CHECK ( comun IN (0, 1)) , 
      porcentaje_comun NUMBER , 
