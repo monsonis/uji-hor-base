@@ -142,4 +142,79 @@ ALTER TABLE UJI_HORARIOS.HOR_ITEMS
 
 
 
- 
+ CREATE TABLE uji_horarios.hor_items_comunes 
+    ( 
+     id NUMBER  NOT NULL , 
+     item_id NUMBER  NOT NULL , 
+     asignatura_id VARCHAR2 (100) , 
+     asignatura_comun_id VARCHAR2 (100) , 
+     item_comun_id NUMBER  NOT NULL 
+    ) 
+;
+
+
+CREATE INDEX uji_horarios.hor_items_comunes__IDX ON uji_horarios.hor_items_comunes 
+    ( 
+     item_id ASC 
+    ) 
+;
+CREATE INDEX uji_horarios.hor_items_comunes_com_IDX ON uji_horarios.hor_items_comunes 
+    ( 
+     item_comun_id ASC 
+    ) 
+;
+
+ALTER TABLE uji_horarios.hor_items_comunes 
+    ADD CONSTRAINT hor_items_comunes_PK PRIMARY KEY ( id ) ;
+
+
+
+
+ALTER TABLE uji_horarios.hor_items_comunes 
+    ADD CONSTRAINT hor_items_comunes_it_FK FOREIGN KEY 
+    ( 
+     item_id
+    ) 
+    REFERENCES uji_horarios.hor_items 
+    ( 
+     id
+    ) 
+;
+
+
+ALTER TABLE uji_horarios.hor_items_comunes 
+    ADD CONSTRAINT hor_items_comunes_it_com_FK FOREIGN KEY 
+    ( 
+     item_comun_id
+    ) 
+    REFERENCES uji_horarios.hor_items 
+    ( 
+     id
+    ) 
+;
+
+
+
+drop view hor_v_items_comunes;
+
+insert into hor_items_comunes
+select rownum id, id item_id, asignatura_id, asignatura_comun_id, item_comun_id
+from (
+   select i.id, i.asignatura_id, c.asignatura_id asignatura_comun_id, x.id item_comun_id
+   from   hor_items i,
+          hor_ext_asignaturas_comunes c,
+          hor_items x
+   where  c.nombre like '%' || i.asignatura_id || '%'
+   and    c.asignatura_id <> i.asignatura_id
+   and    c.asignatura_id = x.asignatura_id
+   and    i.curso_id = x.curso_id
+   and    i.semestre_id = x.semestre_id
+   and    i.grupo_id = x.grupo_id
+   and    i.tipo_subgrupo_id = x.tipo_subgrupo_id
+   and    i.subgrupo_id = x.subgrupo_id
+   and    i.dia_semana_id = x.dia_Semana_id
+   and    to_char (i.hora_inicio, 'hh24:mi') = to_char (x.hora_inicio, 'hh24:mi'));
+   
+   commit;
+   
+   

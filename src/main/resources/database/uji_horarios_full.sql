@@ -1,5 +1,5 @@
 -- Generado por Oracle SQL Developer Data Modeler 3.1.1.703
---   en:        2012-12-14 09:00:46 CET
+--   en:        2012-12-14 10:07:43 CET
 --   sitio:      Oracle Database 11g
 --   tipo:      Oracle Database 11g
 
@@ -8,8 +8,6 @@
 DROP VIEW uji_horarios.hor_v_cursos 
 ;
 DROP VIEW uji_horarios.hor_v_grupos 
-;
-DROP VIEW hor_v_items_comunes 
 ;
 DROP VIEW uji_horarios.hor_v_items_detalle 
 ;
@@ -44,6 +42,8 @@ DROP TABLE hor_horarios_horas CASCADE CONSTRAINTS
 DROP TABLE uji_horarios.hor_items CASCADE CONSTRAINTS 
 ;
 DROP TABLE uji_horarios.hor_items_circuitos CASCADE CONSTRAINTS 
+;
+DROP TABLE uji_horarios.hor_items_comunes CASCADE CONSTRAINTS 
 ;
 DROP TABLE uji_horarios.hor_items_detalle CASCADE CONSTRAINTS 
 ;
@@ -453,6 +453,33 @@ ALTER TABLE uji_horarios.hor_items_circuitos
 
 
 
+CREATE TABLE uji_horarios.hor_items_comunes 
+    ( 
+     id NUMBER  NOT NULL , 
+     item_id NUMBER  NOT NULL , 
+     asignatura_id VARCHAR2 (100) , 
+     asignatura_comun_id VARCHAR2 (100) , 
+     item_comun_id NUMBER  NOT NULL 
+    ) 
+;
+
+
+CREATE INDEX uji_horarios.hor_items_comunes__IDX ON uji_horarios.hor_items_comunes 
+    ( 
+     item_id ASC 
+    ) 
+;
+CREATE INDEX uji_horarios.hor_items_comunes_com_IDX ON uji_horarios.hor_items_comunes 
+    ( 
+     item_comun_id ASC 
+    ) 
+;
+
+ALTER TABLE uji_horarios.hor_items_comunes 
+    ADD CONSTRAINT hor_items_comunes_PK PRIMARY KEY ( id ) ;
+
+
+
 CREATE TABLE uji_horarios.hor_items_detalle 
     ( 
      id NUMBER  NOT NULL , 
@@ -777,6 +804,30 @@ ALTER TABLE uji_horarios.hor_items_circuitos
 ;
 
 
+ALTER TABLE uji_horarios.hor_items_comunes 
+    ADD CONSTRAINT hor_items_comunes_it_FK FOREIGN KEY 
+    ( 
+     item_id
+    ) 
+    REFERENCES uji_horarios.hor_items 
+    ( 
+     id
+    ) 
+;
+
+
+ALTER TABLE uji_horarios.hor_items_comunes 
+    ADD CONSTRAINT hor_items_comunes_it_com_FK FOREIGN KEY 
+    ( 
+     item_comun_id
+    ) 
+    REFERENCES uji_horarios.hor_items 
+    ( 
+     id
+    ) 
+;
+
+
 ALTER TABLE uji_horarios.hor_items_detalle 
     ADD CONSTRAINT hor_items_detalle_hor_items_FK FOREIGN KEY 
     ( 
@@ -949,29 +1000,6 @@ FROM uji_horarios.hor_items ;
 
 
 
-CREATE OR REPLACE VIEW hor_v_items_comunes AS
-SELECT i.id id,
-  i.asignatura_id asignatura_id,
-  c.asignatura_id asignatura_comun_id,
-  x.id item_comun_id
-FROM hor_items i,
-  hor_ext_asignaturas_comunes c,
-  hor_items x
-WHERE c.asignatura_id                <> i.asignatura_id
-AND c.asignatura_id                   = x.asignatura_id
-AND i.curso_id                        = x.curso_id
-AND i.semestre_id                     = x.semestre_id
-AND i.grupo_id                        = x.grupo_id
-AND i.tipo_subgrupo_id                = x.tipo_subgrupo_id
-AND i.subgrupo_id                     = x.subgrupo_id
-AND i.dia_semana_id                   = x.dia_Semana_id
-AND TO_CHAR(i.hora_inicio, 'hh24:mi') = TO_CHAR(x.hora_inicio, 'hh24:mi')
-AND (c.nombre LIKE '%'
-  || i.asignatura_id
-  || '%') ;
-
-
-
 CREATE OR REPLACE VIEW uji_horarios.hor_v_items_detalle AS
 SELECT i.id,
   d.fecha,
@@ -1117,10 +1145,10 @@ AND c.fecha = d.inicio(+) ;
 
 -- Informe de Resumen de Oracle SQL Developer Data Modeler: 
 -- 
--- CREATE TABLE                            23
--- CREATE INDEX                            12
--- ALTER TABLE                             57
--- CREATE VIEW                              4
+-- CREATE TABLE                            24
+-- CREATE INDEX                            14
+-- ALTER TABLE                             60
+-- CREATE VIEW                              3
 -- CREATE PACKAGE                           0
 -- CREATE PACKAGE BODY                      0
 -- CREATE PROCEDURE                         0
