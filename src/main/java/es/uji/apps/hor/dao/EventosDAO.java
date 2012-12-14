@@ -47,6 +47,6 @@ public interface EventosDAO extends BaseDAO
     List<Evento> getEventosDetalle(Long estudioId, Long cursoId, Long semestreId, String grupoId,
             List<Long> calendariosIds, Date rangoFechaInicio, Date rangoFechaFin);
 
-    Evento actualizaAulaAsignadaAEvento(Long eventoId, Long aulaId, boolean propagar)
+    List<Evento> actualizaAulaAsignadaAEvento(Long eventoId, Long aulaId, boolean propagar)
             throws RegistroNoEncontradoException, AulaNoAsignadaAEstudioDelEventoException;
 }

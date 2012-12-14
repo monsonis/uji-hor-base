@@ -169,8 +169,13 @@ Ext.define('HOR.controller.ControllerAsignacionAulasForm',
             success : function(response)
             {
                 me.resetForm(formulario);
-                var record = store.getById(eventoId);
-                record.set(Extensible.calendar.data.EventMappings.AulaPlanificacionId.name, aulaId);
+                var eventos = Ext.JSON.decode(response.responseText).data;
+
+                for ( var i = 0; i < eventos.length; i++)
+                {
+                    var record = store.getById(eventos[i].id.toString());
+                    record.set(Extensible.calendar.data.EventMappings.AulaPlanificacionId.name, aulaId);
+                }
             },
             failure : function(response)
             {

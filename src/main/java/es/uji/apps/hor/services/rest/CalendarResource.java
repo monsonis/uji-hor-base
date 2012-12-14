@@ -456,9 +456,9 @@ public class CalendarResource
             aula = null;
         }
 
-        Evento evento = eventosService.actualizaAulaAsignadaAEvento(Long.parseLong(eventoId), aula,
+        List<Evento> eventos = eventosService.actualizaAulaAsignadaAEvento(Long.parseLong(eventoId), aula,
                 propagar);
 
-        return toUI(Collections.singletonList(evento));
+        return toUI(eventos);
     }
 }

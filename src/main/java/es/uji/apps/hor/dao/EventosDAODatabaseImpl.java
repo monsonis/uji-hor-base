@@ -783,7 +783,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
     }
 
     @Override
-    public Evento actualizaAulaAsignadaAEvento(Long eventoId, Long aulaId, boolean propagar)
+    public List<Evento> actualizaAulaAsignadaAEvento(Long eventoId, Long aulaId, boolean propagar)
             throws RegistroNoEncontradoException, AulaNoAsignadaAEstudioDelEventoException
     {
         ItemDTO item;
@@ -836,12 +836,14 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         }
 
         items.add(0, item);
+        
+        List<Evento> eventos = new ArrayList<Evento>();
 
         for (ItemDTO itemAux : items)
         {
             itemAux.setAulaPlanificacion(aulaPlanificacion);
             itemAux.setAulaPlanificacionNombre(nombreAula);
-            update(itemAux);
+            eventos.add(creaEventoDesde(update(itemAux)));
 
             List<ItemComunDTO> comunes = getItemsComunes(itemAux.getId());
 
@@ -856,13 +858,12 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
                 }
                 catch (Exception e)
                 {
+                    e.printStackTrace();
                 }
             }
         }
 
-        Evento evento = creaEventoDesde(item);
-
-        return evento;
+        return eventos;
     }
 
     private List<ItemComunDTO> getItemsComunes(Long itemId)
