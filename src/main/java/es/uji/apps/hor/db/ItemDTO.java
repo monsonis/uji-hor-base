@@ -97,7 +97,7 @@ public class ItemDTO implements Serializable
     @ManyToOne
     @JoinColumn(name = "AULA_PLANIFICACION_ID")
     private AulaPlanificacionDTO aulaPlanificacion;
-    
+
     @Column(name = "AULA_PLANIFICACION_NOMBRE")
     private String aulaPlanificacionNombre;
 
@@ -448,17 +448,20 @@ public class ItemDTO implements Serializable
     @Override
     public String toString()
     {
-        String titulo = MessageFormat.format("{0} {1}{2}", asignaturaId, tipoSubgrupoId, subgrupoId);
-        
-        if (comun == 1) {
+        String titulo = MessageFormat
+                .format("{0} {1}{2}", asignaturaId, tipoSubgrupoId, subgrupoId);
+
+        if (comun == 1)
+        {
             titulo = MessageFormat.format("{0} - C", titulo);
         }
-        
+
         if (aulaPlanificacion != null)
         {
-            titulo = MessageFormat.format("{0} {1}", titulo, aulaPlanificacionNombre);
+            titulo = MessageFormat.format("{0} {1}", titulo,
+                    (aulaPlanificacionNombre != null) ? aulaPlanificacionNombre : "");
         }
-        
+
         return titulo;
     }
 
