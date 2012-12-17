@@ -1,5 +1,6 @@
-==> hor_dias_semana
+-- ==> hor_dias_semana
 
+insert into uji_horarios.hor_dias_semana
 select   dia id, decode (dia, 1, 'Dilluns', 2, 'Dimarts', 3, 'Dimecres', 4, 'Dijous', 5, 'Divendres') nombre
 from     (select to_char (sysdate, 'd') dia, to_char (sysdate, 'Day') dia_txt_es
           from   dual
@@ -22,41 +23,47 @@ from     (select to_char (sysdate, 'd') dia, to_char (sysdate, 'Day') dia_txt_es
           select to_char (sysdate + 6, 'd'), to_char (sysdate + 6, 'Day')
           from   dual)
 where    dia between 1 and 5
-order by 1
+order by 1;
+
+commit;
 
 
 
-==> hor_semestres
+-- ==> hor_semestres
 
+insert into uji_horarios.hor_semestres
 select 1 id, 'Primer semestre' nombre from dual union all
 select 2 id, 'Segon semestre' nombre from dual 
-order by 2
+order by 2;
+commit;
 
 
-==> hor_tipos_estudios
+--==> hor_tipos_estudios
 
-solo inserts
+insert into uji_horarios.hor_tipos_estudios
+select 'G' id, 'Graus' nombre, 1 orden
+from dual;
+commit;
+
 
 
 
 ==> hor_semestres_detalle (falta fecha_examenes_inicio, fecha_examenes_fin)
 
-select 1 id, 1 semestre_id, '12C' tipo_estudio_id, ini_sem1 fecha_inicio, fin_sem1 fecha_fin, round(((fin_sem1-ini_sem1)/7+0.49999),0) numero_semanas
+insert into uji_horarios.hor_semestres_detalle
+
+ID, SEMESTRE_ID, TIPO_ESTUDIO_ID, FECHA_INICIO, FECHA_FIN, FECHA_EXAMENES_INICIO, FECHA_EXAMENES_FIN, NUMERO_SEMANAS, CURSO_ACADEMICO_ID
+
+select 1 id, 1 semestre_id, 'G' tipo_estudio_id, ini_sem1_g fecha_inicio, fin_sem1_g fecha_fin, fin_sem1_g , fin_sem1_g ,round(((fin_sem1_g-ini_sem1_g)/7+0.49999),0) numero_semanas, cursos_aca
 from pod_cursos_aca
-where cursos_aca = 2011
+where cursos_aca = 2012
 union all
-select 2 id, 2 semestre_id, '12C' tipo_estudio_id, ini_sem2 fecha_inicio, fin_sem2 fecha_fin, round(((fin_sem2-ini_sem2)/7+0.49999),0) numero_semanas
+select 2 id, 2 semestre_id, 'G' tipo_estudio_id, ini_sem2_g fecha_inicio, fin_sem2_g fecha_fin, fin_sem2_g , fin_sem2_g ,round(((fin_sem2_g-ini_sem2_g)/7+0.49999),0) numero_semanas, cursos_aca
 from pod_cursos_aca
-where cursos_aca = 2011
-union all
-select 3 id, 1 semestre_id, 'G' tipo_estudio_id, ini_sem1_g fecha_inicio, fin_sem1_g fecha_fin, round(((fin_sem1_g-ini_sem1_g)/7+0.49999),0) numero_semanas
-from pod_cursos_aca
-where cursos_aca = 2011
-union all
-select 4 id, 2 semestre_id, 'G' tipo_estudio_id, ini_sem2_g fecha_inicio, fin_sem2_g fecha_fin, round(((fin_sem2_g-ini_sem2_g)/7+0.49999),0) numero_semanas
-from pod_cursos_aca
-where cursos_aca = 2011
-order by 1
+where cursos_aca = 2012
+order by 1;
+
+commit;
 
 
 ==> hor_centros
@@ -71,9 +78,9 @@ from dual
 
 ==> hor_estudios
 
-select id, nombre, tipo_estudio tipo_id, uest_id centro_id, decode(id, 51001,0,51002,0,51003,0,1) oficial
+select id, nombre, tipo_estudio tipo_id, uest_id centro_id, decode(id, 51001,0,51002,0,51003,0,1) oficial, decode(id, 229, 6, 4) numero_cursos
 from pod_titulaciones
-where tipo_estudio in ('12C','G','M')
+where tipo_estudio in ('G')
 and activa = 'S'
 order by 1
 
@@ -83,50 +90,58 @@ order by 1
 
 select rownum id, id id_circuito, nombre, tit_id estudio_id, grp_id grupo_id, decode(grp_id,'Y',1,0) especial
 from pod_circuitos_cab
-where curso_aca = 2011
+where curso_aca = 2012
 
 
 ==> hor_departamentos
 
-select id, nombre, nvl(uest_id,0) centro_id, nvl(decode(status,'A',1,0),0) activo
-from   est_ubic_estructurales e,
-       (select * from gri_est.est_relaciones_ulogicas where uest_id in (2,3,4,2922)) u
-where  tuest_id = 'DE'
---and    status = 'A'
-and    id = uest_id_relacionad (+)
+/* Formatted on 17/12/2012 11:32 (Formatter Plus v4.8.8) */
+select uest.id, uest.nombre, uest_id centro_id,  estado activo
+from   est_estructuras e,
+       est_ubic_estructurales uest
+where  estado = 1
+and    uest_id_relacionad = uest.id
+and    tuest_id = 'DE'
+and    status = 'A'
+and trel_id = 4
 union all
-select 0 id, 'Desconocido' nombre, 0 centro_id, 0 
-from dual
+select   0 id, 'Desconocido' nombre, 0 centro_id, 0
+from     dual
+order by 1
 
 
 
-==> hor_areas  (mal faltan muchos datos)
+==> hor_areas  
 
-select id, nombre, departamento_id, activa
-from   (select x.*, u.status, row_number () over (partition by x.id order by u.status) orden
-        from   (select distinct e.id, e.nombre, nvl (uest_id, 0) departamento_id, decode (e.status, 'A', 1, 0) activa
-                from            est_ubic_estructurales e,
-                                (select *
-                                 from   gri_est.est_relaciones_ulogicas
-                                 where  uest_id in (select id
-                                                    from   est_ubic_estructurales
-                                                    where  tuest_id = 'DE')) r
-                where           e.tuest_id = 'AC'
---and    e.status = 'A'
---and    trel_id = 2
-                and             e.id = uest_id_relacionad(+)) x,
-               est_ubic_estructurales u
-        where  departamento_id = u.id(+))
-where  orden = 1
+
+
+/* Formatted on 17/12/2012 11:45 (Formatter Plus v4.8.8) */
+select uest.id, uest.nombre, uest_id departamento_id, estado activa
+from   est_estructuras e,
+       est_ubic_estructurales uest
+where  estado = 1
+and    uest_id_relacionad = uest.id
+and    tuest_id = 'AC'
+and    status = 'A'
+and    uest_id in (
+                  select uest.id
+                  from   est_estructuras e,
+                         est_ubic_estructurales uest
+                  where  estado = 1
+                  and    uest_id_relacionad = uest.id
+                  and    tuest_id = 'DE'
+                  and    status = 'A'
+                  and    trel_id = 4)
 union all
 select 0 id, 'Desconeguda' nombre, 0 departamento_id, 0 activa
-from dual
-
+from   dual
 
 
 ==> hor_profesores
 
-select id, nombre, nvl(departamento_id, 0) departamento_id, nvl(area_id,0) area_id, substr (email, 1, instr (email, '@') - 1) email
+/* Formatted on 17/12/2012 11:28 (Formatter Plus v4.8.8) */
+select id, nombre, nvl (departamento_id, 0) departamento_id, nvl (area_id, 0) area_id,
+       substr (email, 1, instr (email, '@') - 1) email
 from   (select p.id, p.nombre || ' ' || apellido1 || ' ' || apellido2 nombre, ubicacion_id departamento_id, area_id,
                busca_cuenta (per_id) email
         from   grh_vw_contrataciones_ult c,
@@ -134,18 +149,17 @@ from   (select p.id, p.nombre || ' ' || apellido1 || ' ' || apellido2 nombre, ub
         where  act_id = 'PDI'
         and    per_id = p.id
         and    per_id <> 0)
-
-		
+        
 ==> hor_aulas
 
-select distinct u.id, u.nombre, nvl(u.centro_id,0) centro_id, u.tipo, u.plazas, u.codigo
+select distinct u.id, u.nombre, nvl(u.centro_id,0) centro_id, u.tipo_nombre tipo, u.plazas, u.codigo
 from            (select 0 id, grc_cur_tit_id titulacion_id, grc_cur_id curso_id, sgr_grp_asi_id asignatura_id, caracter,
                         sgr_grp_id grupo_id, to_number (semestre) semestre_id, sgr_grp_curso_aca curso_aca,
                         sgr_tipo tipo_id, sgr_id subgrupo_id, ubi_id ubicacion_id
                  from   pod_horarios h,
                         pod_circuitos_det cir,
                         pod_asi_cursos ac
-                 where  sgr_grp_curso_aca = 2011
+                 where  sgr_grp_curso_aca = 2012
                  --and    sgr_grp_asi_id = 'AE1008'
                  --and    sgr_grp_id = 'A'
                  and    sgr_grp_curso_aca = ac.curso_aca
@@ -159,7 +173,7 @@ from            (select 0 id, grc_cur_tit_id titulacion_id, grc_cur_id curso_id,
                  and    sgr_tipo = SGD_SGR_TIPO(+)
                  and    sgr_id = SGD_SGR_ID(+)) x,
                 (select u.id id, u.descripcion nombre, u.id aula_id,  uest_id centro_id, tubic_id tipo, num_alumnos plazas,
-       edi_are_area || edi_edificio || planta || dependencia || tubic_id codigo
+       edi_are_area || edi_edificio || planta || dependencia || tubic_id codigo, t.nombre tipo_nombre
                  from   est_ubicaciones u,
                         est_areas_ubicacion a,
                         est_tipos_ubicacion t
@@ -169,16 +183,19 @@ where           ubicacion_id is not null
 and             ubicacion_id = u.id(+)        
 
 
-==> hor_aulas_planificacion
 
-select distinct u.id, u.nombre, u.id aula_id
+==> hor_aulas_planificacion 
+
+select rownum id, nombre, aula_id, estudio_id, semestre_id
+from (
+select distinct 0 id, replace(u.nombre,chr(10), ' ') nombre, u.id aula_id, titulacion_id estudio_id, semestre_id
 from            (select 0 id, grc_cur_tit_id titulacion_id, grc_cur_id curso_id, sgr_grp_asi_id asignatura_id, caracter,
                         sgr_grp_id grupo_id, to_number (semestre) semestre_id, sgr_grp_curso_aca curso_aca,
                         sgr_tipo tipo_id, sgr_id subgrupo_id, ubi_id ubicacion_id
                  from   pod_horarios h,
                         pod_circuitos_det cir,
                         pod_asi_cursos ac
-                 where  sgr_grp_curso_aca = 2011
+                 where  sgr_grp_curso_aca = 2012
                  --and    sgr_grp_asi_id = 'AE1008'
                  --and    sgr_grp_id = 'A'
                  and    sgr_grp_curso_aca = ac.curso_aca
@@ -200,9 +217,9 @@ from            (select 0 id, grc_cur_tit_id titulacion_id, grc_cur_id curso_id,
                  and    u.tubic_id = t.id) u
 where           ubicacion_id is not null
 and             ubicacion_id = u.id(+)
+)
 
-
-==> hor_items
+==> hor_items  KKKKKKKKKKKKKKK
 
 select rownum id, asignatura_id, asignatura, estudio_id, estudio, tipo_estudio_id, te.nombre tipo_estudio, curso_id,
        caracter_id, cr.nombre caracter, semestre_id, ubicacion_id aula_planificacion_id, persona_id profesor_id,
@@ -237,7 +254,7 @@ from   (select 0 id, asit.tit_id estudio_id, t.nombre estudio, t.tipo_estudio ti
         and    s.grp_asi_id = asit.asi_id
         --and    grp_asi_id = 'AE1008'
         --and    grp_id = 'A'
-        and    grp_curso_aca = 2011
+        and    grp_curso_aca = 2012
         and    grp_curso_aca = ac.curso_aca
         and    grp_asi_id = ac.asi_id
         and    asit.tit_id = ac.cur_tit_id
@@ -276,7 +293,7 @@ from   (select 0 id, asit.tit_id estudio_id, t.nombre estudio, t.tipo_estudio ti
                pod_asignaturas a,
                pod_titulaciones t,
                pod_subgrupos s
-        where  sgr_grp_curso_aca = 2011
+        where  sgr_grp_curso_aca = 2012
         --and    sgr_grp_asi_id = 'AE1008'
         --and    sgr_grp_id = 'A'
         and    sgr_grp_curso_aca = ac.curso_aca
@@ -349,7 +366,8 @@ and    tipo_asignatura_id = ta.id
 and    caracter_id = cr.id
 and    tipo_estudio_id = te.id
 --and    asignatura_id = 'DR1001'
-		
+        
+
 ==> hor_ext_calendario
 
 select   rownum id, dia, mes, año, tipo_aca tipo_dia, dia_semana,
@@ -377,8 +395,8 @@ where    fecha_completa between (select min (fecha_completa)
 order by año,
          mes,
          dia;
-		 
-		 
+         
+         
 ==> hor_tipos_cargos
 
 select 1 id, 'Director d''estudi' nombre
@@ -387,10 +405,19 @@ union all
 select 2 id, 'Coordinador de curs' nombre
 from dual
 union all
+select 3 id, 'Director, Dega o Secretari de Centre' nombre
+from dual
+union all
+select 4 id, 'PAS de centre' nombre
+from dual
+union all
+select 5 id, 'PAS de departament' nombre
+from dual
+union all
 select 0 id, 'Error' nombre
 from dual
 
-		 
+         
 ==> hor_ext_personas
 
 select per_id id, nombre, busca_cuenta (per_id) email, act_id actividad_id, ubicacion_id departamento_id
@@ -403,8 +430,9 @@ and    ubicacion_id in (select id
 and    act_id = (select max (act_id)
                  from   grh_vw_contrataciones_ult c2
                  where  c.per_id = c2.per_id)
-				 
-		 
+                 
+
+/*         
 ==> hor_estudios_persona
          
    select rownum id, cargo_id tipo_cargo_id, per_id persona_id, tit_id estudio_id, curso_id 
@@ -432,19 +460,20 @@ and    act_id = (select max (act_id)
            and    trunc (nvl (fecha_fin, sysdate)) >= trunc (sysdate)) x,
           gra_exp.exp_v_titu_todas t
    where  tit_id = t.id(+)
-   and    (   t.tipo in ('G','POP')
+   and    (   t.tipo in ('G')
            )
-		   
-		   
-		   
+           
+           
+           
    union all
    select tt.id estudio_id, tt.nombre_ca, persona_id, 0 curso_id, 'ADM' cargo_id
-   from   hor_estudios tt,
+   from   uji_horarios.hor_estudios tt,
           uji_apa.APA_APLICACIONES_EXTRAS e
    where  (   tipo = 'G'
            )
    and    role_id = 1
    and    e.aplicacion_id = 4;
+*/
 
 
 ==> hor_ext_circuitos
@@ -454,7 +483,7 @@ select rownum id, SGD_SGR_GRP_CURSO_ACA curso_aca, CIC_TIT_ID estudio_id, SGD_SG
        limite plazas
 from   pod_circuitos_det c,
        pod_subgrupos_det d
-where  sgd_sgr_grp_curso_aca = 2011
+where  sgd_sgr_grp_curso_aca = 2012
 --and    sgd_sgr_grp_asi_id = 'RL0908'
 and    c.SGD_SGR_GRP_CURSO_ACA = d.sgr_grp_curso_aca
 and    c.SGD_SGR_TIPO = d.sgr_tipo
@@ -472,10 +501,10 @@ declare
 
    cursor lista is
       select i.id item_id, c.fecha dia, hora_inicio, hora_fin, null descripcion
-      from   hor_items i,
-             hor_estudios e,
-             hor_semestres_detalle sd,
-             hor_ext_calendario c
+      from   uji_horarios.hor_items i,
+             uji_horarios.hor_estudios e,
+             uji_horarios.hor_semestres_detalle sd,
+             uji_horarios.hor_ext_calendario c
       where  i.semestre_id = sd.semestre_id
       and    i.estudio_id = e.id
       and    e.tipo_id = sd.tipo_estudio_id
@@ -486,7 +515,7 @@ begin
    for x in lista loop
       v_aux := uji_horarios.hibernate_sequence.nextval;
 
-      insert into hor_items_detalle
+      insert into uji_horarios.hor_items_detalle
                   (ID, ITEM_ID,
                    INICIO,
                    FIN,
@@ -508,12 +537,12 @@ end;
          
 ==> hor_items_circuitos
 
-insert into hor_items_circuitos
+insert into uji_horarios.hor_items_circuitos
             (id, item_id, circuito_id, plazas)
    select rownum id, i.id item_id, circuito_id, e.plazas
-   from   hor_ext_circuitos e,
-          hor_circuitos c,
-          hor_items i
+   from   uji_horarios.hor_ext_circuitos e,
+          uji_horarios.hor_circuitos c,
+          uji_horarios.hor_items i
    where  e.estudio_id = c.estudio_id
    and    e.circuito_id = c.id_circuito
    and    e.asignatura_id = i.asignatura_id
@@ -524,6 +553,24 @@ insert into hor_items_circuitos
    
    
 
+==> hor_items_comunes
 
-         		
-		
+                 
+select rownum id, id item_id, asignatura_id, asignatura_comun_id, item_comun_id
+from (
+   select i.id, i.asignatura_id, c.asignatura_id asignatura_comun_id, x.id item_comun_id
+   from   uji_horarios.hor_items i,
+          uji_horarios.hor_ext_asignaturas_comunes c,
+          uji_horarios.hor_items x
+   where  c.nombre like '%' || i.asignatura_id || '%'
+   and    c.asignatura_id <> i.asignatura_id
+   and    c.asignatura_id = x.asignatura_id
+   and    i.curso_id = x.curso_id
+   and    i.semestre_id = x.semestre_id
+   and    i.grupo_id = x.grupo_id
+   and    i.tipo_subgrupo_id = x.tipo_subgrupo_id
+   and    i.subgrupo_id = x.subgrupo_id
+   and    i.dia_semana_id = x.dia_Semana_id
+   and    to_char (i.hora_inicio, 'hh24:mi') = to_char (x.hora_inicio, 'hh24:mi'));
+   
+   

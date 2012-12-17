@@ -13,7 +13,7 @@ commit;
 grant select on gra_pod.pod_grp_comunes to uji_horarios;
 grant select on gra_pod.pod_comunes to uji_horarios;
 
-create or replace view hot_ext_asignaturas_comunes (id, grupo_comun_id, nombre, curso_academico_id, asignatura_id) as
+create or replace view hor_ext_asignaturas_comunes (id, grupo_comun_id, nombre, curso_academico_id, asignatura_id) as
 select rownum id, id grupo_comun_id, nombre, curso_aca curso_academico_id, asi_id asignatura_id
 from   pod_grp_comunes g,
        pod_comunes c
@@ -107,7 +107,7 @@ ALTER TABLE UJI_HORARIOS.HOR_SEMESTRES_DETALLE
 MODIFY(CURSO_ACADEMICO_ID  NOT NULL);
 
 
-CREATE OR REPLACE FORCE VIEW UJI_HORARIOS.HOT_EXT_ASIGNATURAS_COMUNES (ID,
+CREATE OR REPLACE FORCE VIEW UJI_HORARIOS.HOR_EXT_ASIGNATURAS_COMUNES (ID,
                                                                        GRUPO_COMUN_ID,
                                                                        NOMBRE,
                                                                        ASIGNATURA_ID
