@@ -151,6 +151,9 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         eventoDetalle.setId(itemDetalleDTO.getId());
         eventoDetalle.setDescripcion(itemDetalleDTO.getDescripcion());
         eventoDetalle.setInicio(itemDetalleDTO.getInicio());
+        
+        String titulo = MessageFormat.format("{0} {1}{2}", itemDetalleDTO.getItem().getAsignaturaId(), itemDetalleDTO.getItem().getTipoEstudioId(), itemDetalleDTO.getItem().getTipoSubgrupoId());
+        eventoDetalle.setDescripcion(titulo);
         eventoDetalle.setFin(itemDetalleDTO.getFin());
 
         return eventoDetalle;
@@ -833,7 +836,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         List<String> tiposCalendarios = TipoSubgrupo.getTiposSubgrupos(calendariosIds);
 
         List<ItemDetalleDTO> listaItemsDetalleDTO = query
-                .from(itemDetalle, item)
+                .from(itemDetalle)
                 .join(itemDetalle.item, item)
                 .fetch()
                 .where(itemDetalle.item.id.eq(item.id).and(

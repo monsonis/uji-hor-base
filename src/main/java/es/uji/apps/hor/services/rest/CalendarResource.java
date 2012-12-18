@@ -238,16 +238,8 @@ public class CalendarResource
         {
             UIEntity eventoUI = new UIEntity();
             eventoUI.put("id", eventoDetalle.getId());
+            eventoUI.put("title", eventoDetalle.getDescripcion());
             eventoUI.put("cid", eventoDetalle.getEvento().getCalendario().getId());
-
-            // String titulo = MessageFormat.format("{0} {1}{2}",
-            // eventoDetalle.getEvento().getAsignatura().getId(),
-            // eventoDetalle.getEvento().getCalendario().getId(),
-            // eventoDetalle.getEvento().getSubgrupoId());
-
-            String titulo = "hola";
-            eventoUI.put("title", titulo);
-            // eventoUI.put("aula_planificacion_id", evento.getAulaPlanificacion().getId());
 
             if (eventoDetalle.getInicio() != null)
             {

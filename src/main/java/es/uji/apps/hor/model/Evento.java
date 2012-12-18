@@ -171,7 +171,18 @@ public class Evento
         nuevoEvento.retrasaHoraInicioAMitadDuracion();
         this.reduceDuracionALaMitad();
 
+        nuevoEvento.propagaRangoHorarioAEventosDetalle();
+        this.propagaRangoHorarioAEventosDetalle();
         return nuevoEvento;
+    }
+
+    private void propagaRangoHorarioAEventosDetalle()
+    {
+        for (EventoDetalle eventoDetalle : this.getEventosDetalle())
+        {
+            eventoDetalle.estableceHoraYMinutosInicio(this.getInicio());
+            eventoDetalle.estableceHoraYMinutosFin(this.getFin());
+        }
     }
 
     private void reduceDuracionALaMitad()
@@ -213,18 +224,16 @@ public class Evento
         nuevo.setSubgrupoId(this.getSubgrupoId());
         nuevo.setPlazas(this.getPlazas());
 
-        if (this.hasDetalleManual()) {
-            for (EventoDetalle eventoDetalle: this.getEventosDetalle()) {
-                eventoDetalle.estableceHoraYMinutosInicio(this.getInicio());
-                eventoDetalle.estableceHoraYMinutosFin(this.getFin());
+        if (this.hasDetalleManual())
+        {
+            for (EventoDetalle eventoDetalle : this.getEventosDetalle())
+            {
                 EventoDetalle nuevoEventoDetalle = eventoDetalle.clonar();
                 nuevoEventoDetalle.setEvento(nuevo);
                 nuevo.addEventoDetalle(nuevoEventoDetalle);
-                nuevoEventoDetalle.estableceHoraYMinutosInicio(nuevo.getInicio());
-                nuevoEventoDetalle.estableceHoraYMinutosFin(nuevo.getFin());
             }
         }
-        
+
         return nuevo;
     }
 
@@ -302,7 +311,7 @@ public class Evento
         case Calendar.SUNDAY:
             return 7;
         }
-        
+
         return 0;
     }
 
