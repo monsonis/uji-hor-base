@@ -5,7 +5,9 @@ import java.util.List;
 
 import es.uji.apps.hor.AulaNoAsignadaAEstudioDelEventoException;
 import es.uji.apps.hor.EventoNoDivisibleException;
+import es.uji.apps.hor.db.ItemDTO;
 import es.uji.apps.hor.model.Evento;
+import es.uji.apps.hor.model.EventoDetalle;
 import es.uji.apps.hor.model.EventoDocencia;
 import es.uji.commons.db.BaseDAO;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
@@ -44,9 +46,18 @@ public interface EventosDAO extends BaseDAO
     Evento updateHorasEventoDetalleManual(Long eventoId, Date inicio, Date fin)
             throws RegistroNoEncontradoException;
 
-    List<Evento> getEventosDetalle(Long estudioId, Long cursoId, Long semestreId, String grupoId,
+    List<EventoDetalle> getEventosDetalle(Long estudioId, Long cursoId, Long semestreId, String grupoId,
             List<Long> calendariosIds, Date rangoFechaInicio, Date rangoFechaFin);
 
     List<Evento> actualizaAulaAsignadaAEvento(Long eventoId, Long aulaId, boolean propagar)
             throws RegistroNoEncontradoException, AulaNoAsignadaAEstudioDelEventoException;
+
+    Evento getEventoById(Long eventoId) throws RegistroNoEncontradoException;
+
+    ItemDTO insertEvento(Evento eventoDividido);
+
+    void updateHorasEvento(Evento evento);
+
+    void updateHorasEventoDetalle(EventoDetalle eventoDetalle);
+    
 }

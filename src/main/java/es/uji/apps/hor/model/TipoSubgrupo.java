@@ -19,6 +19,27 @@ public enum TipoSubgrupo
         return this.calendarioId;
     }
 
+    public String getNombre()
+    {
+        switch (calendarioId.intValue())
+        {
+        case 1:
+            return "Teoria";
+        case 2:
+            return "Problemes";
+        case 3:
+            return "Laboratoris";
+        case 4:
+            return "Seminaris";
+        case 5:
+            return "Tutories";
+        case 6:
+            return "Avaluació";
+        default:
+            return "";
+        }
+    }
+    
     public static String getTipoSubgrupo(Long calendarioId)
     {
         switch (calendarioId.intValue())
