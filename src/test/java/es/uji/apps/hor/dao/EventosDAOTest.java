@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -260,6 +259,41 @@ public class EventosDAOTest
             }
         }
     }
+    
+    @Test
+    public void divideClaseDeMasDeUnaHoraConAsignaturasComunesTest() throws RegistroNoEncontradoException,
+            EventoNoDivisibleException
+    {
+        item.setComun(new Long(1));
+        eventosDAO.insert(item);
+
+        rellenaDatosItemComun();
+        eventosDAO.insert(comun);
+
+        rellenaItemsComunes(item, comun);
+        eventosDAO.insert(itemComun1);
+        eventosDAO.insert(itemComun2);
+
+        eventosDAO.divideEventoSemanaGenerica(item.getId());
+
+        List<Evento> eventos = eventosDAO.getEventosDeUnCurso(estudio.getId(), comun.getCursoId(),
+                semestre.getId(), comun.getGrupoId());
+
+        Evento eventoComunDividido = null;
+
+        // Buscamos el evento común dividido
+        for (Evento evento : eventos)
+        {
+            if (evento.getTitulo().startsWith(comun.getAsignaturaId())
+                    && !evento.getId().equals(comun.getId()))
+            {
+                eventoComunDividido = evento;
+                break;
+            }
+        }
+        
+        Assert.assertNotNull(eventoComunDividido);
+    }
 
     @Test
     public void eliminaEventoDuplicadoEnSemanaGenericaTest() throws RegistroNoEncontradoException,
@@ -290,7 +324,6 @@ public class EventosDAOTest
     }
 
     @Test
-    @Ignore
     public void eliminaEventoDuplicadoEnSemanaGenericaConAsignaturasComunesTest()
             throws RegistroNoEncontradoException, EventoNoDivisibleException
     {
@@ -336,6 +369,7 @@ public class EventosDAOTest
 
         // Eliminamos el evento
         eventosDAO.deleteEventoSemanaGenerica(eventoDividido.getId());
+
         Assert.assertEquals(0, eventosDAO.get(ItemDTO.class, eventoComunDividido.getId()).size());
     }
 

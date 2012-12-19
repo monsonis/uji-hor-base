@@ -261,21 +261,24 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         ItemDTO evento = (ItemDTO) get(ItemDTO.class, eventoId).get(0);
         if (evento != null)
         {
-            // Obtenemos todos los eventos comunes
-            List<ItemComunDTO> comunes = getItemsComunes(eventoId);
-
             List<ItemDTO> itemsBorrar = new ArrayList<ItemDTO>();
             itemsBorrar.add(evento);
 
-            for (ItemComunDTO comun : comunes)
+            if (evento.getComun().equals(new Long(1)))
             {
-                try
+                // Obtenemos todos los eventos comunes
+                List<ItemComunDTO> comunes = getItemsComunes(eventoId);
+
+                for (ItemComunDTO comun : comunes)
                 {
-                    ItemDTO itemComun = get(ItemDTO.class, comun.getItemComun().getId()).get(0);
-                    itemsBorrar.add(itemComun);
-                }
-                catch (Exception e)
-                {
+                    try
+                    {
+                        ItemDTO itemComun = get(ItemDTO.class, comun.getItemComun().getId()).get(0);
+                        itemsBorrar.add(itemComun);
+                    }
+                    catch (Exception e)
+                    {
+                    }
                 }
             }
 
@@ -325,8 +328,11 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
                     JPAQuery query4 = new JPAQuery(entityManager);
                     QItemComunDTO itemComunDTO = QItemComunDTO.itemComunDTO;
 
-                    List<ItemComunDTO> itemsComunes = query4.from(itemComunDTO)
-                            .where(itemComunDTO.item.id.eq(itemBorrar.getId())).list(itemComunDTO);
+                    List<ItemComunDTO> itemsComunes = query4
+                            .from(itemComunDTO)
+                            .where(itemComunDTO.item.id.eq(itemBorrar.getId()).or(
+                                    itemComunDTO.itemComun.id.eq(itemBorrar.getId())))
+                            .list(itemComunDTO);
 
                     for (ItemComunDTO itemComun : itemsComunes)
                     {
@@ -367,67 +373,113 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             throw new EventoNoDivisibleException();
         }
 
+        List<ItemDTO> itemsDividir = new ArrayList<ItemDTO>();
+        itemsDividir.add(evento);
+
+        if (evento.getComun().equals(new Long(1)))
+        {
+            // Obtenemos todos los eventos comunes
+            List<ItemComunDTO> comunes = getItemsComunes(eventoId);
+
+            for (ItemComunDTO comun : comunes)
+            {
+                try
+                {
+                    ItemDTO itemComun = get(ItemDTO.class, comun.getItemComun().getId()).get(0);
+                    itemsDividir.add(itemComun);
+                }
+                catch (Exception e)
+                {
+                }
+            }
+        }
+
         // Modificamos la hora de fin del evento seleccionado
         Long horaFin = evento.getHoraInicio().getTime()
                 + ((evento.getHoraFin().getTime() - evento.getHoraInicio().getTime()) / 2);
 
-        evento.setHoraFin(new Date(horaFin));
-        evento = update(evento);
+        List<ItemDTO> itemsDivididos = new ArrayList<ItemDTO>();
 
-        // Creamos el nuevo evento
-        ItemDTO itemDTO = new ItemDTO();
-        itemDTO.setAsignatura(evento.getAsignatura());
-        itemDTO.setAsignaturaId(evento.getAsignaturaId());
-        itemDTO.setAulaPlanificacion(evento.getAulaPlanificacion());
-        itemDTO.setAulaPlanificacionNombre(evento.getAulaPlanificacionNombre());
-        itemDTO.setCaracter(evento.getCaracter());
-        itemDTO.setCaracterId(evento.getCaracterId());
-        itemDTO.setComun(evento.getComun());
-        itemDTO.setCursoId(evento.getCursoId());
-        itemDTO.setDesdeElDia(evento.getDesdeElDia());
-        itemDTO.setDiaSemana(evento.getDiaSemana());
-        itemDTO.setEstudio(evento.getEstudio());
-        itemDTO.setEstudioDesc(evento.getEstudioDesc());
-        itemDTO.setGrupoId(evento.getGrupoId());
-        itemDTO.setHastaElDia(evento.getHastaElDia());
-        itemDTO.setHoraFin(evento.getHoraFin());
-        itemDTO.setHoraInicio(evento.getHoraInicio());
-        itemDTO.setPlazas(evento.getPlazas());
-        itemDTO.setPorcentajeComun(evento.getPorcentajeComun());
-        itemDTO.setProfesor(evento.getProfesor());
-        itemDTO.setSemestre(evento.getSemestre());
-        itemDTO.setSubgrupoId(evento.getSubgrupoId());
-        itemDTO.setTipoAsignatura(evento.getTipoAsignatura());
-        itemDTO.setTipoAsignaturaId(evento.getTipoAsignaturaId());
-        itemDTO.setTipoEstudio(evento.getTipoEstudio());
-        itemDTO.setTipoEstudioId(evento.getTipoEstudio());
-        itemDTO.setTipoSubgrupo(evento.getTipoSubgrupo());
-        itemDTO.setTipoSubgrupoId(evento.getTipoSubgrupoId());
-        itemDTO.setDesdeElDia(evento.getDesdeElDia());
-        itemDTO.setHastaElDia(evento.getHastaElDia());
-        itemDTO.setRepetirCadaSemanas(evento.getRepetirCadaSemanas());
-        itemDTO.setNumeroIteraciones(evento.getNumeroIteraciones());
-        itemDTO.setDetalleManual(evento.getDetalleManual());
-        itemDTO = insert(itemDTO);
-
-        // Copiamos los circuitos
-
-        JPAQuery query = new JPAQuery(entityManager);
-        QItemCircuitoDTO itemCircuito = QItemCircuitoDTO.itemCircuitoDTO;
-
-        List<ItemCircuitoDTO> listaItemsCircuitosDTO = query.from(itemCircuito)
-                .where(itemCircuito.item.id.eq(eventoId)).list(itemCircuito);
-
-        for (ItemCircuitoDTO itemCircuitoDTO : listaItemsCircuitosDTO)
+        for (ItemDTO itemDividir : itemsDividir)
         {
-            ItemCircuitoDTO aux = new ItemCircuitoDTO();
-            aux.setCircuito(itemCircuitoDTO.getCircuito());
-            aux.setItem(itemDTO);
-            aux.setPlazas(itemCircuitoDTO.getPlazas());
-            insert(aux);
+            itemDividir.setHoraFin(new Date(horaFin));
+            itemDividir = update(itemDividir);
+
+            // Creamos el nuevo evento
+            ItemDTO itemDTO = new ItemDTO();
+            itemDTO.setAsignatura(itemDividir.getAsignatura());
+            itemDTO.setAsignaturaId(itemDividir.getAsignaturaId());
+            itemDTO.setAulaPlanificacion(itemDividir.getAulaPlanificacion());
+            itemDTO.setAulaPlanificacionNombre(itemDividir.getAulaPlanificacionNombre());
+            itemDTO.setCaracter(itemDividir.getCaracter());
+            itemDTO.setCaracterId(itemDividir.getCaracterId());
+            itemDTO.setComun(itemDividir.getComun());
+            itemDTO.setCursoId(itemDividir.getCursoId());
+            itemDTO.setDesdeElDia(itemDividir.getDesdeElDia());
+            itemDTO.setDiaSemana(itemDividir.getDiaSemana());
+            itemDTO.setEstudio(itemDividir.getEstudio());
+            itemDTO.setEstudioDesc(itemDividir.getEstudioDesc());
+            itemDTO.setGrupoId(itemDividir.getGrupoId());
+            itemDTO.setHastaElDia(itemDividir.getHastaElDia());
+            itemDTO.setHoraFin(itemDividir.getHoraFin());
+            itemDTO.setHoraInicio(itemDividir.getHoraInicio());
+            itemDTO.setPlazas(itemDividir.getPlazas());
+            itemDTO.setPorcentajeComun(itemDividir.getPorcentajeComun());
+            itemDTO.setProfesor(itemDividir.getProfesor());
+            itemDTO.setSemestre(itemDividir.getSemestre());
+            itemDTO.setSubgrupoId(itemDividir.getSubgrupoId());
+            itemDTO.setTipoAsignatura(itemDividir.getTipoAsignatura());
+            itemDTO.setTipoAsignaturaId(itemDividir.getTipoAsignaturaId());
+            itemDTO.setTipoEstudio(itemDividir.getTipoEstudio());
+            itemDTO.setTipoEstudioId(itemDividir.getTipoEstudio());
+            itemDTO.setTipoSubgrupo(itemDividir.getTipoSubgrupo());
+            itemDTO.setTipoSubgrupoId(itemDividir.getTipoSubgrupoId());
+            itemDTO.setDesdeElDia(itemDividir.getDesdeElDia());
+            itemDTO.setHastaElDia(itemDividir.getHastaElDia());
+            itemDTO.setRepetirCadaSemanas(itemDividir.getRepetirCadaSemanas());
+            itemDTO.setNumeroIteraciones(itemDividir.getNumeroIteraciones());
+            itemDTO.setDetalleManual(itemDividir.getDetalleManual());
+            itemDTO = insert(itemDTO);
+
+            // Copiamos los circuitos
+
+            JPAQuery query = new JPAQuery(entityManager);
+            QItemCircuitoDTO itemCircuito = QItemCircuitoDTO.itemCircuitoDTO;
+
+            List<ItemCircuitoDTO> listaItemsCircuitosDTO = query.from(itemCircuito)
+                    .where(itemCircuito.item.id.eq(itemDividir.getId())).list(itemCircuito);
+
+            for (ItemCircuitoDTO itemCircuitoDTO : listaItemsCircuitosDTO)
+            {
+                ItemCircuitoDTO aux = new ItemCircuitoDTO();
+                aux.setCircuito(itemCircuitoDTO.getCircuito());
+                aux.setItem(itemDTO);
+                aux.setPlazas(itemCircuitoDTO.getPlazas());
+                insert(aux);
+            }
+
+            itemsDivididos.add(itemDTO);
         }
 
-        // ¿Lo mismo para cada común?
+        // Creamos todos los items comunes relacionados
+        if (evento.getComun().equals(new Long(1)) && itemsDivididos.size() > 1)
+        {
+            for (ItemDTO itemDividido : itemsDivididos)
+            {
+                for (ItemDTO itemDivididoComun : itemsDivididos)
+                {
+                    if (!itemDividido.getId().equals(itemDivididoComun.getId()))
+                    {
+                        ItemComunDTO itemComun = new ItemComunDTO();
+                        itemComun.setItem(itemDividido);
+                        itemComun.setAsignaturaId(itemDividido.getAsignaturaId());
+                        itemComun.setItemComun(itemDivididoComun);
+                        itemComun.setAsignaturaComunId(itemDivididoComun.getAsignaturaId());
+                        insert(itemComun);
+                    }
+                }
+            }
+        }
     }
 
     @Override
