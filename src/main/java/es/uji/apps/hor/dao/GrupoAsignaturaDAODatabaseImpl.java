@@ -12,6 +12,7 @@ import es.uji.apps.hor.db.DiaSemanaDTO;
 import es.uji.apps.hor.db.ItemComunDTO;
 import es.uji.apps.hor.db.ItemDTO;
 import es.uji.apps.hor.db.QDiaSemanaDTO;
+import es.uji.apps.hor.db.QItemComunDTO;
 import es.uji.apps.hor.db.QItemDTO;
 import es.uji.apps.hor.model.GrupoAsignatura;
 import es.uji.apps.hor.model.TipoSubgrupo;
@@ -69,7 +70,7 @@ public class GrupoAsignaturaDAODatabaseImpl extends BaseDAODatabaseImpl implemen
         query2.from(qDiaSemana).where(qDiaSemana.nombre.eq("Dilluns"));
         DiaSemanaDTO lunes = query2.list(qDiaSemana).get(0);
 
-        List<ItemComunDTO> comunes = get(ItemComunDTO.class, grupoAsignaturaId);
+        List<ItemComunDTO> comunes = getItemsComunes(item.getId());
 
         item.setDiaSemana(lunes);
 
@@ -105,5 +106,15 @@ public class GrupoAsignaturaDAODatabaseImpl extends BaseDAODatabaseImpl implemen
         }
 
         return creaGrupoAsignaturaDesde(item);
+    }
+    
+    private List<ItemComunDTO> getItemsComunes(Long itemId)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        QItemComunDTO itemComunDTO = QItemComunDTO.itemComunDTO;
+
+        query.from(itemComunDTO).where(itemComunDTO.item.id.eq(itemId));
+
+        return query.list(itemComunDTO);
     }
 }

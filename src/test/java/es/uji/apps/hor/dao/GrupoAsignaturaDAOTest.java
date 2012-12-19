@@ -18,6 +18,7 @@ import es.uji.apps.hor.db.AsignaturaComunDTO;
 import es.uji.apps.hor.db.CentroDTO;
 import es.uji.apps.hor.db.DiaSemanaDTO;
 import es.uji.apps.hor.db.EstudioDTO;
+import es.uji.apps.hor.db.ItemComunDTO;
 import es.uji.apps.hor.db.ItemDTO;
 import es.uji.apps.hor.db.SemestreDTO;
 import es.uji.apps.hor.db.TipoEstudioDTO;
@@ -43,6 +44,8 @@ public class GrupoAsignaturaDAOTest
     private SemestreDTO semestre;
     private AsignaturaComunDTO asignaturaComun1;
     private AsignaturaComunDTO asignaturaComun2;
+    private ItemComunDTO itemComun1;
+    private ItemComunDTO itemComun2;
 
     @Before
     public void rellenaItem() throws ParseException
@@ -129,6 +132,21 @@ public class GrupoAsignaturaDAOTest
         comun.setSubgrupoId(item.getSubgrupoId());
         comun.setTipoSubgrupoId(item.getTipoSubgrupoId());
     }
+    
+    private void rellenaItemsComunes(ItemDTO item1, ItemDTO item2)
+    {
+        itemComun1 = new ItemComunDTO();
+        itemComun1.setItem(item1);
+        itemComun1.setAsignaturaId(item1.getAsignaturaId());
+        itemComun1.setItemComun(item2);
+        itemComun1.setAsignaturaComunId(item2.getAsignaturaId());
+
+        itemComun2 = new ItemComunDTO();
+        itemComun2.setItem(item2);
+        itemComun2.setAsignaturaId(item2.getAsignaturaId());
+        itemComun2.setItemComun(item1);
+        itemComun2.setAsignaturaComunId(item1.getAsignaturaId());
+    }
 
     @Test
     public void asignaDiaYHoraPorDefectoConComunesTest()
@@ -138,6 +156,10 @@ public class GrupoAsignaturaDAOTest
 
         rellenaDatosItemComun();
         eventosDAO.insert(comun);
+        
+        rellenaItemsComunes(item, comun);
+        eventosDAO.insert(itemComun1);
+        eventosDAO.insert(itemComun2);
 
         grupoAsignaturaDAO.asignaDiaYHoraPorDefecto(item.getId());
 
