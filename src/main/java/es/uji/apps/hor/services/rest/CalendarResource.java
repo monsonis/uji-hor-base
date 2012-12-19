@@ -440,6 +440,7 @@ public class CalendarResource
 
     @PUT
     @Path("eventos/aula/evento/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> actualizaAulaAsignadaAEvento(@PathParam("id") String eventoId,
             @FormParam("aulaId") String aulaId, @FormParam("tipoAccion") String tipoAccion)
             throws RegistroNoEncontradoException, AulaNoAsignadaAEstudioDelEventoException,
