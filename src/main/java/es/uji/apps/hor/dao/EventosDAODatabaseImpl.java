@@ -849,7 +849,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
                                         .and(item.diaSemana.isNotNull())
                                         .and(item.tipoSubgrupoId.in(tiposCalendarios)))))
                 .list(new QTuple(itemDetalle.id, itemDetalle.inicio, itemDetalle.fin,
-                        item.asignaturaId, item.tipoSubgrupoId, item.subgrupoId));
+                        item.asignaturaId, item.tipoSubgrupoId, item.subgrupoId, item.comun, item.aulaPlanificacion, item.aulaPlanificacionNombre));
 
         System.out.println(listaTuplas);
         List<Evento> eventos = new ArrayList<Evento>();
@@ -858,6 +858,18 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         {
             String titulo = MessageFormat.format("{0} {1}{2}", tupla.get(item.asignaturaId),
                     tupla.get(item.tipoSubgrupoId), tupla.get(item.subgrupoId));
+            
+            if (tupla.get(item.comun) == 1)
+            {
+                titulo = MessageFormat.format("{0} - C", titulo);
+            }
+
+            if (tupla.get(item.aulaPlanificacion) != null)
+            {
+                titulo = MessageFormat.format("{0} {1}", titulo,
+                        (tupla.get(item.aulaPlanificacionNombre) != null) ? tupla.get(item.aulaPlanificacionNombre) : "");
+            }
+
             Calendario calendario = new Calendario(TipoSubgrupo.valueOf(
                     tupla.get(item.tipoSubgrupoId)).getCalendarioAsociado());
             eventos.add(new Evento(tupla.get(itemDetalle.id), calendario, titulo, tupla
