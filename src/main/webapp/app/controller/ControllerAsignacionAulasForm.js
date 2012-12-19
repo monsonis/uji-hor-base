@@ -176,6 +176,10 @@ Ext.define('HOR.controller.ControllerAsignacionAulasForm',
                     var record = store.getById(eventos[i].id.toString());
                     record.set(Extensible.calendar.data.EventMappings.AulaPlanificacionId.name, aulaId);
                     record.set(Extensible.calendar.data.EventMappings.Title.name, eventos[i].title);
+                    if (eventos[i].id == eventoId)
+                    {
+                        formulario.down('displayfield[name=event]').setValue(record.data[Extensible.calendar.data.EventMappings.Title.name]);
+                    }
                 }
             },
             failure : function(response)
