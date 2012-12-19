@@ -35,11 +35,22 @@ Ext.define('HOR.controller.ControllerCalendario',
 
     init : function()
     {
+        var ref = this;
+
         this.control(
         {
             'panelHorarios filtroGrupos combobox[name=grupo]' :
             {
-                select : this.refreshCalendar
+                select : function()
+                {
+                    if (ref.getFiltroGrupos().down('button[name=calendarioDetalle]').pressed)
+                    {
+                        ref.getFiltroGrupos().down('button[name=calendarioDetalle]').toggle();
+                        ref.getFiltroGrupos().down('button[name=calendarioGenerica]').toggle();
+                    }
+                    ref.getSelectorGrupos().show();
+                    ref.refreshCalendar();
+                }
             },
 
             'panelHorarios' :
@@ -112,7 +123,7 @@ Ext.define('HOR.controller.ControllerCalendario',
                         otherButton.toggle();
                     }
                     this.getSelectorGrupos().setVisible(true);
-                    this.refreshCalendar();                    
+                    this.refreshCalendar();
                 }
             },
             'panelHorarios button[name=imprimir]' :
@@ -434,7 +445,9 @@ Ext.define('HOR.controller.ControllerCalendario',
         if (this.getBotonCalendarioGenerica().pressed)
         {
             window.open("http://www.uji.es/cocoon/xxxx/" + titulacion + "/" + curso + "/" + semestre + "/" + grupo + "/horario-semana-generica.pdf");
-        } else {
+        }
+        else
+        {
             window.open("http://www.uji.es/cocoon/xxxx/" + titulacion + "/" + curso + "/" + semestre + "/" + grupo + "/horario-semana-detalle.pdf");
         }
     }

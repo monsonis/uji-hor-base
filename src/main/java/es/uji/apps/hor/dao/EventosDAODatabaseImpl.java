@@ -258,101 +258,104 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
     @Override
     public void deleteEventoSemanaGenerica(Long eventoId) throws RegistroNoEncontradoException
     {
-        ItemDTO evento = (ItemDTO) get(ItemDTO.class, eventoId).get(0);
-        if (evento != null)
+        ItemDTO evento;
+        try
         {
-            List<ItemDTO> itemsBorrar = new ArrayList<ItemDTO>();
-            itemsBorrar.add(evento);
-
-            if (evento.getComun().equals(new Long(1)))
-            {
-                // Obtenemos todos los eventos comunes
-                List<ItemComunDTO> comunes = getItemsComunes(eventoId);
-
-                for (ItemComunDTO comun : comunes)
-                {
-                    try
-                    {
-                        ItemDTO itemComun = get(ItemDTO.class, comun.getItemComun().getId()).get(0);
-                        itemsBorrar.add(itemComun);
-                    }
-                    catch (Exception e)
-                    {
-                    }
-                }
-            }
-
-            for (ItemDTO itemBorrar : itemsBorrar)
-            {
-                JPAQuery query = new JPAQuery(entityManager);
-                QItemDTO item = QItemDTO.itemDTO;
-
-                List<ItemDTO> listaItemsDTO = query
-                        .from(item)
-                        .where(item.estudio.id.eq(itemBorrar.getEstudio().getId())
-                                .and(item.cursoId.eq(itemBorrar.getCursoId()))
-                                .and(item.semestre.id.eq(itemBorrar.getSemestre().getId()))
-                                .and(item.grupoId.eq(itemBorrar.getGrupoId()))
-                                .and(item.asignaturaId.eq(itemBorrar.getAsignaturaId()))
-                                .and(item.subgrupoId.eq(itemBorrar.getSubgrupoId()))
-                                .and(item.tipoSubgrupoId.eq(itemBorrar.getTipoSubgrupoId()))
-                                .and(item.id.ne(itemBorrar.getId()))).list(item);
-
-                // Borramos los items detalle -- Esto se llevará a otro servicio
-                JPAQuery query2 = new JPAQuery(entityManager);
-                QItemDetalleDTO itemDetalle = QItemDetalleDTO.itemDetalleDTO;
-
-                List<ItemDetalleDTO> listaItemsDetalleDTO = query2.from(itemDetalle)
-                        .where(itemDetalle.item.id.eq(itemBorrar.getId())).list(itemDetalle);
-
-                for (ItemDetalleDTO itemDetalleDTO : listaItemsDetalleDTO)
-                {
-                    delete(ItemDetalleDTO.class, itemDetalleDTO.getId());
-                }
-
-                if (listaItemsDTO.size() > 0) // Podemos borrar la clase
-                {
-                    // Borramos los items circuitos
-                    JPAQuery query3 = new JPAQuery(entityManager);
-                    QItemCircuitoDTO itemCircuito = QItemCircuitoDTO.itemCircuitoDTO;
-
-                    List<ItemCircuitoDTO> listaItemsCircuitosDTO = query3.from(itemCircuito)
-                            .where(itemCircuito.item.id.eq(itemBorrar.getId())).list(itemCircuito);
-
-                    for (ItemCircuitoDTO itemCircuitoDTO : listaItemsCircuitosDTO)
-                    {
-                        delete(ItemCircuitoDTO.class, itemCircuitoDTO.getId());
-                    }
-
-                    // Eliminamos la relación de item común
-                    JPAQuery query4 = new JPAQuery(entityManager);
-                    QItemComunDTO itemComunDTO = QItemComunDTO.itemComunDTO;
-
-                    List<ItemComunDTO> itemsComunes = query4
-                            .from(itemComunDTO)
-                            .where(itemComunDTO.item.id.eq(itemBorrar.getId()).or(
-                                    itemComunDTO.itemComun.id.eq(itemBorrar.getId())))
-                            .list(itemComunDTO);
-
-                    for (ItemComunDTO itemComun : itemsComunes)
-                    {
-                        delete(ItemComunDTO.class, itemComun.getId());
-                    }
-
-                    delete(ItemDTO.class, itemBorrar.getId());
-                }
-                else
-                // Desasignamos la clase
-                {
-                    itemBorrar.setDiaSemana(null);
-                    update(itemBorrar);
-                }
-            }
+            evento = get(ItemDTO.class, eventoId).get(0);
         }
-        else
+        catch (Exception e)
         {
             throw new RegistroNoEncontradoException();
         }
+
+        List<ItemDTO> itemsBorrar = new ArrayList<ItemDTO>();
+        itemsBorrar.add(evento);
+
+        if (evento.getComun().equals(new Long(1)))
+        {
+            // Obtenemos todos los eventos comunes
+            List<ItemComunDTO> comunes = getItemsComunes(eventoId);
+
+            for (ItemComunDTO comun : comunes)
+            {
+                try
+                {
+                    ItemDTO itemComun = get(ItemDTO.class, comun.getItemComun().getId()).get(0);
+                    itemsBorrar.add(itemComun);
+                }
+                catch (Exception e)
+                {
+                }
+            }
+        }
+
+        for (ItemDTO itemBorrar : itemsBorrar)
+        {
+            JPAQuery query = new JPAQuery(entityManager);
+            QItemDTO item = QItemDTO.itemDTO;
+
+            List<ItemDTO> listaItemsDTO = query
+                    .from(item)
+                    .where(item.estudio.id.eq(itemBorrar.getEstudio().getId())
+                            .and(item.cursoId.eq(itemBorrar.getCursoId()))
+                            .and(item.semestre.id.eq(itemBorrar.getSemestre().getId()))
+                            .and(item.grupoId.eq(itemBorrar.getGrupoId()))
+                            .and(item.asignaturaId.eq(itemBorrar.getAsignaturaId()))
+                            .and(item.subgrupoId.eq(itemBorrar.getSubgrupoId()))
+                            .and(item.tipoSubgrupoId.eq(itemBorrar.getTipoSubgrupoId()))
+                            .and(item.id.ne(itemBorrar.getId()))).list(item);
+
+            // Borramos los items detalle -- Esto se llevará a otro servicio
+            JPAQuery query2 = new JPAQuery(entityManager);
+            QItemDetalleDTO itemDetalle = QItemDetalleDTO.itemDetalleDTO;
+
+            List<ItemDetalleDTO> listaItemsDetalleDTO = query2.from(itemDetalle)
+                    .where(itemDetalle.item.id.eq(itemBorrar.getId())).list(itemDetalle);
+
+            for (ItemDetalleDTO itemDetalleDTO : listaItemsDetalleDTO)
+            {
+                delete(ItemDetalleDTO.class, itemDetalleDTO.getId());
+            }
+
+            if (listaItemsDTO.size() > 0) // Podemos borrar la clase
+            {
+                // Borramos los items circuitos
+                JPAQuery query3 = new JPAQuery(entityManager);
+                QItemCircuitoDTO itemCircuito = QItemCircuitoDTO.itemCircuitoDTO;
+
+                List<ItemCircuitoDTO> listaItemsCircuitosDTO = query3.from(itemCircuito)
+                        .where(itemCircuito.item.id.eq(itemBorrar.getId())).list(itemCircuito);
+
+                for (ItemCircuitoDTO itemCircuitoDTO : listaItemsCircuitosDTO)
+                {
+                    delete(ItemCircuitoDTO.class, itemCircuitoDTO.getId());
+                }
+
+                // Eliminamos la relación de item común
+                JPAQuery query4 = new JPAQuery(entityManager);
+                QItemComunDTO itemComunDTO = QItemComunDTO.itemComunDTO;
+
+                List<ItemComunDTO> itemsComunes = query4
+                        .from(itemComunDTO)
+                        .where(itemComunDTO.item.id.eq(itemBorrar.getId()).or(
+                                itemComunDTO.itemComun.id.eq(itemBorrar.getId())))
+                        .list(itemComunDTO);
+
+                for (ItemComunDTO itemComun : itemsComunes)
+                {
+                    delete(ItemComunDTO.class, itemComun.getId());
+                }
+
+                delete(ItemDTO.class, itemBorrar.getId());
+            }
+            else
+            // Desasignamos la clase
+            {
+                itemBorrar.setDiaSemana(null);
+                update(itemBorrar);
+            }
+        }
+
     }
 
     @Override
@@ -849,7 +852,8 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
                                         .and(item.diaSemana.isNotNull())
                                         .and(item.tipoSubgrupoId.in(tiposCalendarios)))))
                 .list(new QTuple(itemDetalle.id, itemDetalle.inicio, itemDetalle.fin,
-                        item.asignaturaId, item.tipoSubgrupoId, item.subgrupoId, item.comun, item.aulaPlanificacion, item.aulaPlanificacionNombre));
+                        item.asignaturaId, item.tipoSubgrupoId, item.subgrupoId, item.comun,
+                        item.aulaPlanificacion, item.aulaPlanificacionNombre));
 
         System.out.println(listaTuplas);
         List<Evento> eventos = new ArrayList<Evento>();
@@ -858,7 +862,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         {
             String titulo = MessageFormat.format("{0} {1}{2}", tupla.get(item.asignaturaId),
                     tupla.get(item.tipoSubgrupoId), tupla.get(item.subgrupoId));
-            
+
             if (tupla.get(item.comun) == 1)
             {
                 titulo = MessageFormat.format("{0} - C", titulo);
@@ -866,8 +870,11 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
 
             if (tupla.get(item.aulaPlanificacion) != null)
             {
-                titulo = MessageFormat.format("{0} {1}", titulo,
-                        (tupla.get(item.aulaPlanificacionNombre) != null) ? tupla.get(item.aulaPlanificacionNombre) : "");
+                titulo = MessageFormat.format(
+                        "{0} {1}",
+                        titulo,
+                        (tupla.get(item.aulaPlanificacionNombre) != null) ? tupla
+                                .get(item.aulaPlanificacionNombre) : "");
             }
 
             Calendario calendario = new Calendario(TipoSubgrupo.valueOf(

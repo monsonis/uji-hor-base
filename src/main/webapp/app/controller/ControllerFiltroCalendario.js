@@ -13,6 +13,10 @@ Ext.define('HOR.controller.ControllerFiltroCalendario',
         ref : 'selectorGrupos'
     },
     {
+        selector : 'panelCalendarioDetalle',
+        ref : 'panelCalendarioDetalle'
+    },
+    {
         selector : 'panelCalendario',
         ref : 'panelCalendario'
     } ],
@@ -48,7 +52,14 @@ Ext.define('HOR.controller.ControllerFiltroCalendario',
         this.getFiltroGrupos().down('button[name=calendarioGenerica]').hide();
         this.getFiltroGrupos().down('button[name=imprimir]').hide();
 
-        this.getPanelCalendario().limpiaCalendario();
+        if (this.getPanelCalendario()) {
+            this.getPanelCalendario().limpiaCalendario();
+        }
+        
+        if (this.getPanelCalendarioDetalle()) {
+            this.getPanelCalendarioDetalle().limpiaCalendario();
+        }
+        
         this.getSelectorGrupos().limpiaGrupos();
 
         this.getStoreSemestresStore().removeAll();
@@ -77,7 +88,14 @@ Ext.define('HOR.controller.ControllerFiltroCalendario',
         this.getFiltroGrupos().down('button[name=calendarioGenerica]').hide();
         this.getFiltroGrupos().down('button[name=imprimir]').hide();
 
-        this.getPanelCalendario().limpiaCalendario();
+        if (this.getPanelCalendario()) {
+            this.getPanelCalendario().limpiaCalendario();
+        }
+        
+        if (this.getPanelCalendarioDetalle()) {
+            this.getPanelCalendarioDetalle().limpiaCalendario();
+        }
+
         this.getSelectorGrupos().limpiaGrupos();
 
         this.getStoreGruposStore().removeAll();
@@ -107,7 +125,14 @@ Ext.define('HOR.controller.ControllerFiltroCalendario',
         this.getFiltroGrupos().down('button[name=calendarioGenerica]').hide();
         this.getFiltroGrupos().down('button[name=imprimir]').hide();
         
-        this.getPanelCalendario().limpiaCalendario();
+        if (this.getPanelCalendario()) {
+            this.getPanelCalendario().limpiaCalendario();
+        }
+        
+        if (this.getPanelCalendarioDetalle()) {
+            this.getPanelCalendarioDetalle().limpiaCalendario();
+        }
+
         this.getSelectorGrupos().limpiaGrupos();
 
         var estudio = this.getFiltroGrupos().down('combobox[name=estudio]').getValue();
