@@ -1181,7 +1181,8 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
 
         JPAUpdateClause updateClause = new JPAUpdateClause(entityManager, qItem);
         updateClause.where(qItem.id.eq(evento.getId())).set(qItem.horaInicio, evento.getInicio())
-                .set(qItem.horaFin, evento.getFin()).set(qItem.diaSemana, diaSemanaDTO).execute();
+                .set(qItem.horaFin, evento.getFin()).set(qItem.diaSemana, diaSemanaDTO)
+                .set(qItem.detalleManual, false).execute();
 
         // Falta comunes
     }
