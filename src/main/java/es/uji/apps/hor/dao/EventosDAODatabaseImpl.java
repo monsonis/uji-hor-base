@@ -442,6 +442,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             itemDTO.setRepetirCadaSemanas(itemDividir.getRepetirCadaSemanas());
             itemDTO.setNumeroIteraciones(itemDividir.getNumeroIteraciones());
             itemDTO.setDetalleManual(itemDividir.getDetalleManual());
+            itemDTO.setComunes(itemDividir.getComunes());
             itemDTO = insert(itemDTO);
 
             // Copiamos los circuitos
