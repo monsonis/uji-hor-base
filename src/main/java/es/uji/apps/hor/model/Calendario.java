@@ -4,12 +4,17 @@ public class Calendario
 {
     private Long id;
     private String nombre;
-    
+
+    public Calendario()
+    {
+
+    }
+
     public Calendario(Long id)
     {
         this.id = id;
     }
-    
+
     public Calendario(Long id, String nombre)
     {
         this.id = id;

@@ -1,7 +1,17 @@
 package es.uji.apps.hor.model;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import es.uji.apps.hor.dao.EventosDAO;
+
+@Component
 public class Evento
 {
     private Long id;
@@ -15,8 +25,22 @@ public class Evento
     private Integer repetirCadaSemanas;
     private Date desdeElDia;
     private Date hastaElDia;
-    private String comunes;
-    private Long aulaPlanificacionId;
+    private Asignatura asignatura;
+    private Semestre semestre;
+    private String grupoId;
+    private Long subgrupoId;
+    private Long plazas;
+    private List<EventoDetalle> eventosDetalle = new ArrayList<EventoDetalle>();
+
+    private AulaPlanificacion aulaPlanificacion;
+
+    private EventosDAO eventosDAO;
+
+    @Autowired
+    public void setEventosDAO(EventosDAO eventosDAO)
+    {
+        this.eventosDAO = eventosDAO;
+    }
 
     public Evento(Long id, Calendario calendario, String titulo, Date inicio, Date fin)
     {
@@ -25,6 +49,10 @@ public class Evento
         this.titulo = titulo;
         this.inicio = inicio;
         this.fin = fin;
+    }
+
+    public Evento()
+    {
     }
 
     public Long getId()
@@ -87,7 +115,7 @@ public class Evento
         this.fin = fin;
     }
 
-    public Boolean getDetalleManual()
+    public Boolean hasDetalleManual()
     {
         return detalleManual;
     }
@@ -137,23 +165,187 @@ public class Evento
         this.hastaElDia = hastaElDia;
     }
 
-    public String getComunes()
+    public Evento divide()
     {
-        return comunes;
+        Evento nuevoEvento = this.clonar();
+        nuevoEvento.retrasaHoraInicioAMitadDuracion();
+        this.reduceDuracionALaMitad();
+
+        nuevoEvento.propagaRangoHorarioAEventosDetalle();
+        this.propagaRangoHorarioAEventosDetalle();
+        return nuevoEvento;
     }
 
-    public void setComunes(String comunes)
+    private void propagaRangoHorarioAEventosDetalle()
     {
-        this.comunes = comunes;
+        for (EventoDetalle eventoDetalle : this.getEventosDetalle())
+        {
+            eventoDetalle.estableceHoraYMinutosInicio(this.getInicio());
+            eventoDetalle.estableceHoraYMinutosFin(this.getFin());
+        }
     }
 
-    public Long getAulaPlanificacionId()
+    private void reduceDuracionALaMitad()
     {
-        return aulaPlanificacionId;
+        Date nuevaHoraFin = new Date(this.getFin().getTime() - this.getDuracionEnMilisegundos() / 2);
+        this.setFin(nuevaHoraFin);
     }
 
-    public void setAulaPlanificacionId(Long aulaPlanificacionId)
+    private Long getDuracionEnMilisegundos()
     {
-        this.aulaPlanificacionId = aulaPlanificacionId;
+        return this.getFin().getTime() - this.getInicio().getTime();
+    }
+
+    private void retrasaHoraInicioAMitadDuracion()
+    {
+        Date nuevaHoraInicio = new Date(this.getInicio().getTime()
+                + this.getDuracionEnMilisegundos() / 2);
+        this.setInicio(nuevaHoraInicio);
+    }
+
+    private Evento clonar()
+    {
+
+        Evento nuevo = new Evento();
+        nuevo.setCalendario(this.getCalendario());
+        nuevo.setTitulo(this.getTitulo());
+        nuevo.setObservaciones(this.getObservaciones());
+        nuevo.setInicio(this.getInicio());
+        nuevo.setFin(this.getFin());
+        nuevo.setDetalleManual(this.hasDetalleManual());
+        nuevo.setNumeroIteraciones(this.getNumeroIteraciones());
+        nuevo.setRepetirCadaSemanas(this.getRepetirCadaSemanas());
+        nuevo.setDesdeElDia(this.getDesdeElDia());
+        nuevo.setHastaElDia(this.getHastaElDia());
+        nuevo.setAulaPlanificacion(this.getAulaPlanificacion());
+        nuevo.setAsignatura(this.getAsignatura());
+        nuevo.setSemestre(this.getSemestre());
+        nuevo.setGrupoId(this.getGrupoId());
+        nuevo.setSubgrupoId(this.getSubgrupoId());
+        nuevo.setPlazas(this.getPlazas());
+
+        if (this.hasDetalleManual())
+        {
+            for (EventoDetalle eventoDetalle : this.getEventosDetalle())
+            {
+                EventoDetalle nuevoEventoDetalle = eventoDetalle.clonar();
+                nuevoEventoDetalle.setEvento(nuevo);
+                nuevo.addEventoDetalle(nuevoEventoDetalle);
+            }
+        }
+
+        return nuevo;
+    }
+
+    private void addEventoDetalle(EventoDetalle nuevoEventoDetalle)
+    {
+        this.getEventosDetalle().add(nuevoEventoDetalle);
+    }
+
+    public AulaPlanificacion getAulaPlanificacion()
+    {
+        return aulaPlanificacion;
+    }
+
+    public void setAulaPlanificacion(AulaPlanificacion aulaPlanificacion)
+    {
+        this.aulaPlanificacion = aulaPlanificacion;
+    }
+
+    public Asignatura getAsignatura()
+    {
+        return asignatura;
+    }
+
+    public void setAsignatura(Asignatura asignatura)
+    {
+        this.asignatura = asignatura;
+    }
+
+    public Semestre getSemestre()
+    {
+        return semestre;
+    }
+
+    public void setSemestre(Semestre semestre)
+    {
+        this.semestre = semestre;
+    }
+
+    public String getGrupoId()
+    {
+        return grupoId;
+    }
+
+    public void setGrupoId(String grupoId)
+    {
+        this.grupoId = grupoId;
+    }
+
+    public Long getSubgrupoId()
+    {
+        return subgrupoId;
+    }
+
+    public void setSubgrupoId(Long subgrupoId)
+    {
+        this.subgrupoId = subgrupoId;
+    }
+
+    private Integer convierteDiaSemaanDeCalendar(Integer diaCalendario)
+    {
+        switch (diaCalendario)
+        {
+        case Calendar.MONDAY:
+            return 1;
+        case Calendar.TUESDAY:
+            return 2;
+        case Calendar.WEDNESDAY:
+            return 3;
+        case Calendar.THURSDAY:
+            return 4;
+        case Calendar.FRIDAY:
+            return 5;
+        case Calendar.SATURDAY:
+            return 6;
+        case Calendar.SUNDAY:
+            return 7;
+        }
+
+        return 0;
+    }
+
+    public Integer getDia()
+    {
+        if (this.getInicio() == null)
+        {
+            return null;
+        }
+
+        Calendar actual = Calendar.getInstance(new Locale("es", "ES"));
+        actual.setTime(this.getInicio());
+
+        return convierteDiaSemaanDeCalendar(actual.get(Calendar.DAY_OF_WEEK));
+
+    }
+
+    public Long getPlazas()
+    {
+        return plazas;
+    }
+
+    public void setPlazas(Long plazas)
+    {
+        this.plazas = plazas;
+    }
+
+    public List<EventoDetalle> getEventosDetalle()
+    {
+        return eventosDetalle;
+    }
+
+    public void setEventosDetalle(List<EventoDetalle> eventosDetalle)
+    {
+        this.eventosDetalle = eventosDetalle;
     }
 }

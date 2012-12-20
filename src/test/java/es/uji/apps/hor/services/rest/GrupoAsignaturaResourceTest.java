@@ -1,95 +1,124 @@
 package es.uji.apps.hor.services.rest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
+import org.junit.Before;
 import org.junit.Test;
-import org.springframework.web.context.ContextLoaderListener;
-import org.springframework.web.context.request.RequestContextListener;
-import org.springframework.web.util.Log4jConfigListener;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.client.GenericType;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.core.util.StringKeyStringValueIgnoreCaseMultivaluedMap;
-import com.sun.jersey.spi.spring.container.servlet.SpringServlet;
-import com.sun.jersey.test.framework.JerseyTest;
-import com.sun.jersey.test.framework.WebAppDescriptor;
 
+import es.uji.apps.hor.builders.AsignaturaBuilder;
+import es.uji.apps.hor.builders.CalendarioBuilder;
+import es.uji.apps.hor.builders.EstudioBuilder;
+import es.uji.apps.hor.builders.EventoBuilder;
+import es.uji.apps.hor.builders.SemestreBuilder;
+import es.uji.apps.hor.dao.EstudiosDAO;
+import es.uji.apps.hor.dao.EventosDAO;
+import es.uji.apps.hor.model.Asignatura;
+import es.uji.apps.hor.model.Calendario;
+import es.uji.apps.hor.model.Estudio;
+import es.uji.apps.hor.model.Evento;
+import es.uji.apps.hor.model.Semestre;
+import es.uji.apps.hor.model.TipoSubgrupo;
 import es.uji.commons.rest.UIEntity;
-import es.uji.commons.rest.UIEntityJSONMessageBodyReader;
-import es.uji.commons.rest.UIEntityJSONMessageBodyWriter;
-import es.uji.commons.rest.UIEntityListJSONMessageBodyReader;
 
-public class GrupoAsignaturaResourceTest extends JerseyTest
+public class GrupoAsignaturaResourceTest extends AbstractRestTest
 {
 
-    protected WebResource resource;
-    static String packageName = "es.uji.apps.hor.services.rest";
+    private Long estudioId = new Long(210);
+    private final Long cursoId = new Long(1);
+    private final Long semestreId = new Long(1);
+    private final String grupoId = "A";
+    private final String calendariosIds = "1;2;3;4;5;6";
 
-    static final SimpleDateFormat dateFormat = new SimpleDateFormat("\"yyyy-MM-dd'T'HH:mm:ss\"");
-    static final SimpleDateFormat shortDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private SimpleDateFormat formatter;
 
-    String estudio_id = "210";
-    String curso_id = "1";
-    String semestre_id = "1";
-    String grupo_id = "A";
-    String calendarios_ids = "1;2;3;4;5;6";
+    @Autowired
+    private EventosDAO eventosDao;
+
+    @Autowired
+    private EstudiosDAO estudiosDao;
 
     public GrupoAsignaturaResourceTest()
     {
-        super(new WebAppDescriptor.Builder(packageName)
-                .contextParam("contextConfigLocation", "classpath:applicationContext-test.xml")
-                // .contextParam("contextConfigLocation", "classpath:applicationContext.xml")
-                .contextParam("log4jConfigLocation", "src/main/webapp/WEB-INF/log4j.properties")
-                .contextParam("webAppRootKey", packageName)
-                .contextListenerClass(Log4jConfigListener.class)
-                .contextListenerClass(ContextLoaderListener.class)
-                .requestListenerClass(RequestContextListener.class)
-                .servletClass(SpringServlet.class)
-                .clientConfig(createClientConfig())
-                .initParam("com.sun.jersey.config.property.packages",
-                        "es.uji.commons.rest; " + packageName).build());
-
-        this.resource = resource();
+        formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     }
 
-    private static ClientConfig createClientConfig()
+    @Before
+    @Transactional
+    public void creaEventosIniciales() throws Exception
     {
-        ClientConfig config = new DefaultClientConfig();
-        config.getClasses().add(UIEntityJSONMessageBodyReader.class);
-        config.getClasses().add(UIEntityListJSONMessageBodyReader.class);
-        config.getClasses().add(UIEntityJSONMessageBodyWriter.class);
+        Estudio estudio = new EstudioBuilder(estudiosDao).withNombre("Grau en Psicologia")
+                .withTipoEstudio("Grau").withTipoEstudioId("G").build();
+        estudioId = estudio.getId();
 
-        return config;
+        Asignatura asignatura_ficticia1 = new AsignaturaBuilder().withCaracter("Obligatoria")
+                .withCaracterId("OB").withComun(false).withCursoId(cursoId).withId("PS1026")
+                .withNombre("Intervenció Psicosocial").withEstudio(estudio).build();
+
+        Asignatura asignatura_ficticia2 = new AsignaturaBuilder().withCaracter("Obligatoria")
+                .withCaracterId("OB").withComun(false).withCursoId(cursoId).withId("PS1027")
+                .withNombre("Asignatura de Psicologia").withEstudio(estudio).build();
+
+        Semestre semestre = new SemestreBuilder().withSemestre(semestreId)
+                .withNombre("Primer semestre").build();
+
+        Long calendarioPracticasId = TipoSubgrupo.PR.getCalendarioAsociado();
+        Calendario calendarioPR = new CalendarioBuilder().withId(calendarioPracticasId)
+                .withNombre(TipoSubgrupo.getTipoSubgrupo(calendarioPracticasId)).build();
+
+        Long calendarioTeoriaId = TipoSubgrupo.TE.getCalendarioAsociado();
+        Calendario calendarioTE = new CalendarioBuilder().withId(calendarioTeoriaId)
+                .withNombre(TipoSubgrupo.getTipoSubgrupo(calendarioTeoriaId)).build();
+
+        buildEventoSinAsignar(asignatura_ficticia1, semestre, calendarioPR);
+        buildEventoSinAsignar(asignatura_ficticia1, semestre, calendarioTE);
+        buildEventoSinAsignar(asignatura_ficticia2, semestre, calendarioTE);
+        buildEventoAsignado("30/07/2012 09:00", "30/07/2012 11:00", asignatura_ficticia1, semestre,
+                calendarioTE);
+
     }
 
-    private MultivaluedMap<String, String> getDefaulQueryParams()
+    @Test
+    @Transactional
+    public void elServicioDevuelveLasAsignaturasSinAsignar() throws Exception
     {
-        MultivaluedMap<String, String> params = new StringKeyStringValueIgnoreCaseMultivaluedMap();
-        params.putSingle("estudioId", estudio_id);
-        params.putSingle("cursoId", curso_id);
-        params.putSingle("semestreId", semestre_id);
-        params.putSingle("grupoId", grupo_id);
-        params.putSingle("calendariosIds", calendarios_ids);
-        return params;
+
+        List<UIEntity> listaEventosSinAsignar = getDefaultListaEventosSinAsignarDelServicio();
+
+        assertThat(listaEventosSinAsignar, hasSize(3));
     }
 
-    private List<UIEntity> getDefaultListaEventosGenericosWithParams(
-            MultivaluedMap<String, String> params)
+    @Test
+    @Transactional
+    public void elServicioAsignaLasAsignaturasSinAsignar() throws Exception
     {
-        ClientResponse response = resource.path("calendario/eventos/generica").queryParams(params)
-                .accept(MediaType.APPLICATION_JSON_TYPE).get(ClientResponse.class);
+        llamaAlServicioDeDivisionDeEvento();
+
+        List<UIEntity> listaEventosSinAsignar = getDefaultListaEventosSinAsignarDelServicio();
+        List<UIEntity> listaEventosAsignados = getDefaultListaEventosGenericos();
+
+        assertThat(listaEventosSinAsignar, hasSize(2));
+        assertThat(listaEventosAsignados, hasSize(2));
+
+    }
+
+    private List<UIEntity> getDefaultListaEventosSinAsignarDelServicio()
+    {
+        ClientResponse response = resource.path("grupoAsignatura/sinAsignar")
+                .queryParams(buildDefaulQueryParams()).accept(MediaType.APPLICATION_JSON_TYPE)
+                .get(ClientResponse.class);
 
         return response.getEntity(new GenericType<List<UIEntity>>()
         {
@@ -98,67 +127,51 @@ public class GrupoAsignaturaResourceTest extends JerseyTest
 
     private List<UIEntity> getDefaultListaEventosGenericos()
     {
-        return getDefaultListaEventosGenericosWithParams(getDefaulQueryParams());
-    }
-
-    private UIEntity getDatosEventoGenerico(String evento_id)
-    {
-
-        List<UIEntity> listaEventos = getDefaultListaEventosGenericos();
-
-        for (UIEntity entidad : listaEventos)
-        {
-            String id = entidad.get("id");
-            if (id.equals(evento_id))
-            {
-                return entidad;
-            }
-        }
-
-        return null;
-    }
-
-    private boolean existeEventoGenericoConId(String evento_id)
-    {
-        return getDatosEventoGenerico(evento_id) != null;
-    }
-
-    @Test
-    public void getGruposAsignaturasSinAsignar() throws ParseException
-    {
-        // Given
-
-        // When
-        ClientResponse response = resource.path("grupoAsignatura/sinAsignar")
-                .queryParams(getDefaulQueryParams()).accept(MediaType.APPLICATION_JSON_TYPE)
+        ClientResponse response = resource.path("calendario/eventos/generica")
+                .queryParams(buildDefaulQueryParams()).accept(MediaType.APPLICATION_JSON_TYPE)
                 .get(ClientResponse.class);
 
-        List<UIEntity> listaGrupos = response.getEntity(new GenericType<List<UIEntity>>()
+        return response.getEntity(new GenericType<List<UIEntity>>()
         {
         });
-
-        // Then
-        assertEquals("El servicio es accesible", Status.OK.getStatusCode(), response.getStatus());
-        assertTrue("El servicio devuelve datos", listaGrupos.size() > 0);
-        assertEquals("El servicio devuelve el número de datos correctos", 9, listaGrupos.size());
-
     }
 
-    @Test
-    public void updateGruposAsignaturasSinAsignar() throws ParseException
+    private void llamaAlServicioDeDivisionDeEvento()
     {
-        // Given
-        String sin_asignar_id = "6571";
-        assertTrue("El evento genérico NO está", !existeEventoGenericoConId(sin_asignar_id));
+        String sin_asignar_id = "1";
 
-        // When
-        ClientResponse response = resource.path("grupoAsignatura/sinAsignar/" + sin_asignar_id)
+        resource.path("grupoAsignatura/sinAsignar/" + sin_asignar_id)
                 .accept(MediaType.APPLICATION_JSON_TYPE).put(ClientResponse.class);
+    }
 
-        // Then
-        assertEquals("El servicio es accesible", Status.OK.getStatusCode(), response.getStatus());
-        assertTrue("El evento genérico está", existeEventoGenericoConId(sin_asignar_id));
+    private MultivaluedMap<String, String> buildDefaulQueryParams()
+    {
+        MultivaluedMap<String, String> params = new StringKeyStringValueIgnoreCaseMultivaluedMap();
+        params.putSingle("estudioId", String.valueOf(estudioId));
+        params.putSingle("cursoId", String.valueOf(cursoId));
+        params.putSingle("semestreId", String.valueOf(semestreId));
+        params.putSingle("grupoId", grupoId);
+        params.putSingle("calendariosIds", calendariosIds);
+        return params;
+    }
 
+    private Evento buildEventoAsignado(String fechaInicial, String fechaFinal,
+            Asignatura asignatura, Semestre semestre, Calendario calendario) throws Exception
+    {
+
+        return new EventoBuilder(eventosDao).withTitulo("Evento de prueba")
+                .withAsignatura(asignatura).withInicio(formatter.parse(fechaInicial))
+                .withFin(formatter.parse(fechaFinal)).withSemestre(semestre).withGrupoId(grupoId)
+                .withCalendario(calendario).withDetalleManual(false).build();
+    }
+
+    private Evento buildEventoSinAsignar(Asignatura asignatura, Semestre semestre,
+            Calendario calendario) throws Exception
+    {
+
+        return new EventoBuilder(eventosDao).withTitulo("Evento de prueba")
+                .withAsignatura(asignatura).withSemestre(semestre).withCalendario(calendario)
+                .withGrupoId(grupoId).withDetalleManual(false).build();
     }
 
 }

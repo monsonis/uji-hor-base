@@ -5,6 +5,9 @@ public class Semestre
     private Long semestre;
     private String nombre;
 
+    public Semestre() {
+    }
+    
     public Semestre(Long semestre)
     {
         this.setSemestre(semestre);

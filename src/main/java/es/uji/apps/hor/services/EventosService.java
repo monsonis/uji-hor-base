@@ -12,6 +12,7 @@ import es.uji.apps.hor.DuracionEventoIncorrectaException;
 import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.dao.EventosDAO;
 import es.uji.apps.hor.model.Evento;
+import es.uji.apps.hor.model.EventoDetalle;
 import es.uji.apps.hor.model.EventoDocencia;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
@@ -71,8 +72,11 @@ public class EventosService
     public void divideEventoSemanaGenerica(Long eventoId) throws RegistroNoEncontradoException,
             EventoNoDivisibleException
     {
+        Evento evento = eventosDAO.getEventoById(eventoId);
+        Evento nuevoEvento = evento.divide();
         
-        eventosDAO.divideEventoSemanaGenerica(eventoId);
+        eventosDAO.insertEvento(nuevoEvento);
+        eventosDAO.updateHorasEvento(evento);
     }
 
     public Evento modificaDetallesGrupoAsignatura(Long grupoAsignaturaId, Date inicio, Date fin,
@@ -129,7 +133,7 @@ public class EventosService
         return eventosDAO.updateHorasEventoDetalleManual(eventoId, inicio, fin);
     }
 
-    public List<Evento> eventosDetalleDeUnEstudio(Long estudioId, Long cursoId, Long semestreId,
+    public List<EventoDetalle> eventosDetalleDeUnEstudio(Long estudioId, Long cursoId, Long semestreId,
             String grupoId, List<Long> calendariosIds, Date rangoFechaInicio, Date rangoFechaFin)
     {
         return eventosDAO.getEventosDetalle(estudioId, cursoId, semestreId, grupoId,

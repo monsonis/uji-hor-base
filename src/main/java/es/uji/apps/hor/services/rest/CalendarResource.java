@@ -1,6 +1,7 @@
 package es.uji.apps.hor.services.rest;
 
 import java.text.DateFormat;
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.RangoHorarioFueradeLimites;
 import es.uji.apps.hor.model.Calendario;
 import es.uji.apps.hor.model.Evento;
+import es.uji.apps.hor.model.EventoDetalle;
 import es.uji.apps.hor.model.EventoDocencia;
 import es.uji.apps.hor.model.GrupoHorario;
 import es.uji.apps.hor.services.CalendariosService;
@@ -215,16 +217,44 @@ public class CalendarResource
             }
         }
 
-        List<Evento> eventos = new ArrayList<Evento>();
+        List<EventoDetalle> eventosDetalle = new ArrayList<EventoDetalle>();
 
         if (calendariosList.size() != 0)
         {
-            eventos = eventosService.eventosDetalleDeUnEstudio(ParamUtils.parseLong(estudioId),
-                    ParamUtils.parseLong(cursoId), ParamUtils.parseLong(semestreId), grupoId,
-                    calendariosList, rangoFechaInicio, rangoFechaFin);
+            eventosDetalle = eventosService.eventosDetalleDeUnEstudio(
+                    ParamUtils.parseLong(estudioId), ParamUtils.parseLong(cursoId),
+                    ParamUtils.parseLong(semestreId), grupoId, calendariosList, rangoFechaInicio,
+                    rangoFechaFin);
         }
 
-        return toUI(eventos);
+        return eventosDetalletoUI(eventosDetalle);
+    }
+
+    private List<UIEntity> eventosDetalletoUI(List<EventoDetalle> eventosDetalle)
+    {
+        List<UIEntity> eventosUI = new ArrayList<UIEntity>();
+
+        for (EventoDetalle eventoDetalle : eventosDetalle)
+        {
+            UIEntity eventoUI = new UIEntity();
+            eventoUI.put("id", eventoDetalle.getId());
+            eventoUI.put("title", eventoDetalle.getDescripcion());
+            eventoUI.put("cid", eventoDetalle.getEvento().getCalendario().getId());
+
+            if (eventoDetalle.getInicio() != null)
+            {
+                eventoUI.put("start", dateFormat.format(eventoDetalle.getInicio()));
+            }
+
+            if (eventoDetalle.getFin() != null)
+            {
+                eventoUI.put("end", dateFormat.format(eventoDetalle.getFin()));
+            }
+
+            eventosUI.add(eventoUI);
+        }
+
+        return eventosUI;
     }
 
     @PUT
@@ -354,9 +384,10 @@ public class CalendarResource
             eventoUI.put("start_date_rep", evento.getDesdeElDia());
             eventoUI.put("end_date_rep_comp", evento.getHastaElDia());
             eventoUI.put("end_rep_number_comp", evento.getNumeroIteraciones());
-            eventoUI.put("detalle_manual", evento.getDetalleManual());
-            eventoUI.put("comunes", evento.getComunes());
-            eventoUI.put("aula_planificacion_id", evento.getAulaPlanificacionId());
+            eventoUI.put("detalle_manual", evento.hasDetalleManual());
+            eventoUI.put("comunes", evento.getAsignatura().getComunes());
+
+            // eventoUI.put("aula_planificacion_id", evento.getAulaPlanificacion().getId());
 
             if (evento.getInicio() != null)
             {
@@ -457,8 +488,8 @@ public class CalendarResource
             aula = null;
         }
 
-        List<Evento> eventos = eventosService.actualizaAulaAsignadaAEvento(Long.parseLong(eventoId), aula,
-                propagar);
+        List<Evento> eventos = eventosService.actualizaAulaAsignadaAEvento(
+                Long.parseLong(eventoId), aula, propagar);
 
         return toUI(eventos);
     }

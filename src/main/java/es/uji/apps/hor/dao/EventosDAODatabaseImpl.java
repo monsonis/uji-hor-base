@@ -8,15 +8,16 @@ import java.util.List;
 
 import org.hsqldb.lib.HashMap;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.mysema.query.Tuple;
 import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.types.QTuple;
+import com.mysema.query.jpa.impl.JPAUpdateClause;
 
 import es.uji.apps.hor.AulaNoAsignadaAEstudioDelEventoException;
 import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.db.AulaPlanificacionDTO;
 import es.uji.apps.hor.db.DiaSemanaDTO;
+import es.uji.apps.hor.db.EstudioDTO;
 import es.uji.apps.hor.db.ItemCircuitoDTO;
 import es.uji.apps.hor.db.ItemComunDTO;
 import es.uji.apps.hor.db.ItemDTO;
@@ -28,9 +29,15 @@ import es.uji.apps.hor.db.QItemComunDTO;
 import es.uji.apps.hor.db.QItemDTO;
 import es.uji.apps.hor.db.QItemDetalleCompletoDTO;
 import es.uji.apps.hor.db.QItemDetalleDTO;
+import es.uji.apps.hor.db.SemestreDTO;
+import es.uji.apps.hor.model.Asignatura;
+import es.uji.apps.hor.model.AulaPlanificacion;
 import es.uji.apps.hor.model.Calendario;
+import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.model.Evento;
+import es.uji.apps.hor.model.EventoDetalle;
 import es.uji.apps.hor.model.EventoDocencia;
+import es.uji.apps.hor.model.Semestre;
 import es.uji.apps.hor.model.TipoSubgrupo;
 import es.uji.commons.db.BaseDAODatabaseImpl;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
@@ -88,7 +95,9 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
     private Calendario obtenerCalendarioAsociadoPorTipoSubgrupo(ItemDTO itemDTO)
     {
         String tipoSubgrupoId = itemDTO.getTipoSubgrupoId();
-        return new Calendario(TipoSubgrupo.valueOf(tipoSubgrupoId).getCalendarioAsociado());
+        TipoSubgrupo tipoSubgrupo = TipoSubgrupo.valueOf(tipoSubgrupoId);
+
+        return new Calendario(tipoSubgrupo.getCalendarioAsociado(), tipoSubgrupo.getNombre());
     }
 
     @Override
@@ -118,30 +127,116 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         return eventos;
     }
 
+    private List<EventoDetalle> getEventosDetalle(Evento evento)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        QItemDetalleDTO qItemDetalleDTO = QItemDetalleDTO.itemDetalleDTO;
+
+        query.from(qItemDetalleDTO).where(qItemDetalleDTO.item.id.eq(evento.getId()));
+
+        List<EventoDetalle> listaEventosDetalle = new ArrayList<EventoDetalle>();
+
+        for (ItemDetalleDTO itemDetalleDTO : query.list(qItemDetalleDTO))
+        {
+            listaEventosDetalle.add(creaEventoDetalleDesdeItemDetalleDTO(itemDetalleDTO));
+        }
+        return listaEventosDetalle;
+    }
+
+    private EventoDetalle creaEventoDetalleDesdeItemDetalleDTO(ItemDetalleDTO itemDetalleDTO)
+    {
+        EventoDetalle eventoDetalle = new EventoDetalle();
+
+        eventoDetalle.setId(itemDetalleDTO.getId());
+        eventoDetalle.setDescripcion(itemDetalleDTO.getDescripcion());
+        eventoDetalle.setInicio(itemDetalleDTO.getInicio());
+
+        String titulo = MessageFormat.format("{0} {1}{2}", itemDetalleDTO.getItem()
+                .getAsignaturaId(), itemDetalleDTO.getItem().getTipoEstudioId(), itemDetalleDTO
+                .getItem().getTipoSubgrupoId());
+        eventoDetalle.setDescripcion(titulo);
+        eventoDetalle.setFin(itemDetalleDTO.getFin());
+
+        return eventoDetalle;
+    }
+
+    private Evento creaEventoConDetallesDesde(ItemDTO itemDTO)
+    {
+        Evento evento = creaEventoDesde(itemDTO);
+        evento.setEventosDetalle(getEventosDetalle(evento));
+
+        return evento;
+    }
+
     private Evento creaEventoDesde(ItemDTO itemDTO)
     {
         String titulo = itemDTO.toString();
         Calendario calendario = obtenerCalendarioAsociadoPorTipoSubgrupo(itemDTO);
 
-        Calendar inicio = generaItemCalendarioSemanaGenerica(itemDTO.getDiaSemana().getId()
-                .intValue(), itemDTO.getHoraInicio());
-        Calendar fin = generaItemCalendarioSemanaGenerica(
-                itemDTO.getDiaSemana().getId().intValue(), itemDTO.getHoraFin());
-        Evento evento = new Evento(itemDTO.getId(), calendario, titulo, inicio.getTime(),
-                fin.getTime());
+        Evento evento = new Evento();
+        evento.setCalendario(calendario);
+        evento.setTitulo(titulo);
+
+        if (itemDTO.getHoraInicio() != null)
+        {
+            Calendar inicio = generaItemCalendarioSemanaGenerica(itemDTO.getDiaSemana().getId()
+                    .intValue(), itemDTO.getHoraInicio());
+            evento.setInicio(inicio.getTime());
+        }
+
+        if (itemDTO.getHoraFin() != null)
+        {
+            Calendar fin = generaItemCalendarioSemanaGenerica(itemDTO.getDiaSemana().getId()
+                    .intValue(), itemDTO.getHoraFin());
+            evento.setFin(fin.getTime());
+        }
 
         evento.setDetalleManual(itemDTO.getDetalleManual());
         evento.setNumeroIteraciones(itemDTO.getNumeroIteraciones());
         evento.setRepetirCadaSemanas(itemDTO.getRepetirCadaSemanas());
         evento.setDesdeElDia(itemDTO.getDesdeElDia());
         evento.setHastaElDia(itemDTO.getHastaElDia());
+        evento.setGrupoId(itemDTO.getGrupoId());
+        evento.setSubgrupoId(itemDTO.getSubgrupoId());
+        evento.setPlazas(itemDTO.getPlazas());
+        evento.setId(itemDTO.getId());
+
+        Estudio estudio = new Estudio();
+        estudio.setId(itemDTO.getEstudio().getId());
+        estudio.setNombre(itemDTO.getEstudioDesc());
+        estudio.setTipoEstudio(itemDTO.getTipoEstudio());
+        estudio.setTipoEstudioId(itemDTO.getTipoEstudioId());
+
+        Asignatura asignatura = new Asignatura();
+
         if (itemDTO.getComun() > 0)
         {
-            evento.setComunes(itemDTO.getComunes());
+            asignatura.setComun(itemDTO.getComun() == 1);
+            asignatura.setComunes(itemDTO.getComunes());
         }
+
+        asignatura.setNombre(itemDTO.getAsignatura());
+        asignatura.setId(itemDTO.getAsignaturaId());
+        asignatura.setCursoId(itemDTO.getCursoId());
+        asignatura.setCaracter(itemDTO.getCaracter());
+        asignatura.setCaracterId(itemDTO.getCaracterId());
+        asignatura.setEstudio(estudio);
+        asignatura.setPorcentajeComun(itemDTO.getPorcentajeComun());
+        asignatura.setTipoAsignatura(itemDTO.getTipoAsignatura());
+        asignatura.setTipoAsignaturaId(itemDTO.getTipoAsignaturaId());
+        evento.setAsignatura(asignatura);
+
+        Semestre semestre = new Semestre();
+        semestre.setSemestre(itemDTO.getSemestre().getId());
+        semestre.setNombre(itemDTO.getSemestre().getNombre());
+        evento.setSemestre(semestre);
+
         if (itemDTO.getAulaPlanificacion() != null)
         {
-            evento.setAulaPlanificacionId(itemDTO.getAulaPlanificacion().getId());
+            AulaPlanificacion aulaPlanificacion = new AulaPlanificacion();
+            aulaPlanificacion.setId(itemDTO.getAulaPlanificacion().getId());
+            aulaPlanificacion.setNombre(itemDTO.getAulaPlanificacionNombre());
+            evento.setAulaPlanificacion(aulaPlanificacion);
         }
 
         return evento;
@@ -834,7 +929,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
     }
 
     @Override
-    public List<Evento> getEventosDetalle(Long estudioId, Long cursoId, Long semestreId,
+    public List<EventoDetalle> getEventosDetalle(Long estudioId, Long cursoId, Long semestreId,
             String grupoId, List<Long> calendariosIds, Date rangoFechaInicio, Date rangoFechaFin)
     {
         JPAQuery query = new JPAQuery(entityManager);
@@ -842,8 +937,10 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         QItemDetalleDTO itemDetalle = QItemDetalleDTO.itemDetalleDTO;
         List<String> tiposCalendarios = TipoSubgrupo.getTiposSubgrupos(calendariosIds);
 
-        List<Tuple> listaTuplas = query
-                .from(item, itemDetalle)
+        List<ItemDetalleDTO> listaItemsDetalleDTO = query
+                .from(itemDetalle)
+                .join(itemDetalle.item, item)
+                .fetch()
                 .where(itemDetalle.item.id.eq(item.id).and(
                         item.estudio.id.eq(estudioId).and(
                                 item.cursoId.eq(cursoId).and(item.semestre.id.eq(semestreId))
@@ -852,39 +949,18 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
                                         .and(item.grupoId.eq(grupoId))
                                         .and(item.diaSemana.isNotNull())
                                         .and(item.tipoSubgrupoId.in(tiposCalendarios)))))
-                .list(new QTuple(itemDetalle.id, itemDetalle.inicio, itemDetalle.fin,
-                        item.asignaturaId, item.tipoSubgrupoId, item.subgrupoId, item.comun,
-                        item.aulaPlanificacion, item.aulaPlanificacionNombre));
 
-        System.out.println(listaTuplas);
-        List<Evento> eventos = new ArrayList<Evento>();
+                .list(itemDetalle);
 
-        for (Tuple tupla : listaTuplas)
+        List<EventoDetalle> listaEventosDetalle = new ArrayList<EventoDetalle>();
+        for (ItemDetalleDTO itemDetalleDTO : listaItemsDetalleDTO)
         {
-            String titulo = MessageFormat.format("{0} {1}{2}", tupla.get(item.asignaturaId),
-                    tupla.get(item.tipoSubgrupoId), tupla.get(item.subgrupoId));
 
-            if (tupla.get(item.comun) == 1)
-            {
-                titulo = MessageFormat.format("{0} - C", titulo);
-            }
-
-            if (tupla.get(item.aulaPlanificacion) != null)
-            {
-                titulo = MessageFormat.format(
-                        "{0} {1}",
-                        titulo,
-                        (tupla.get(item.aulaPlanificacionNombre) != null) ? tupla
-                                .get(item.aulaPlanificacionNombre) : "");
-            }
-
-            Calendario calendario = new Calendario(TipoSubgrupo.valueOf(
-                    tupla.get(item.tipoSubgrupoId)).getCalendarioAsociado());
-            eventos.add(new Evento(tupla.get(itemDetalle.id), calendario, titulo, tupla
-                    .get(itemDetalle.inicio), tupla.get(itemDetalle.fin)));
+            EventoDetalle eventoDetalle = creaEventoDetalleDesdeItemDetalleDTO(itemDetalleDTO);
+            eventoDetalle.setEvento(creaEventoDesde(itemDetalleDTO.getItem()));
+            listaEventosDetalle.add(eventoDetalle);
         }
-        return eventos;
-
+        return listaEventosDetalle;
     }
 
     @Override
@@ -900,10 +976,8 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         {
             throw new RegistroNoEncontradoException();
         }
-
         AulaPlanificacionDTO aulaPlanificacion = null;
         String nombreAula = null;
-
         if (aulaId != null) // Comprobamos que el aula está asignada al estudio del evento
         {
             try
@@ -915,13 +989,11 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             {
                 throw new RegistroNoEncontradoException();
             }
-
             if (!aulaPlanificacion.getEstudio().getId().equals(item.getEstudio().getId()))
             {
                 throw new AulaNoAsignadaAEstudioDelEventoException();
             }
         }
-
         List<ItemDTO> items = new ArrayList<ItemDTO>();
 
         if (propagar)
@@ -939,19 +1011,15 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
                             .and(itemDTO.subgrupoId.eq(item.getSubgrupoId()))
                             .and(itemDTO.id.ne(item.getId()))).list(itemDTO);
         }
-
         items.add(0, item);
 
         List<Evento> eventos = new ArrayList<Evento>();
-
         for (ItemDTO itemAux : items)
         {
             itemAux.setAulaPlanificacion(aulaPlanificacion);
             itemAux.setAulaPlanificacionNombre(nombreAula);
             eventos.add(creaEventoDesde(update(itemAux)));
-
             List<ItemComunDTO> comunes = getItemsComunes(itemAux.getId());
-
             for (ItemComunDTO comun : comunes)
             {
                 try
@@ -966,8 +1034,130 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
                 }
             }
         }
-
         return eventos;
+    }
+
+    @Override
+    public Evento getEventoById(Long eventoId) throws RegistroNoEncontradoException
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+
+        QItemDTO item = QItemDTO.itemDTO;
+
+        List<ItemDTO> listaItemsDTO = query.from(item).where(item.id.eq(eventoId)).list(item);
+
+        if (listaItemsDTO.size() == 1)
+        {
+            return creaEventoConDetallesDesde(listaItemsDTO.get(0));
+        }
+        else
+        {
+            throw new RegistroNoEncontradoException();
+        }
+    }
+
+    @Override
+    public Evento insertEvento(Evento evento)
+    {
+        // Creamos el nuevo evento
+        ItemDTO itemDTO = new ItemDTO();
+        AulaPlanificacionDTO aulaPlanificacionDTO = new AulaPlanificacionDTO();
+        // aulaPlanificacionDTO.setId(evento.getAulaPlanificacion().getId());
+
+        EstudioDTO estudioDTO = new EstudioDTO();
+        estudioDTO.setId(evento.getAsignatura().getEstudio().getId());
+
+        SemestreDTO semestreDTO = new SemestreDTO();
+        semestreDTO.setId(evento.getSemestre().getSemestre());
+        semestreDTO.setNombre(evento.getSemestre().getNombre());
+
+        itemDTO.setAsignatura(evento.getAsignatura().getNombre());
+        itemDTO.setAsignaturaId(evento.getAsignatura().getId());
+        itemDTO.setPlazas(evento.getPlazas());
+        itemDTO.setComun(evento.getAsignatura().getComun() ? new Long(1) : new Long(0));
+        itemDTO.setComunes(evento.getAsignatura().getComunes());
+        itemDTO.setPorcentajeComun(evento.getAsignatura().getPorcentajeComun());
+        itemDTO.setTipoAsignaturaId(evento.getAsignatura().getTipoAsignaturaId());
+        itemDTO.setTipoAsignatura(evento.getAsignatura().getTipoAsignatura());
+        itemDTO.setEstudio(estudioDTO);
+        itemDTO.setEstudioDesc(evento.getAsignatura().getEstudio().getNombre());
+        itemDTO.setTipoEstudioId(evento.getAsignatura().getEstudio().getTipoEstudioId());
+        itemDTO.setTipoEstudio(evento.getAsignatura().getEstudio().getTipoEstudio());
+        itemDTO.setCursoId(evento.getAsignatura().getCursoId());
+        itemDTO.setCaracter(evento.getAsignatura().getCaracter());
+        itemDTO.setCaracterId(evento.getAsignatura().getCaracterId());
+
+        if (evento.getDia() != null)
+        {
+            DiaSemanaDTO diaSemanaDTO = new DiaSemanaDTO();
+            diaSemanaDTO.setId(new Long(evento.getDia()));
+            itemDTO.setDiaSemana(diaSemanaDTO);
+        }
+
+        itemDTO.setSemestre(semestreDTO);
+        itemDTO.setGrupoId(evento.getGrupoId());
+        itemDTO.setSubgrupoId(evento.getSubgrupoId());
+
+        // itemDTO.setAulaPlanificacion(aulaPlanificacionDTO);
+        itemDTO.setHastaElDia(evento.getHastaElDia());
+        itemDTO.setHoraFin(evento.getFin());
+        itemDTO.setHoraInicio(evento.getInicio());
+        itemDTO.setDesdeElDia(evento.getDesdeElDia());
+        itemDTO.setHastaElDia(evento.getHastaElDia());
+        itemDTO.setRepetirCadaSemanas(evento.getRepetirCadaSemanas());
+        itemDTO.setNumeroIteraciones(evento.getNumeroIteraciones());
+        itemDTO.setTipoSubgrupoId(TipoSubgrupo.getTipoSubgrupo(evento.getCalendario().getId()));
+        itemDTO.setTipoSubgrupo(evento.getCalendario().getNombre());
+        itemDTO.setDetalleManual(evento.hasDetalleManual());
+        itemDTO = insert(itemDTO);
+
+        if (evento.hasDetalleManual())
+        {
+            for (EventoDetalle eventoDetalle : evento.getEventosDetalle())
+            {
+                ItemDetalleDTO itemDetalleDTO = new ItemDetalleDTO();
+                itemDetalleDTO.setDescripcion(eventoDetalle.getDescripcion());
+                itemDetalleDTO.setInicio(eventoDetalle.getInicio());
+                itemDetalleDTO.setFin(eventoDetalle.getFin());
+                itemDetalleDTO.setItem(itemDTO);
+                insert(itemDetalleDTO);
+            }
+        }
+
+        return this.creaEventoDesde(itemDTO);
+
+    }
+
+    @Override
+    @Transactional
+    public void updateHorasEvento(Evento evento)
+    {
+        QItemDTO qItem = QItemDTO.itemDTO;
+
+        JPAUpdateClause updateClause = new JPAUpdateClause(entityManager, qItem);
+        updateClause.where(qItem.id.eq(evento.getId())).set(qItem.horaInicio, evento.getInicio())
+                .set(qItem.horaFin, evento.getFin()).execute();
+
+        if (evento.hasDetalleManual())
+        {
+            for (EventoDetalle eventoDetalle : evento.getEventosDetalle())
+            {
+                updateHorasEventoDetalle(eventoDetalle);
+            }
+        }
+    }
+
+    @Override
+    @Transactional
+    public void updateHorasEventoDetalle(EventoDetalle eventoDetalle)
+    {
+        QItemDetalleDTO qItemDetalle = QItemDetalleDTO.itemDetalleDTO;
+
+        JPAUpdateClause updateClause = new JPAUpdateClause(entityManager, qItemDetalle);
+        updateClause.where(qItemDetalle.id.eq(eventoDetalle.getId()))
+                .set(qItemDetalle.inicio, eventoDetalle.getInicio())
+                .set(qItemDetalle.fin, eventoDetalle.getFin()).execute();
+
     }
 
     private List<ItemComunDTO> getItemsComunes(Long itemId)
