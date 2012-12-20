@@ -10,7 +10,6 @@ import org.hsqldb.lib.HashMap;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mysema.query.Tuple;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
 
@@ -151,8 +150,10 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         eventoDetalle.setId(itemDetalleDTO.getId());
         eventoDetalle.setDescripcion(itemDetalleDTO.getDescripcion());
         eventoDetalle.setInicio(itemDetalleDTO.getInicio());
-        
-        String titulo = MessageFormat.format("{0} {1}{2}", itemDetalleDTO.getItem().getAsignaturaId(), itemDetalleDTO.getItem().getTipoEstudioId(), itemDetalleDTO.getItem().getTipoSubgrupoId());
+
+        String titulo = MessageFormat.format("{0} {1}{2}", itemDetalleDTO.getItem()
+                .getAsignaturaId(), itemDetalleDTO.getItem().getTipoEstudioId(), itemDetalleDTO
+                .getItem().getTipoSubgrupoId());
         eventoDetalle.setDescripcion(titulo);
         eventoDetalle.setFin(itemDetalleDTO.getFin());
 
@@ -172,12 +173,23 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         String titulo = itemDTO.toString();
         Calendario calendario = obtenerCalendarioAsociadoPorTipoSubgrupo(itemDTO);
 
-        Calendar inicio = generaItemCalendarioSemanaGenerica(itemDTO.getDiaSemana().getId()
-                .intValue(), itemDTO.getHoraInicio());
-        Calendar fin = generaItemCalendarioSemanaGenerica(
-                itemDTO.getDiaSemana().getId().intValue(), itemDTO.getHoraFin());
-        Evento evento = new Evento(itemDTO.getId(), calendario, titulo, inicio.getTime(),
-                fin.getTime());
+        Evento evento = new Evento();
+        evento.setCalendario(calendario);
+        evento.setTitulo(titulo);
+
+        if (itemDTO.getHoraInicio() != null)
+        {
+            Calendar inicio = generaItemCalendarioSemanaGenerica(itemDTO.getDiaSemana().getId()
+                    .intValue(), itemDTO.getHoraInicio());
+            evento.setInicio(inicio.getTime());
+        }
+
+        if (itemDTO.getHoraFin() != null)
+        {
+            Calendar fin = generaItemCalendarioSemanaGenerica(itemDTO.getDiaSemana().getId()
+                    .intValue(), itemDTO.getHoraFin());
+            evento.setFin(fin.getTime());
+        }
 
         evento.setDetalleManual(itemDTO.getDetalleManual());
         evento.setNumeroIteraciones(itemDTO.getNumeroIteraciones());
@@ -187,6 +199,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         evento.setGrupoId(itemDTO.getGrupoId());
         evento.setSubgrupoId(itemDTO.getSubgrupoId());
         evento.setPlazas(itemDTO.getPlazas());
+        evento.setId(itemDTO.getId());
 
         Estudio estudio = new Estudio();
         estudio.setId(itemDTO.getEstudio().getId());
@@ -953,7 +966,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
     }
 
     @Override
-    public ItemDTO insertEvento(Evento evento)
+    public Evento insertEvento(Evento evento)
     {
         // Creamos el nuevo evento
         ItemDTO itemDTO = new ItemDTO();
@@ -966,9 +979,6 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         SemestreDTO semestreDTO = new SemestreDTO();
         semestreDTO.setId(evento.getSemestre().getSemestre());
         semestreDTO.setNombre(evento.getSemestre().getNombre());
-
-        DiaSemanaDTO diaSemanaDTO = new DiaSemanaDTO();
-        diaSemanaDTO.setId(new Long(evento.getDia()));
 
         itemDTO.setAsignatura(evento.getAsignatura().getNombre());
         itemDTO.setAsignaturaId(evento.getAsignatura().getId());
@@ -985,7 +995,13 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         itemDTO.setCursoId(evento.getAsignatura().getCursoId());
         itemDTO.setCaracter(evento.getAsignatura().getCaracter());
         itemDTO.setCaracterId(evento.getAsignatura().getCaracterId());
-        itemDTO.setDiaSemana(diaSemanaDTO);
+
+        if (evento.getDia() != null)
+        {
+            DiaSemanaDTO diaSemanaDTO = new DiaSemanaDTO();
+            diaSemanaDTO.setId(new Long(evento.getDia()));
+            itemDTO.setDiaSemana(diaSemanaDTO);
+        }
 
         itemDTO.setSemestre(semestreDTO);
         itemDTO.setGrupoId(evento.getGrupoId());
@@ -1017,7 +1033,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             }
         }
 
-        return itemDTO;
+        return this.creaEventoDesde(itemDTO);
 
     }
 

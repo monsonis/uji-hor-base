@@ -317,6 +317,11 @@ public class Evento
 
     public Integer getDia()
     {
+        if (this.getInicio() == null)
+        {
+            return null;
+        }
+
         Calendar actual = Calendar.getInstance(new Locale("es", "ES"));
         actual.setTime(this.getInicio());
 

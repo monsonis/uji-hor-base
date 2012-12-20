@@ -12,6 +12,7 @@ import com.mysema.query.types.QTuple;
 import es.uji.apps.hor.db.EstudioDTO;
 import es.uji.apps.hor.db.QEstudioDTO;
 import es.uji.apps.hor.db.QItemDTO;
+import es.uji.apps.hor.db.TipoEstudioDTO;
 import es.uji.apps.hor.model.Estudio;
 import es.uji.commons.db.BaseDAODatabaseImpl;
 
@@ -55,17 +56,41 @@ public class EstudiosDAODatabaseImpl extends BaseDAODatabaseImpl implements Estu
         query.from(qEstudio).where(qEstudio.centro.id.eq(centroId));
 
         List<Estudio> listaEstudios = new ArrayList<Estudio>();
-        
-        for (EstudioDTO estudioDTO: query.list(qEstudio)) {
+
+        for (EstudioDTO estudioDTO : query.list(qEstudio))
+        {
             listaEstudios.add(creaEstudioDesdeEstudioDTO(estudioDTO));
         }
-        
+
         return listaEstudios;
     }
 
-    private Estudio  creaEstudioDesdeEstudioDTO(EstudioDTO estudioDTO)
+    private Estudio creaEstudioDesdeEstudioDTO(EstudioDTO estudioDTO)
     {
-        Estudio estudio = new Estudio (estudioDTO.getId(), estudioDTO.getNombre());
+        Estudio estudio = new Estudio(estudioDTO.getId(), estudioDTO.getNombre());
+        estudio.setTipoEstudio(estudioDTO.getTipoEstudio().getNombre());
+        estudio.setTipoEstudioId(estudioDTO.getTipoEstudio().getId());
         return estudio;
+    }
+
+    private EstudioDTO convierteEstudioAEstudioDTO(Estudio estudio)
+    {
+        TipoEstudioDTO tipoEstudioDTO = new TipoEstudioDTO();
+        tipoEstudioDTO.setId(estudio.getTipoEstudioId());
+        tipoEstudioDTO.setNombre(estudio.getTipoEstudio());
+
+        EstudioDTO estudioDTO = new EstudioDTO();
+        estudioDTO.setId(estudio.getId());
+        estudioDTO.setNombre(estudio.getNombre());
+        estudioDTO.setTipoEstudio(tipoEstudioDTO);
+        return estudioDTO;
+    }
+
+    @Override
+    public Estudio insert(Estudio estudio)
+    {
+        EstudioDTO estudioDTO = convierteEstudioAEstudioDTO(estudio);
+        EstudioDTO nuevoEstudioDTO = this.insert(estudioDTO);
+        return creaEstudioDesdeEstudioDTO(nuevoEstudioDTO);
     }
 }
