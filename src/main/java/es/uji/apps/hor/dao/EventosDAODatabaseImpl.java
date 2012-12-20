@@ -1169,4 +1169,20 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
 
         return query.list(itemComunDTO);
     }
+
+    @Override
+    @Transactional
+    public void updateDiaYHoraEvento(Evento evento)
+    {
+        DiaSemanaDTO diaSemanaDTO = new DiaSemanaDTO();
+        diaSemanaDTO.setId(new Long(evento.getDia()));
+
+        QItemDTO qItem = QItemDTO.itemDTO;
+
+        JPAUpdateClause updateClause = new JPAUpdateClause(entityManager, qItem);
+        updateClause.where(qItem.id.eq(evento.getId())).set(qItem.horaInicio, evento.getInicio())
+                .set(qItem.horaFin, evento.getFin()).set(qItem.diaSemana, diaSemanaDTO).execute();
+
+        // Falta comunes
+    }
 }

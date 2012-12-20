@@ -41,31 +41,18 @@ public class EventosService
                 calendariosIds);
     }
 
-    public Evento modificaDiaYHoraGrupoAsignatura(Long grupoAsignaturaId, Date inicio, Date fin)
-            throws DuracionEventoIncorrectaException
-    {
-        Calendar calInicio = Calendar.getInstance();
-        Calendar calFin = Calendar.getInstance();
-
-        calInicio.setTime(inicio);
-        calFin.setTime(fin);
-
-        if (calInicio.get(Calendar.YEAR) == calFin.get(Calendar.YEAR)
-                && calInicio.get(Calendar.MONTH) == calFin.get(Calendar.MONTH)
-                && calInicio.get(Calendar.DAY_OF_MONTH) == calFin.get(Calendar.DAY_OF_MONTH)
-                && calInicio.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY
-                && calInicio.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY)
-        {
-            return eventosDAO.modificaDiaYHoraGrupoAsignatura(grupoAsignaturaId, inicio, fin);
-        }
-        else
-        {
-            throw new DuracionEventoIncorrectaException();
-        }
+    public Evento modificaDiaYHoraEvento(Long eventoId, Date inicio, Date fin)
+            throws DuracionEventoIncorrectaException, RegistroNoEncontradoException
+    {      
+        Evento evento = eventosDAO.getEventoById(eventoId);
+        evento.updateDiaYHora(inicio, fin);
+        
+        return null;
     }
 
     public void deleteEventoSemanaGenerica(Long eventoId) throws RegistroNoEncontradoException
     {
+        Evento evento = eventosDAO.getEventoById(eventoId);
         eventosDAO.deleteEventoSemanaGenerica(eventoId);
     }
 

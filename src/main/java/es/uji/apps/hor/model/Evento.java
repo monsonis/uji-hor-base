@@ -9,6 +9,7 @@ import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import es.uji.apps.hor.DuracionEventoIncorrectaException;
 import es.uji.apps.hor.dao.EventosDAO;
 
 @Component
@@ -31,6 +32,7 @@ public class Evento
     private Long subgrupoId;
     private Long plazas;
     private List<EventoDetalle> eventosDetalle = new ArrayList<EventoDetalle>();
+    private List<Evento> eventosComunes;
 
     private AulaPlanificacion aulaPlanificacion;
 
@@ -347,5 +349,39 @@ public class Evento
     public void setEventosDetalle(List<EventoDetalle> eventosDetalle)
     {
         this.eventosDetalle = eventosDetalle;
+    }
+
+    public List<Evento> getEventosComunes()
+    {
+        return eventosComunes;
+    }
+
+    public void setEventosComunes(List<Evento> eventosComunes)
+    {
+        this.eventosComunes = eventosComunes;
+    }
+    
+    public void updateDiaYHora(Date inicio, Date fin) throws DuracionEventoIncorrectaException
+    {
+        Calendar calInicio = Calendar.getInstance();
+        Calendar calFin = Calendar.getInstance();
+
+        calInicio.setTime(inicio);
+        calFin.setTime(fin);
+
+        if (calInicio.get(Calendar.YEAR) == calFin.get(Calendar.YEAR)
+                && calInicio.get(Calendar.MONTH) == calFin.get(Calendar.MONTH)
+                && calInicio.get(Calendar.DAY_OF_MONTH) == calFin.get(Calendar.DAY_OF_MONTH)
+                && calInicio.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY
+                && calInicio.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY)
+        {
+            
+            this.setInicio(inicio);
+            this.setFin(fin);
+        }
+        else
+        {
+            throw new DuracionEventoIncorrectaException();
+        }
     }
 }

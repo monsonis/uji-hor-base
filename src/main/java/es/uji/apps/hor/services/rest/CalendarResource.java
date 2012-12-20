@@ -290,7 +290,7 @@ public class CalendarResource
             }
             else
             {
-                evento = eventosService.modificaDiaYHoraGrupoAsignatura(
+                evento = eventosService.modificaDiaYHoraEvento(
                         Long.parseLong(entity.get("id")), inicio, fin);
             }
 

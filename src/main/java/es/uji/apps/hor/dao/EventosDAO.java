@@ -59,4 +59,5 @@ public interface EventosDAO extends BaseDAO
 
     void updateHorasEventoDetalle(EventoDetalle eventoDetalle);
 
+    void updateDiaYHoraEvento(Evento evento);
 }

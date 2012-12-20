@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.junit.Test;
 
@@ -37,6 +38,21 @@ public class EventoModelTest
         assertThat(formatter.format(eventoNuevo.getInicio()), equalTo("30/07/2012 09:30"));
         assertThat(formatter.format(eventoNuevo.getFin()), equalTo("30/07/2012 10:00"));
 
+    }
+
+    @Test
+    public void modificaDiaYHoraEventoTest() throws Exception
+    {
+        Evento evento = buildEvento("30/07/2012 09:00", "30/07/2012 10:00");
+
+        Date inicio = formatter.parse("20/12/2012 10:00");
+        Date fin = formatter.parse("20/12/2012 12:00");
+        
+        evento.updateDiaYHora(inicio, fin);
+        
+        assertThat(evento.getInicio(), equalTo(inicio));
+        assertThat(evento.getFin(), equalTo(fin));
+        assertThat(evento.getDia(), equalTo(4));
     }
 
     private Evento buildEvento(String fechaInicial, String fechaFinal) throws Exception
