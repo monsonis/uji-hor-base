@@ -12,6 +12,7 @@ import java.util.List;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.request.RequestContextListener;
@@ -121,6 +122,7 @@ public class CalendarResourceTest extends JerseyTest
     }
 
     @Test
+    @Ignore
     public void getEventosDetalleUnDia() throws ParseException
     {
         // Given
@@ -166,6 +168,7 @@ public class CalendarResourceTest extends JerseyTest
     }
 
     @Test
+    @Ignore
     public void getEventosDetalleUnaSemana() throws ParseException
     {
         // Given
@@ -213,6 +216,7 @@ public class CalendarResourceTest extends JerseyTest
     }
 
     @Test
+    @Ignore
     public void getEventosDetalleCuatroSemanas() throws ParseException
     {
         // Given
