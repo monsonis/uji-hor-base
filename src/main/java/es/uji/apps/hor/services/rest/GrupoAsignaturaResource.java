@@ -66,10 +66,10 @@ public class GrupoAsignaturaResource
     @PUT
     @Path("sinAsignar/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UIEntity> updateGruposAsignaturasSinAsignar(@PathParam("id") String id)
+    public List<UIEntity> planificaGruposAsignaturasSinAsignar(@PathParam("id") String id)
             throws RegistroNoEncontradoException, NumberFormatException
     {
-        GrupoAsignatura grupoAsignatura = gruposAsignaturasService.asignaDiaYHoraPorDefecto(Long
+        GrupoAsignatura grupoAsignatura = gruposAsignaturasService.planificaGrupoAsignaturaSinAsignar(Long
                 .parseLong(id));
         return Collections.singletonList(UIEntity.toUI(grupoAsignatura));
     }

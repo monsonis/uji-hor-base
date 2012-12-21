@@ -27,7 +27,7 @@ public class GruposAsignaturasService
                 grupoId, calendariosIds);
     }
 
-    public GrupoAsignatura asignaDiaYHoraPorDefecto(Long grupoAsignaturaId)
+    public GrupoAsignatura planificaGrupoAsignaturaSinAsignar(Long grupoAsignaturaId)
             throws RegistroNoEncontradoException
     {
         GrupoAsignatura grupoAsignatura = grupoAsignaturaDAO
