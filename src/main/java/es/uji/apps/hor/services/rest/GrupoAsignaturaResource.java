@@ -53,7 +53,7 @@ public class GrupoAsignaturaResource
         if (calendariosList.size() != 0)
         {
             List<GrupoAsignatura> gruposAsignaturas = gruposAsignaturasService
-                    .gruposAsignaturasSinAsignar(ParamUtils.parseLong(estudioId),
+                    .getGruposAsignaturasSinAsignar(ParamUtils.parseLong(estudioId),
                             ParamUtils.parseLong(cursoId), ParamUtils.parseLong(semestreId),
                             grupoId, calendariosList);
 
@@ -72,7 +72,6 @@ public class GrupoAsignaturaResource
         GrupoAsignatura grupoAsignatura = gruposAsignaturasService.asignaDiaYHoraPorDefecto(Long
                 .parseLong(id));
         return Collections.singletonList(UIEntity.toUI(grupoAsignatura));
-
     }
 
 }

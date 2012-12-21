@@ -20,7 +20,7 @@ public class GruposAsignaturasService
         this.grupoAsignaturaDAO = grupoAsignaturaDAO;
     }
 
-    public List<GrupoAsignatura> gruposAsignaturasSinAsignar(Long estudioId, Long cursoId,
+    public List<GrupoAsignatura> getGruposAsignaturasSinAsignar(Long estudioId, Long cursoId,
             Long semestreId, String grupoId, List<Long> calendariosIds)
     {
         return grupoAsignaturaDAO.getGruposAsignaturasSinAsignar(estudioId, cursoId, semestreId,
@@ -31,8 +31,10 @@ public class GruposAsignaturasService
             throws RegistroNoEncontradoException
     {
         GrupoAsignatura grupoAsignatura = grupoAsignaturaDAO
-                .asignaDiaYHoraPorDefecto(grupoAsignaturaId);
-        
+                .getGrupoAsignaturaById(grupoAsignaturaId);
+        grupoAsignatura.planificaGrupoAsignaturaSinAsignar();
+        grupoAsignaturaDAO.planificaGrupoAsignaturaSinAsignar(grupoAsignatura);
+
         return grupoAsignatura;
     }
 }

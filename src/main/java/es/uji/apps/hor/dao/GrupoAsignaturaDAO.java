@@ -4,6 +4,7 @@ import java.util.List;
 
 import es.uji.apps.hor.model.GrupoAsignatura;
 import es.uji.commons.db.BaseDAO;
+import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
 public interface GrupoAsignaturaDAO extends BaseDAO
 {
@@ -11,5 +12,10 @@ public interface GrupoAsignaturaDAO extends BaseDAO
             Long semestreId, String grupoId, List<Long> calendariosIds);
 
     GrupoAsignatura asignaDiaYHoraPorDefecto(Long grupoId);
-    
+
+    GrupoAsignatura getGrupoAsignaturaById(Long grupoAsignaturaId)
+            throws RegistroNoEncontradoException;
+
+    void planificaGrupoAsignaturaSinAsignar(GrupoAsignatura grupoAsignatura)
+            throws RegistroNoEncontradoException;
 }
