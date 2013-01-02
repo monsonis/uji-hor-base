@@ -13,6 +13,10 @@ public class Aula
     private String area;
     private String edificio;
     private String planta;
+    
+    public Aula()
+    {
+    }
 
     public Aula(Long id)
     {
