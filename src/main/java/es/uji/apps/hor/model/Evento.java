@@ -9,6 +9,7 @@ import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import es.uji.apps.hor.AulaNoAsignadaAEstudioDelEventoException;
 import es.uji.apps.hor.DuracionEventoIncorrectaException;
 import es.uji.apps.hor.dao.EventosDAO;
 
@@ -360,7 +361,7 @@ public class Evento
     {
         this.eventosComunes = eventosComunes;
     }
-    
+
     public void updateDiaYHora(Date inicio, Date fin) throws DuracionEventoIncorrectaException
     {
         Calendar calInicio = Calendar.getInstance();
@@ -375,7 +376,7 @@ public class Evento
                 && calInicio.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY
                 && calInicio.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY)
         {
-            
+
             this.setInicio(inicio);
             this.setFin(fin);
         }
@@ -383,5 +384,16 @@ public class Evento
         {
             throw new DuracionEventoIncorrectaException();
         }
+    }
+
+    public void actualizaAulaPlanificacion(AulaPlanificacion aulaPlanificacion)
+            throws AulaNoAsignadaAEstudioDelEventoException
+    {
+        if (!aulaPlanificacion.getEstudioId().equals(asignatura.getEstudio().getId()))
+        {
+            throw new AulaNoAsignadaAEstudioDelEventoException();
+        }
+        
+        this.aulaPlanificacion = aulaPlanificacion;
     }
 }

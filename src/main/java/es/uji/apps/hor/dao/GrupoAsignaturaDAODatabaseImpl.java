@@ -25,8 +25,8 @@ import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 public class GrupoAsignaturaDAODatabaseImpl extends BaseDAODatabaseImpl implements
         GrupoAsignaturaDAO
 {
-
     @Override
+    @Transactional
     public List<GrupoAsignatura> getGruposAsignaturasSinAsignar(Long estudioId, Long cursoId,
             Long semestreId, String grupoId, List<Long> calendariosIds)
     {

@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
 
-import es.uji.apps.hor.AulaNoAsignadaAEstudioDelEventoException;
 import es.uji.apps.hor.EventoDetalleSinEventoException;
 import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.db.AulaPlanificacionDTO;
@@ -965,77 +964,25 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
     }
 
     @Override
-    public List<Evento> actualizaAulaAsignadaAEvento(Long eventoId, Long aulaId, boolean propagar)
-            throws RegistroNoEncontradoException, AulaNoAsignadaAEstudioDelEventoException
+    public void actualizaAulaAsignadaAEvento(Long eventoId, Long aulaId)
+            throws RegistroNoEncontradoException
     {
         ItemDTO item;
+        AulaPlanificacionDTO aulaPlanificacion;
         try
         {
             item = get(ItemDTO.class, eventoId).get(0);
+            aulaPlanificacion = get(AulaPlanificacionDTO.class, aulaId).get(0);
         }
         catch (Exception e)
         {
             throw new RegistroNoEncontradoException();
         }
-        AulaPlanificacionDTO aulaPlanificacion = null;
-        String nombreAula = null;
-        if (aulaId != null) // Comprobamos que el aula está asignada al estudio del evento
-        {
-            try
-            {
-                aulaPlanificacion = get(AulaPlanificacionDTO.class, aulaId).get(0);
-                nombreAula = aulaPlanificacion.getAula().getCodigo();
-            }
-            catch (Exception e)
-            {
-                throw new RegistroNoEncontradoException();
-            }
-            if (!aulaPlanificacion.getEstudio().getId().equals(item.getEstudio().getId()))
-            {
-                throw new AulaNoAsignadaAEstudioDelEventoException();
-            }
-        }
-        List<ItemDTO> items = new ArrayList<ItemDTO>();
 
-        if (propagar)
-        {
-            JPAQuery query = new JPAQuery(entityManager);
-            QItemDTO itemDTO = QItemDTO.itemDTO;
-            items = query
-                    .from(itemDTO)
-                    .where(itemDTO.asignaturaId.eq(item.getAsignaturaId())
-                            .and(itemDTO.estudio.id.eq(item.getEstudio().getId()))
-                            .and(itemDTO.cursoId.eq(item.getCursoId()))
-                            .and(itemDTO.semestre.id.eq(item.getSemestre().getId()))
-                            .and(itemDTO.grupoId.eq(item.getGrupoId()))
-                            .and(itemDTO.tipoSubgrupoId.eq(item.getTipoSubgrupoId()))
-                            .and(itemDTO.subgrupoId.eq(item.getSubgrupoId()))
-                            .and(itemDTO.id.ne(item.getId()))).list(itemDTO);
-        }
-        items.add(0, item);
+        item.setAulaPlanificacion(aulaPlanificacion);
+        item.setAulaPlanificacionNombre(aulaPlanificacion.getNombre());
 
-        List<Evento> eventos = new ArrayList<Evento>();
-        for (ItemDTO itemAux : items)
-        {
-            itemAux.setAulaPlanificacion(aulaPlanificacion);
-            itemAux.setAulaPlanificacionNombre(nombreAula);
-            eventos.add(creaEventoDesde(update(itemAux)));
-            List<ItemComunDTO> comunes = getItemsComunes(itemAux.getId());
-            for (ItemComunDTO comun : comunes)
-            {
-                try
-                {
-                    ItemDTO itemComun = get(ItemDTO.class, comun.getItemComun().getId()).get(0);
-                    itemComun.setAulaPlanificacion(aulaPlanificacion);
-                    itemComun.setAulaPlanificacionNombre(nombreAula);
-                    update(itemComun);
-                }
-                catch (Exception e)
-                {
-                }
-            }
-        }
-        return eventos;
+        update(item);
     }
 
     @Override
@@ -1184,8 +1131,6 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         updateClause.where(qItem.id.eq(evento.getId())).set(qItem.horaInicio, evento.getInicio())
                 .set(qItem.horaFin, evento.getFin()).set(qItem.diaSemana, diaSemanaDTO)
                 .set(qItem.detalleManual, false).execute();
-
-        // Falta comunes
     }
 
     @Override
@@ -1225,5 +1170,32 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         }
 
         return eventoDetalle;
+    }
+
+    @Override
+    public List<Evento> getGruposComunesAEvento(Long eventoId)
+    {
+        ItemDTO item = get(ItemDTO.class, eventoId).get(0);
+
+        JPAQuery query = new JPAQuery(entityManager);
+        QItemDTO qItem = QItemDTO.itemDTO;
+        List<ItemDTO> items = query
+                .from(qItem)
+                .where(qItem.asignaturaId.eq(item.getAsignaturaId())
+                        .and(qItem.estudio.id.eq(item.getEstudio().getId()))
+                        .and(qItem.cursoId.eq(item.getCursoId()))
+                        .and(qItem.semestre.id.eq(item.getSemestre().getId()))
+                        .and(qItem.grupoId.eq(item.getGrupoId()))
+                        .and(qItem.tipoSubgrupoId.eq(item.getTipoSubgrupoId()))
+                        .and(qItem.subgrupoId.eq(item.getSubgrupoId()))
+                        .and(qItem.id.ne(item.getId()))).list(qItem);
+
+        List<Evento> eventos = new ArrayList<Evento>();
+        for (ItemDTO itemDTO : items)
+        {
+            eventos.add(creaEventoDesde(itemDTO));
+        }
+
+        return eventos;
     }
 }

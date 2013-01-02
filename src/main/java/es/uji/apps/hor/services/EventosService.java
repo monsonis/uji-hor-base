@@ -1,5 +1,6 @@
 package es.uji.apps.hor.services;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -10,7 +11,9 @@ import org.springframework.stereotype.Service;
 import es.uji.apps.hor.AulaNoAsignadaAEstudioDelEventoException;
 import es.uji.apps.hor.DuracionEventoIncorrectaException;
 import es.uji.apps.hor.EventoNoDivisibleException;
+import es.uji.apps.hor.dao.AulaDAO;
 import es.uji.apps.hor.dao.EventosDAO;
+import es.uji.apps.hor.model.AulaPlanificacion;
 import es.uji.apps.hor.model.Evento;
 import es.uji.apps.hor.model.EventoDetalle;
 import es.uji.apps.hor.model.EventoDocencia;
@@ -20,11 +23,14 @@ import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 public class EventosService
 {
     private final EventosDAO eventosDAO;
+    
+    private final AulaDAO aulaDAO;
 
     @Autowired
-    public EventosService(EventosDAO eventosDAO)
+    public EventosService(EventosDAO eventosDAO, AulaDAO aulaDAO)
     {
         this.eventosDAO = eventosDAO;
+        this.aulaDAO = aulaDAO;
     }
 
     public List<Evento> eventosDeUnEstudio(Long estudioId, Long cursoId, Date rangoFechasInicio,
@@ -130,6 +136,24 @@ public class EventosService
     public List<Evento> actualizaAulaAsignadaAEvento(Long eventoId, Long aulaId, boolean propagar)
             throws RegistroNoEncontradoException, AulaNoAsignadaAEstudioDelEventoException
     {
-        return eventosDAO.actualizaAulaAsignadaAEvento(eventoId, aulaId, propagar);
+        Evento evento = eventosDAO.getEventoById(eventoId);
+        AulaPlanificacion aula = aulaDAO.getAulaById(aulaId);
+        evento.actualizaAulaPlanificacion(aula);
+        eventosDAO.actualizaAulaAsignadaAEvento(eventoId, aulaId);
+               
+        List<Evento> eventos = new ArrayList<Evento>();
+        
+        if (propagar)
+        {
+            eventos = eventosDAO.getGruposComunesAEvento(eventoId);
+            for (Evento grupoComun : eventos)
+            {
+                grupoComun.actualizaAulaPlanificacion(aula);
+                eventosDAO.actualizaAulaAsignadaAEvento(grupoComun.getId(), aulaId);
+            }
+        }
+        eventos.add(evento);      
+        
+        return eventos;
     }
 }

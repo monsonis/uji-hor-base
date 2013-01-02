@@ -195,4 +195,17 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         }
     }
 
+    @Override
+    public AulaPlanificacion getAulaById(Long aulaId) throws RegistroNoEncontradoException
+    {
+        try
+        {
+            return get(AulaPlanificacion.class, aulaId).get(0);
+        }
+        catch (Exception e)
+        {
+            throw new RegistroNoEncontradoException();
+        }
+    }
+
 }

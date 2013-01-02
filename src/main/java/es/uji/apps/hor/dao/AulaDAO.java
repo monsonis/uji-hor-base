@@ -23,4 +23,6 @@ public interface AulaDAO extends BaseDAO
             throws RegistroNoEncontradoException, AulaYaAsignadaAEstudioException;
 
     void deleteAulaAsignadaToEstudio(Long aulaPlanificacionId) throws RegistroConHijosException;
+    
+    AulaPlanificacion getAulaById(Long aulaId) throws RegistroNoEncontradoException;
 }
