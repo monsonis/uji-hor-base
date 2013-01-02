@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.notNullValue;
 
 import java.text.SimpleDateFormat;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import es.uji.apps.hor.builders.GrupoAsignaturaBuilder;
@@ -27,7 +28,8 @@ public class GrupoAsignaturaModelTest
 
         assertThat(grupoAsignatura.getInicio(), notNullValue());
         assertThat(grupoAsignatura.getFin(), notNullValue());
-        assertThat(grupoAsignatura.getDiaSemana(), notNullValue());
+        // assertThat(grupoAsignatura.getDiaSemana(), equals("Dilluns"));
+        Assert.assertEquals(grupoAsignatura.getDiaSemana(), "Dilluns");
     }
 
     private GrupoAsignatura buildGrupoAsignatura()

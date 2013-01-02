@@ -4,6 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.ws.rs.core.MediaType;
@@ -43,6 +44,7 @@ public class GrupoAsignaturaResourceTest extends AbstractRestTest
     private final String calendariosIds = "1;2;3;4;5;6";
 
     private SimpleDateFormat formatter;
+    private SimpleDateFormat dateFormat;
 
     @Autowired
     private EventosDAO eventosDao;
@@ -53,6 +55,7 @@ public class GrupoAsignaturaResourceTest extends AbstractRestTest
     public GrupoAsignaturaResourceTest()
     {
         formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     }
 
     @Before
@@ -172,6 +175,46 @@ public class GrupoAsignaturaResourceTest extends AbstractRestTest
         return new EventoBuilder(eventosDao).withTitulo("Evento de prueba")
                 .withAsignatura(asignatura).withSemestre(semestre).withCalendario(calendario)
                 .withGrupoId(grupoId).withDetalleManual(false).build();
+    }
+
+    @Test
+    @Transactional
+    public void elServicioPlanificaUnEventoNoAsignado()
+    {
+        List<UIEntity> listaEventosSinAsignar = getDefaultListaEventosSinAsignarDelServicio();
+        String grupoNoAsignadoId = listaEventosSinAsignar.get(0).get("id");
+
+        resource.path("grupoAsignatura/sinAsignar/" + grupoNoAsignadoId)
+                .accept(MediaType.APPLICATION_JSON_TYPE).put(ClientResponse.class);
+
+        List<UIEntity> listaEventosAsignados = getDefaultListaEventosGenericos();
+        String fechaInicio = "";
+
+        for (UIEntity eventoAsignado : listaEventosAsignados)
+        {
+            if (eventoAsignado.get("id").equals(grupoNoAsignadoId))
+            {
+                fechaInicio = eventoAsignado.get("start");
+            }
+        }
+
+        Calendar calendar = getCalendarioSemanaActualEnLunes();
+
+        assertThat(fechaInicio, equals(dateFormat.format(calendar.getTime())));
+    }
+
+    private Calendar getCalendarioSemanaActualEnLunes()
+    {
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+        Integer dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        calendar.add(Calendar.DAY_OF_WEEK, Calendar.MONDAY - dayOfWeek);
+        calendar.set(Calendar.HOUR_OF_DAY, 8);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.MINUTE, 0);
+
+        return calendar;
     }
 
 }
