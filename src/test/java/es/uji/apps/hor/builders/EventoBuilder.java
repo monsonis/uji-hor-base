@@ -1,5 +1,7 @@
 package es.uji.apps.hor.builders;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import es.uji.apps.hor.dao.EventosDAO;
@@ -13,8 +15,11 @@ public class EventoBuilder
     private Evento evento;
     private EventosDAO eventoDAO;
 
+    private SimpleDateFormat formatter;
+
     public EventoBuilder(EventosDAO eventoDAO)
     {
+        formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         this.eventoDAO = eventoDAO;
         evento = new Evento();
     }
@@ -27,6 +32,18 @@ public class EventoBuilder
     public EventoBuilder withTitulo(String titulo)
     {
         evento.setTitulo(titulo);
+        return this;
+    }
+
+    public EventoBuilder withInicioFechaString(String inicio) throws ParseException
+    {
+        evento.setInicio(formatter.parse(inicio));
+        return this;
+    }
+
+    public EventoBuilder withFinFechaString(String fin) throws ParseException
+    {
+        evento.setFin(formatter.parse(fin));
         return this;
     }
 

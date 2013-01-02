@@ -1,5 +1,7 @@
 package es.uji.apps.hor.services.rest;
 
+import java.text.SimpleDateFormat;
+
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -20,12 +22,14 @@ import es.uji.commons.rest.UIEntityListJSONMessageBodyReader;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext-test.xml" })
-// @TransactionConfiguration(defaultRollback = true)
 public abstract class AbstractRestTest extends JerseyTest
 {
 
     protected WebResource resource;
     static String packageName = "es.uji.apps.hor.services.rest";
+
+    static final protected SimpleDateFormat UIEntityDateFormat = new SimpleDateFormat(
+            "\"yyyy-MM-dd'T'HH:mm:ss\"");
 
     public AbstractRestTest()
     {

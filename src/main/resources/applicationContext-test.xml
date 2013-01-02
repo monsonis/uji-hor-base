@@ -31,7 +31,7 @@
 
   <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
     <property name="driverClassName" value="org.h2.Driver" />
-    <property name="url" value="jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;MODE=Oracle;AUTOCOMMIT=TRUE;LOCK_MODE=0;DEFAULT_LOCK_TIMEOUT=10000;LOCK_TIMEOUT=10000;TRACE_LEVEL_SYSTEM_OUT=2" />
+    <property name="url" value="jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;MODE=Oracle;LOCK_MODE=0;DEFAULT_LOCK_TIMEOUT=10000;LOCK_TIMEOUT=10000;TRACE_LEVEL_SYSTEM_OUT=2" />
   </bean>
 
 

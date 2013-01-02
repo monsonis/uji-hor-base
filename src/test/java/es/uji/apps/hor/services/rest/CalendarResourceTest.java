@@ -1,15 +1,11 @@
 package es.uji.apps.hor.services.rest;
 
-import static es.uji.commons.testing.hamcrest.ClientOkResponseMatcher.okClientResponse;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.hasSize;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -17,69 +13,228 @@ import java.util.List;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
-import org.junit.Ignore;
+import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.core.util.StringKeyStringValueIgnoreCaseMultivaluedMap;
 
+import es.uji.apps.hor.builders.AsignaturaBuilder;
+import es.uji.apps.hor.builders.CalendarioBuilder;
+import es.uji.apps.hor.builders.EstudioBuilder;
+import es.uji.apps.hor.builders.EventoBuilder;
+import es.uji.apps.hor.builders.EventoDetalleBuilder;
+import es.uji.apps.hor.builders.SemestreBuilder;
+import es.uji.apps.hor.dao.EstudiosDAO;
+import es.uji.apps.hor.dao.EventosDAO;
+import es.uji.apps.hor.model.Asignatura;
+import es.uji.apps.hor.model.Calendario;
+import es.uji.apps.hor.model.Estudio;
+import es.uji.apps.hor.model.Evento;
+import es.uji.apps.hor.model.Semestre;
+import es.uji.apps.hor.model.TipoSubgrupo;
 import es.uji.commons.rest.UIEntity;
 
 public class CalendarResourceTest extends AbstractRestTest
 {
 
-    static final SimpleDateFormat dateFormat = new SimpleDateFormat("\"yyyy-MM-dd'T'HH:mm:ss\"");
     static final SimpleDateFormat shortDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-    private Long estudioId = new Long(210);
+    private Long estudioId;
     private final Long cursoId = new Long(1);
     private final Long semestreId = new Long(1);
     private final String grupoId = "A";
     private final String calendariosIds = "1;2;3;4;5;6";
-    private final List<Long> calendariosIdsAsList = new ArrayList<Long>()
-    {
-        /**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
 
-        {
-            add(new Long(1));
-            add(new Long(2));
-            add(new Long(3));
-            add(new Long(4));
-            add(new Long(5));
-            add(new Long(6));
-        }
-    };
+    @Autowired
+    private EventosDAO eventosDao;
+
+    @Autowired
+    private EstudiosDAO estudiosDao;
+
+    @Before
+    @Transactional
+    public void creaEventosIniciales() throws Exception
+    {
+        Estudio estudio = new EstudioBuilder(estudiosDao).withNombre("Grau en Psicologia")
+                .withTipoEstudio("Grau").withTipoEstudioId("G").build();
+        estudioId = estudio.getId();
+
+        Estudio otroEstudio = new EstudioBuilder(estudiosDao).withNombre("Grau en Informática")
+                .withTipoEstudio("Grau").withTipoEstudioId("G").build();
+
+        Asignatura asignaturaFicticia1 = new AsignaturaBuilder().withCaracter("Obligatoria")
+                .withCaracterId("OB").withComun(false).withCursoId(cursoId).withId("PS1026")
+                .withNombre("Intervenció Psicosocial").withEstudio(estudio).build();
+
+        Asignatura asignaturaFicticia2 = new AsignaturaBuilder().withCaracter("Obligatoria")
+                .withCaracterId("OB").withComun(false).withCursoId(cursoId).withId("PS1027")
+                .withNombre("Asignatura de Psicologia").withEstudio(estudio).build();
+
+        Asignatura asignaturaOtraTitulacion = new AsignaturaBuilder().withCaracter("Obligatoria")
+                .withCaracterId("OB").withComun(false).withCursoId(cursoId).withId("I001")
+                .withNombre("Asignatura de Informatica").withEstudio(otroEstudio).build();
+
+        Semestre semestre = new SemestreBuilder().withSemestre(semestreId)
+                .withNombre("Primer semestre").build();
+
+        Long calendarioPracticasId = TipoSubgrupo.PR.getCalendarioAsociado();
+        Calendario calendarioPR = new CalendarioBuilder().withId(calendarioPracticasId)
+                .withNombre(TipoSubgrupo.getTipoSubgrupo(calendarioPracticasId)).build();
+
+        Long calendarioTeoriaId = TipoSubgrupo.TE.getCalendarioAsociado();
+        Calendario calendarioTE = new CalendarioBuilder().withId(calendarioTeoriaId)
+                .withNombre(TipoSubgrupo.getTipoSubgrupo(calendarioTeoriaId)).build();
+
+        Evento evento1DeAsignatura1 = new EventoBuilder(eventosDao)
+                .withTitulo("Evento de prueba 1 de asignatura 1")
+                .withAsignatura(asignaturaFicticia1).withInicioFechaString("10/10/2012 09:00")
+                .withFinFechaString("10/10/2012 11:00").withSemestre(semestre).withGrupoId(grupoId)
+                .withCalendario(calendarioPR).withDetalleManual(false).build();
+
+        Evento evento2DeAsignatura1 = new EventoBuilder(eventosDao)
+                .withTitulo("Evento de prueba 2 de asignatura 1")
+                .withAsignatura(asignaturaFicticia1).withInicioFechaString("10/10/2012 10:00")
+                .withFinFechaString("10/10/2012 12:00").withSemestre(semestre).withGrupoId(grupoId)
+                .withCalendario(calendarioTE).withDetalleManual(false).build();
+
+        Evento evento1DeAsignatura2 = new EventoBuilder(eventosDao)
+                .withTitulo("Evento de prueba 1 de asignatura 2")
+                .withAsignatura(asignaturaFicticia2).withInicioFechaString("11/10/2012 10:00")
+                .withFinFechaString("11/10/2012 12:00").withSemestre(semestre).withGrupoId(grupoId)
+                .withCalendario(calendarioTE).withDetalleManual(false).build();
+
+        Evento eventoOtraTitulacion = new EventoBuilder(eventosDao)
+                .withTitulo("Evento de prueba 3").withAsignatura(asignaturaOtraTitulacion)
+                .withInicioFechaString("12/10/2012 13:00").withFinFechaString("12/10/2012 14:00")
+                .withSemestre(semestre).withGrupoId(grupoId).withCalendario(calendarioTE)
+                .withDetalleManual(false).build();
+
+        new EventoDetalleBuilder(eventosDao).withEvento(evento1DeAsignatura1)
+                .withInicioFechaString("10/10/2012 09:00").withFinFechaString("10/10/2012 11:00")
+                .build();
+
+        new EventoDetalleBuilder(eventosDao).withEvento(evento1DeAsignatura1)
+                .withInicioFechaString("17/10/2012 09:00").withFinFechaString("17/10/2012 11:00")
+                .build();
+
+        new EventoDetalleBuilder(eventosDao).withEvento(evento1DeAsignatura1)
+                .withInicioFechaString("24/10/2012 09:00").withFinFechaString("24/10/2012 11:00")
+                .build();
+
+        new EventoDetalleBuilder(eventosDao).withEvento(evento1DeAsignatura1)
+                .withInicioFechaString("31/10/2012 09:00").withFinFechaString("31/10/2012 11:00")
+                .build();
+
+        new EventoDetalleBuilder(eventosDao).withEvento(evento2DeAsignatura1)
+                .withInicioFechaString("10/10/2012 10:00").withFinFechaString("10/10/2012 12:00")
+                .build();
+
+        new EventoDetalleBuilder(eventosDao).withEvento(evento2DeAsignatura1)
+                .withInicioFechaString("17/10/2012 10:00").withFinFechaString("17/10/2012 12:00")
+                .build();
+
+        new EventoDetalleBuilder(eventosDao).withEvento(evento2DeAsignatura1)
+                .withInicioFechaString("24/10/2012 10:00").withFinFechaString("24/10/2012 12:00")
+                .build();
+
+        new EventoDetalleBuilder(eventosDao).withEvento(evento1DeAsignatura2)
+                .withInicioFechaString("11/10/2012 10:00").withFinFechaString("11/10/2012 12:00")
+                .build();
+
+        new EventoDetalleBuilder(eventosDao).withEvento(evento1DeAsignatura2)
+                .withInicioFechaString("18/10/2012 10:00").withFinFechaString("18/10/2012 12:00")
+                .build();
+
+        new EventoDetalleBuilder(eventosDao).withEvento(evento1DeAsignatura2)
+                .withInicioFechaString("25/10/2012 10:00").withFinFechaString("25/10/2012 12:00")
+                .build();
+
+        new EventoDetalleBuilder(eventosDao).withEvento(eventoOtraTitulacion)
+                .withInicioFechaString("12/10/2012 13:00").withFinFechaString("12/10/2012 14:00")
+                .build();
+
+        new EventoDetalleBuilder(eventosDao).withEvento(eventoOtraTitulacion)
+                .withInicioFechaString("19/10/2012 13:00").withFinFechaString("11/10/2012 14:00")
+                .build();
+
+    }
 
     @Test
-    @Ignore
-    public void getEventosDetalleUnDia() throws ParseException
+    @Transactional
+    public void devuelveLosEventosDeUnDia() throws Exception
+    {
+        String fecha = "2012-10-24";
+        List<UIEntity> listaEventos = getEventosDetalladosEnRangoDeFechas(fecha, fecha);
+
+        assertThat(listaEventos, hasSize(2));
+        assertThat(todosEventosEnRango(listaEventos, fecha, fecha), is(true));
+    }
+
+    @Test
+    @Transactional
+    public void devuelveLosEventosDeUnaSemana() throws ParseException
     {
         // Given
-        String day_str = "2012-12-11";
+        String inicio_semana = "2012-10-22";
+        String fin_semana = "2012-10-28";
 
-        MultivaluedMap<String, String> params = getDefaulQueryParams();
-        params.putSingle("startDate", day_str);
-        params.putSingle("endDate", day_str);
+        List<UIEntity> listaEventos = getEventosDetalladosEnRangoDeFechas(inicio_semana, fin_semana);
 
-        // When
-        ClientResponse response = resource.path("calendario/eventos/detalle").queryParams(params)
-                .accept(MediaType.APPLICATION_JSON_TYPE).get(ClientResponse.class);
+        assertThat(listaEventos, hasSize(3));
+        assertThat(todosEventosEnRango(listaEventos, inicio_semana, fin_semana), is(true));
 
-        List<UIEntity> listaEventos = response.getEntity(new GenericType<List<UIEntity>>()
-        {
-        });
+    }
 
-        // Then
-        assertEquals("El servicio es accesible", Status.OK.getStatusCode(), response.getStatus());
-        assertTrue("El servicio devuelve datos", listaEventos.size() > 0);
-        assertEquals("El servicio devuelve el número de datos correctos", 6, listaEventos.size());
+    @Test
+    @Transactional
+    public void devuelveEventosDeCuatroSemanas() throws ParseException
+    {
+        String inicio_periodo = "2012-10-01";
+        String fin_periodo = "2012-10-28";
 
-        Date start_date_range = shortDateFormat.parse(day_str);
+        List<UIEntity> listaEventos = getEventosDetalladosEnRangoDeFechas(inicio_periodo,
+                fin_periodo);
+
+        assertThat(listaEventos, hasSize(9));
+        assertThat(todosEventosEnRango(listaEventos, inicio_periodo, fin_periodo), is(true));
+
+    }
+
+    @Test
+    @Transactional
+    public void eliminarUnEventoGenerico() throws ParseException
+    {
+        String evento_id = "1";
+
+        resource.path("calendario/eventos/generica/" + evento_id)
+                .accept(MediaType.APPLICATION_JSON_TYPE).delete(ClientResponse.class);
+
+        List<UIEntity> listaEventos = getListaEventosGenericos();
+        assertThat(listaEventos, hasSize(2));
+        assertThat(existeEventoGenericoConId(evento_id), is(false));
+    }
+
+    @Test
+    @Transactional
+    public void divideEventoGenerico() throws ParseException
+    {
+        String evento_id = "1";
+
+        resource.path("calendario/eventos/generica/divide/" + evento_id)
+                .accept(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class);
+
+        assertThat(existeDuplicadoDeEventoGenerico(), is(true));
+
+    }
+
+    private Boolean todosEventosEnRango(List<UIEntity> listaEventos, String fecha_inicio,
+            String fecha_fin) throws ParseException
+    {
+        Date start_date_range = shortDateFormat.parse(fecha_inicio);
         Calendar c = Calendar.getInstance();
         c.setTime(start_date_range);
         c.set(Calendar.HOUR_OF_DAY, 23);
@@ -90,128 +245,31 @@ public class CalendarResourceTest extends AbstractRestTest
         for (UIEntity entidad : listaEventos)
         {
             String start_date_str = entidad.get("start");
-            Date start_date = dateFormat.parse(start_date_str);
+            Date start_date = UIEntityDateFormat.parse(start_date_str);
             String end_date_str = entidad.get("end");
-            Date end_date = dateFormat.parse(end_date_str);
+            Date end_date = UIEntityDateFormat.parse(end_date_str);
 
-            assertTrue("El servicio devuelve clases en el día especificado",
-                    start_date_range.before(start_date) && end_date_range.after(end_date));
+            if (!start_date_range.before(start_date) && end_date_range.after(end_date))
+            {
+                return false;
+            }
 
         }
-
+        return true;
     }
 
-    @Test
-    @Ignore
-    public void getEventosDetalleUnaSemana() throws ParseException
+    private List<UIEntity> getEventosDetalladosEnRangoDeFechas(String fecha_inicio, String fecha_fin)
     {
-        // Given
-        String day_start_str = "2012-12-10";
-        String day_end_str = "2012-12-14";
-
-        // When
         MultivaluedMap<String, String> params = getDefaulQueryParams();
-        params.putSingle("startDate", day_start_str);
-        params.putSingle("endDate", day_end_str);
+        params.putSingle("startDate", fecha_inicio);
+        params.putSingle("endDate", fecha_fin);
 
         ClientResponse response = resource.path("calendario/eventos/detalle").queryParams(params)
                 .accept(MediaType.APPLICATION_JSON_TYPE).get(ClientResponse.class);
 
-        List<UIEntity> listaEventos = response.getEntity(new GenericType<List<UIEntity>>()
+        return response.getEntity(new GenericType<List<UIEntity>>()
         {
         });
-
-        // Then
-        assertEquals("El servicio es accesible", Status.OK.getStatusCode(), response.getStatus());
-        assertTrue("El servicio devuelve datos", listaEventos.size() > 0);
-        assertEquals("El servicio devuelve el número de datos correctos", 49, listaEventos.size());
-
-        Date start_date_range = shortDateFormat.parse(day_start_str);
-        Date end_date_range = shortDateFormat.parse(day_end_str);
-        Calendar c = Calendar.getInstance();
-        c.setTime(end_date_range);
-        c.set(Calendar.HOUR_OF_DAY, 23);
-        c.set(Calendar.MINUTE, 59);
-        c.set(Calendar.SECOND, 59);
-        end_date_range = c.getTime();
-
-        for (UIEntity entidad : listaEventos)
-        {
-            String start_date_str = entidad.get("start");
-            Date start_date = dateFormat.parse(start_date_str);
-            String end_date_str = entidad.get("end");
-            Date end_date = dateFormat.parse(end_date_str);
-
-            assertTrue("El servicio devuelve clases en el día especificado",
-                    start_date_range.before(start_date) && end_date_range.after(end_date));
-
-        }
-
-    }
-
-    @Test
-    @Ignore
-    public void getEventosDetalleCuatroSemanas() throws ParseException
-    {
-        // Given
-        String day_start_str = "2012-11-12";
-        String day_end_str = "2012-12-09";
-
-        MultivaluedMap<String, String> params = getDefaulQueryParams();
-        params.putSingle("startDate", day_start_str);
-        params.putSingle("endDate", day_end_str);
-
-        // When
-        ClientResponse response = resource.path("calendario/eventos/detalle").queryParams(params)
-                .accept(MediaType.APPLICATION_JSON_TYPE).get(ClientResponse.class);
-
-        List<UIEntity> listaEventos = response.getEntity(new GenericType<List<UIEntity>>()
-        {
-        });
-
-        // Then
-        assertEquals("El servicio es accesible", Status.OK.getStatusCode(), response.getStatus());
-        assertTrue("El servicio devuelve datos", listaEventos.size() > 0);
-        assertEquals("El servicio devuelve el número de datos correctos", 193, listaEventos.size());
-
-        Date start_date_range = shortDateFormat.parse(day_start_str);
-        Date end_date_range = shortDateFormat.parse(day_end_str);
-        Calendar c = Calendar.getInstance();
-        c.setTime(end_date_range);
-        c.set(Calendar.HOUR_OF_DAY, 23);
-        c.set(Calendar.MINUTE, 59);
-        c.set(Calendar.SECOND, 59);
-        end_date_range = c.getTime();
-
-        for (UIEntity entidad : listaEventos)
-        {
-            String start_date_str = entidad.get("start");
-            Date start_date = dateFormat.parse(start_date_str);
-            String end_date_str = entidad.get("end");
-            Date end_date = dateFormat.parse(end_date_str);
-
-            assertTrue("El servicio devuelve clases en el día especificado",
-                    start_date_range.before(start_date) && end_date_range.after(end_date));
-
-        }
-
-    }
-
-    @Test
-    public void deleteEventoGenerico() throws ParseException
-    {
-        // Given
-        String evento_id = "6595";
-
-        assertTrue("El evento genérico está", existeEventoGenericoConId(evento_id));
-
-        // When
-        ClientResponse response = resource.path("calendario/eventos/generica/" + evento_id)
-                .accept(MediaType.APPLICATION_JSON_TYPE).delete(ClientResponse.class);
-
-        // Then
-        assertThat(response.getStatus(), is(equalTo(Status.OK.getStatusCode())));
-        assertTrue("El evento genérico no está", !existeEventoGenericoConId(evento_id));
     }
 
     private MultivaluedMap<String, String> getDefaulQueryParams()
@@ -225,8 +283,7 @@ public class CalendarResourceTest extends AbstractRestTest
         return params;
     }
 
-    private List<UIEntity> getDefaultListaEventosGenericosWithParams(
-            MultivaluedMap<String, String> params)
+    private List<UIEntity> getListaEventosGenericosWithParams(MultivaluedMap<String, String> params)
     {
         ClientResponse response = resource.path("calendario/eventos/generica").queryParams(params)
                 .accept(MediaType.APPLICATION_JSON_TYPE).get(ClientResponse.class);
@@ -236,15 +293,15 @@ public class CalendarResourceTest extends AbstractRestTest
         });
     }
 
-    private List<UIEntity> getDefaultListaEventosGenericos()
+    private List<UIEntity> getListaEventosGenericos()
     {
-        return getDefaultListaEventosGenericosWithParams(getDefaulQueryParams());
+        return getListaEventosGenericosWithParams(getDefaulQueryParams());
     }
 
     private UIEntity getDatosEventoGenerico(String evento_id)
     {
 
-        List<UIEntity> listaEventos = getDefaultListaEventosGenericos();
+        List<UIEntity> listaEventos = getListaEventosGenericos();
 
         for (UIEntity entidad : listaEventos)
         {
@@ -263,33 +320,21 @@ public class CalendarResourceTest extends AbstractRestTest
         return getDatosEventoGenerico(evento_id) != null;
     }
 
-    @Test
-    public void divideEventoGenerico() throws ParseException
+    private boolean existeDuplicadoDeEventoGenerico()
     {
-        String evento_id = "6595";
-        UIEntity evento_original = getDatosEventoGenerico(evento_id);
+        String id_original = "1";
+        String titulo_original = "Evento de prueba 1";
+        String fecha_inicio_esperada = "2012-10-10T10:00:00";
 
-        ClientResponse response = resource.path("calendario/eventos/generica/divide/" + evento_id)
-                .accept(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class);
-
-        assertThat(response, is(okClientResponse()));
-        assertTrue("Existe un duplicado", existeDuplicadoDeEventoGenerico(evento_original));
-    }
-
-    private boolean existeDuplicadoDeEventoGenerico(UIEntity evento_original)
-    {
-        String orig_id = evento_original.get("id");
-        String orig_title = evento_original.get("title");
-        String orig_start_str = evento_original.get("start");
-
-        for (UIEntity entity : getDefaultListaEventosGenericos())
+        for (UIEntity entity : getListaEventosGenericos())
         {
             String entity_id = entity.get("id");
             String entity_title = entity.get("title");
             String entity_start_str = entity.get("start");
 
-            if (entity_title.equals(orig_title) && entity_start_str.equals(orig_start_str)
-                    && !entity_id.equals(orig_id))
+            if (entity_title.equals(titulo_original)
+                    && entity_start_str.equals(fecha_inicio_esperada)
+                    && !entity_id.equals(id_original))
             {
                 return true;
             }

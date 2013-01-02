@@ -14,6 +14,7 @@ import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
 
 import es.uji.apps.hor.AulaNoAsignadaAEstudioDelEventoException;
+import es.uji.apps.hor.EventoDetalleSinEventoException;
 import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.db.AulaPlanificacionDTO;
 import es.uji.apps.hor.db.DiaSemanaDTO;
@@ -170,7 +171,8 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
 
     private Evento creaEventoDesde(ItemDTO itemDTO)
     {
-        String titulo = itemDTO.toString();
+        // String titulo = itemDTO.toString();
+        String titulo = "";
         Calendario calendario = obtenerCalendarioAsociadoPorTipoSubgrupo(itemDTO);
 
         Evento evento = new Evento();
@@ -949,7 +951,6 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
                                         .and(item.grupoId.eq(grupoId))
                                         .and(item.diaSemana.isNotNull())
                                         .and(item.tipoSubgrupoId.in(tiposCalendarios)))))
-
                 .list(itemDetalle);
 
         List<EventoDetalle> listaEventosDetalle = new ArrayList<EventoDetalle>();
@@ -1185,5 +1186,44 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
                 .set(qItem.detalleManual, false).execute();
 
         // Falta comunes
+    }
+
+    @Override
+    public EventoDetalle insertEventoDetalle(EventoDetalle eventoDetalle)
+            throws EventoDetalleSinEventoException
+    {
+        ItemDetalleDTO itemDetalle = new ItemDetalleDTO();
+        itemDetalle.setDescripcion(eventoDetalle.getDescripcion());
+        itemDetalle.setInicio(eventoDetalle.getInicio());
+        itemDetalle.setFin(eventoDetalle.getFin());
+
+        ItemDTO item = new ItemDTO();
+        item.setId(eventoDetalle.getEvento().getId());
+        itemDetalle.setItem(item);
+
+        itemDetalle = this.insert(itemDetalle);
+
+        return creaItemDetalleEnEventoDetalle(itemDetalle);
+    }
+
+    private EventoDetalle creaItemDetalleEnEventoDetalle(ItemDetalleDTO itemDetalle)
+            throws EventoDetalleSinEventoException
+    {
+        EventoDetalle eventoDetalle = new EventoDetalle();
+
+        eventoDetalle.setDescripcion(itemDetalle.getDescripcion());
+        eventoDetalle.setId(itemDetalle.getId());
+        eventoDetalle.setFin(itemDetalle.getFin());
+        eventoDetalle.setInicio(itemDetalle.getInicio());
+        try
+        {
+            eventoDetalle.setEvento(getEventoById(itemDetalle.getItem().getId()));
+        }
+        catch (RegistroNoEncontradoException e)
+        {
+            throw new EventoDetalleSinEventoException();
+        }
+
+        return eventoDetalle;
     }
 }

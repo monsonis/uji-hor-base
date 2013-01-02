@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import es.uji.apps.hor.AulaNoAsignadaAEstudioDelEventoException;
+import es.uji.apps.hor.EventoDetalleSinEventoException;
 import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.model.Evento;
 import es.uji.apps.hor.model.EventoDetalle;
@@ -60,4 +61,7 @@ public interface EventosDAO extends BaseDAO
     void updateHorasEventoDetalle(EventoDetalle eventoDetalle);
 
     void updateDiaYHoraEvento(Evento evento);
+
+    EventoDetalle insertEventoDetalle(EventoDetalle eventoDetalle)
+            throws EventoDetalleSinEventoException;
 }

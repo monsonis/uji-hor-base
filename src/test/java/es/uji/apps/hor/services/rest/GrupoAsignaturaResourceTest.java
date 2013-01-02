@@ -1,10 +1,12 @@
 package es.uji.apps.hor.services.rest;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 
-import java.text.SimpleDateFormat;
+import java.text.ParseException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.core.MediaType;
@@ -37,26 +39,17 @@ import es.uji.commons.rest.UIEntity;
 public class GrupoAsignaturaResourceTest extends AbstractRestTest
 {
 
-    private Long estudioId = new Long(210);
+    private Long estudioId;
     private final Long cursoId = new Long(1);
     private final Long semestreId = new Long(1);
     private final String grupoId = "A";
     private final String calendariosIds = "1;2;3;4;5;6";
-
-    private SimpleDateFormat formatter;
-    private SimpleDateFormat dateFormat;
 
     @Autowired
     private EventosDAO eventosDao;
 
     @Autowired
     private EstudiosDAO estudiosDao;
-
-    public GrupoAsignaturaResourceTest()
-    {
-        formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-    }
 
     @Before
     @Transactional
@@ -105,16 +98,49 @@ public class GrupoAsignaturaResourceTest extends AbstractRestTest
 
     @Test
     @Transactional
-    public void elServicioAsignaLasAsignaturasSinAsignar() throws Exception
+    public void elServicioPlanificaUnEventoNoAsignado() throws Exception
     {
-        llamaAlServicioDeDivisionDeEvento();
+        String grupoNoAsignadoId = "1";
+
+        planificaElGrupoNoAsignado(grupoNoAsignadoId);
 
         List<UIEntity> listaEventosSinAsignar = getDefaultListaEventosSinAsignarDelServicio();
         List<UIEntity> listaEventosAsignados = getDefaultListaEventosGenericos();
 
         assertThat(listaEventosSinAsignar, hasSize(2));
         assertThat(listaEventosAsignados, hasSize(2));
+        assertThat(elEventoPlanificadoTieneLaHoraDeInicioCorrecta(grupoNoAsignadoId), is(true));
 
+    }
+
+    private Boolean elEventoPlanificadoTieneLaHoraDeInicioCorrecta(String grupoNoAsignadoId)
+            throws Exception
+    {
+        List<UIEntity> listaEventosAsignados = getDefaultListaEventosGenericos();
+        String fechaInicio = "";
+
+        for (UIEntity eventoAsignado : listaEventosAsignados)
+        {
+            if (eventoAsignado.get("id").equals(grupoNoAsignadoId))
+            {
+                fechaInicio = eventoAsignado.get("start");
+                return esLaHoraPlanificadaPorDefecto(fechaInicio);
+            }
+        }
+
+        return false;
+
+    }
+
+    private Boolean esLaHoraPlanificadaPorDefecto(String fechaInicioString) throws ParseException
+    {
+        Date fechaInicio = UIEntityDateFormat.parse(fechaInicioString);
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.setTime(fechaInicio);
+
+        return (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY)
+                && (calendar.get(Calendar.HOUR_OF_DAY) == 8);
     }
 
     private List<UIEntity> getDefaultListaEventosSinAsignarDelServicio()
@@ -139,11 +165,10 @@ public class GrupoAsignaturaResourceTest extends AbstractRestTest
         });
     }
 
-    private void llamaAlServicioDeDivisionDeEvento()
+    private void planificaElGrupoNoAsignado(String IdGrupoNoAsignado)
     {
-        String sin_asignar_id = "1";
 
-        resource.path("grupoAsignatura/sinAsignar/" + sin_asignar_id)
+        resource.path("grupoAsignatura/sinAsignar/" + IdGrupoNoAsignado)
                 .accept(MediaType.APPLICATION_JSON_TYPE).put(ClientResponse.class);
     }
 
@@ -163,8 +188,8 @@ public class GrupoAsignaturaResourceTest extends AbstractRestTest
     {
 
         return new EventoBuilder(eventosDao).withTitulo("Evento de prueba")
-                .withAsignatura(asignatura).withInicio(formatter.parse(fechaInicial))
-                .withFin(formatter.parse(fechaFinal)).withSemestre(semestre).withGrupoId(grupoId)
+                .withAsignatura(asignatura).withInicioFechaString(fechaInicial)
+                .withFinFechaString(fechaFinal).withSemestre(semestre).withGrupoId(grupoId)
                 .withCalendario(calendario).withDetalleManual(false).build();
     }
 
@@ -175,46 +200,6 @@ public class GrupoAsignaturaResourceTest extends AbstractRestTest
         return new EventoBuilder(eventosDao).withTitulo("Evento de prueba")
                 .withAsignatura(asignatura).withSemestre(semestre).withCalendario(calendario)
                 .withGrupoId(grupoId).withDetalleManual(false).build();
-    }
-
-    @Test
-    @Transactional
-    public void elServicioPlanificaUnEventoNoAsignado()
-    {
-        List<UIEntity> listaEventosSinAsignar = getDefaultListaEventosSinAsignarDelServicio();
-        String grupoNoAsignadoId = listaEventosSinAsignar.get(0).get("id");
-
-        resource.path("grupoAsignatura/sinAsignar/" + grupoNoAsignadoId)
-                .accept(MediaType.APPLICATION_JSON_TYPE).put(ClientResponse.class);
-
-        List<UIEntity> listaEventosAsignados = getDefaultListaEventosGenericos();
-        String fechaInicio = "";
-
-        for (UIEntity eventoAsignado : listaEventosAsignados)
-        {
-            if (eventoAsignado.get("id").equals(grupoNoAsignadoId))
-            {
-                fechaInicio = eventoAsignado.get("start");
-            }
-        }
-
-        Calendar calendar = getCalendarioSemanaActualEnLunes();
-
-        assertThat(fechaInicio, equals(dateFormat.format(calendar.getTime())));
-    }
-
-    private Calendar getCalendarioSemanaActualEnLunes()
-    {
-        Calendar calendar = Calendar.getInstance();
-
-        calendar.setFirstDayOfWeek(Calendar.MONDAY);
-        Integer dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-        calendar.add(Calendar.DAY_OF_WEEK, Calendar.MONDAY - dayOfWeek);
-        calendar.set(Calendar.HOUR_OF_DAY, 8);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.MINUTE, 0);
-
-        return calendar;
     }
 
 }

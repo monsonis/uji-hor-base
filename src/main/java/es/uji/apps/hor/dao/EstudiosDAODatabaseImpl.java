@@ -70,6 +70,7 @@ public class EstudiosDAODatabaseImpl extends BaseDAODatabaseImpl implements Estu
         Estudio estudio = new Estudio(estudioDTO.getId(), estudioDTO.getNombre());
         estudio.setTipoEstudio(estudioDTO.getTipoEstudio().getNombre());
         estudio.setTipoEstudioId(estudioDTO.getTipoEstudio().getId());
+        estudio.setId(estudioDTO.getId());
         return estudio;
     }
 
