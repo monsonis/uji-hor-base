@@ -200,45 +200,6 @@ public class EventosDAOTest
     }
 
     @Test
-    public void desasignaEventoSemanaGenericaTest() throws RegistroNoEncontradoException
-    {
-        eventosDAO.insert(item);
-
-        eventosDAO.deleteEventoSemanaGenerica(item.getId());
-
-        List<ItemDTO> items = eventosDAO.get(ItemDTO.class, item.getId());
-        Assert.assertTrue(items.size() > 0);
-        Assert.assertNull(items.get(0).getDiaSemana());
-
-        List<Evento> eventosDetalle = eventosDAO.getEventosDetalleByEventoId(item.getId());
-        Assert.assertEquals(0, eventosDetalle.size());
-    }
-
-    @Test
-    public void desasignaEventoSemanaGenericaConAsignaturasComunesTest()
-            throws RegistroNoEncontradoException
-    {
-        item.setComun(new Long(1));
-        eventosDAO.insert(item);
-
-        rellenaDatosItemComun();
-        eventosDAO.insert(comun);
-
-        rellenaItemsComunes(item, comun);
-        eventosDAO.insert(itemComun1);
-        eventosDAO.insert(itemComun2);
-
-        eventosDAO.deleteEventoSemanaGenerica(item.getId());
-
-        List<ItemDTO> items = eventosDAO.get(ItemDTO.class, comun.getId());
-        Assert.assertTrue(items.size() > 0);
-        Assert.assertNull(items.get(0).getDiaSemana());
-
-        List<Evento> eventosDetalle = eventosDAO.getEventosDetalleByEventoId(comun.getId());
-        Assert.assertEquals(0, eventosDetalle.size());
-    }
-
-    @Test
     public void divideClaseDeMasDeUnaHoraTest() throws RegistroNoEncontradoException,
             EventoNoDivisibleException
     {
@@ -260,10 +221,10 @@ public class EventosDAOTest
             }
         }
     }
-    
+
     @Test
-    public void divideClaseDeMasDeUnaHoraConAsignaturasComunesTest() throws RegistroNoEncontradoException,
-            EventoNoDivisibleException
+    public void divideClaseDeMasDeUnaHoraConAsignaturasComunesTest()
+            throws RegistroNoEncontradoException, EventoNoDivisibleException
     {
         item.setComun(new Long(1));
         eventosDAO.insert(item);
@@ -292,7 +253,7 @@ public class EventosDAOTest
                 break;
             }
         }
-        
+
         Assert.assertNotNull(eventoComunDividido);
     }
 
@@ -322,56 +283,6 @@ public class EventosDAOTest
         // Eliminamos el evento
         eventosDAO.deleteEventoSemanaGenerica(eventoDividido.getId());
         Assert.assertEquals(0, eventosDAO.get(ItemDTO.class, eventoDividido.getId()).size());
-    }
-
-    @Test
-    public void eliminaEventoDuplicadoEnSemanaGenericaConAsignaturasComunesTest()
-            throws RegistroNoEncontradoException, EventoNoDivisibleException
-    {
-        item.setComun(new Long(1));
-        eventosDAO.insert(item);
-
-        rellenaDatosItemComun();
-        eventosDAO.insert(comun);
-
-        rellenaItemsComunes(item, comun);
-        eventosDAO.insert(itemComun1);
-        eventosDAO.insert(itemComun2);
-
-        eventosDAO.divideEventoSemanaGenerica(item.getId());
-
-        List<Evento> eventos = eventosDAO.getEventosDeUnCurso(estudio.getId(), item.getCursoId(),
-                semestre.getId(), item.getGrupoId());
-
-        Evento eventoDividido = null;
-        Evento eventoComunDividido = null;
-
-        // Buscamos el evento dividido
-        for (Evento evento : eventos)
-        {
-            if (evento.getTitulo().startsWith(item.getAsignaturaId())
-                    && !evento.getId().equals(item.getId()))
-            {
-                eventoDividido = evento;
-                break;
-            }
-        }
-
-        // Y el común dividio
-        for (Evento evento : eventos)
-        {
-            if (evento.getTitulo().startsWith(comun.getAsignaturaId())
-                    && !evento.getId().equals(comun.getId()))
-            {
-                eventoComunDividido = evento;
-                break;
-            }
-        }
-
-        // Eliminamos el evento
-        eventosDAO.deleteEventoSemanaGenerica(eventoDividido.getId());
-
-        Assert.assertEquals(0, eventosDAO.get(ItemDTO.class, eventoComunDividido.getId()).size());
     }
 
     @Test(expected = EventoNoDivisibleException.class)
@@ -457,7 +368,7 @@ public class EventosDAOTest
         eventosDAO.insert(itemComun1);
         eventosDAO.insert(itemComun2);
 
-        //eventosDAO.actualizaAulaAsignadaAEvento(item.getId(), aulaPlanificacion.getId(), false);
+        // eventosDAO.actualizaAulaAsignadaAEvento(item.getId(), aulaPlanificacion.getId(), false);
         item = eventosDAO.get(ItemDTO.class, item.getId()).get(0);
 
         Assert.assertEquals(aulaPlanificacion, item.getAulaPlanificacion());
@@ -480,7 +391,7 @@ public class EventosDAOTest
         rellenaDatosItemComun();
         eventosDAO.insert(comun);
 
-        //eventosDAO.actualizaAulaAsignadaAEvento(item.getId(), null, false);
+        // eventosDAO.actualizaAulaAsignadaAEvento(item.getId(), null, false);
         item = eventosDAO.get(ItemDTO.class, item.getId()).get(0);
 
         Assert.assertNull(item.getAulaPlanificacion());
@@ -517,7 +428,7 @@ public class EventosDAOTest
         eventosDAO.insert(item);
         eventosDAO.insert(grupoComun);
 
-        //eventosDAO.actualizaAulaAsignadaAEvento(item.getId(), aulaPlanificacion.getId(), true);
+        // eventosDAO.actualizaAulaAsignadaAEvento(item.getId(), aulaPlanificacion.getId(), true);
         item = eventosDAO.get(ItemDTO.class, item.getId()).get(0);
 
         Assert.assertEquals(aulaPlanificacion, item.getAulaPlanificacion());
