@@ -1,5 +1,6 @@
 package es.uji.apps.hor.model;
 
+import java.text.MessageFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -15,10 +16,15 @@ public class GrupoAsignatura
 
     private String diaSemana;
 
-    public GrupoAsignatura(Long id, String titulo)
+    private Calendario calendario;
+
+    private Asignatura asignatura;
+
+    private Long subgrupoId;
+
+    public GrupoAsignatura(Long id)
     {
         this.id = id;
-        this.titulo = titulo;
     }
 
     public GrupoAsignatura()
@@ -37,12 +43,39 @@ public class GrupoAsignatura
 
     public String getTitulo()
     {
-        return titulo;
+        if (titulo != null && !titulo.isEmpty())
+        {
+            return titulo;
+        }
+        else
+        {
+            return this.toString();
+        }
     }
 
     public void setTitulo(String titulo)
     {
         this.titulo = titulo;
+    }
+
+    public Calendario getCalendario()
+    {
+        return calendario;
+    }
+
+    public void setCalendario(Calendario calendario)
+    {
+        this.calendario = calendario;
+    }
+
+    public Asignatura getAsignatura()
+    {
+        return asignatura;
+    }
+
+    public void setAsignatura(Asignatura asignatura)
+    {
+        this.asignatura = asignatura;
     }
 
     public Date getInicio()
@@ -89,5 +122,22 @@ public class GrupoAsignatura
         inicio = calInicio.getTime();
         fin = calFin.getTime();
         setDiaSemana("Dilluns");
+    }
+
+    @Override
+    public String toString()
+    {
+        return MessageFormat.format("{0} {1}{2}", getAsignatura().getId(), getCalendario()
+                .getLetraId(), subgrupoId);
+    }
+
+    public Long getSubgrupoId()
+    {
+        return subgrupoId;
+    }
+
+    public void setSubgrupoId(Long subgrupoId)
+    {
+        this.subgrupoId = subgrupoId;
     }
 }

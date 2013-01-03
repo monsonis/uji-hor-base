@@ -16,6 +16,9 @@ import es.uji.apps.hor.db.ItemDTO;
 import es.uji.apps.hor.db.QDiaSemanaDTO;
 import es.uji.apps.hor.db.QItemComunDTO;
 import es.uji.apps.hor.db.QItemDTO;
+import es.uji.apps.hor.model.Asignatura;
+import es.uji.apps.hor.model.Calendario;
+import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.model.GrupoAsignatura;
 import es.uji.apps.hor.model.TipoSubgrupo;
 import es.uji.commons.db.BaseDAODatabaseImpl;
@@ -56,7 +59,42 @@ public class GrupoAsignaturaDAODatabaseImpl extends BaseDAODatabaseImpl implemen
 
     private GrupoAsignatura creaGrupoAsignaturaDesde(ItemDTO itemDTO)
     {
-        return new GrupoAsignatura(itemDTO.getId(), itemDTO.toString());
+        GrupoAsignatura grupoAsignatura = new GrupoAsignatura(itemDTO.getId());
+
+        String tipoSubgrupoId = itemDTO.getTipoSubgrupoId();
+        TipoSubgrupo tipoSubgrupo = TipoSubgrupo.valueOf(tipoSubgrupoId);
+
+        Calendario calendario = new Calendario(tipoSubgrupo.getCalendarioAsociado(),
+                tipoSubgrupo.getNombre());
+
+        Estudio estudio = new Estudio();
+        estudio.setId(itemDTO.getEstudio().getId());
+        estudio.setNombre(itemDTO.getEstudioDesc());
+        estudio.setTipoEstudio(itemDTO.getTipoEstudio());
+        estudio.setTipoEstudioId(itemDTO.getTipoEstudioId());
+
+        Asignatura asignatura = new Asignatura();
+
+        asignatura.setComun(itemDTO.getComun() == 1);
+        if (itemDTO.getComun() > 0)
+        {
+            asignatura.setComunes(itemDTO.getComunes());
+        }
+
+        asignatura.setNombre(itemDTO.getAsignatura());
+        asignatura.setId(itemDTO.getAsignaturaId());
+        asignatura.setCursoId(itemDTO.getCursoId());
+        asignatura.setCaracter(itemDTO.getCaracter());
+        asignatura.setCaracterId(itemDTO.getCaracterId());
+        asignatura.setEstudio(estudio);
+        asignatura.setPorcentajeComun(itemDTO.getPorcentajeComun());
+        asignatura.setTipoAsignatura(itemDTO.getTipoAsignatura());
+        asignatura.setTipoAsignaturaId(itemDTO.getTipoAsignaturaId());
+
+        grupoAsignatura.setAsignatura(asignatura);
+        grupoAsignatura.setCalendario(calendario);
+        grupoAsignatura.setSubgrupoId(itemDTO.getSubgrupoId());
+        return grupoAsignatura;
     }
 
     @Override
