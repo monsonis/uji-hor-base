@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.util.Log4jConfigListener;
@@ -22,6 +23,7 @@ import es.uji.commons.rest.UIEntityListJSONMessageBodyReader;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext-test.xml" })
+@TransactionConfiguration(defaultRollback = false)
 public abstract class AbstractRestTest extends JerseyTest
 {
 

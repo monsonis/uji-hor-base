@@ -92,26 +92,29 @@ public class CalendarResourceTest extends AbstractRestTest
         Evento evento1DeAsignatura1 = new EventoBuilder(eventosDao)
                 .withTitulo("Evento de prueba 1 de asignatura 1")
                 .withAsignatura(asignaturaFicticia1).withInicioFechaString("10/10/2012 09:00")
-                .withFinFechaString("10/10/2012 11:00").withSemestre(semestre).withGrupoId(grupoId)
+                .withGrupoId(grupoId).withSubgrupoId(new Long(1))
+                .withFinFechaString("10/10/2012 11:00").withSemestre(semestre)
                 .withCalendario(calendarioPR).withDetalleManual(false).build();
 
         Evento evento2DeAsignatura1 = new EventoBuilder(eventosDao)
                 .withTitulo("Evento de prueba 2 de asignatura 1")
                 .withAsignatura(asignaturaFicticia1).withInicioFechaString("10/10/2012 10:00")
-                .withFinFechaString("10/10/2012 12:00").withSemestre(semestre).withGrupoId(grupoId)
+                .withGrupoId(grupoId).withSubgrupoId(new Long(1))
+                .withFinFechaString("10/10/2012 12:00").withSemestre(semestre)
                 .withCalendario(calendarioTE).withDetalleManual(false).build();
 
         Evento evento1DeAsignatura2 = new EventoBuilder(eventosDao)
                 .withTitulo("Evento de prueba 1 de asignatura 2")
                 .withAsignatura(asignaturaFicticia2).withInicioFechaString("11/10/2012 10:00")
+                .withGrupoId(grupoId).withSubgrupoId(new Long(1))
                 .withFinFechaString("11/10/2012 12:00").withSemestre(semestre).withGrupoId(grupoId)
                 .withCalendario(calendarioTE).withDetalleManual(false).build();
 
         Evento eventoOtraTitulacion = new EventoBuilder(eventosDao)
                 .withTitulo("Evento de prueba 3").withAsignatura(asignaturaOtraTitulacion)
                 .withInicioFechaString("12/10/2012 13:00").withFinFechaString("12/10/2012 14:00")
-                .withSemestre(semestre).withGrupoId(grupoId).withCalendario(calendarioTE)
-                .withDetalleManual(false).build();
+                .withGrupoId(grupoId).withSubgrupoId(new Long(1)).withSemestre(semestre)
+                .withCalendario(calendarioTE).withDetalleManual(false).build();
 
         new EventoDetalleBuilder(eventosDao).withEvento(evento1DeAsignatura1)
                 .withInicioFechaString("10/10/2012 09:00").withFinFechaString("10/10/2012 11:00")

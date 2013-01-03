@@ -6,12 +6,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import es.uji.apps.hor.AulaNoAsignadaAEstudioDelEventoException;
 import es.uji.apps.hor.DuracionEventoIncorrectaException;
-import es.uji.apps.hor.dao.EventosDAO;
 
 @Component
 public class Evento
@@ -33,17 +31,8 @@ public class Evento
     private Long subgrupoId;
     private Long plazas;
     private List<EventoDetalle> eventosDetalle = new ArrayList<EventoDetalle>();
-    private List<Evento> eventosComunes;
 
     private AulaPlanificacion aulaPlanificacion;
-
-    private EventosDAO eventosDAO;
-
-    @Autowired
-    public void setEventosDAO(EventosDAO eventosDAO)
-    {
-        this.eventosDAO = eventosDAO;
-    }
 
     public Evento(Long id, Calendario calendario, String titulo, Date inicio, Date fin)
     {
@@ -352,16 +341,6 @@ public class Evento
         this.eventosDetalle = eventosDetalle;
     }
 
-    public List<Evento> getEventosComunes()
-    {
-        return eventosComunes;
-    }
-
-    public void setEventosComunes(List<Evento> eventosComunes)
-    {
-        this.eventosComunes = eventosComunes;
-    }
-
     public void updateDiaYHora(Date inicio, Date fin) throws DuracionEventoIncorrectaException
     {
         Calendar calInicio = Calendar.getInstance();
@@ -386,6 +365,12 @@ public class Evento
         }
     }
 
+    public void desplanificar()
+    {
+        this.setInicio(null);
+        this.setFin(null);
+    }
+
     public void actualizaAulaPlanificacion(AulaPlanificacion aulaPlanificacion)
             throws AulaNoAsignadaAEstudioDelEventoException
     {
@@ -393,7 +378,7 @@ public class Evento
         {
             throw new AulaNoAsignadaAEstudioDelEventoException();
         }
-        
+
         this.aulaPlanificacion = aulaPlanificacion;
     }
 }

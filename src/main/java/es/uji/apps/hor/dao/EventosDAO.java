@@ -3,7 +3,6 @@ package es.uji.apps.hor.dao;
 import java.util.Date;
 import java.util.List;
 
-import es.uji.apps.hor.AulaNoAsignadaAEstudioDelEventoException;
 import es.uji.apps.hor.EventoDetalleSinEventoException;
 import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.model.Evento;
@@ -64,6 +63,10 @@ public interface EventosDAO extends BaseDAO
 
     EventoDetalle insertEventoDetalle(EventoDetalle eventoDetalle)
             throws EventoDetalleSinEventoException;
+
+    long eventosDelMismoGrupo(Evento evento);
+
+    void deleteEventoDetalle(EventoDetalle detalle);
 
     List<Evento> getGruposComunesAEvento(Long eventoId);
 }

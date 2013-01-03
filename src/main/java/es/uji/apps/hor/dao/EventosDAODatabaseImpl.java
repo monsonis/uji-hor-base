@@ -352,106 +352,60 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
     }
 
     @Override
+    public long eventosDelMismoGrupo(Evento evento)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        QItemDTO item = QItemDTO.itemDTO;
+
+        return query
+                .from(item)
+                .where(item.estudio.id
+                        .eq(evento.getAsignatura().getEstudio().getId())
+                        .and(item.cursoId.eq(evento.getAsignatura().getCursoId()))
+                        .and(item.semestre.id.eq(evento.getSemestre().getSemestre()))
+                        .and(item.grupoId.eq(evento.getGrupoId()))
+                        .and(item.asignaturaId.eq(evento.getAsignatura().getId()))
+                        .and(item.subgrupoId.eq(evento.getSubgrupoId()))
+                        .and(item.tipoSubgrupoId.eq(
+                                TipoSubgrupo.getTipoSubgrupo(evento.getCalendario().getId())).and(
+                                item.id.ne(evento.getId())))).list(item).size();
+    }
+
+    @Override
+    public void deleteEventoDetalle(EventoDetalle detalle)
+    {
+        delete(ItemDetalleDTO.class, detalle.getId());
+    }
+
+    @Override
     public void deleteEventoSemanaGenerica(Long eventoId) throws RegistroNoEncontradoException
     {
-        ItemDTO evento;
+        // Los comunes no hará falta tratarlos
+        deleteCircuitosDeItem(eventoId);
+
         try
         {
-            evento = get(ItemDTO.class, eventoId).get(0);
+            delete(ItemDTO.class, eventoId);
         }
         catch (Exception e)
         {
             throw new RegistroNoEncontradoException();
         }
 
-        List<ItemDTO> itemsBorrar = new ArrayList<ItemDTO>();
-        itemsBorrar.add(evento);
+    }
 
-        if (evento.getComun().equals(new Long(1)))
+    private void deleteCircuitosDeItem(Long itemId)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        QItemCircuitoDTO itemCircuito = QItemCircuitoDTO.itemCircuitoDTO;
+
+        List<ItemCircuitoDTO> listaItemsCircuitosDTO = query.from(itemCircuito)
+                .where(itemCircuito.item.id.eq(itemId)).list(itemCircuito);
+
+        for (ItemCircuitoDTO itemCircuitoDTO : listaItemsCircuitosDTO)
         {
-            // Obtenemos todos los eventos comunes
-            List<ItemComunDTO> comunes = getItemsComunes(eventoId);
-
-            for (ItemComunDTO comun : comunes)
-            {
-                try
-                {
-                    ItemDTO itemComun = get(ItemDTO.class, comun.getItemComun().getId()).get(0);
-                    itemsBorrar.add(itemComun);
-                }
-                catch (Exception e)
-                {
-                }
-            }
+            delete(ItemCircuitoDTO.class, itemCircuitoDTO.getId());
         }
-
-        for (ItemDTO itemBorrar : itemsBorrar)
-        {
-            JPAQuery query = new JPAQuery(entityManager);
-            QItemDTO item = QItemDTO.itemDTO;
-
-            List<ItemDTO> listaItemsDTO = query
-                    .from(item)
-                    .where(item.estudio.id.eq(itemBorrar.getEstudio().getId())
-                            .and(item.cursoId.eq(itemBorrar.getCursoId()))
-                            .and(item.semestre.id.eq(itemBorrar.getSemestre().getId()))
-                            .and(item.grupoId.eq(itemBorrar.getGrupoId()))
-                            .and(item.asignaturaId.eq(itemBorrar.getAsignaturaId()))
-                            .and(item.subgrupoId.eq(itemBorrar.getSubgrupoId()))
-                            .and(item.tipoSubgrupoId.eq(itemBorrar.getTipoSubgrupoId()))
-                            .and(item.id.ne(itemBorrar.getId()))).list(item);
-
-            // Borramos los items detalle -- Esto se llevará a otro servicio
-            JPAQuery query2 = new JPAQuery(entityManager);
-            QItemDetalleDTO itemDetalle = QItemDetalleDTO.itemDetalleDTO;
-
-            List<ItemDetalleDTO> listaItemsDetalleDTO = query2.from(itemDetalle)
-                    .where(itemDetalle.item.id.eq(itemBorrar.getId())).list(itemDetalle);
-
-            for (ItemDetalleDTO itemDetalleDTO : listaItemsDetalleDTO)
-            {
-                delete(ItemDetalleDTO.class, itemDetalleDTO.getId());
-            }
-
-            if (listaItemsDTO.size() > 0) // Podemos borrar la clase
-            {
-                // Borramos los items circuitos
-                JPAQuery query3 = new JPAQuery(entityManager);
-                QItemCircuitoDTO itemCircuito = QItemCircuitoDTO.itemCircuitoDTO;
-
-                List<ItemCircuitoDTO> listaItemsCircuitosDTO = query3.from(itemCircuito)
-                        .where(itemCircuito.item.id.eq(itemBorrar.getId())).list(itemCircuito);
-
-                for (ItemCircuitoDTO itemCircuitoDTO : listaItemsCircuitosDTO)
-                {
-                    delete(ItemCircuitoDTO.class, itemCircuitoDTO.getId());
-                }
-
-                // Eliminamos la relación de item común
-                JPAQuery query4 = new JPAQuery(entityManager);
-                QItemComunDTO itemComunDTO = QItemComunDTO.itemComunDTO;
-
-                List<ItemComunDTO> itemsComunes = query4
-                        .from(itemComunDTO)
-                        .where(itemComunDTO.item.id.eq(itemBorrar.getId()).or(
-                                itemComunDTO.itemComun.id.eq(itemBorrar.getId())))
-                        .list(itemComunDTO);
-
-                for (ItemComunDTO itemComun : itemsComunes)
-                {
-                    delete(ItemComunDTO.class, itemComun.getId());
-                }
-
-                delete(ItemDTO.class, itemBorrar.getId());
-            }
-            else
-            // Desasignamos la clase
-            {
-                itemBorrar.setDiaSemana(null);
-                update(itemBorrar);
-            }
-        }
-
     }
 
     @Override
@@ -1122,8 +1076,12 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
     @Transactional
     public void updateDiaYHoraEvento(Evento evento)
     {
-        DiaSemanaDTO diaSemanaDTO = new DiaSemanaDTO();
-        diaSemanaDTO.setId(new Long(evento.getDia()));
+        DiaSemanaDTO diaSemanaDTO = null;
+        if (evento.getDia() != null)
+        {
+            diaSemanaDTO = new DiaSemanaDTO();
+            diaSemanaDTO.setId(new Long(evento.getDia()));
+        }
 
         QItemDTO qItem = QItemDTO.itemDTO;
 

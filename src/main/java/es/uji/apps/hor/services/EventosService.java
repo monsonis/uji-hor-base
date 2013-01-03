@@ -49,17 +49,36 @@ public class EventosService
 
     public Evento modificaDiaYHoraEvento(Long eventoId, Date inicio, Date fin)
             throws DuracionEventoIncorrectaException, RegistroNoEncontradoException
-    {      
+    {
         Evento evento = eventosDAO.getEventoById(eventoId);
         evento.updateDiaYHora(inicio, fin);
-        
+
         return null;
     }
 
     public void deleteEventoSemanaGenerica(Long eventoId) throws RegistroNoEncontradoException
     {
         Evento evento = eventosDAO.getEventoById(eventoId);
-        eventosDAO.deleteEventoSemanaGenerica(eventoId);
+
+        for (EventoDetalle detalle : evento.getEventosDetalle())
+        {
+            eventosDAO.deleteEventoDetalle(detalle);
+        }
+
+        if (esElultimoEventoAsignadoDelGrupo(evento))
+        {
+            evento.desplanificar();
+            eventosDAO.updateDiaYHoraEvento(evento);
+        }
+        else
+        {
+            eventosDAO.deleteEventoSemanaGenerica(eventoId);
+        }
+    }
+
+    private boolean esElultimoEventoAsignadoDelGrupo(Evento evento)
+    {
+        return eventosDAO.eventosDelMismoGrupo(evento) == 1;
     }
 
     public void divideEventoSemanaGenerica(Long eventoId) throws RegistroNoEncontradoException,
@@ -67,7 +86,7 @@ public class EventosService
     {
         Evento evento = eventosDAO.getEventoById(eventoId);
         Evento nuevoEvento = evento.divide();
-        
+
         eventosDAO.insertEvento(nuevoEvento);
         eventosDAO.updateHorasEvento(evento);
     }
@@ -126,8 +145,9 @@ public class EventosService
         return eventosDAO.updateHorasEventoDetalleManual(eventoId, inicio, fin);
     }
 
-    public List<EventoDetalle> eventosDetalleDeUnEstudio(Long estudioId, Long cursoId, Long semestreId,
-            String grupoId, List<Long> calendariosIds, Date rangoFechaInicio, Date rangoFechaFin)
+    public List<EventoDetalle> eventosDetalleDeUnEstudio(Long estudioId, Long cursoId,
+            Long semestreId, String grupoId, List<Long> calendariosIds, Date rangoFechaInicio,
+            Date rangoFechaFin)
     {
         return eventosDAO.getEventosDetalle(estudioId, cursoId, semestreId, grupoId,
                 calendariosIds, rangoFechaInicio, rangoFechaFin);
