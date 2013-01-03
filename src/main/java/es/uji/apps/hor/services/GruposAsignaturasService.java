@@ -33,7 +33,7 @@ public class GruposAsignaturasService
         GrupoAsignatura grupoAsignatura = grupoAsignaturaDAO
                 .getGrupoAsignaturaById(grupoAsignaturaId);
         grupoAsignatura.planificaGrupoAsignaturaSinAsignar();
-        grupoAsignaturaDAO.planificaGrupoAsignaturaSinAsignar(grupoAsignatura);
+        grupoAsignaturaDAO.updateGrupoAsignaturaPlanificado(grupoAsignatura);
 
         return grupoAsignatura;
     }
