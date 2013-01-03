@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mysema.query.jpa.impl.JPAQuery;
 
@@ -25,18 +26,31 @@ public class CentroDAODatabaseImpl extends BaseDAODatabaseImpl implements Centro
         query.from(qCentro);
 
         List<Centro> listaCentros = new ArrayList<Centro>();
-        
-        for (CentroDTO centroDTO: query.list(qCentro)) {
+
+        for (CentroDTO centroDTO : query.list(qCentro))
+        {
             listaCentros.add(creaCentroDesdeCentroDTO(centroDTO));
         }
-        
+
         return listaCentros;
     }
 
     private Centro creaCentroDesdeCentroDTO(CentroDTO centroDTO)
     {
-        Centro centro = new Centro (centroDTO.getId(), centroDTO.getNombre());
+        Centro centro = new Centro(centroDTO.getId(), centroDTO.getNombre());
         return centro;
+    }
+
+    @Override
+    @Transactional
+    public Centro insertCentro(Centro centro)
+    {
+        // Creamos un nuevo centro
+        CentroDTO centroDTO = new CentroDTO();
+        centroDTO.setNombre(centro.getNombre());
+        centroDTO = insert(centroDTO);
+
+        return this.creaCentroDesdeCentroDTO(centroDTO);
     }
 
 }

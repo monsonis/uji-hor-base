@@ -11,6 +11,10 @@ public class Centro
         this.id = id;
         this.nombre = nombre;
     }
+    
+    public Centro()
+    {
+    }
 
     public Long getId()
     {

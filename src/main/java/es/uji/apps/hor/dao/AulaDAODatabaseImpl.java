@@ -5,12 +5,14 @@ import java.util.List;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mysema.query.jpa.impl.JPAQuery;
 
 import es.uji.apps.hor.AulaYaAsignadaAEstudioException;
 import es.uji.apps.hor.db.AulaDTO;
 import es.uji.apps.hor.db.AulaPlanificacionDTO;
+import es.uji.apps.hor.db.CentroDTO;
 import es.uji.apps.hor.db.EstudioDTO;
 import es.uji.apps.hor.db.QAulaDTO;
 import es.uji.apps.hor.db.QAulaPlanificacionDTO;
@@ -200,12 +202,57 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
     {
         try
         {
-            return get(AulaPlanificacion.class, aulaId).get(0);
+            return creaAulaPlanificacionDesde(get(AulaPlanificacionDTO.class, aulaId).get(0));
         }
         catch (Exception e)
         {
             throw new RegistroNoEncontradoException();
         }
+    }
+
+    @Override
+    @Transactional
+    public Aula insertAula(Aula aula)
+    {
+        // Creamos la nueva aula
+        AulaDTO aulaDTO = new AulaDTO();
+
+        CentroDTO centroDTO = new CentroDTO();
+        centroDTO.setId(aula.getCentro().getId());
+        centroDTO.setNombre(aula.getCentro().getNombre());
+
+        aulaDTO.setArea(aula.getArea());
+        aulaDTO.setCentro(centroDTO);
+        aulaDTO.setCodigo(aula.getCodigo());
+        aulaDTO.setEdificio(aula.getEdificio());
+        aulaDTO.setNombre(aula.getNombre());
+        aulaDTO.setPlanta(aula.getPlanta());
+        aulaDTO.setPlazas(aula.getPlazas());
+        aulaDTO.setTipo(aula.getTipo());
+        aulaDTO = insert(aulaDTO);
+
+        return this.creaAulaDesdeAulaDTO(aulaDTO);
+    }
+
+    @Override
+    @Transactional
+    public AulaPlanificacion insertAulaPlanificacion(AulaPlanificacion aulaPlanificacion)
+    {
+        // Creamos la nueva aula de planificación
+        AulaPlanificacionDTO aulaPlanificacionDTO = new AulaPlanificacionDTO();
+
+        EstudioDTO estudioDTO = new EstudioDTO();
+        estudioDTO.setId(aulaPlanificacion.getEstudioId());
+
+        AulaDTO aulaDTO = new AulaDTO();
+        aulaDTO.setId(aulaPlanificacion.getAulaId());
+
+        aulaPlanificacionDTO.setAula(aulaDTO);
+        aulaPlanificacionDTO.setEstudio(estudioDTO);
+        aulaPlanificacionDTO.setNombre(aulaPlanificacion.getNombre());
+        aulaPlanificacionDTO = insert(aulaPlanificacionDTO);
+
+        return this.creaAulaPlanificacionDesde(aulaPlanificacionDTO);
     }
 
 }

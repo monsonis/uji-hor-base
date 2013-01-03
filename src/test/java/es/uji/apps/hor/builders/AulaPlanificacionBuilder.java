@@ -65,7 +65,7 @@ public class AulaPlanificacionBuilder
     {
         if (aulaDAO != null)
         {
-            // Insertar aula planificación
+            aulaPlanificacion = aulaDAO.insertAulaPlanificacion(aulaPlanificacion);
         }
 
         return aulaPlanificacion;

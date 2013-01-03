@@ -72,7 +72,7 @@ public class AulaBuilder
     {
         if (aulaDAO != null)
         {
-            // Insertar aula
+            aula = aulaDAO.insertAula(aula);
         }
         
         return aula;

@@ -290,8 +290,8 @@ public class CalendarResource
             }
             else
             {
-                evento = eventosService.modificaDiaYHoraEvento(
-                        Long.parseLong(entity.get("id")), inicio, fin);
+                evento = eventosService.modificaDiaYHoraEvento(Long.parseLong(entity.get("id")),
+                        inicio, fin);
             }
 
             return toUI(Collections.singletonList(evento));
@@ -387,7 +387,10 @@ public class CalendarResource
             eventoUI.put("detalle_manual", evento.hasDetalleManual());
             eventoUI.put("comunes", evento.getAsignatura().getComunes());
 
-            // eventoUI.put("aula_planificacion_id", evento.getAulaPlanificacion().getId());
+            if (evento.getAulaPlanificacion() != null)
+            {
+                eventoUI.put("aula_planificacion_id", evento.getAulaPlanificacion().getId());
+            }
 
             if (evento.getInicio() != null)
             {

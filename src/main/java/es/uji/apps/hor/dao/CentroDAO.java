@@ -8,4 +8,6 @@ import es.uji.commons.db.BaseDAO;
 public interface CentroDAO extends BaseDAO
 {
     List<Centro> getCentros();
+    
+    Centro insertCentro(Centro centro);
 }

@@ -4,6 +4,7 @@ import static es.uji.apps.hor.matchers.UIEntityHasTitle.hasTitle;
 import static org.hamcrest.CoreMatchers.everyItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 
 import java.text.ParseException;
@@ -25,15 +26,23 @@ import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.core.util.StringKeyStringValueIgnoreCaseMultivaluedMap;
 
 import es.uji.apps.hor.builders.AsignaturaBuilder;
+import es.uji.apps.hor.builders.AulaBuilder;
+import es.uji.apps.hor.builders.AulaPlanificacionBuilder;
 import es.uji.apps.hor.builders.CalendarioBuilder;
+import es.uji.apps.hor.builders.CentroBuilder;
 import es.uji.apps.hor.builders.EstudioBuilder;
 import es.uji.apps.hor.builders.EventoBuilder;
 import es.uji.apps.hor.builders.EventoDetalleBuilder;
 import es.uji.apps.hor.builders.SemestreBuilder;
+import es.uji.apps.hor.dao.AulaDAO;
+import es.uji.apps.hor.dao.CentroDAO;
 import es.uji.apps.hor.dao.EstudiosDAO;
 import es.uji.apps.hor.dao.EventosDAO;
 import es.uji.apps.hor.model.Asignatura;
+import es.uji.apps.hor.model.Aula;
+import es.uji.apps.hor.model.AulaPlanificacion;
 import es.uji.apps.hor.model.Calendario;
+import es.uji.apps.hor.model.Centro;
 import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.model.Evento;
 import es.uji.apps.hor.model.Semestre;
@@ -46,16 +55,25 @@ public class CalendarResourceTest extends AbstractRestTest
     static final SimpleDateFormat shortDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     private Long estudioId;
+    private Long otroEstudioId;
     private final Long cursoId = new Long(1);
     private final Long semestreId = new Long(1);
     private final String grupoId = "A";
     private final String calendariosIds = "1;2;3;4;5;6";
+    private Long aulaPlanificacionId;
+    private Long aulaPlanificacionSinEstudioId;
 
     @Autowired
     private EventosDAO eventosDao;
 
     @Autowired
     private EstudiosDAO estudiosDao;
+
+    @Autowired
+    private CentroDAO centroDao;
+
+    @Autowired
+    private AulaDAO aulaDao;
 
     @Before
     @Transactional
@@ -166,6 +184,7 @@ public class CalendarResourceTest extends AbstractRestTest
                 .withInicioFechaString("19/10/2012 13:00").withFinFechaString("11/10/2012 14:00")
                 .build();
 
+        creaAulasParaAsignarAEventos();
     }
 
     @Test
@@ -368,5 +387,79 @@ public class CalendarResourceTest extends AbstractRestTest
         }
 
         return false;
+    }
+
+    @Transactional
+    private void creaAulasParaAsignarAEventos()
+    {
+        Estudio otroEstudio = new EstudioBuilder(estudiosDao).withNombre("Estudio de Prueba")
+                .withTipoEstudio("Grau").withTipoEstudioId("G").build();
+        otroEstudioId = otroEstudio.getId();
+
+        Centro centro = new CentroBuilder(centroDao).withNombre("Centro de Prueba").build();
+
+        Aula aula1 = new AulaBuilder(aulaDao).withArea("Área 1").withCentro(centro)
+                .withCodigo("AUL1").withEdificio("Edificio 1").withNombre("Aula 1").withPlanta("1")
+                .withPlazas(new Long(100)).withTipo("1").build();
+
+        Aula aula2 = new AulaBuilder(aulaDao).withArea("Área 2").withCentro(centro)
+                .withCodigo("AUL2").withEdificio("Edificio 1").withNombre("Aula 2").withPlanta("1")
+                .withPlazas(new Long(100)).withTipo("2").build();
+
+        AulaPlanificacion aulaPlanificacion = new AulaPlanificacionBuilder(aulaDao)
+                .withAulaId(aula1.getId()).withEstudioId(estudioId).withSemestreId(semestreId)
+                .build();
+
+        aulaPlanificacionId = aulaPlanificacion.getId();
+
+        AulaPlanificacion aulaPlanificacionSinEstudio = new AulaPlanificacionBuilder(aulaDao)
+                .withAulaId(aula2.getId()).withEstudioId(otroEstudioId).withSemestreId(semestreId)
+                .build();
+
+        aulaPlanificacionSinEstudioId = aulaPlanificacionSinEstudio.getId();
+    }
+
+    @Test
+    @Transactional
+    public void asignaUnAulaAUnEvento()
+    {
+        this.getListaEventosGenericos();
+        String eventoId = this.getListaEventosGenericos().get(0).get("id");
+
+        MultivaluedMap<String, String> params = new StringKeyStringValueIgnoreCaseMultivaluedMap();
+        params.putSingle("aulaId", String.valueOf(aulaPlanificacionId));
+        params.putSingle("tipoAccion", "F");
+
+        resource.path("calendario/eventos/aula/evento/" + eventoId)
+                .accept(MediaType.APPLICATION_JSON).put(ClientResponse.class, params);
+
+        assertThat(tieneAulaAsignada(eventoId), is(true));
+    }
+
+    @Test
+    @Transactional
+    public void asignaUnAulaAUnEventoConDistintoEstudio()
+    {
+        this.getListaEventosGenericos();
+        String eventoId = this.getListaEventosGenericos().get(1).get("id");
+
+        MultivaluedMap<String, String> params = new StringKeyStringValueIgnoreCaseMultivaluedMap();
+        params.putSingle("aulaId", String.valueOf(aulaPlanificacionSinEstudioId));
+        params.putSingle("tipoAccion", "F");
+
+        ClientResponse response = resource.path("calendario/eventos/aula/evento/" + eventoId)
+                .accept(MediaType.APPLICATION_JSON).put(ClientResponse.class, params);
+        
+        String message = response.getEntity(String.class);
+
+        assertThat(message,
+               containsString("L'aula seleccinada no està assignada a la titulació del event"));
+    }
+
+    private boolean tieneAulaAsignada(String eventoId)
+    {
+        UIEntity entity = getDatosEventoGenerico(eventoId);
+
+        return entity.get("aula_planificacion_id") != null;
     }
 }
