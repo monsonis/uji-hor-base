@@ -225,7 +225,7 @@ public class CalendarResourceTest extends AbstractRestTest
 
     @Test
     @Transactional
-    public void divideEventoGenerico() throws ParseException
+    public void divideEventoGenerico() throws Exception
     {
         String evento_id = "1";
 
@@ -336,20 +336,31 @@ public class CalendarResourceTest extends AbstractRestTest
         return getDatosEventoGenerico(evento_id) != null;
     }
 
-    private boolean existeDuplicadoDeEventoGenerico()
+    private boolean existeDuplicadoDeEventoGenerico() throws Exception
     {
         String id_original = "1";
-        String titulo_original = "Evento de prueba 1";
-        String fecha_inicio_esperada = "2012-10-10T10:00:00";
+        String titulo_original = "PS1026 PR1";
+        int hora_inicio_esperada = 10;
+        int minuto_inicio_esperado = 0;
+        int segundo_inicio_esperado = 0;
+        int dia_esperado = Calendar.WEDNESDAY;
+
+        Calendar cal = Calendar.getInstance();
 
         for (UIEntity entity : getListaEventosGenericos())
         {
             String entity_id = entity.get("id");
-            String entity_title = entity.get("title");
+            String entity_title = entity.get("title").replace("\"", "");
             String entity_start_str = entity.get("start");
 
+            Date entity_start_date = UIEntityDateFormat.parse(entity_start_str);
+            cal.setTime(entity_start_date);
+
             if (entity_title.equals(titulo_original)
-                    && entity_start_str.equals(fecha_inicio_esperada)
+                    && cal.get(Calendar.HOUR_OF_DAY) == hora_inicio_esperada
+                    && cal.get(Calendar.MINUTE) == minuto_inicio_esperado
+                    && cal.get(Calendar.SECOND) == segundo_inicio_esperado
+                    && cal.get(Calendar.DAY_OF_WEEK) == dia_esperado
                     && !entity_id.equals(id_original))
             {
                 return true;
