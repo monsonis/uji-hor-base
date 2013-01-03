@@ -170,13 +170,10 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
 
     private Evento creaEventoDesde(ItemDTO itemDTO)
     {
-        // String titulo = itemDTO.toString();
-        String titulo = "";
         Calendario calendario = obtenerCalendarioAsociadoPorTipoSubgrupo(itemDTO);
 
         Evento evento = new Evento();
         evento.setCalendario(calendario);
-        evento.setTitulo(titulo);
 
         if (itemDTO.getHoraInicio() != null)
         {
@@ -210,9 +207,9 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
 
         Asignatura asignatura = new Asignatura();
 
+        asignatura.setComun(itemDTO.getComun() == 1);
         if (itemDTO.getComun() > 0)
         {
-            asignatura.setComun(itemDTO.getComun() == 1);
             asignatura.setComunes(itemDTO.getComunes());
         }
 

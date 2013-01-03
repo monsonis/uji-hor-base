@@ -1,5 +1,6 @@
 package es.uji.apps.hor.model;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -32,7 +33,7 @@ public class Evento
     private Long plazas;
     private List<EventoDetalle> eventosDetalle = new ArrayList<EventoDetalle>();
 
-    private AulaPlanificacion aulaPlanificacion;
+    private AulaPlanificacion aulaPlanificacion = null;
 
     public Evento(Long id, Calendario calendario, String titulo, Date inicio, Date fin)
     {
@@ -67,9 +68,41 @@ public class Evento
         this.calendario = calendario;
     }
 
+    @Override
+    public String toString()
+    {
+        String titulo = MessageFormat.format("{0} {1}{2}", getAsignatura().getId(), getCalendario()
+                .getLetraId(), subgrupoId);
+
+        if (tieneComunes())
+        {
+            titulo = MessageFormat.format("{0} - C", titulo);
+        }
+
+        if (getAulaPlanificacion() != null)
+        {
+            titulo = MessageFormat.format("{0} {1}", titulo, getAulaPlanificacion().getNombre());
+        }
+
+        return titulo;
+    }
+
+    private boolean tieneComunes()
+    {
+        // TODO - Falta por implementar cuando esté refactorizado el esquema de BBDD
+        return false;
+    }
+
     public String getTitulo()
     {
-        return titulo;
+        if (titulo != null && !titulo.isEmpty())
+        {
+            return titulo;
+        }
+        else
+        {
+            return this.toString();
+        }
     }
 
     public void setTitulo(String titulo)

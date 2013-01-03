@@ -40,4 +40,10 @@ public class Calendario
     {
         this.nombre = nombre;
     }
+
+    public String getLetraId()
+    {
+        return TipoSubgrupo.getTipoSubgrupo(id);
+    }
+
 }

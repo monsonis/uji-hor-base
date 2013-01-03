@@ -1,5 +1,7 @@
 package es.uji.apps.hor.services.rest;
 
+import static es.uji.apps.hor.matchers.UIEntityHasTitle.hasTitle;
+import static org.hamcrest.CoreMatchers.everyItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -231,6 +233,17 @@ public class CalendarResourceTest extends AbstractRestTest
                 .accept(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class);
 
         assertThat(existeDuplicadoDeEventoGenerico(), is(true));
+
+    }
+
+    @Test
+    @Transactional
+    public void devuelveEventosConTitulo() throws Exception
+    {
+
+        List<UIEntity> lista_eventos = getListaEventosGenericos();
+
+        assertThat(lista_eventos, everyItem(hasTitle()));
 
     }
 

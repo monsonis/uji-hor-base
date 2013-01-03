@@ -30,7 +30,7 @@ public class AulaPlanificacion
 
     public String getNombre()
     {
-        return nombre;
+        return nombre == null ? "" : nombre;
     }
 
     public void setNombre(String nombre)

@@ -1,7 +1,6 @@
 package es.uji.apps.hor.db;
 
 import java.io.Serializable;
-import java.text.MessageFormat;
 import java.util.Date;
 import java.util.Set;
 
@@ -443,26 +442,6 @@ public class ItemDTO implements Serializable
     public void setItemsDetalles(Set<ItemDetalleDTO> itemsDetalles)
     {
         this.itemsDetalles = itemsDetalles;
-    }
-
-    @Override
-    public String toString()
-    {
-        String titulo = MessageFormat
-                .format("{0} {1}{2}", asignaturaId, tipoSubgrupoId, subgrupoId);
-
-        if (comun == 1)
-        {
-            titulo = MessageFormat.format("{0} - C", titulo);
-        }
-
-        if (aulaPlanificacion != null)
-        {
-            titulo = MessageFormat.format("{0} {1}", titulo,
-                    (aulaPlanificacionNombre != null) ? aulaPlanificacionNombre : "");
-        }
-
-        return titulo;
     }
 
     public Boolean getDetalleManual()
