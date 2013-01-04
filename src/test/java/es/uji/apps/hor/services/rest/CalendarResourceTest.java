@@ -12,10 +12,13 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map.Entry;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
+import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.core.util.StringKeyStringValueIgnoreCaseMultivaluedMap;
 
 import es.uji.apps.hor.builders.AsignaturaBuilder;
@@ -264,6 +268,125 @@ public class CalendarResourceTest extends AbstractRestTest
 
         assertThat(lista_eventos, everyItem(hasTitle()));
 
+    }
+
+    @Test
+    @Transactional
+    public void cambiaElDiaDeUnEvento() throws Exception
+    {
+        String eventoId = "1";
+        String fechaInicio = "2012-10-26T09:00:00";
+        String fechaFin = "2012-10-26T11:00:00";
+        actualizaEventoGenericoConFechas(eventoId, fechaInicio, fechaFin);
+
+        assertThat(diaDelEvento(eventoId), is(Calendar.FRIDAY));
+    }
+
+    @Test
+    @Transactional
+    public void cambiaDuracionDeUnEvento() throws Exception
+    {
+        String eventoId = "1";
+        String fechaInicio = "2012-10-10T09:00:00";
+        String fechaFin = "2012-10-10T12:00:00";
+        actualizaEventoGenericoConFechas(eventoId, fechaInicio, fechaFin);
+
+        assertThat(duracionHorasDelEvento(eventoId), is(3));
+    }
+
+    @Test
+    @Transactional
+    public void cambiaHoraInicioDeUnEvento() throws Exception
+    {
+        String eventoId = "1";
+        String fechaInicio = "2012-10-10T10:00:00";
+        String fechaFin = "2012-10-10T11:00:00";
+        actualizaEventoGenericoConFechas(eventoId, fechaInicio, fechaFin);
+
+        assertThat(horaInicioDelEvento(eventoId), is(10));
+    }
+
+    private int horaInicioDelEvento(String eventoId) throws ParseException
+    {
+        UIEntity entityActualizada = getDatosEventoGenerico(eventoId);
+        String fechaInicioString = entityActualizada.get("start");
+        Date fechaInicio = UIEntityDateFormat.parse(fechaInicioString);
+
+        Calendar calInicio = Calendar.getInstance();
+        calInicio.setTime(fechaInicio);
+
+        return calInicio.get(Calendar.HOUR_OF_DAY);
+    }
+
+    private int duracionHorasDelEvento(String eventoId) throws ParseException
+    {
+        UIEntity entityActualizada = getDatosEventoGenerico(eventoId);
+        String fechaInicioString = entityActualizada.get("start");
+        String fechaFinString = entityActualizada.get("end");
+        Date fechaInicio = UIEntityDateFormat.parse(fechaInicioString);
+        Date fechaFin = UIEntityDateFormat.parse(fechaFinString);
+
+        Calendar calInicio = Calendar.getInstance();
+        calInicio.setTime(fechaInicio);
+        Calendar calFin = Calendar.getInstance();
+        calFin.setTime(fechaFin);
+        return calFin.get(Calendar.HOUR_OF_DAY) - calInicio.get(Calendar.HOUR_OF_DAY);
+    }
+
+    private int diaDelEvento(String eventoId) throws ParseException
+    {
+        UIEntity entityActualizada = getDatosEventoGenerico(eventoId);
+        String fechaInicioString = entityActualizada.get("start");
+        Date fechaInicio = UIEntityDateFormat.parse(fechaInicioString);
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(fechaInicio);
+        return cal.get(Calendar.DAY_OF_WEEK);
+    }
+
+    private void actualizaEventoGenericoConFechas(String idEvento, String fechaInicio,
+            String fechaFin) throws NumberFormatException, UniformInterfaceException, JSONException
+    {
+
+        UIEntity entity = new UIEntity();
+        entity.put("id", idEvento);
+        entity.put("posteo_detalle", "0");
+
+        entity.put("start", fechaInicio); // Viernes
+        entity.put("end", fechaFin);
+        resource.path("calendario/eventos/generica/" + idEvento).accept(MediaType.APPLICATION_JSON)
+                .put(getJSONFromUIEntity(entity));
+    }
+
+    private JSONObject getJSONFromUIEntity(UIEntity entity) throws NumberFormatException,
+            JSONException
+    {
+
+        JSONObject dataEntry = new JSONObject();
+
+        for (Entry<String, List<String>> entry : entity.entrySet())
+        {
+            if (entry.getValue() != null)
+            {
+                if (entry.getValue().size() == 1)
+                {
+                    if ("id".equals(entry.getKey()))
+                    {
+                        dataEntry.put(entry.getKey(), Integer.parseInt(entry.getValue().get(0)));
+                    }
+                    else
+                    {
+                        dataEntry.put(entry.getKey(), entry.getValue().get(0));
+                    }
+                }
+                else
+                {
+                    dataEntry.put(entry.getKey(), entry.getValue());
+                }
+            }
+        }
+
+        return dataEntry;
     }
 
     private Boolean todosEventosEnRango(List<UIEntity> listaEventos, String fecha_inicio,

@@ -23,7 +23,7 @@ import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 public class EventosService
 {
     private final EventosDAO eventosDAO;
-    
+
     private final AulaDAO aulaDAO;
 
     @Autowired
@@ -52,8 +52,8 @@ public class EventosService
     {
         Evento evento = eventosDAO.getEventoById(eventoId);
         evento.updateDiaYHora(inicio, fin);
-
-        return null;
+        eventosDAO.updateDiaYHoraEvento(evento);
+        return evento;
     }
 
     public void deleteEventoSemanaGenerica(Long eventoId) throws RegistroNoEncontradoException
@@ -160,9 +160,9 @@ public class EventosService
         AulaPlanificacion aula = aulaDAO.getAulaById(aulaId);
         evento.actualizaAulaPlanificacion(aula);
         eventosDAO.actualizaAulaAsignadaAEvento(eventoId, aulaId);
-               
+
         List<Evento> eventos = new ArrayList<Evento>();
-        
+
         if (propagar)
         {
             eventos = eventosDAO.getGruposComunesAEvento(eventoId);
@@ -172,8 +172,8 @@ public class EventosService
                 eventosDAO.actualizaAulaAsignadaAEvento(grupoComun.getId(), aulaId);
             }
         }
-        eventos.add(evento);      
-        
+        eventos.add(evento);
+
         return eventos;
     }
 }
