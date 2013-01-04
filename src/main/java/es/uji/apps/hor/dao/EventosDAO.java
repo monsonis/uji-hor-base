@@ -69,4 +69,8 @@ public interface EventosDAO extends BaseDAO
     void deleteEventoDetalle(EventoDetalle detalle);
 
     List<Evento> getGruposComunesAEvento(Long eventoId);
+
+    void deleteDetallesDeEvento(Evento evento);
+
+    Evento updateEvento(Evento evento);
 }

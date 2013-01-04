@@ -267,6 +267,13 @@ public class Evento
         this.getEventosDetalle().add(nuevoEventoDetalle);
     }
 
+    public EventoDetalle creaDetalleEnFecha(Date fecha)
+    {
+        EventoDetalle detalle = new EventoDetalle(this, fecha);
+        addEventoDetalle(detalle);
+        return detalle;
+    }
+
     public AulaPlanificacion getAulaPlanificacion()
     {
         return aulaPlanificacion;
@@ -414,4 +421,10 @@ public class Evento
 
         this.aulaPlanificacion = aulaPlanificacion;
     }
+
+    public void vaciaEventosDetalle()
+    {
+        getEventosDetalle().clear();
+    }
+
 }

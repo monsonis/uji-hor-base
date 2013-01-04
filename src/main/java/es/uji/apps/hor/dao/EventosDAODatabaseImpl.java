@@ -375,6 +375,13 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
     }
 
     @Override
+    public void deleteDetallesDeEvento(Evento evento)
+    {
+        delete(ItemDetalleDTO.class, "item_id=" + evento.getId());
+
+    }
+
+    @Override
     public void deleteEventoSemanaGenerica(Long eventoId) throws RegistroNoEncontradoException
     {
         // Los comunes no hará falta tratarlos
@@ -956,7 +963,38 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
     }
 
     @Override
+    public Evento updateEvento(Evento evento)
+    {
+        ItemDTO itemDTO = creaItemDTODesde(evento);
+        itemDTO = update(itemDTO);
+
+        return creaEventoDesde(itemDTO);
+    }
+
+    @Override
     public Evento insertEvento(Evento evento)
+    {
+        ItemDTO itemDTO = creaItemDTODesde(evento);
+        itemDTO = insert(itemDTO);
+
+        if (evento.hasDetalleManual())
+        {
+            for (EventoDetalle eventoDetalle : evento.getEventosDetalle())
+            {
+                ItemDetalleDTO itemDetalleDTO = new ItemDetalleDTO();
+                itemDetalleDTO.setDescripcion(eventoDetalle.getDescripcion());
+                itemDetalleDTO.setInicio(eventoDetalle.getInicio());
+                itemDetalleDTO.setFin(eventoDetalle.getFin());
+                itemDetalleDTO.setItem(itemDTO);
+                insert(itemDetalleDTO);
+            }
+        }
+
+        return this.creaEventoDesde(itemDTO);
+
+    }
+
+    private ItemDTO creaItemDTODesde(Evento evento)
     {
         // Creamos el nuevo evento
         ItemDTO itemDTO = new ItemDTO();
@@ -1008,23 +1046,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         itemDTO.setTipoSubgrupoId(TipoSubgrupo.getTipoSubgrupo(evento.getCalendario().getId()));
         itemDTO.setTipoSubgrupo(evento.getCalendario().getNombre());
         itemDTO.setDetalleManual(evento.hasDetalleManual());
-        itemDTO = insert(itemDTO);
-
-        if (evento.hasDetalleManual())
-        {
-            for (EventoDetalle eventoDetalle : evento.getEventosDetalle())
-            {
-                ItemDetalleDTO itemDetalleDTO = new ItemDetalleDTO();
-                itemDetalleDTO.setDescripcion(eventoDetalle.getDescripcion());
-                itemDetalleDTO.setInicio(eventoDetalle.getInicio());
-                itemDetalleDTO.setFin(eventoDetalle.getFin());
-                itemDetalleDTO.setItem(itemDTO);
-                insert(itemDetalleDTO);
-            }
-        }
-
-        return this.creaEventoDesde(itemDTO);
-
+        return itemDTO;
     }
 
     @Override

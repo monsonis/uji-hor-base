@@ -12,7 +12,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Map.Entry;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
@@ -306,6 +305,45 @@ public class CalendarResourceTest extends AbstractRestTest
         assertThat(horaInicioDelEvento(eventoId), is(10));
     }
 
+    @Test
+    @Transactional
+    public void cambiaFechasDetalleManualDeUnEvento() throws Exception
+    {
+        JSONObject nuevosDatos = creaJSONBasicoDelEventoGenerico1();
+        nuevosDatos.put("detalle_manual", "on");
+        nuevosDatos.put("fecha_detalle_manual_int",
+                "[\"10/10/2012 09:00:00\", \"17/10/2012 09:00:00\"]");
+
+        llamaServicioModificacionEventoGenerico1(nuevosDatos);
+
+        String inicio_periodo = "2012-10-01";
+        String fin_periodo = "2012-10-28";
+        List<UIEntity> listaEventos = getEventosDetalladosEnRangoDeFechas(inicio_periodo,
+                fin_periodo);
+
+        assertThat(listaEventos, hasSize(8));
+
+    }
+
+    private void llamaServicioModificacionEventoGenerico1(JSONObject nuevosDatos)
+    {
+        resource.path("calendario/eventos/generica/1").accept(MediaType.APPLICATION_JSON)
+                .put(nuevosDatos);
+    }
+
+    private JSONObject creaJSONBasicoDelEventoGenerico1() throws JSONException
+    {
+        String fechaInicio = "2012-10-10T09:00:00";
+        String fechaFin = "2012-10-10T11:00:00";
+
+        JSONObject entity = new JSONObject();
+        entity.put("id", "1");
+        entity.put("posteo_detalle", "1");
+        entity.put("start", fechaInicio);
+        entity.put("end", fechaFin);
+        return entity;
+    }
+
     private int horaInicioDelEvento(String eventoId) throws ParseException
     {
         UIEntity entityActualizada = getDatosEventoGenerico(eventoId);
@@ -348,45 +386,14 @@ public class CalendarResourceTest extends AbstractRestTest
             String fechaFin) throws NumberFormatException, UniformInterfaceException, JSONException
     {
 
-        UIEntity entity = new UIEntity();
+        JSONObject entity = new JSONObject();
         entity.put("id", idEvento);
         entity.put("posteo_detalle", "0");
 
-        entity.put("start", fechaInicio); // Viernes
+        entity.put("start", fechaInicio);
         entity.put("end", fechaFin);
         resource.path("calendario/eventos/generica/" + idEvento).accept(MediaType.APPLICATION_JSON)
-                .put(getJSONFromUIEntity(entity));
-    }
-
-    private JSONObject getJSONFromUIEntity(UIEntity entity) throws NumberFormatException,
-            JSONException
-    {
-
-        JSONObject dataEntry = new JSONObject();
-
-        for (Entry<String, List<String>> entry : entity.entrySet())
-        {
-            if (entry.getValue() != null)
-            {
-                if (entry.getValue().size() == 1)
-                {
-                    if ("id".equals(entry.getKey()))
-                    {
-                        dataEntry.put(entry.getKey(), Integer.parseInt(entry.getValue().get(0)));
-                    }
-                    else
-                    {
-                        dataEntry.put(entry.getKey(), entry.getValue().get(0));
-                    }
-                }
-                else
-                {
-                    dataEntry.put(entry.getKey(), entry.getValue());
-                }
-            }
-        }
-
-        return dataEntry;
+                .put(entity);
     }
 
     private Boolean todosEventosEnRango(List<UIEntity> listaEventos, String fecha_inicio,

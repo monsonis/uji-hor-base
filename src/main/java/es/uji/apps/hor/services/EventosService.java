@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import es.uji.apps.hor.AulaNoAsignadaAEstudioDelEventoException;
 import es.uji.apps.hor.DuracionEventoIncorrectaException;
+import es.uji.apps.hor.EventoDetalleSinEventoException;
 import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.dao.AulaDAO;
 import es.uji.apps.hor.dao.EventosDAO;
@@ -128,9 +129,25 @@ public class EventosService
     }
 
     public Evento updateEventoConDetalleManual(Long eventoId, List<Date> fechas, Date inicio,
-            Date fin) throws RegistroNoEncontradoException
+            Date fin) throws RegistroNoEncontradoException, EventoDetalleSinEventoException,
+            DuracionEventoIncorrectaException
     {
-        return eventosDAO.updateEventoConDetalleManual(eventoId, fechas, inicio, fin);
+        Evento evento = eventosDAO.getEventoById(eventoId);
+        evento.setDetalleManual(true);
+        evento.setInicio(inicio);
+        evento.setFin(fin);
+        eventosDAO.updateEvento(evento);
+
+        eventosDAO.deleteDetallesDeEvento(evento);
+        evento.vaciaEventosDetalle();
+
+        for (Date fecha : fechas)
+        {
+            EventoDetalle detalle = evento.creaDetalleEnFecha(fecha);
+            eventosDAO.insertEventoDetalle(detalle);
+        }
+
+        return evento;
     }
 
     public boolean isDetalleManualYNoCambiaDiaSemana(Long eventoId, Date inicio)
