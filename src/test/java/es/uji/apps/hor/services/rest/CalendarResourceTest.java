@@ -449,11 +449,34 @@ public class CalendarResourceTest extends AbstractRestTest
 
         ClientResponse response = resource.path("calendario/eventos/aula/evento/" + eventoId)
                 .accept(MediaType.APPLICATION_JSON).put(ClientResponse.class, params);
-        
+
         String message = response.getEntity(String.class);
 
         assertThat(message,
-               containsString("L'aula seleccinada no està assignada a la titulació del event"));
+                containsString("L'aula seleccinada no està assignada a la titulació del event"));
+    }
+
+    @Test
+    @Transactional
+    public void asignaAulaAUnEventoYPropagaAGruposDivididos() throws Exception
+    {
+        String evento_id = "1";
+
+        resource.path("calendario/eventos/generica/divide/" + evento_id)
+                .accept(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class);
+
+        assertThat(existeDuplicadoDeEventoGenerico(), is(true));
+
+        MultivaluedMap<String, String> params = new StringKeyStringValueIgnoreCaseMultivaluedMap();
+        params.putSingle("aulaId", String.valueOf(aulaPlanificacionId));
+        params.putSingle("tipoAccion", "T");
+
+        resource.path("calendario/eventos/aula/evento/" + evento_id)
+                .accept(MediaType.APPLICATION_JSON).put(ClientResponse.class, params);
+
+        UIEntity duplicado = getEventoDuplicado();
+
+        assertThat(coincidenAulasEventoDividido(evento_id, duplicado.get("id")), is(true));
     }
 
     private boolean tieneAulaAsignada(String eventoId)
@@ -461,5 +484,47 @@ public class CalendarResourceTest extends AbstractRestTest
         UIEntity entity = getDatosEventoGenerico(eventoId);
 
         return entity.get("aula_planificacion_id") != null;
+    }
+
+    private boolean coincidenAulasEventoDividido(String originalId, String duplicadoId)
+    {
+        UIEntity entityO = getDatosEventoGenerico(originalId);
+        UIEntity entityD = getDatosEventoGenerico(duplicadoId);
+
+        return entityD.get("aula_planificacion_id").equals(entityO.get("aula_planificacion_id"));
+    }
+
+    private UIEntity getEventoDuplicado() throws ParseException
+    {
+        String id_original = "1";
+        String titulo_original = "PS1026 PR1";
+        int hora_inicio_esperada = 10;
+        int minuto_inicio_esperado = 0;
+        int segundo_inicio_esperado = 0;
+        int dia_esperado = Calendar.WEDNESDAY;
+
+        Calendar cal = Calendar.getInstance();
+
+        for (UIEntity entity : getListaEventosGenericos())
+        {
+            String entity_id = entity.get("id").trim();
+            String entity_title = entity.get("title").replace("\"", "").trim();
+            String entity_start_str = entity.get("start").trim();
+
+            Date entity_start_date = UIEntityDateFormat.parse(entity_start_str);
+            cal.setTime(entity_start_date);
+
+            if (entity_title.equals(titulo_original)
+                    && cal.get(Calendar.HOUR_OF_DAY) == hora_inicio_esperada
+                    && cal.get(Calendar.MINUTE) == minuto_inicio_esperado
+                    && cal.get(Calendar.SECOND) == segundo_inicio_esperado
+                    && cal.get(Calendar.DAY_OF_WEEK) == dia_esperado
+                    && !entity_id.equals(id_original))
+            {
+                return entity;
+            }
+        }
+
+        return null;
     }
 }
