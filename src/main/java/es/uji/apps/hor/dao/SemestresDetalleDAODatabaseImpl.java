@@ -51,8 +51,8 @@ public class SemestresDetalleDAODatabaseImpl extends BaseDAODatabaseImpl impleme
                 convierteTiposEstudioDTOenTiposEstudioModelo(detalleDTO.getTiposEstudio()),
                 detalleDTO.getFechaInicio(), detalleDTO.getFechaFin(),
                 detalleDTO.getNumeroSemanas());
-        detalleModelo.setFecha_examenes_inicio(detalleDTO.getFechaExamenesInicio());
-        detalleModelo.setFecha_examenes_fin(detalleDTO.getFechaExamenesFin());
+        detalleModelo.setFechaExamenesInicio(detalleDTO.getFechaExamenesInicio());
+        detalleModelo.setFechaExamenesFin(detalleDTO.getFechaExamenesFin());
         return detalleModelo;
     }
 
@@ -75,11 +75,14 @@ public class SemestresDetalleDAODatabaseImpl extends BaseDAODatabaseImpl impleme
         QTipoEstudioDTO tipoEstudio = QTipoEstudioDTO.tipoEstudioDTO;
         QEstudioDTO estudio = QEstudioDTO.estudioDTO;
 
-        List<DetalleSemestreDTO> query_result = query.from(detalleSemestre, estudio)
+        List<DetalleSemestreDTO> query_result = query
+                .from(detalleSemestre, estudio)
                 .join(estudio.tipoEstudio, tipoEstudio)
-                .join(detalleSemestre.tiposEstudio, tipoEstudio).fetch()
-                .where(estudio.id.eq(estudioId).and(estudio.tipoEstudio.eq(tipoEstudio).and(detalleSemestre.semestre.id.eq(semestreId))))
-                .list(detalleSemestre);
+                .join(detalleSemestre.tiposEstudio, tipoEstudio)
+                .fetch()
+                .where(estudio.id.eq(estudioId).and(
+                        estudio.tipoEstudio.eq(tipoEstudio).and(
+                                detalleSemestre.semestre.id.eq(semestreId)))).list(detalleSemestre);
 
         List<SemestreDetalle> semestresDetalle = new ArrayList<SemestreDetalle>();
         for (DetalleSemestreDTO detalle : query_result)

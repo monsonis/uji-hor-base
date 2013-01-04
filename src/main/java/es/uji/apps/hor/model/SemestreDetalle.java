@@ -6,37 +6,37 @@ public class SemestreDetalle
 {
     private Long id;
     private Semestre semestre;
-    private TipoEstudio tipo_estudio;
-    private Date fecha_inicio = null;
-    private Date fecha_fin = null;
-    private Date fecha_examenes_inicio = null;
-    private Date fecha_examenes_fin = null;
-    private Long numero_semanas;
+    private TipoEstudio tipoEstudio;
+    private Date fechaInicio = null;
+    private Date fechaFin = null;
+    private Date fechaExamenesInicio = null;
+    private Date fechaExamenesFin = null;
+    private Long numeroFemanas;
 
-    public SemestreDetalle(Long id, Semestre semestre, TipoEstudio tipo_estudio, Date fecha_inicio,
-            Date fecha_fin, Long numero_semanas)
+    public SemestreDetalle(Long id, Semestre semestre, TipoEstudio tipoEstudio, Date fechaInicio,
+            Date fechaFin, Long numeroSemanas)
     {
         super();
         this.id = id;
         this.semestre = semestre;
-        this.tipo_estudio = tipo_estudio;
-        this.fecha_inicio = fecha_inicio;
-        this.fecha_fin = fecha_fin;
-        this.numero_semanas = numero_semanas;
+        this.tipoEstudio = tipoEstudio;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+        this.numeroFemanas = numeroSemanas;
     }
 
-    public SemestreDetalle(Long id, Semestre semestre, TipoEstudio tipo_estudio, Date fecha_inicio,
-            Date fecha_fin, Date fecha_examenes_inicio, Date fecha_examenes_fin, Long numero_semanas)
+    public SemestreDetalle(Long id, Semestre semestre, TipoEstudio tipoEstudio, Date fechaInicio,
+            Date fechaFin, Date fechaExamenesInicio, Date fechaExamenesFin, Long numeroSemanas)
     {
         super();
         this.id = id;
         this.semestre = semestre;
-        this.tipo_estudio = tipo_estudio;
-        this.fecha_inicio = fecha_inicio;
-        this.fecha_fin = fecha_fin;
-        this.fecha_examenes_inicio = fecha_examenes_inicio;
-        this.fecha_examenes_fin = fecha_examenes_fin;
-        this.numero_semanas = numero_semanas;
+        this.tipoEstudio = tipoEstudio;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+        this.fechaExamenesInicio = fechaExamenesInicio;
+        this.fechaExamenesFin = fechaExamenesFin;
+        this.numeroFemanas = numeroSemanas;
     }
 
     public Long getId()
@@ -59,64 +59,64 @@ public class SemestreDetalle
         this.semestre = semestre;
     }
 
-    public TipoEstudio getTipo_estudio()
+    public TipoEstudio getTipoEstudio()
     {
-        return tipo_estudio;
+        return tipoEstudio;
     }
 
-    public void setTipo_estudio(TipoEstudio tipo_estudio)
+    public void setTipoEstudio(TipoEstudio tipoEstudio)
     {
-        this.tipo_estudio = tipo_estudio;
+        this.tipoEstudio = tipoEstudio;
     }
 
-    public Date getFecha_inicio()
+    public Date getFechaInicio()
     {
-        return fecha_inicio;
+        return fechaInicio;
     }
 
-    public void setFecha_inicio(Date fecha_inicio)
+    public void setFechaInicio(Date fechaInicio)
     {
-        this.fecha_inicio = fecha_inicio;
+        this.fechaInicio = fechaInicio;
     }
 
-    public Date getFecha_fin()
+    public Date getFechaFin()
     {
-        return fecha_fin;
+        return fechaFin;
     }
 
-    public void setFecha_fin(Date fecha_fin)
+    public void setFechaFin(Date fechaFin)
     {
-        this.fecha_fin = fecha_fin;
+        this.fechaFin = fechaFin;
     }
 
-    public Date getFecha_examenes_inicio()
+    public Date getFechaExamenesInicio()
     {
-        return fecha_examenes_inicio;
+        return fechaExamenesInicio;
     }
 
-    public void setFecha_examenes_inicio(Date fecha_examenes_inicio)
+    public void setFechaExamenesInicio(Date fechaExamenesInicio)
     {
-        this.fecha_examenes_inicio = fecha_examenes_inicio;
+        this.fechaExamenesInicio = fechaExamenesInicio;
     }
 
-    public Date getFecha_examenes_fin()
+    public Date getFechaExamenesFin()
     {
-        return fecha_examenes_fin;
+        return fechaExamenesFin;
     }
 
-    public void setFecha_examenes_fin(Date fecha_examenes_fin)
+    public void setFechaExamenesFin(Date fechaExamenesFin)
     {
-        this.fecha_examenes_fin = fecha_examenes_fin;
+        this.fechaExamenesFin = fechaExamenesFin;
     }
 
-    public Long getNumero_semanas()
+    public Long getNumeroSemanas()
     {
-        return numero_semanas;
+        return numeroFemanas;
     }
 
-    public void setNumero_semanas(Long numero_semanas)
+    public void setNumeroSemanas(Long numeroSemanas)
     {
-        this.numero_semanas = numero_semanas;
+        this.numeroFemanas = numeroSemanas;
     }
 
 }

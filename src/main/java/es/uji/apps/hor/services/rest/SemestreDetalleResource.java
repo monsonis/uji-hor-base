@@ -35,7 +35,7 @@ public class SemestreDetalleResource
         {
             UIEntity resultado = UIEntity.toUI(semestreDetalle);
             resultado.put("nombreSemestre", semestreDetalle.getSemestre().getNombre());
-            resultado.put("nombreTipoEstudio", semestreDetalle.getTipo_estudio().getNombre());
+            resultado.put("nombreTipoEstudio", semestreDetalle.getTipoEstudio().getNombre());
             listaResultados.add(resultado);
         }
 
@@ -55,7 +55,7 @@ public class SemestreDetalleResource
         {
             UIEntity resultado = UIEntity.toUI(semestreDetalle);
             resultado.put("nombreSemestre", semestreDetalle.getSemestre().getNombre());
-            resultado.put("nombreTipoEstudio", semestreDetalle.getTipo_estudio().getNombre());
+            resultado.put("nombreTipoEstudio", semestreDetalle.getTipoEstudio().getNombre());
             listaResultados.add(resultado);
         }
 
