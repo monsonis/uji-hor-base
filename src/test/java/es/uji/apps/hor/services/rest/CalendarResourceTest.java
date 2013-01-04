@@ -309,7 +309,7 @@ public class CalendarResourceTest extends AbstractRestTest
     @Transactional
     public void cambiaFechasDetalleManualDeUnEvento() throws Exception
     {
-        JSONObject nuevosDatos = creaJSONBasicoDelEventoGenerico1();
+        JSONObject nuevosDatos = creaJSONBasicoDelEventoGenericoConDetalle1();
         nuevosDatos.put("detalle_manual", "on");
         nuevosDatos.put("fecha_detalle_manual_int",
                 "[\"10/10/2012 09:00:00\", \"17/10/2012 09:00:00\"]");
@@ -331,7 +331,7 @@ public class CalendarResourceTest extends AbstractRestTest
                 .put(nuevosDatos);
     }
 
-    private JSONObject creaJSONBasicoDelEventoGenerico1() throws JSONException
+    private JSONObject creaJSONBasicoDelEventoGenericoConDetalle1() throws JSONException
     {
         String fechaInicio = "2012-10-10T09:00:00";
         String fechaFin = "2012-10-10T11:00:00";

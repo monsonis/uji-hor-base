@@ -398,6 +398,7 @@ public class Evento
 
             this.setInicio(inicio);
             this.setFin(fin);
+            propagaRangoHorarioAEventosDetalle();
         }
         else
         {

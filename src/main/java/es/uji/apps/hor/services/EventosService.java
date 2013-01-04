@@ -54,6 +54,10 @@ public class EventosService
         Evento evento = eventosDAO.getEventoById(eventoId);
         evento.updateDiaYHora(inicio, fin);
         eventosDAO.updateDiaYHoraEvento(evento);
+        for (EventoDetalle detalle : evento.getEventosDetalle())
+        {
+            eventosDAO.updateHorasEventoDetalle(detalle);
+        }
         return evento;
     }
 
