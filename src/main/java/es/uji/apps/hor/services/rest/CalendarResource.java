@@ -1,7 +1,6 @@
 package es.uji.apps.hor.services.rest;
 
 import java.text.DateFormat;
-import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -56,14 +55,13 @@ public class CalendarResource
     @InjectParam
     private GrupoHorarioService grupoHorarioService;
 
-    private SimpleDateFormat hourDateFormat;
-    private SimpleDateFormat shortDateFormat;
-    private SimpleDateFormat dateFormat;
+    private SimpleDateFormat queryParamDateFormat;
+    private SimpleDateFormat uIEntitydateFormat;
 
     public CalendarResource()
     {
-        shortDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        queryParamDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        uIEntitydateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     }
 
     @GET
@@ -139,8 +137,8 @@ public class CalendarResource
         estudioId = "224";
         cursoId = "1";
 
-        Date rangoFechasInicio = shortDateFormat.parse(fechaInicio);
-        Date rangoFechasFin = shortDateFormat.parse(fechaFin);
+        Date rangoFechasInicio = queryParamDateFormat.parse(fechaInicio);
+        Date rangoFechasFin = queryParamDateFormat.parse(fechaFin);
 
         List<Evento> eventos = eventosService.eventosDeUnEstudio(ParamUtils.parseLong(estudioId),
                 ParamUtils.parseLong(cursoId), rangoFechasInicio, rangoFechasFin);
@@ -194,8 +192,8 @@ public class CalendarResource
     {
         ParamUtils.checkNotNull(estudioId, cursoId, semestreId, grupoId, startDate, endDate);
 
-        Date rangoFechaInicio = shortDateFormat.parse(startDate);
-        Date rangoFechaFin = shortDateFormat.parse(endDate);
+        Date rangoFechaInicio = queryParamDateFormat.parse(startDate);
+        Date rangoFechaFin = queryParamDateFormat.parse(endDate);
 
         // Todos los eventos hasta el final del día
         Calendar c = Calendar.getInstance();
@@ -243,12 +241,12 @@ public class CalendarResource
 
             if (eventoDetalle.getInicio() != null)
             {
-                eventoUI.put("start", dateFormat.format(eventoDetalle.getInicio()));
+                eventoUI.put("start", uIEntitydateFormat.format(eventoDetalle.getInicio()));
             }
 
             if (eventoDetalle.getFin() != null)
             {
-                eventoUI.put("end", dateFormat.format(eventoDetalle.getFin()));
+                eventoUI.put("end", uIEntitydateFormat.format(eventoDetalle.getFin()));
             }
 
             eventosUI.add(eventoUI);
@@ -394,12 +392,12 @@ public class CalendarResource
 
             if (evento.getInicio() != null)
             {
-                eventoUI.put("start", dateFormat.format(evento.getInicio()));
+                eventoUI.put("start", uIEntitydateFormat.format(evento.getInicio()));
             }
 
             if (evento.getFin() != null)
             {
-                eventoUI.put("end", dateFormat.format(evento.getFin()));
+                eventoUI.put("end", uIEntitydateFormat.format(evento.getFin()));
             }
 
             eventosUI.add(eventoUI);
