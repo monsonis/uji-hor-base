@@ -5,18 +5,19 @@ public class Semestre
     private Long semestre;
     private String nombre;
 
-    public Semestre() {
+    public Semestre()
+    {
     }
-    
+
     public Semestre(Long semestre)
     {
-        this.setSemestre(semestre);
+        this.semestre = semestre;
     }
 
     public Semestre(Long semestre, String nombre)
     {
-        this.setSemestre(semestre);
-        this.setNombre(nombre);
+        this.semestre = semestre;
+        this.nombre = nombre;
     }
 
     public Long getSemestre()

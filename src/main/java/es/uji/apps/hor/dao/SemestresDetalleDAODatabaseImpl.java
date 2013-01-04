@@ -32,12 +32,12 @@ public class SemestresDetalleDAODatabaseImpl extends BaseDAODatabaseImpl impleme
         QSemestreDTO semestre = QSemestreDTO.semestreDTO;
         QTipoEstudioDTO tipoEstudio = QTipoEstudioDTO.tipoEstudioDTO;
 
-        List<DetalleSemestreDTO> query_result = query.from(detalleSemestre)
+        List<DetalleSemestreDTO> queryResult = query.from(detalleSemestre)
                 .join(detalleSemestre.semestre, semestre).fetch()
                 .join(detalleSemestre.tiposEstudio, tipoEstudio).fetch().list(detalleSemestre);
 
         List<SemestreDetalle> semestresDetalle = new ArrayList<SemestreDetalle>();
-        for (DetalleSemestreDTO detalle : query_result)
+        for (DetalleSemestreDTO detalle : queryResult)
         {
             semestresDetalle.add(convierteDetalleDTOEnDetalleModelo(detalle));
         }
@@ -75,7 +75,7 @@ public class SemestresDetalleDAODatabaseImpl extends BaseDAODatabaseImpl impleme
         QTipoEstudioDTO tipoEstudio = QTipoEstudioDTO.tipoEstudioDTO;
         QEstudioDTO estudio = QEstudioDTO.estudioDTO;
 
-        List<DetalleSemestreDTO> query_result = query
+        List<DetalleSemestreDTO> queryResult = query
                 .from(detalleSemestre, estudio)
                 .join(estudio.tipoEstudio, tipoEstudio)
                 .join(detalleSemestre.tiposEstudio, tipoEstudio)
@@ -85,7 +85,7 @@ public class SemestresDetalleDAODatabaseImpl extends BaseDAODatabaseImpl impleme
                                 detalleSemestre.semestre.id.eq(semestreId)))).list(detalleSemestre);
 
         List<SemestreDetalle> semestresDetalle = new ArrayList<SemestreDetalle>();
-        for (DetalleSemestreDTO detalle : query_result)
+        for (DetalleSemestreDTO detalle : queryResult)
         {
             semestresDetalle.add(convierteDetalleDTOEnDetalleModelo(detalle));
         }
