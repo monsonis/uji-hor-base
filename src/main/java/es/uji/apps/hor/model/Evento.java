@@ -125,7 +125,7 @@ public class Evento
         return inicio;
     }
 
-    public void setInicio(Date inicio)
+    private void setInicio(Date inicio)
     {
         this.inicio = inicio;
     }
@@ -135,9 +135,38 @@ public class Evento
         return fin;
     }
 
-    public void setFin(Date fin)
+    private void setFin(Date fin)
     {
         this.fin = fin;
+    }
+
+    public void setFechaInicioYFin(Date inicio, Date fin) throws DuracionEventoIncorrectaException
+    {
+        if (fechasEnElMismoDiaYEnSemanaLaboral(inicio, fin))
+        {
+            this.setInicio(inicio);
+            this.setFin(fin);
+            propagaRangoHorarioAEventosDetalle();
+        }
+        else
+        {
+            throw new DuracionEventoIncorrectaException();
+        }
+    }
+
+    private boolean fechasEnElMismoDiaYEnSemanaLaboral(Date inicio, Date fin)
+    {
+        Calendar calInicio = Calendar.getInstance();
+        Calendar calFin = Calendar.getInstance();
+
+        calInicio.setTime(inicio);
+        calFin.setTime(fin);
+
+        return calInicio.get(Calendar.YEAR) == calFin.get(Calendar.YEAR)
+                && calInicio.get(Calendar.MONTH) == calFin.get(Calendar.MONTH)
+                && calInicio.get(Calendar.DAY_OF_MONTH) == calFin.get(Calendar.DAY_OF_MONTH)
+                && calInicio.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY
+                && calInicio.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY;
     }
 
     public Boolean hasDetalleManual()
@@ -379,31 +408,6 @@ public class Evento
     public void setEventosDetalle(List<EventoDetalle> eventosDetalle)
     {
         this.eventosDetalle = eventosDetalle;
-    }
-
-    public void updateDiaYHora(Date inicio, Date fin) throws DuracionEventoIncorrectaException
-    {
-        Calendar calInicio = Calendar.getInstance();
-        Calendar calFin = Calendar.getInstance();
-
-        calInicio.setTime(inicio);
-        calFin.setTime(fin);
-
-        if (calInicio.get(Calendar.YEAR) == calFin.get(Calendar.YEAR)
-                && calInicio.get(Calendar.MONTH) == calFin.get(Calendar.MONTH)
-                && calInicio.get(Calendar.DAY_OF_MONTH) == calFin.get(Calendar.DAY_OF_MONTH)
-                && calInicio.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY
-                && calInicio.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY)
-        {
-
-            this.setInicio(inicio);
-            this.setFin(fin);
-            propagaRangoHorarioAEventosDetalle();
-        }
-        else
-        {
-            throw new DuracionEventoIncorrectaException();
-        }
     }
 
     public void desplanificar()

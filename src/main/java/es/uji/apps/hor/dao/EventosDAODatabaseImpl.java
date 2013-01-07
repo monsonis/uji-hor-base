@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
 
+import es.uji.apps.hor.DuracionEventoIncorrectaException;
 import es.uji.apps.hor.EventoDetalleSinEventoException;
 import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.db.AulaPlanificacionDTO;
@@ -175,18 +176,24 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         Evento evento = new Evento();
         evento.setCalendario(calendario);
 
-        if (itemDTO.getHoraInicio() != null)
+        if (itemDTO.getHoraInicio() != null && itemDTO.getHoraFin() != null)
         {
             Calendar inicio = generaItemCalendarioSemanaGenerica(itemDTO.getDiaSemana().getId()
                     .intValue(), itemDTO.getHoraInicio());
-            evento.setInicio(inicio.getTime());
-        }
 
-        if (itemDTO.getHoraFin() != null)
-        {
             Calendar fin = generaItemCalendarioSemanaGenerica(itemDTO.getDiaSemana().getId()
                     .intValue(), itemDTO.getHoraFin());
-            evento.setFin(fin.getTime());
+
+            try
+            {
+                evento.setFechaInicioYFin(inicio.getTime(), fin.getTime());
+            }
+            catch (DuracionEventoIncorrectaException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
         }
 
         evento.setDetalleManual(itemDTO.getDetalleManual());

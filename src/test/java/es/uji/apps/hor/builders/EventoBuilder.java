@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import es.uji.apps.hor.DuracionEventoIncorrectaException;
 import es.uji.apps.hor.dao.EventosDAO;
 import es.uji.apps.hor.model.Asignatura;
 import es.uji.apps.hor.model.Calendario;
@@ -35,27 +36,17 @@ public class EventoBuilder
         return this;
     }
 
-    public EventoBuilder withInicioFechaString(String inicio) throws ParseException
+    public EventoBuilder withInicioYFinFechaString(String inicio, String fin)
+            throws ParseException, DuracionEventoIncorrectaException
     {
-        evento.setInicio(formatter.parse(inicio));
+        evento.setFechaInicioYFin(formatter.parse(inicio), formatter.parse(fin));
         return this;
     }
 
-    public EventoBuilder withFinFechaString(String fin) throws ParseException
+    public EventoBuilder withInicioYFin(Date inicio, Date fin)
+            throws DuracionEventoIncorrectaException
     {
-        evento.setFin(formatter.parse(fin));
-        return this;
-    }
-
-    public EventoBuilder withInicio(Date inicio)
-    {
-        evento.setInicio(inicio);
-        return this;
-    }
-
-    public EventoBuilder withFin(Date fin)
-    {
-        evento.setFin(fin);
+        evento.setFechaInicioYFin(inicio, fin);
         return this;
     }
 

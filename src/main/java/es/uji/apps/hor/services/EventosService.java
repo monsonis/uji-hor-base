@@ -1,7 +1,6 @@
 package es.uji.apps.hor.services;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -52,7 +51,7 @@ public class EventosService
             throws DuracionEventoIncorrectaException, RegistroNoEncontradoException
     {
         Evento evento = eventosDAO.getEventoById(eventoId);
-        evento.updateDiaYHora(inicio, fin);
+        evento.setFechaInicioYFin(inicio, fin);
         eventosDAO.updateDiaYHoraEvento(evento);
         for (EventoDetalle detalle : evento.getEventosDetalle())
         {
@@ -102,40 +101,16 @@ public class EventosService
             RegistroNoEncontradoException
     {
 
-        if (fechasEnElMismoDiaYEnSemanaLaboral(inicio, fin))
-        {
-            Evento evento = eventosDAO.getEventoById(eventoId);
-            evento.setInicio(inicio);
-            evento.setFin(fin);
-            evento.setDesdeElDia(desdeElDia);
-            evento.setNumeroIteraciones(numeroIteraciones);
-            evento.setRepetirCadaSemanas(repetirCadaSemanas);
-            evento.setHastaElDia(hastaElDia);
-            evento.setDetalleManual(detalleManual);
+        Evento evento = eventosDAO.getEventoById(eventoId);
+        evento.setFechaInicioYFin(inicio, fin);
+        evento.setDesdeElDia(desdeElDia);
+        evento.setNumeroIteraciones(numeroIteraciones);
+        evento.setRepetirCadaSemanas(repetirCadaSemanas);
+        evento.setHastaElDia(hastaElDia);
+        evento.setDetalleManual(detalleManual);
 
-            return eventosDAO.modificaDetallesGrupoAsignatura(evento);
+        return eventosDAO.modificaDetallesGrupoAsignatura(evento);
 
-        }
-        else
-        {
-            throw new DuracionEventoIncorrectaException();
-        }
-
-    }
-
-    private boolean fechasEnElMismoDiaYEnSemanaLaboral(Date inicio, Date fin)
-    {
-        Calendar calInicio = Calendar.getInstance();
-        Calendar calFin = Calendar.getInstance();
-
-        calInicio.setTime(inicio);
-        calFin.setTime(fin);
-
-        return calInicio.get(Calendar.YEAR) == calFin.get(Calendar.YEAR)
-                && calInicio.get(Calendar.MONTH) == calFin.get(Calendar.MONTH)
-                && calInicio.get(Calendar.DAY_OF_MONTH) == calFin.get(Calendar.DAY_OF_MONTH)
-                && calInicio.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY
-                && calInicio.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY;
     }
 
     public List<Evento> getEventosDetalleByEventoId(Long eventoId)
@@ -154,8 +129,7 @@ public class EventosService
     {
         Evento evento = eventosDAO.getEventoById(eventoId);
         evento.setDetalleManual(true);
-        evento.setInicio(inicio);
-        evento.setFin(fin);
+        evento.setFechaInicioYFin(inicio, fin);
         eventosDAO.updateEvento(evento);
 
         eventosDAO.deleteDetallesDeEvento(evento);

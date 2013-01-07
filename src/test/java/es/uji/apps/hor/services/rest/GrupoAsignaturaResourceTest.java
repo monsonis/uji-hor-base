@@ -188,9 +188,9 @@ public class GrupoAsignaturaResourceTest extends AbstractRestTest
     {
 
         return new EventoBuilder(eventosDao).withTitulo("Evento de prueba")
-                .withAsignatura(asignatura).withInicioFechaString(fechaInicial)
-                .withFinFechaString(fechaFinal).withSemestre(semestre).withGrupoId(grupoId)
-                .withCalendario(calendario).withDetalleManual(false).build();
+                .withAsignatura(asignatura).withInicioYFinFechaString(fechaInicial, fechaFinal)
+                .withSemestre(semestre).withGrupoId(grupoId).withCalendario(calendario)
+                .withDetalleManual(false).build();
     }
 
     private Evento buildEventoSinAsignar(Asignatura asignatura, Semestre semestre,

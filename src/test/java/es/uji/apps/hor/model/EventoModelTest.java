@@ -9,6 +9,7 @@ import java.util.Date;
 
 import org.junit.Test;
 
+import es.uji.apps.hor.DuracionEventoIncorrectaException;
 import es.uji.apps.hor.builders.AsignaturaBuilder;
 import es.uji.apps.hor.builders.CalendarioBuilder;
 import es.uji.apps.hor.builders.EstudioBuilder;
@@ -47,12 +48,35 @@ public class EventoModelTest
 
         Date inicio = formatter.parse("20/12/2012 10:00");
         Date fin = formatter.parse("20/12/2012 12:00");
-        
-        evento.updateDiaYHora(inicio, fin);
-        
+
+        evento.setFechaInicioYFin(inicio, fin);
+
         assertThat(evento.getInicio(), equalTo(inicio));
         assertThat(evento.getFin(), equalTo(fin));
         assertThat(evento.getDia(), equalTo(4));
+    }
+
+    @Test(expected = DuracionEventoIncorrectaException.class)
+    public void modificaFechasDiaFinDistinto() throws Exception
+    {
+        Evento evento = buildEvento("30/07/2012 09:00", "30/07/2012 10:00");
+
+        Date fin = formatter.parse("31/07/2012 10:00");
+
+        evento.setFechaInicioYFin(evento.getInicio(), fin);
+
+    }
+
+    @Test(expected = DuracionEventoIncorrectaException.class)
+    public void modificaFechasDiaFinDeSemana() throws Exception
+    {
+        Evento evento = buildEvento("30/07/2012 09:00", "30/07/2012 10:00");
+
+        Date inicio = formatter.parse("06/01/2013 10:00");
+        Date fin = formatter.parse("06/01/2013 12:00");
+
+        evento.setFechaInicioYFin(inicio, fin);
+
     }
 
     private Evento buildEvento(String fechaInicial, String fechaFinal) throws Exception
@@ -72,7 +96,7 @@ public class EventoModelTest
                 .withNombre(TipoSubgrupo.getTipoSubgrupo(calendarioPRId)).build();
 
         return new EventoBuilder().withTitulo("Evento de prueba").withAsignatura(asignatura)
-                .withInicio(formatter.parse(fechaInicial)).withFin(formatter.parse(fechaFinal))
-                .withSemestre(semestre).withCalendario(calendario).withDetalleManual(false).build();
+                .withInicioYFinFechaString(fechaInicial, fechaFinal).withSemestre(semestre)
+                .withCalendario(calendario).withDetalleManual(false).build();
     }
 }
