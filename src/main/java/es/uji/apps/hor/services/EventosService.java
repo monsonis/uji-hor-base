@@ -78,7 +78,8 @@ public class EventosService
 
     private boolean esElultimoEventoAsignadoDelGrupo(Evento evento)
     {
-        return eventosDAO.eventosDelMismoGrupo(evento) == 1;
+        long cantidadEventosDelMismoGrupo = eventosDAO.cantidadEventosDelMismoGrupo(evento);
+        return cantidadEventosDelMismoGrupo == 1;
     }
 
     public void divideEventoSemanaGenerica(Long eventoId) throws RegistroNoEncontradoException,

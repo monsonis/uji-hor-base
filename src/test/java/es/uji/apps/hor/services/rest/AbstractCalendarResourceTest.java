@@ -45,6 +45,9 @@ public abstract class AbstractCalendarResourceTest extends AbstractRestTest
 
     @Autowired
     protected EstudiosDAO estudiosDao;
+    protected Asignatura asignaturaFicticia1;
+    protected Semestre semestre;
+    protected Calendario calendarioPR;
 
     @Before
     @Transactional
@@ -62,7 +65,7 @@ public abstract class AbstractCalendarResourceTest extends AbstractRestTest
         Estudio otroEstudio = new EstudioBuilder(estudiosDao).withNombre("Grau en Informática")
                 .withTipoEstudio("Grau").withTipoEstudioId("G").build();
 
-        Asignatura asignaturaFicticia1 = new AsignaturaBuilder().withCaracter("Obligatoria")
+        asignaturaFicticia1 = new AsignaturaBuilder().withCaracter("Obligatoria")
                 .withCaracterId("OB").withComun(false).withCursoId(cursoId).withId("PS1026")
                 .withNombre("Intervenció Psicosocial").withEstudio(estudio).build();
 
@@ -74,11 +77,11 @@ public abstract class AbstractCalendarResourceTest extends AbstractRestTest
                 .withCaracterId("OB").withComun(false).withCursoId(cursoId).withId("I001")
                 .withNombre("Asignatura de Informatica").withEstudio(otroEstudio).build();
 
-        Semestre semestre = new SemestreBuilder().withSemestre(semestreId)
+        semestre = new SemestreBuilder().withSemestre(semestreId)
                 .withNombre("Primer semestre").build();
 
         Long calendarioPracticasId = TipoSubgrupo.PR.getCalendarioAsociado();
-        Calendario calendarioPR = new CalendarioBuilder().withId(calendarioPracticasId)
+        calendarioPR = new CalendarioBuilder().withId(calendarioPracticasId)
                 .withNombre(TipoSubgrupo.getTipoSubgrupo(calendarioPracticasId)).build();
 
         Long calendarioTeoriaId = TipoSubgrupo.TE.getCalendarioAsociado();

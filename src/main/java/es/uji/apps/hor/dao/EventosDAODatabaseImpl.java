@@ -303,7 +303,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
     }
 
     @Override
-    public long eventosDelMismoGrupo(Evento evento)
+    public long cantidadEventosDelMismoGrupo(Evento evento)
     {
         JPAQuery query = new JPAQuery(entityManager);
         QItemDTO item = QItemDTO.itemDTO;
@@ -317,9 +317,8 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
                         .and(item.grupoId.eq(evento.getGrupoId()))
                         .and(item.asignaturaId.eq(evento.getAsignatura().getId()))
                         .and(item.subgrupoId.eq(evento.getSubgrupoId()))
-                        .and(item.tipoSubgrupoId.eq(
-                                TipoSubgrupo.getTipoSubgrupo(evento.getCalendario().getId())).and(
-                                item.id.ne(evento.getId())))).list(item).size();
+                        .and(item.tipoSubgrupoId.eq(TipoSubgrupo.getTipoSubgrupo(evento
+                                .getCalendario().getId())))).list(item).size();
     }
 
     @Override
@@ -388,6 +387,11 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
 
     DiaSemanaDTO getDiaSemanaDTOParaFecha(Date fecha)
     {
+        if (fecha == null)
+        {
+            return null;
+        }
+
         Calendar calInicio = Calendar.getInstance();
         calInicio.setTime(fecha);
         String diaSemana = getNombreDiaSemana(calInicio.get(Calendar.DAY_OF_WEEK));
@@ -619,6 +623,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
     @Transactional
     public void updateHorasEventoYSusDetalles(Evento evento)
     {
+
         DiaSemanaDTO diaSemanaDTO = getDiaSemanaDTOParaFecha(evento.getInicio());
 
         QItemDTO qItem = QItemDTO.itemDTO;

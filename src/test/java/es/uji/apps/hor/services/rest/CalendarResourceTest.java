@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -20,8 +21,12 @@ import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.UniformInterfaceException;
+import com.sun.jersey.core.util.StringKeyStringValueIgnoreCaseMultivaluedMap;
 
+import es.uji.apps.hor.builders.EventoBuilder;
+import es.uji.apps.hor.model.Evento;
 import es.uji.commons.rest.UIEntity;
 
 public class CalendarResourceTest extends AbstractCalendarResourceTest
@@ -45,13 +50,13 @@ public class CalendarResourceTest extends AbstractCalendarResourceTest
     public void devuelveLosEventosDeUnaSemana() throws ParseException
     {
         // Given
-        String inicio_semana = "2012-10-22";
-        String fin_semana = "2012-10-28";
+        String inicioSemana = "2012-10-22";
+        String finSemana = "2012-10-28";
 
-        List<UIEntity> listaEventos = getEventosDetalladosEnRangoDeFechas(inicio_semana, fin_semana);
+        List<UIEntity> listaEventos = getEventosDetalladosEnRangoDeFechas(inicioSemana, finSemana);
 
         assertThat(listaEventos, hasSize(3));
-        assertThat(todosEventosEnRango(listaEventos, inicio_semana, fin_semana), is(true));
+        assertThat(todosEventosEnRango(listaEventos, inicioSemana, finSemana), is(true));
 
     }
 
@@ -59,14 +64,13 @@ public class CalendarResourceTest extends AbstractCalendarResourceTest
     @Transactional
     public void devuelveEventosDeCuatroSemanas() throws ParseException
     {
-        String inicio_periodo = "2012-10-01";
-        String fin_periodo = "2012-10-28";
+        String inicioPeriodo = "2012-10-01";
+        String finPeriodo = "2012-10-28";
 
-        List<UIEntity> listaEventos = getEventosDetalladosEnRangoDeFechas(inicio_periodo,
-                fin_periodo);
+        List<UIEntity> listaEventos = getEventosDetalladosEnRangoDeFechas(inicioPeriodo, finPeriodo);
 
         assertThat(listaEventos, hasSize(9));
-        assertThat(todosEventosEnRango(listaEventos, inicio_periodo, fin_periodo), is(true));
+        assertThat(todosEventosEnRango(listaEventos, inicioPeriodo, finPeriodo), is(true));
 
     }
 
@@ -74,14 +78,37 @@ public class CalendarResourceTest extends AbstractCalendarResourceTest
     @Transactional
     public void eliminarUnEventoGenerico() throws ParseException
     {
-        String evento_id = "1";
+        String eventoId = "1";
 
-        resource.path("calendario/eventos/generica/" + evento_id)
+        resource.path("calendario/eventos/generica/" + eventoId)
                 .accept(MediaType.APPLICATION_JSON_TYPE).delete(ClientResponse.class);
 
         List<UIEntity> listaEventos = getListaEventosGenericos();
         assertThat(listaEventos, hasSize(2));
-        assertThat(existeEventoGenericoConId(evento_id), is(false));
+        assertThat(existeEventoGenericoConId(eventoId), is(false));
+    }
+
+    @Test
+    @Transactional
+    public void eliminarElUltimoEventoDeUnGrupo() throws Exception
+    {
+        Evento ultimoEventoDelGrupoB = new EventoBuilder(eventosDao)
+                .withTitulo("Evento de prueba 1 de asignatura 1")
+                .withAsignatura(asignaturaFicticia1)
+                .withInicioYFinFechaString("10/10/2012 09:00", "10/10/2012 11:00").withGrupoId("B")
+                .withSubgrupoId(new Long(1)).withSemestre(semestre).withCalendario(calendarioPR)
+                .withDetalleManual(false).build();
+
+        String eventoId = ultimoEventoDelGrupoB.getId().toString();
+
+        resource.path("calendario/eventos/generica/" + eventoId)
+                .accept(MediaType.APPLICATION_JSON_TYPE).delete(ClientResponse.class);
+
+        List<UIEntity> listaEventos = getListaEventosGenericos();
+        assertThat(listaEventos, hasSize(3));
+        assertThat(existeEventoGenericoConId(eventoId), is(false));
+        assertThat(elEventoEstaDesasignado(eventoId), is(true));
+
     }
 
     @Test
@@ -223,9 +250,44 @@ public class CalendarResourceTest extends AbstractCalendarResourceTest
         return true;
     }
 
-    private boolean existeEventoGenericoConId(String evento_id)
+    private boolean existeEventoGenericoConId(String eventoId)
     {
-        return getDatosEventoGenerico(evento_id) != null;
+        return getDatosEventoGenerico(eventoId) != null;
+    }
+
+    private Boolean elEventoEstaDesasignado(String eventoId)
+    {
+        for (UIEntity entity : getListaEventosSinAsignar())
+        {
+            String id = entity.get("id");
+            if (id.equals(eventoId))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private List<UIEntity> getListaEventosSinAsignar()
+    {
+        ClientResponse response = resource.path("grupoAsignatura/sinAsignar")
+                .queryParams(buildQueryParamsEventosSinAsignar())
+                .accept(MediaType.APPLICATION_JSON_TYPE).get(ClientResponse.class);
+
+        return response.getEntity(new GenericType<List<UIEntity>>()
+        {
+        });
+    }
+
+    private MultivaluedMap<String, String> buildQueryParamsEventosSinAsignar()
+    {
+        MultivaluedMap<String, String> params = new StringKeyStringValueIgnoreCaseMultivaluedMap();
+        params.putSingle("estudioId", String.valueOf(estudioId));
+        params.putSingle("cursoId", String.valueOf(cursoId));
+        params.putSingle("semestreId", String.valueOf(semestreId));
+        params.putSingle("grupoId", "B");
+        params.putSingle("calendariosIds", calendariosIds);
+        return params;
     }
 
 }

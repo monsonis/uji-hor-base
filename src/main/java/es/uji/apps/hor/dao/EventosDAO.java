@@ -43,7 +43,7 @@ public interface EventosDAO extends BaseDAO
     EventoDetalle insertEventoDetalle(EventoDetalle eventoDetalle)
             throws EventoDetalleSinEventoException;
 
-    long eventosDelMismoGrupo(Evento evento);
+    long cantidadEventosDelMismoGrupo(Evento evento);
 
     void deleteEventoDetalle(EventoDetalle detalle);
 
