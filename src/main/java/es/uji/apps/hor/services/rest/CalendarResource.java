@@ -249,18 +249,9 @@ public class CalendarResource
             DuracionEventoIncorrectaException, JSONException, RegistroNoEncontradoException,
             NumberFormatException, EventoDetalleSinEventoException
     {
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        DateFormat formatter2 = new SimpleDateFormat("dd/MM/yyyy");
-        DateFormat formatter3 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-
-        Date inicio = formatter.parse(entity.get("start"));
-        Date fin = formatter.parse(entity.get("end"));
-        Date desdeElDia = null;
-        Integer numeroIteraciones = null;
-        Integer repetirCadaSemanas = null;
-        Date hastaElDia = null;
-        Boolean detalleManual = false;
-
+        DateFormat uIEntityDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date inicio = uIEntityDateFormat.parse(entity.get("start"));
+        Date fin = uIEntityDateFormat.parse(entity.get("end"));
         Long idEvento = (Long.parseLong(entity.get("id")));
 
         if (!enviandoDatosDetalleEvento(entity))
@@ -270,62 +261,116 @@ public class CalendarResource
         }
         else
         {
-            if (entity.get("detalle_manual") != null && entity.get("detalle_manual").equals("on"))
+            if (enviandoDetalleManual(entity))
             {
-                detalleManual = true;
-                String strFechas = entity.get("fecha_detalle_manual_int");
-                JSONArray array = new JSONArray(strFechas);
-
-                List<Date> fechas = new ArrayList<Date>();
-
-                for (int i = 0; i < array.length(); i++)
-                {
-                    fechas.add(formatter3.parse((String) array.get(i)));
-                }
-
+                List<Date> fechas = getListaFechasDetalleManual(entity);
                 Evento evento = eventosService.updateEventoConDetalleManual(idEvento, fechas,
                         inicio, fin);
-
                 return toUI(Collections.singletonList(evento));
             }
             else
             {
-                if (entity.get("start_date_rep") != null
-                        && !entity.get("start_date_rep").equals(""))
+                Date desdeElDia = valorPropiedadDateDeUIEntity(entity, "start_date_rep");
+                Integer repetirCadaSemanas = valorPropiedadIntegerDeUIEntity(entity, "repetir_cada");
+                Integer numeroIteraciones = null;
+                Date hastaElDia = null;
+                if (finalizaRepeticionesPorNumero(entity))
                 {
-                    desdeElDia = formatter2.parse(entity.get("start_date_rep"));
+                    numeroIteraciones = valorPropiedadIntegerDeUIEntity(entity,
+                            "end_rep_number_comp");
                 }
-
-                if (entity.get("repetir_cada") != null && !entity.get("repetir_cada").equals(""))
+                else if (finalizaRepeticionesPorFecha(entity))
                 {
-                    repetirCadaSemanas = Integer.parseInt(entity.get("repetir_cada"));
-                }
-
-                if (entity.get("seleccionRadioFechaFin").equals("R"))
-                {
-                    numeroIteraciones = Integer.parseInt(entity.get("end_rep_number_comp"));
-                }
-                else if (entity.get("seleccionRadioFechaFin").equals("D"))
-                {
-                    if (entity.get("end_date_rep_comp") != "")
-                    {
-                        hastaElDia = formatter2.parse(entity.get("end_date_rep_comp"));
-                    }
+                    hastaElDia = valorPropiedadDateDeUIEntity(entity, "end_date_rep_comp");
                 }
 
                 Evento evento = eventosService.modificaDetallesGrupoAsignatura(idEvento, inicio,
-                        fin, desdeElDia, numeroIteraciones, repetirCadaSemanas, hastaElDia,
-                        detalleManual);
+                        fin, desdeElDia, numeroIteraciones, repetirCadaSemanas, hastaElDia, false);
                 return toUI(Collections.singletonList(evento));
             }
         }
 
     }
 
+    private boolean finalizaRepeticionesPorNumero(UIEntity entity)
+    {
+        String criterioFinalizacionRepeticiones = valorPropiedadDeUIEntity(entity,
+                "seleccionRadioFechaFin");
+        return criterioFinalizacionRepeticiones.equals("R");
+    }
+
+    private boolean finalizaRepeticionesPorFecha(UIEntity entity)
+    {
+        String criterioFinalizacionRepeticiones = valorPropiedadDeUIEntity(entity,
+                "seleccionRadioFechaFin");
+        return criterioFinalizacionRepeticiones.equals("D");
+    }
+
+    private Date valorPropiedadDateDeUIEntity(UIEntity entity, String clave) throws ParseException
+    {
+        DateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+
+        String valor = valorPropiedadDeUIEntity(entity, clave);
+        if (valor == null)
+        {
+            return null;
+        }
+        else
+        {
+            return dateFormatter.parse(valor);
+        }
+    }
+
+    private Integer valorPropiedadIntegerDeUIEntity(UIEntity entity, String clave)
+    {
+        String valor = valorPropiedadDeUIEntity(entity, clave);
+        if (valor == null)
+        {
+            return null;
+        }
+        else
+        {
+            return Integer.parseInt(valor);
+        }
+    }
+
+    private String valorPropiedadDeUIEntity(UIEntity entity, String clave)
+    {
+        if (entity.keySet().contains(clave) && entity.get(clave).length() > 0)
+        {
+            return entity.get(clave);
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    private List<Date> getListaFechasDetalleManual(UIEntity entity) throws JSONException,
+            ParseException
+    {
+        DateFormat formatoFechaManual = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+        String strFechas = entity.get("fecha_detalle_manual_int");
+        JSONArray array = new JSONArray(strFechas);
+
+        List<Date> fechas = new ArrayList<Date>();
+        for (int i = 0; i < array.length(); i++)
+        {
+            fechas.add(formatoFechaManual.parse((String) array.get(i)));
+        }
+        return fechas;
+    }
+
     private boolean enviandoDatosDetalleEvento(UIEntity entity)
     {
         Integer posteoDetalle = Integer.parseInt(entity.get("posteo_detalle"));
         return posteoDetalle == 1;
+    }
+
+    private boolean enviandoDetalleManual(UIEntity entity)
+    {
+        return entity.get("detalle_manual") != null && entity.get("detalle_manual").equals("on");
     }
 
     @DELETE
