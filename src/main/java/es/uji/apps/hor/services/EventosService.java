@@ -100,17 +100,8 @@ public class EventosService
             Date desdeElDia, Integer numeroIteraciones, Integer repetirCadaSemanas,
             Date hastaElDia, Boolean detalleManual) throws DuracionEventoIncorrectaException
     {
-        Calendar calInicio = Calendar.getInstance();
-        Calendar calFin = Calendar.getInstance();
 
-        calInicio.setTime(inicio);
-        calFin.setTime(fin);
-
-        if (calInicio.get(Calendar.YEAR) == calFin.get(Calendar.YEAR)
-                && calInicio.get(Calendar.MONTH) == calFin.get(Calendar.MONTH)
-                && calInicio.get(Calendar.DAY_OF_MONTH) == calFin.get(Calendar.DAY_OF_MONTH)
-                && calInicio.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY
-                && calInicio.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY)
+        if (fechasEnElMismoDiaYEnSemanaLaboral(inicio, fin))
         {
             return eventosDAO.modificaDetallesGrupoAsignatura(grupoAsignaturaId, inicio, fin,
                     desdeElDia, numeroIteraciones, repetirCadaSemanas, hastaElDia, detalleManual);
@@ -120,6 +111,21 @@ public class EventosService
             throw new DuracionEventoIncorrectaException();
         }
 
+    }
+
+    private boolean fechasEnElMismoDiaYEnSemanaLaboral(Date inicio, Date fin)
+    {
+        Calendar calInicio = Calendar.getInstance();
+        Calendar calFin = Calendar.getInstance();
+
+        calInicio.setTime(inicio);
+        calFin.setTime(fin);
+
+        return calInicio.get(Calendar.YEAR) == calFin.get(Calendar.YEAR)
+                && calInicio.get(Calendar.MONTH) == calFin.get(Calendar.MONTH)
+                && calInicio.get(Calendar.DAY_OF_MONTH) == calFin.get(Calendar.DAY_OF_MONTH)
+                && calInicio.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY
+                && calInicio.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY;
     }
 
     public List<Evento> getEventosDetalleByEventoId(Long eventoId)

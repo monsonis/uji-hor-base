@@ -545,26 +545,10 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             Date desdeElDia, Integer numeroIteraciones, Integer repetirCadaSemanas,
             Date hastaElDia, Boolean detalleManual)
     {
-        QItemDTO qItem = QItemDTO.itemDTO;
-        JPAQuery query = new JPAQuery(entityManager);
-        JPAQuery query2 = new JPAQuery(entityManager);
 
-        query.from(qItem).where(qItem.id.eq(grupoAsignaturaId));
-        ItemDTO item = query.list(qItem).get(0);
+        ItemDTO item = get(ItemDTO.class, grupoAsignaturaId).get(0);
 
-        Calendar calInicio = Calendar.getInstance();
-        Calendar calFin = Calendar.getInstance();
-
-        calInicio.setTime(inicio);
-        calFin.setTime(fin);
-
-        String diaSemana = getNombreDiaSemana(calInicio.get(Calendar.DAY_OF_WEEK));
-
-        QDiaSemanaDTO qDiaSemana = QDiaSemanaDTO.diaSemanaDTO;
-        query2.from(qDiaSemana).where(qDiaSemana.nombre.eq(diaSemana));
-        DiaSemanaDTO diaSemanaDTO = query2.list(qDiaSemana).get(0);
-
-        List<ItemComunDTO> comunes = getItemsComunes(grupoAsignaturaId);
+        DiaSemanaDTO diaSemanaDTO = getDiaSemanaDTOParaFecha(inicio);
 
         item.setHoraInicio(inicio);
         item.setHoraFin(fin);
@@ -576,30 +560,20 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         item.setDetalleManual(detalleManual);
         update(item);
 
-        if (item.getComun().equals(new Long(1))) // Propagamos en las asignaturas comunes
-        {
-            for (ItemComunDTO comun : comunes)
-            {
-                try
-                {
-                    ItemDTO itemComun = get(ItemDTO.class, comun.getItemComun().getId()).get(0);
-                    itemComun.setHoraInicio(inicio);
-                    itemComun.setHoraFin(fin);
-                    itemComun.setDiaSemana(diaSemanaDTO);
-                    itemComun.setDesdeElDia(desdeElDia);
-                    itemComun.setNumeroIteraciones(numeroIteraciones);
-                    itemComun.setRepetirCadaSemanas(repetirCadaSemanas);
-                    itemComun.setHastaElDia(hastaElDia);
-                    itemComun.setDetalleManual(detalleManual);
-                    update(itemComun);
-                }
-                catch (Exception e)
-                {
-                }
-            }
-        }
-
         return creaEventoDesde(item);
+    }
+
+    DiaSemanaDTO getDiaSemanaDTOParaFecha(Date fecha)
+    {
+        Calendar calInicio = Calendar.getInstance();
+        calInicio.setTime(fecha);
+        String diaSemana = getNombreDiaSemana(calInicio.get(Calendar.DAY_OF_WEEK));
+
+        QDiaSemanaDTO qDiaSemana = QDiaSemanaDTO.diaSemanaDTO;
+        JPAQuery query = new JPAQuery(entityManager);
+        query.from(qDiaSemana).where(qDiaSemana.nombre.eq(diaSemana));
+        DiaSemanaDTO diaSemanaDTO = query.list(qDiaSemana).get(0);
+        return diaSemanaDTO;
     }
 
     @Override
