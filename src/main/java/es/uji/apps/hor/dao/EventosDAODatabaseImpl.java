@@ -15,7 +15,6 @@ import com.mysema.query.jpa.impl.JPAUpdateClause;
 
 import es.uji.apps.hor.DuracionEventoIncorrectaException;
 import es.uji.apps.hor.EventoDetalleSinEventoException;
-import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.db.AulaPlanificacionDTO;
 import es.uji.apps.hor.db.DiaSemanaDTO;
 import es.uji.apps.hor.db.EstudioDTO;
@@ -264,58 +263,6 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         return actual;
     }
 
-    @Override
-    public Evento modificaDiaYHoraGrupoAsignatura(Long grupoAsignaturaId, Date inicio, Date fin)
-    {
-        QItemDTO qItem = QItemDTO.itemDTO;
-        JPAQuery query = new JPAQuery(entityManager);
-        JPAQuery query2 = new JPAQuery(entityManager);
-
-        query.from(qItem).where(qItem.id.eq(grupoAsignaturaId));
-        ItemDTO item = query.list(qItem).get(0);
-
-        Calendar calInicio = Calendar.getInstance();
-        Calendar calFin = Calendar.getInstance();
-
-        calInicio.setTime(inicio);
-        calFin.setTime(fin);
-
-        String diaSemana = getNombreDiaSemana(calInicio.get(Calendar.DAY_OF_WEEK));
-
-        QDiaSemanaDTO qDiaSemana = QDiaSemanaDTO.diaSemanaDTO;
-        query2.from(qDiaSemana).where(qDiaSemana.nombre.eq(diaSemana));
-        DiaSemanaDTO diaSemanaDTO = query2.list(qDiaSemana).get(0);
-
-        List<ItemComunDTO> comunes = getItemsComunes(grupoAsignaturaId);
-
-        item.setHoraInicio(inicio);
-        item.setHoraFin(fin);
-        item.setDiaSemana(diaSemanaDTO);
-        item.setDetalleManual(false);
-        item = update(item);
-
-        if (item.getComun().equals(new Long(1))) // Propagamos en las asignaturas comunes
-        {
-            for (ItemComunDTO comun : comunes)
-            {
-                try
-                {
-                    ItemDTO itemComun = get(ItemDTO.class, comun.getItemComun().getId()).get(0);
-                    itemComun.setHoraInicio(inicio);
-                    itemComun.setHoraFin(fin);
-                    itemComun.setDiaSemana(diaSemanaDTO);
-                    itemComun.setDetalleManual(false);
-                    update(itemComun);
-                }
-                catch (Exception e)
-                {
-                }
-            }
-        }
-
-        return creaEventoDesde(item);
-    }
-
     private String getNombreDiaSemana(Integer diaSemana)
     {
         HashMap semana = new HashMap();
@@ -420,134 +367,6 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
     }
 
     @Override
-    public void divideEventoSemanaGenerica(Long eventoId) throws RegistroNoEncontradoException,
-            EventoNoDivisibleException
-    {
-        ItemDTO evento = (ItemDTO) get(ItemDTO.class, eventoId).get(0);
-
-        if (evento == null)
-        {
-            throw new RegistroNoEncontradoException();
-        }
-
-        // Comprobamos que el evento se pueda dividir (de momento que no tenga menos de 1h???)
-
-        if (evento.getHoraFin().getTime() - evento.getHoraInicio().getTime() < 3600 * 1000)
-        {
-            throw new EventoNoDivisibleException();
-        }
-
-        List<ItemDTO> itemsDividir = new ArrayList<ItemDTO>();
-        itemsDividir.add(evento);
-
-        if (evento.getComun().equals(new Long(1)))
-        {
-            // Obtenemos todos los eventos comunes
-            List<ItemComunDTO> comunes = getItemsComunes(eventoId);
-
-            for (ItemComunDTO comun : comunes)
-            {
-                try
-                {
-                    ItemDTO itemComun = get(ItemDTO.class, comun.getItemComun().getId()).get(0);
-                    itemsDividir.add(itemComun);
-                }
-                catch (Exception e)
-                {
-                }
-            }
-        }
-
-        // Modificamos la hora de fin del evento seleccionado
-        Long horaFin = evento.getHoraInicio().getTime()
-                + ((evento.getHoraFin().getTime() - evento.getHoraInicio().getTime()) / 2);
-
-        List<ItemDTO> itemsDivididos = new ArrayList<ItemDTO>();
-
-        for (ItemDTO itemDividir : itemsDividir)
-        {
-            itemDividir.setHoraFin(new Date(horaFin));
-            itemDividir = update(itemDividir);
-
-            // Creamos el nuevo evento
-            ItemDTO itemDTO = new ItemDTO();
-            itemDTO.setAsignatura(itemDividir.getAsignatura());
-            itemDTO.setAsignaturaId(itemDividir.getAsignaturaId());
-            itemDTO.setAulaPlanificacion(itemDividir.getAulaPlanificacion());
-            itemDTO.setAulaPlanificacionNombre(itemDividir.getAulaPlanificacionNombre());
-            itemDTO.setCaracter(itemDividir.getCaracter());
-            itemDTO.setCaracterId(itemDividir.getCaracterId());
-            itemDTO.setComun(itemDividir.getComun());
-            itemDTO.setCursoId(itemDividir.getCursoId());
-            itemDTO.setDesdeElDia(itemDividir.getDesdeElDia());
-            itemDTO.setDiaSemana(itemDividir.getDiaSemana());
-            itemDTO.setEstudio(itemDividir.getEstudio());
-            itemDTO.setEstudioDesc(itemDividir.getEstudioDesc());
-            itemDTO.setGrupoId(itemDividir.getGrupoId());
-            itemDTO.setHastaElDia(itemDividir.getHastaElDia());
-            itemDTO.setHoraFin(itemDividir.getHoraFin());
-            itemDTO.setHoraInicio(itemDividir.getHoraInicio());
-            itemDTO.setPlazas(itemDividir.getPlazas());
-            itemDTO.setPorcentajeComun(itemDividir.getPorcentajeComun());
-            itemDTO.setProfesor(itemDividir.getProfesor());
-            itemDTO.setSemestre(itemDividir.getSemestre());
-            itemDTO.setSubgrupoId(itemDividir.getSubgrupoId());
-            itemDTO.setTipoAsignatura(itemDividir.getTipoAsignatura());
-            itemDTO.setTipoAsignaturaId(itemDividir.getTipoAsignaturaId());
-            itemDTO.setTipoEstudio(itemDividir.getTipoEstudio());
-            itemDTO.setTipoEstudioId(itemDividir.getTipoEstudio());
-            itemDTO.setTipoSubgrupo(itemDividir.getTipoSubgrupo());
-            itemDTO.setTipoSubgrupoId(itemDividir.getTipoSubgrupoId());
-            itemDTO.setDesdeElDia(itemDividir.getDesdeElDia());
-            itemDTO.setHastaElDia(itemDividir.getHastaElDia());
-            itemDTO.setRepetirCadaSemanas(itemDividir.getRepetirCadaSemanas());
-            itemDTO.setNumeroIteraciones(itemDividir.getNumeroIteraciones());
-            itemDTO.setDetalleManual(itemDividir.getDetalleManual());
-            itemDTO.setComunes(itemDividir.getComunes());
-            itemDTO = insert(itemDTO);
-
-            // Copiamos los circuitos
-
-            JPAQuery query = new JPAQuery(entityManager);
-            QItemCircuitoDTO itemCircuito = QItemCircuitoDTO.itemCircuitoDTO;
-
-            List<ItemCircuitoDTO> listaItemsCircuitosDTO = query.from(itemCircuito)
-                    .where(itemCircuito.item.id.eq(itemDividir.getId())).list(itemCircuito);
-
-            for (ItemCircuitoDTO itemCircuitoDTO : listaItemsCircuitosDTO)
-            {
-                ItemCircuitoDTO aux = new ItemCircuitoDTO();
-                aux.setCircuito(itemCircuitoDTO.getCircuito());
-                aux.setItem(itemDTO);
-                aux.setPlazas(itemCircuitoDTO.getPlazas());
-                insert(aux);
-            }
-
-            itemsDivididos.add(itemDTO);
-        }
-
-        // Creamos todos los items comunes relacionados
-        if (evento.getComun().equals(new Long(1)) && itemsDivididos.size() > 1)
-        {
-            for (ItemDTO itemDividido : itemsDivididos)
-            {
-                for (ItemDTO itemDivididoComun : itemsDivididos)
-                {
-                    if (!itemDividido.getId().equals(itemDivididoComun.getId()))
-                    {
-                        ItemComunDTO itemComun = new ItemComunDTO();
-                        itemComun.setItem(itemDividido);
-                        itemComun.setAsignaturaId(itemDividido.getAsignaturaId());
-                        itemComun.setItemComun(itemDivididoComun);
-                        itemComun.setAsignaturaComunId(itemDivididoComun.getAsignaturaId());
-                        insert(itemComun);
-                    }
-                }
-            }
-        }
-    }
-
-    @Override
     public Evento modificaDetallesGrupoAsignatura(Evento evento)
     {
         ItemDTO item = creaItemDTODesde(evento);
@@ -602,7 +421,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
     }
 
     @Override
-    public List<EventoDocencia> getEventosDocenciaByEventoId(Long eventoId)
+    public List<EventoDocencia> getDiasDocenciaDeUnEventoByEventoId(Long eventoId)
     {
         JPAQuery query = new JPAQuery(entityManager);
 
@@ -631,238 +450,6 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         eventoDocencia.setTipoDia(itemDetalleCompletoDTO.getTipoDia());
 
         return eventoDocencia;
-    }
-
-    @Override
-    public Evento updateEventoConDetalleManual(Long eventoId, List<Date> fechas, Date inicio,
-            Date fin) throws RegistroNoEncontradoException
-    {
-        ItemDTO evento;
-
-        try
-        {
-            evento = get(ItemDTO.class, eventoId).get(0);
-        }
-        catch (Exception e)
-        {
-            throw new RegistroNoEncontradoException();
-        }
-
-        List<ItemComunDTO> comunes = getItemsComunes(eventoId);
-
-        evento.setDetalleManual(true);
-        evento.setHoraInicio(inicio);
-        evento.setHoraFin(fin);
-
-        evento = update(evento);
-
-        delete(ItemDetalleDTO.class, "item_id=" + eventoId);
-
-        List<ItemDTO> itemsActualizar = new ArrayList<ItemDTO>();
-        itemsActualizar.add(evento);
-
-        if (evento.getComun().equals(new Long(1))) // Propagamos en las asignaturas comunes
-        {
-            for (ItemComunDTO comun : comunes)
-            {
-                try
-                {
-                    ItemDTO itemComun = get(ItemDTO.class, comun.getItemComun().getId()).get(0);
-                    itemsActualizar.add(itemComun);
-                    itemComun.setDetalleManual(true);
-                    itemComun.setHoraInicio(inicio);
-                    itemComun.setHoraFin(fin);
-
-                    update(itemComun);
-
-                    delete(ItemDetalleDTO.class, "item_id=" + itemComun.getId());
-                }
-                catch (Exception e)
-                {
-                }
-            }
-        }
-
-        // Insertamos el detalle del evento y sus comunes según las fechas
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(evento.getHoraInicio());
-
-        int horaInicio = calendar.get(Calendar.HOUR_OF_DAY);
-        int minutoInicio = calendar.get(Calendar.MINUTE);
-        int segundoInicio = calendar.get(Calendar.SECOND);
-
-        calendar.setTime(evento.getHoraFin());
-
-        int horaFin = calendar.get(Calendar.HOUR_OF_DAY);
-        int minutoFin = calendar.get(Calendar.MINUTE);
-        int segundoFin = calendar.get(Calendar.SECOND);
-
-        // Obtenemos las fechas válidas y que no caigan en festivo
-
-        JPAQuery query = new JPAQuery(entityManager);
-        QItemDetalleCompletoDTO itemDetalleCompleto = QItemDetalleCompletoDTO.itemDetalleCompletoDTO;
-
-        List<ItemDetalleCompletoDTO> listaItemsDetalleCompletoDTO = query
-                .from(itemDetalleCompleto)
-                .where(itemDetalleCompleto.id.eq(eventoId).and(itemDetalleCompleto.tipoDia.ne("F")))
-                .list(itemDetalleCompleto);
-
-        List<Date> fechasValidas = new ArrayList<Date>();
-        for (ItemDetalleCompletoDTO itemDetalle : listaItemsDetalleCompletoDTO)
-        {
-            fechasValidas.add(itemDetalle.getFecha());
-        }
-
-        for (Date fecha : fechas)
-        {
-            calendar.setTime(fecha);
-            calendar.add(Calendar.SECOND, segundoInicio);
-            calendar.add(Calendar.MINUTE, minutoInicio);
-            calendar.add(Calendar.HOUR_OF_DAY, horaInicio);
-
-            Date fechaInicio = calendar.getTime();
-
-            calendar.setTime(fecha);
-            calendar.add(Calendar.SECOND, segundoFin);
-            calendar.add(Calendar.MINUTE, minutoFin);
-            calendar.add(Calendar.HOUR_OF_DAY, horaFin);
-
-            Date fechaFin = calendar.getTime();
-
-            for (ItemDTO item : itemsActualizar)
-            {
-                ItemDetalleDTO itemDetalle = new ItemDetalleDTO();
-                itemDetalle.setItem(item);
-                itemDetalle.setInicio(fechaInicio);
-                itemDetalle.setFin(fechaFin);
-
-                insert(itemDetalle);
-            }
-        }
-
-        return creaEventoDesde(evento);
-    }
-
-    @Override
-    public boolean isDetalleManualYNoCambiaDiaSemana(Long eventoId, Date inicio)
-            throws RegistroNoEncontradoException
-    {
-        ItemDTO item;
-
-        try
-        {
-            item = get(ItemDTO.class, eventoId).get(0);
-        }
-        catch (Exception e)
-        {
-            throw new RegistroNoEncontradoException();
-        }
-
-        if (item.getDetalleManual())
-        {
-            // Miramos el día de la semana
-            JPAQuery query = new JPAQuery(entityManager);
-
-            Calendar calendar = Calendar.getInstance();
-
-            calendar.setTime(inicio);
-
-            String diaSemana = getNombreDiaSemana(calendar.get(Calendar.DAY_OF_WEEK));
-
-            QDiaSemanaDTO qDiaSemana = QDiaSemanaDTO.diaSemanaDTO;
-            query.from(qDiaSemana).where(qDiaSemana.nombre.eq(diaSemana));
-            DiaSemanaDTO diaSemanaDTO = query.list(qDiaSemana).get(0);
-
-            if (diaSemanaDTO.getId().equals(item.getDiaSemana().getId()))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    @Override
-    public Evento updateHorasEventoDetalleManual(Long eventoId, Date inicio, Date fin)
-            throws RegistroNoEncontradoException
-    {
-        ItemDTO evento;
-
-        try
-        {
-            evento = get(ItemDTO.class, eventoId).get(0);
-        }
-        catch (Exception e)
-        {
-            throw new RegistroNoEncontradoException();
-        }
-
-        List<ItemDTO> itemsActualizar = new ArrayList<ItemDTO>();
-        itemsActualizar.add(evento);
-
-        if (evento.getComun().equals(new Long(1))) // Propagamos en las asignaturas comunes
-        {
-            List<ItemComunDTO> comunes = getItemsComunes(eventoId);
-
-            for (ItemComunDTO comun : comunes)
-            {
-                try
-                {
-                    ItemDTO itemComun = get(ItemDTO.class, comun.getItemComun().getId()).get(0);
-                    itemsActualizar.add(itemComun);
-                }
-                catch (Exception e)
-                {
-                }
-            }
-        }
-
-        // Establecemos las fechas para el detalle del evento
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(evento.getHoraInicio());
-
-        int horaInicio = calendar.get(Calendar.HOUR_OF_DAY);
-        int minutoInicio = calendar.get(Calendar.MINUTE);
-        int segundoInicio = calendar.get(Calendar.SECOND);
-
-        calendar.setTime(evento.getHoraFin());
-
-        int horaFin = calendar.get(Calendar.HOUR_OF_DAY);
-        int minutoFin = calendar.get(Calendar.MINUTE);
-        int segundoFin = calendar.get(Calendar.SECOND);
-
-        for (ItemDTO item : itemsActualizar)
-        {
-            item.setDetalleManual(true);
-            item.setHoraInicio(inicio);
-            item.setHoraFin(fin);
-            item = update(item);
-
-            List<ItemDetalleDTO> itemDetalles = get(ItemDetalleDTO.class, "item_id=" + item.getId());
-
-            for (ItemDetalleDTO itemDetalle : itemDetalles)
-            {
-                calendar.setTime(itemDetalle.getInicio());
-                calendar.set(Calendar.SECOND, segundoInicio);
-                calendar.set(Calendar.MINUTE, minutoInicio);
-                calendar.set(Calendar.HOUR_OF_DAY, horaInicio);
-
-                itemDetalle.setInicio(calendar.getTime());
-
-                calendar.setTime(itemDetalle.getFin());
-                calendar.set(Calendar.SECOND, segundoFin);
-                calendar.set(Calendar.MINUTE, minutoFin);
-                calendar.set(Calendar.HOUR_OF_DAY, horaFin);
-
-                itemDetalle.setFin(calendar.getTime());
-
-                update(itemDetalle);
-            }
-        }
-
-        return creaEventoDesde(evento);
     }
 
     @Override
@@ -1030,13 +617,14 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
 
     @Override
     @Transactional
-    public void updateHorasEvento(Evento evento)
+    public void updateHorasEventoYSusDetalles(Evento evento)
     {
-        QItemDTO qItem = QItemDTO.itemDTO;
+        DiaSemanaDTO diaSemanaDTO = getDiaSemanaDTOParaFecha(evento.getInicio());
 
+        QItemDTO qItem = QItemDTO.itemDTO;
         JPAUpdateClause updateClause = new JPAUpdateClause(entityManager, qItem);
         updateClause.where(qItem.id.eq(evento.getId())).set(qItem.horaInicio, evento.getInicio())
-                .set(qItem.horaFin, evento.getFin()).execute();
+                .set(qItem.horaFin, evento.getFin()).set(qItem.diaSemana, diaSemanaDTO).execute();
 
         if (evento.hasDetalleManual())
         {
@@ -1068,25 +656,6 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         query.from(itemComunDTO).where(itemComunDTO.item.id.eq(itemId));
 
         return query.list(itemComunDTO);
-    }
-
-    @Override
-    @Transactional
-    public void updateDiaYHoraEvento(Evento evento)
-    {
-        DiaSemanaDTO diaSemanaDTO = null;
-        if (evento.getDia() != null)
-        {
-            diaSemanaDTO = new DiaSemanaDTO();
-            diaSemanaDTO.setId(new Long(evento.getDia()));
-        }
-
-        QItemDTO qItem = QItemDTO.itemDTO;
-
-        JPAUpdateClause updateClause = new JPAUpdateClause(entityManager, qItem);
-        updateClause.where(qItem.id.eq(evento.getId())).set(qItem.horaInicio, evento.getInicio())
-                .set(qItem.horaFin, evento.getFin()).set(qItem.diaSemana, diaSemanaDTO)
-                .set(qItem.detalleManual, false).execute();
     }
 
     @Override

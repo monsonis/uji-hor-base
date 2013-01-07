@@ -489,7 +489,7 @@ public class CalendarResource
     public List<UIEntity> getEventosDocenciaByEventoId(@PathParam("id") String eventoId)
     {
         List<EventoDocencia> eventosDocencia = eventosService
-                .getEventosDocenciaByEventoId(ParamUtils.parseLong(eventoId));
+                .getDiasDocenciaDeUnEventoByEventoId(ParamUtils.parseLong(eventoId));
 
         return UIEntity.toUI(eventosDocencia);
     }

@@ -3,7 +3,6 @@ package es.uji.apps.hor.dao;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +17,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import es.uji.apps.hor.AulaNoAsignadaAEstudioDelEventoException;
-import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.db.AsignaturaComunDTO;
 import es.uji.apps.hor.db.AulaDTO;
 import es.uji.apps.hor.db.AulaPlanificacionDTO;
@@ -27,7 +25,6 @@ import es.uji.apps.hor.db.DiaSemanaDTO;
 import es.uji.apps.hor.db.EstudioDTO;
 import es.uji.apps.hor.db.ItemComunDTO;
 import es.uji.apps.hor.db.ItemDTO;
-import es.uji.apps.hor.db.ItemDetalleDTO;
 import es.uji.apps.hor.db.SemestreDTO;
 import es.uji.apps.hor.db.TipoEstudioDTO;
 import es.uji.apps.hor.model.Evento;
@@ -142,54 +139,6 @@ public class EventosDAOTest
     }
 
     @Test
-    public void modificaDiaYHoraGrupoAsignaturaTest() throws ParseException
-    {
-        eventosDAO.insert(item);
-
-        Calendar calendarIni = Calendar.getInstance();
-        calendarIni.set(Calendar.HOUR, 10);
-        calendarIni.set(Calendar.MINUTE, 0);
-
-        Calendar calendarFin = Calendar.getInstance();
-        calendarFin.set(Calendar.HOUR, 12);
-        calendarFin.set(Calendar.MINUTE, 0);
-
-        Evento evento = eventosDAO.modificaDiaYHoraGrupoAsignatura(item.getId(),
-                calendarIni.getTime(), calendarFin.getTime());
-        Assert.assertEquals(calendarIni.getTime(), evento.getInicio());
-    }
-
-    @Test
-    public void modificaDiaYHoraGrupoAsignaturaConAsignaturaComunTest() throws ParseException
-    {
-        item.setComun(new Long(1));
-        eventosDAO.insert(item);
-
-        rellenaDatosItemComun();
-        eventosDAO.insert(comun);
-
-        rellenaItemsComunes(item, comun);
-        eventosDAO.insert(itemComun1);
-        eventosDAO.insert(itemComun2);
-
-        Calendar calendarIni = Calendar.getInstance();
-        calendarIni.set(Calendar.HOUR, 10);
-        calendarIni.set(Calendar.MINUTE, 0);
-
-        Calendar calendarFin = Calendar.getInstance();
-        calendarFin.set(Calendar.HOUR, 12);
-        calendarFin.set(Calendar.MINUTE, 0);
-
-        eventosDAO.modificaDiaYHoraGrupoAsignatura(item.getId(), calendarIni.getTime(),
-                calendarFin.getTime());
-
-        item = eventosDAO.get(ItemDTO.class, item.getId()).get(0);
-        comun = eventosDAO.get(ItemDTO.class, comun.getId()).get(0);
-
-        Assert.assertEquals(item.getHoraInicio(), comun.getHoraInicio());
-    }
-
-    @Test
     public void getEventosDeUnCursoTest()
     {
         eventosDAO.insert(item);
@@ -197,111 +146,6 @@ public class EventosDAOTest
         List<Evento> listaEventos = eventosDAO.getEventosDeUnCurso(estudio.getId(), new Long(1),
                 semestre.getId(), "A");
         Assert.assertTrue(listaEventos.size() > 0);
-    }
-
-    @Test
-    public void divideClaseDeMasDeUnaHoraTest() throws RegistroNoEncontradoException,
-            EventoNoDivisibleException
-    {
-        eventosDAO.insert(item);
-        Long tiempoClase = item.getHoraFin().getTime() - item.getHoraInicio().getTime();
-
-        eventosDAO.divideEventoSemanaGenerica(item.getId());
-
-        List<Evento> eventos = eventosDAO.getEventosDeUnCurso(new Long(1), new Long(1),
-                new Long(1), "A");
-
-        for (Evento evento : eventos)
-        {
-            if (evento.getId().equals(item.getId())
-                    || evento.getTitulo().startsWith(item.getAsignaturaId()))
-            {
-                Long tiempoClaseDividida = evento.getFin().getTime() - evento.getInicio().getTime();
-                Assert.assertEquals((Long) (tiempoClase / 2), tiempoClaseDividida);
-            }
-        }
-    }
-
-    @Test
-    public void divideClaseDeMasDeUnaHoraConAsignaturasComunesTest()
-            throws RegistroNoEncontradoException, EventoNoDivisibleException
-    {
-        item.setComun(new Long(1));
-        eventosDAO.insert(item);
-
-        rellenaDatosItemComun();
-        eventosDAO.insert(comun);
-
-        rellenaItemsComunes(item, comun);
-        eventosDAO.insert(itemComun1);
-        eventosDAO.insert(itemComun2);
-
-        eventosDAO.divideEventoSemanaGenerica(item.getId());
-
-        List<Evento> eventos = eventosDAO.getEventosDeUnCurso(estudio.getId(), comun.getCursoId(),
-                semestre.getId(), comun.getGrupoId());
-
-        Evento eventoComunDividido = null;
-
-        // Buscamos el evento común dividido
-        for (Evento evento : eventos)
-        {
-            if (evento.getTitulo().startsWith(comun.getAsignaturaId())
-                    && !evento.getId().equals(comun.getId()))
-            {
-                eventoComunDividido = evento;
-                break;
-            }
-        }
-
-        Assert.assertNotNull(eventoComunDividido);
-    }
-
-    @Test
-    public void eliminaEventoDuplicadoEnSemanaGenericaTest() throws RegistroNoEncontradoException,
-            EventoNoDivisibleException
-    {
-        eventosDAO.insert(item);
-        eventosDAO.divideEventoSemanaGenerica(item.getId());
-
-        List<Evento> eventos = eventosDAO.getEventosDeUnCurso(estudio.getId(), item.getCursoId(),
-                semestre.getId(), item.getGrupoId());
-
-        Evento eventoDividido = null;
-
-        // Buscamos el evento dividido
-        for (Evento evento : eventos)
-        {
-            if (evento.getTitulo().startsWith(item.getAsignaturaId())
-                    && !evento.getId().equals(item.getId()))
-            {
-                eventoDividido = evento;
-                break;
-            }
-        }
-
-        // Eliminamos el evento
-        eventosDAO.deleteEventoSemanaGenerica(eventoDividido.getId());
-        Assert.assertEquals(0, eventosDAO.get(ItemDTO.class, eventoDividido.getId()).size());
-    }
-
-    @Test(expected = EventoNoDivisibleException.class)
-    public void divideClaseDeMenosDeUnaHoraTest() throws ParseException,
-            RegistroNoEncontradoException, EventoNoDivisibleException
-    {
-        String horaInicioStr = "30/07/2012 9:00";
-        String horaFinStr = "30/07/2012 9:30";
-
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        Date horaInicio = sdf.parse(horaInicioStr);
-        Date horaFin = sdf.parse(horaFinStr);
-
-        item.setHoraInicio(horaInicio);
-        item.setHoraFin(horaFin);
-
-        eventosDAO.insert(item);
-
-        eventosDAO.divideEventoSemanaGenerica(item.getId());
     }
 
     public void rellenaDatosTestsConAulas()
@@ -436,61 +280,6 @@ public class EventosDAOTest
         grupoComun = eventosDAO.get(ItemDTO.class, grupoComun.getId()).get(0);
 
         Assert.assertEquals(item.getAulaPlanificacion(), grupoComun.getAulaPlanificacion());
-    }
-
-    @Test
-    public void updateHorasEventoDetalleManualConAsignaturasComunesTest()
-            throws RegistroNoEncontradoException
-    {
-        Calendar calendarIni = Calendar.getInstance();
-        calendarIni.set(Calendar.HOUR, 10);
-        calendarIni.set(Calendar.MINUTE, 0);
-
-        Calendar calendarFin = Calendar.getInstance();
-        calendarFin.set(Calendar.HOUR, 12);
-        calendarFin.set(Calendar.MINUTE, 0);
-
-        item.setComun(new Long(1));
-        item.setHoraInicio(calendarIni.getTime());
-        item.setHoraFin(calendarFin.getTime());
-        eventosDAO.insert(item);
-
-        ItemDetalleDTO itemDetalle = new ItemDetalleDTO();
-        itemDetalle.setItem(item);
-        itemDetalle.setInicio(item.getHoraInicio());
-        itemDetalle.setFin(item.getHoraFin());
-        eventosDAO.insert(itemDetalle);
-
-        rellenaDatosItemComun();
-        comun.setHoraInicio(item.getHoraInicio());
-        comun.setHoraFin(item.getHoraFin());
-        eventosDAO.insert(comun);
-
-        ItemDetalleDTO itemDetalleComun = new ItemDetalleDTO();
-        itemDetalleComun.setItem(comun);
-        itemDetalleComun.setInicio(comun.getHoraInicio());
-        itemDetalleComun.setFin(comun.getHoraFin());
-        eventosDAO.insert(itemDetalleComun);
-
-        calendarIni.set(Calendar.HOUR, 15);
-        calendarIni.set(Calendar.MINUTE, 0);
-
-        calendarFin.set(Calendar.HOUR, 17);
-        calendarFin.set(Calendar.MINUTE, 0);
-
-        Evento evento = eventosDAO.updateHorasEventoDetalleManual(item.getId(),
-                calendarIni.getTime(), calendarFin.getTime());
-        System.out.println(evento.getInicio());
-
-        item = eventosDAO.get(ItemDTO.class, item.getId()).get(0);
-        Assert.assertEquals(calendarIni.getTime(), item.getHoraInicio());
-
-        List<ItemDetalleDTO> detalleList = eventosDAO.get(ItemDetalleDTO.class,
-                "item_id=" + item.getId());
-        List<ItemDetalleDTO> detalleComunList = eventosDAO.get(ItemDetalleDTO.class, "item_id="
-                + comun.getId());
-
-        Assert.assertEquals(detalleList.get(0).getInicio(), detalleComunList.get(0).getInicio());
     }
 
 }

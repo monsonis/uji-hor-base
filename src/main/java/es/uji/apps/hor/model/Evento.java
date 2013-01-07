@@ -11,10 +11,12 @@ import org.springframework.stereotype.Component;
 
 import es.uji.apps.hor.AulaNoAsignadaAEstudioDelEventoException;
 import es.uji.apps.hor.DuracionEventoIncorrectaException;
+import es.uji.apps.hor.EventoNoDivisibleException;
 
 @Component
 public class Evento
 {
+    private static final Long UNA_HORA_EN_MILISEGUNDOS = (long) 3600000;
     private Long id;
     private Calendario calendario;
     private String titulo;
@@ -219,8 +221,13 @@ public class Evento
         this.hastaElDia = hastaElDia;
     }
 
-    public Evento divide()
+    public Evento divide() throws EventoNoDivisibleException
     {
+        if (duraMenosDeUnaHora())
+        {
+            throw new EventoNoDivisibleException();
+        }
+
         Evento nuevoEvento = this.clonar();
         nuevoEvento.retrasaHoraInicioAMitadDuracion();
         this.reduceDuracionALaMitad();
@@ -228,6 +235,11 @@ public class Evento
         nuevoEvento.propagaRangoHorarioAEventosDetalle();
         this.propagaRangoHorarioAEventosDetalle();
         return nuevoEvento;
+    }
+
+    private boolean duraMenosDeUnaHora()
+    {
+        return getDuracionEnMilisegundos() < UNA_HORA_EN_MILISEGUNDOS;
     }
 
     private void propagaRangoHorarioAEventosDetalle()

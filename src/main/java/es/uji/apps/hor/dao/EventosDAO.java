@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import es.uji.apps.hor.EventoDetalleSinEventoException;
-import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.model.Evento;
 import es.uji.apps.hor.model.EventoDetalle;
 import es.uji.apps.hor.model.EventoDocencia;
@@ -19,27 +18,13 @@ public interface EventosDAO extends BaseDAO
     List<Evento> getEventosSemanaGenerica(Long estudioId, Long cursoId, Long semestreId,
             String grupoId, List<Long> calendariosIds);
 
-    Evento modificaDiaYHoraGrupoAsignatura(Long grupoAsignaturaId, Date inicio, Date fin);
-
     List<Evento> getEventosDeUnCurso(Long estudioId, Long cursoId, Long semestreId, String grupoId);
 
     void deleteEventoSemanaGenerica(Long eventoId) throws RegistroNoEncontradoException;
 
-    void divideEventoSemanaGenerica(Long eventoId) throws RegistroNoEncontradoException,
-            EventoNoDivisibleException;
-
     List<Evento> getEventosDetalleByEventoId(Long eventoId);
 
-    List<EventoDocencia> getEventosDocenciaByEventoId(Long eventoId);
-
-    Evento updateEventoConDetalleManual(Long eventoId, List<Date> fechas, Date inicio, Date fin)
-            throws RegistroNoEncontradoException;
-
-    boolean isDetalleManualYNoCambiaDiaSemana(Long eventoId, Date inicio)
-            throws RegistroNoEncontradoException;
-
-    Evento updateHorasEventoDetalleManual(Long eventoId, Date inicio, Date fin)
-            throws RegistroNoEncontradoException;
+    List<EventoDocencia> getDiasDocenciaDeUnEventoByEventoId(Long eventoId);
 
     List<EventoDetalle> getEventosDetalle(Long estudioId, Long cursoId, Long semestreId,
             String grupoId, List<Long> calendariosIds, Date rangoFechaInicio, Date rangoFechaFin);
@@ -51,11 +36,9 @@ public interface EventosDAO extends BaseDAO
 
     Evento insertEvento(Evento eventoDividido);
 
-    void updateHorasEvento(Evento evento);
+    void updateHorasEventoYSusDetalles(Evento evento);
 
     void updateHorasEventoDetalle(EventoDetalle eventoDetalle);
-
-    void updateDiaYHoraEvento(Evento evento);
 
     EventoDetalle insertEventoDetalle(EventoDetalle eventoDetalle)
             throws EventoDetalleSinEventoException;

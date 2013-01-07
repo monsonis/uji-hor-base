@@ -10,6 +10,7 @@ import java.util.Date;
 import org.junit.Test;
 
 import es.uji.apps.hor.DuracionEventoIncorrectaException;
+import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.builders.AsignaturaBuilder;
 import es.uji.apps.hor.builders.CalendarioBuilder;
 import es.uji.apps.hor.builders.EstudioBuilder;
@@ -39,6 +40,13 @@ public class EventoModelTest
         assertThat(formatter.format(eventoNuevo.getInicio()), equalTo("30/07/2012 09:30"));
         assertThat(formatter.format(eventoNuevo.getFin()), equalTo("30/07/2012 10:00"));
 
+    }
+
+    @Test(expected = EventoNoDivisibleException.class)
+    public void divideClaseDeMenosDeUnaHoraTest() throws Exception
+    {
+        Evento eventoOriginal = buildEvento("30/07/2012 09:00", "30/07/2012 09:30");
+        eventoOriginal.divide();
     }
 
     @Test

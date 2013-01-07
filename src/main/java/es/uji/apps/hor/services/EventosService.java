@@ -52,11 +52,7 @@ public class EventosService
     {
         Evento evento = eventosDAO.getEventoById(eventoId);
         evento.setFechaInicioYFin(inicio, fin);
-        eventosDAO.updateDiaYHoraEvento(evento);
-        for (EventoDetalle detalle : evento.getEventosDetalle())
-        {
-            eventosDAO.updateHorasEventoDetalle(detalle);
-        }
+        eventosDAO.updateHorasEventoYSusDetalles(evento);
         return evento;
     }
 
@@ -72,7 +68,7 @@ public class EventosService
         if (esElultimoEventoAsignadoDelGrupo(evento))
         {
             evento.desplanificar();
-            eventosDAO.updateDiaYHoraEvento(evento);
+            eventosDAO.updateHorasEventoYSusDetalles(evento);
         }
         else
         {
@@ -92,7 +88,7 @@ public class EventosService
         Evento nuevoEvento = evento.divide();
 
         eventosDAO.insertEvento(nuevoEvento);
-        eventosDAO.updateHorasEvento(evento);
+        eventosDAO.updateHorasEventoYSusDetalles(evento);
     }
 
     public Evento modificaDetallesGrupoAsignatura(Long eventoId, Date inicio, Date fin,
@@ -118,9 +114,9 @@ public class EventosService
         return eventosDAO.getEventosDetalleByEventoId(eventoId);
     }
 
-    public List<EventoDocencia> getEventosDocenciaByEventoId(Long eventoId)
+    public List<EventoDocencia> getDiasDocenciaDeUnEventoByEventoId(Long eventoId)
     {
-        return eventosDAO.getEventosDocenciaByEventoId(eventoId);
+        return eventosDAO.getDiasDocenciaDeUnEventoByEventoId(eventoId);
     }
 
     public Evento updateEventoConDetalleManual(Long eventoId, List<Date> fechas, Date inicio,
@@ -142,18 +138,6 @@ public class EventosService
         }
 
         return evento;
-    }
-
-    public boolean isDetalleManualYNoCambiaDiaSemana(Long eventoId, Date inicio)
-            throws RegistroNoEncontradoException
-    {
-        return eventosDAO.isDetalleManualYNoCambiaDiaSemana(eventoId, inicio);
-    }
-
-    public Evento updateHorasEventoDetalleManual(Long eventoId, Date inicio, Date fin)
-            throws RegistroNoEncontradoException
-    {
-        return eventosDAO.updateHorasEventoDetalleManual(eventoId, inicio, fin);
     }
 
     public List<EventoDetalle> eventosDetalleDeUnEstudio(Long estudioId, Long cursoId,
