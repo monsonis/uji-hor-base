@@ -541,23 +541,20 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
     }
 
     @Override
-    public Evento modificaDetallesGrupoAsignatura(Long grupoAsignaturaId, Date inicio, Date fin,
-            Date desdeElDia, Integer numeroIteraciones, Integer repetirCadaSemanas,
-            Date hastaElDia, Boolean detalleManual)
+    public Evento modificaDetallesGrupoAsignatura(Evento evento)
     {
+        ItemDTO item = creaItemDTODesde(evento);
 
-        ItemDTO item = get(ItemDTO.class, grupoAsignaturaId).get(0);
+        DiaSemanaDTO diaSemanaDTO = getDiaSemanaDTOParaFecha(evento.getInicio());
 
-        DiaSemanaDTO diaSemanaDTO = getDiaSemanaDTOParaFecha(inicio);
-
-        item.setHoraInicio(inicio);
-        item.setHoraFin(fin);
+        item.setHoraInicio(evento.getInicio());
+        item.setHoraFin(evento.getFin());
         item.setDiaSemana(diaSemanaDTO);
-        item.setDesdeElDia(desdeElDia);
-        item.setNumeroIteraciones(numeroIteraciones);
-        item.setRepetirCadaSemanas(repetirCadaSemanas);
-        item.setHastaElDia(hastaElDia);
-        item.setDetalleManual(detalleManual);
+        item.setDesdeElDia(evento.getDesdeElDia());
+        item.setNumeroIteraciones(evento.getNumeroIteraciones());
+        item.setRepetirCadaSemanas(evento.getRepetirCadaSemanas());
+        item.setHastaElDia(evento.getHastaElDia());
+        item.setDetalleManual(evento.hasDetalleManual());
         update(item);
 
         return creaEventoDesde(item);
@@ -972,6 +969,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
     {
         // Creamos el nuevo evento
         ItemDTO itemDTO = new ItemDTO();
+        itemDTO.setId(evento.getId());
         AulaPlanificacionDTO aulaPlanificacionDTO = new AulaPlanificacionDTO();
         // aulaPlanificacionDTO.setId(evento.getAulaPlanificacion().getId());
 

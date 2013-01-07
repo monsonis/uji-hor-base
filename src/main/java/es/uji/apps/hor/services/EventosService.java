@@ -96,15 +96,25 @@ public class EventosService
         eventosDAO.updateHorasEvento(evento);
     }
 
-    public Evento modificaDetallesGrupoAsignatura(Long grupoAsignaturaId, Date inicio, Date fin,
+    public Evento modificaDetallesGrupoAsignatura(Long eventoId, Date inicio, Date fin,
             Date desdeElDia, Integer numeroIteraciones, Integer repetirCadaSemanas,
-            Date hastaElDia, Boolean detalleManual) throws DuracionEventoIncorrectaException
+            Date hastaElDia, Boolean detalleManual) throws DuracionEventoIncorrectaException,
+            RegistroNoEncontradoException
     {
 
         if (fechasEnElMismoDiaYEnSemanaLaboral(inicio, fin))
         {
-            return eventosDAO.modificaDetallesGrupoAsignatura(grupoAsignaturaId, inicio, fin,
-                    desdeElDia, numeroIteraciones, repetirCadaSemanas, hastaElDia, detalleManual);
+            Evento evento = eventosDAO.getEventoById(eventoId);
+            evento.setInicio(inicio);
+            evento.setFin(fin);
+            evento.setDesdeElDia(desdeElDia);
+            evento.setNumeroIteraciones(numeroIteraciones);
+            evento.setRepetirCadaSemanas(repetirCadaSemanas);
+            evento.setHastaElDia(hastaElDia);
+            evento.setDetalleManual(detalleManual);
+
+            return eventosDAO.modificaDetallesGrupoAsignatura(evento);
+
         }
         else
         {
