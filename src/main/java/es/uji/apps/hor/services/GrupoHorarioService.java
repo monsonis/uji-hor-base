@@ -12,13 +12,13 @@ import es.uji.apps.hor.dao.EventosDAO;
 import es.uji.apps.hor.dao.GrupoHorarioDAO;
 import es.uji.apps.hor.model.Evento;
 import es.uji.apps.hor.model.GrupoHorario;
+import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
 @Service
 public class GrupoHorarioService
 {
     private final GrupoHorarioDAO grupoHorarioDAO;
     private final EventosDAO eventosDAO;
-
 
     @Autowired
     public GrupoHorarioService(GrupoHorarioDAO grupoHorarioDAO, EventosDAO eventosDAO)
@@ -27,63 +27,42 @@ public class GrupoHorarioService
         this.eventosDAO = eventosDAO;
     }
 
-    public GrupoHorario getHorarioById(Long estudioId, Long cursoId, Long semestreId, String grupoId)
+    public GrupoHorario getHorario(Long estudioId, Long cursoId, Long semestreId, String grupoId)
+            throws RegistroNoEncontradoException
     {
-        return grupoHorarioDAO.getGrupoHorarioById(estudioId, cursoId, semestreId, grupoId);
+        return grupoHorarioDAO.getGrupoHorario(estudioId, cursoId, semestreId, grupoId);
     }
 
-    public GrupoHorario addHorario(Long estudioId, Long cursoId, Long semestreId, String grupoId,
-            Date horaInicio, Date horaFin)
+    public GrupoHorario guardaConfiguracionGrupoHorario(Long estudioId, Long cursoId,
+            Long semestreId, String grupoId, Date horaInicio, Date horaFin)
+            throws RangoHorarioFueradeLimites
     {
-        return grupoHorarioDAO.addHorario(estudioId, cursoId, semestreId, grupoId, horaInicio,
-                horaFin);
-    }
+        GrupoHorario grupoHorario;
 
-    public GrupoHorario updateHorario(Long estudioId, Long cursoId, Long semestreId,
-            String grupoId, Date horaInicio, Date horaFin)
-    {
-        return grupoHorarioDAO.updateHorario(estudioId, cursoId, semestreId, grupoId, horaInicio,
-                horaFin);
-    }
-
-    public void compruebaValidezRangoHorario(Long estudioId, Long cursoId, Long semestreId,
-            String grupoId, Date inicio, Date fin) throws RangoHorarioFueradeLimites
-    {
-        List <Evento> eventos = eventosDAO.getEventosDeUnCurso(estudioId, cursoId, semestreId, grupoId);
-        
-        Integer horaMin = 0;
-        Integer horaMax = 0;
-        
-        for (Evento evento: eventos) {
-            Calendar itemInicio = Calendar.getInstance();
-            itemInicio.setTime(evento.getInicio());
-            
-            Calendar itemFinal = Calendar.getInstance();
-            itemFinal.setTime(evento.getFin());
-            
-            Integer tempMin = itemInicio.get(Calendar.HOUR_OF_DAY)*100 + itemInicio.get(Calendar.MINUTE);
-            Integer tempMax = itemFinal.get(Calendar.HOUR_OF_DAY)*100 + itemInicio.get(Calendar.MINUTE);
-            
-            if (horaMin == 0 || horaMin > tempMin) {
-                horaMin = tempMin;
-            }
-            
-            if (horaMax == 0 || horaMax < tempMax) {
-                horaMax = tempMax;
-            }
+        try
+        {
+            grupoHorario = grupoHorarioDAO.getGrupoHorario(estudioId, cursoId, semestreId, grupoId);
+            grupoHorario.actualizaRangoHorario(horaInicio, horaFin);
         }
-        
-        Calendar calendarioInicio = Calendar.getInstance();
-        Calendar calendarioFin = Calendar.getInstance();
-        
-        calendarioInicio.setTime(inicio);
-        calendarioFin.setTime(fin);
-        
-        Integer nuevaHoraMin =  calendarioInicio.get(Calendar.HOUR_OF_DAY)*100 + calendarioInicio.get(Calendar.MINUTE);
-        Integer nuevaHoraMax = calendarioFin.get(Calendar.HOUR_OF_DAY)*100 + calendarioFin.get(Calendar.MINUTE);
-        
-        if (nuevaHoraMin > horaMin || nuevaHoraMax < horaMax) {
-            throw new RangoHorarioFueradeLimites();
+        catch (RegistroNoEncontradoException e)
+        {
+            grupoHorario = GrupoHorario.creaNuevoRangoHorario(estudioId, cursoId, semestreId,
+                    grupoId, horaInicio, horaFin);
         }
+
+        List<Evento> eventos = eventosDAO.getEventosDeUnCurso(estudioId, cursoId, semestreId,
+                grupoId);
+        grupoHorario.compruebaValidezRangoHorario(eventos);
+
+        if (grupoHorario.getId() != null)
+        {
+            grupoHorario = grupoHorarioDAO.updateHorario(grupoHorario);
+        }
+        else
+        {
+            grupoHorario = grupoHorarioDAO.addHorario(grupoHorario);
+        }
+
+        return grupoHorario;
     }
 }

@@ -1,6 +1,10 @@
 package es.uji.apps.hor.model;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+
+import es.uji.apps.hor.RangoHorarioFueradeLimites;
 
 public class GrupoHorario
 {
@@ -12,13 +16,14 @@ public class GrupoHorario
     private Date horaInicio;
     private Date horaFin;
 
-    public GrupoHorario(Long estudioId, Long cursoId, Long semestreId, String grupoId) {
+    public GrupoHorario(Long estudioId, Long cursoId, Long semestreId, String grupoId)
+    {
         this.estudioId = estudioId;
         this.cursoId = cursoId;
         this.semestreId = semestreId;
         this.grupoId = grupoId;
     }
-    
+
     public GrupoHorario()
     {
         // TODO Auto-generated constructor stub
@@ -94,4 +99,66 @@ public class GrupoHorario
         this.id = id;
     }
 
+    public void compruebaValidezRangoHorario(List<Evento> eventos)
+            throws RangoHorarioFueradeLimites
+    {
+        Integer horaMin = 0;
+        Integer horaMax = 0;
+
+        for (Evento evento : eventos)
+        {
+            Calendar itemInicio = Calendar.getInstance();
+            itemInicio.setTime(evento.getInicio());
+
+            Calendar itemFinal = Calendar.getInstance();
+            itemFinal.setTime(evento.getFin());
+
+            Integer tempMin = itemInicio.get(Calendar.HOUR_OF_DAY) * 100
+                    + itemInicio.get(Calendar.MINUTE);
+            Integer tempMax = itemFinal.get(Calendar.HOUR_OF_DAY) * 100
+                    + itemInicio.get(Calendar.MINUTE);
+
+            if (horaMin == 0 || horaMin > tempMin)
+            {
+                horaMin = tempMin;
+            }
+
+            if (horaMax == 0 || horaMax < tempMax)
+            {
+                horaMax = tempMax;
+            }
+        }
+
+        Calendar calendarioInicio = Calendar.getInstance();
+        Calendar calendarioFin = Calendar.getInstance();
+
+        calendarioInicio.setTime(horaInicio);
+        calendarioFin.setTime(horaFin);
+
+        Integer nuevaHoraMin = calendarioInicio.get(Calendar.HOUR_OF_DAY) * 100
+                + calendarioInicio.get(Calendar.MINUTE);
+        Integer nuevaHoraMax = calendarioFin.get(Calendar.HOUR_OF_DAY) * 100
+                + calendarioFin.get(Calendar.MINUTE);
+
+        if (nuevaHoraMin > horaMin || nuevaHoraMax < horaMax)
+        {
+            throw new RangoHorarioFueradeLimites();
+        }
+    }
+
+    public void actualizaRangoHorario(Date inicio, Date fin)
+    {
+        this.horaInicio = inicio;
+        this.horaFin = fin;
+    }
+
+    public static GrupoHorario creaNuevoRangoHorario(Long estudioId, Long cursoId, Long semestreId,
+            String grupoId, Date horaInicio, Date horaFin)
+    {
+        GrupoHorario grupoHorario = new GrupoHorario(estudioId, cursoId, semestreId, grupoId);
+        grupoHorario.setHoraInicio(horaInicio);
+        grupoHorario.setHoraFin(horaFin);
+
+        return grupoHorario;
+    }
 }

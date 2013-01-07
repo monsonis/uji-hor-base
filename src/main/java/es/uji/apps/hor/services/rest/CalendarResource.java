@@ -75,7 +75,7 @@ public class CalendarResource
 
         ParamUtils.checkNotNull(estudioId, cursoId, semestreId, grupoId);
 
-        GrupoHorario grupoHorario = grupoHorarioService.getHorarioById(
+        GrupoHorario grupoHorario = grupoHorarioService.getHorario(
                 ParamUtils.parseLong(estudioId), ParamUtils.parseLong(cursoId),
                 ParamUtils.parseLong(semestreId), grupoId);
 
@@ -106,22 +106,8 @@ public class CalendarResource
         fin.set(Calendar.MINUTE, Integer.parseInt(horaFin.split(":")[1]));
         fin.set(Calendar.SECOND, 0);
 
-        GrupoHorario grupoHorario = grupoHorarioService.getHorarioById(estudioId, cursoId,
-                semestreId, grupoId);
-
-        grupoHorarioService.compruebaValidezRangoHorario(estudioId, cursoId, semestreId, grupoId,
-                inicio.getTime(), fin.getTime());
-
-        if (grupoHorario.getId() != null)
-        {
-            grupoHorario = grupoHorarioService.updateHorario(estudioId, cursoId, semestreId,
-                    grupoId, inicio.getTime(), fin.getTime());
-        }
-        else
-        {
-            grupoHorario = grupoHorarioService.addHorario(estudioId, cursoId, semestreId, grupoId,
-                    inicio.getTime(), fin.getTime());
-        }
+        GrupoHorario grupoHorario = grupoHorarioService.guardaConfiguracionGrupoHorario(estudioId,
+                cursoId, semestreId, grupoId, inicio.getTime(), fin.getTime());
 
         return grupoHorarioToUI(grupoHorario);
     }

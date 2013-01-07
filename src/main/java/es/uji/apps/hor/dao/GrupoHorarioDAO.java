@@ -1,18 +1,16 @@
 package es.uji.apps.hor.dao;
 
-import java.util.Date;
-
 import es.uji.apps.hor.model.GrupoHorario;
 import es.uji.commons.db.BaseDAO;
+import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
 public interface GrupoHorarioDAO extends BaseDAO
 {
-    GrupoHorario getGrupoHorarioById(Long estudioId, Long cursoId, Long semestreId, String grupoId);
+    GrupoHorario getGrupoHorario(Long estudioId, Long cursoId, Long semestreId, String grupoId)
+            throws RegistroNoEncontradoException;
 
-    GrupoHorario addHorario(Long estudioId, Long cursoId, Long semestreId, String grupoId,
-            Date horaInicio, Date horaFin);
+    GrupoHorario addHorario(GrupoHorario grupoHorario);
 
-    GrupoHorario updateHorario(Long estudioId, Long cursoId, Long semestreId, String grupoId,
-            Date horaInicio, Date horaFin);
-    
+    GrupoHorario updateHorario(GrupoHorario grupoHorario);
+
 }
