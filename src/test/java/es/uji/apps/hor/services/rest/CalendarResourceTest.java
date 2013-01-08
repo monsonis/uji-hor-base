@@ -76,7 +76,7 @@ public class CalendarResourceTest extends AbstractCalendarResourceTest
 
     @Test
     @Transactional
-    public void eliminarUnEventoGenerico() throws ParseException
+    public void eliminarElUltimoEventoDeUnGrupo() throws ParseException
     {
         String eventoId = "1";
 
@@ -86,20 +86,21 @@ public class CalendarResourceTest extends AbstractCalendarResourceTest
         List<UIEntity> listaEventos = getListaEventosGenericos();
         assertThat(listaEventos, hasSize(2));
         assertThat(existeEventoGenericoConId(eventoId), is(false));
+        assertThat(elEventoEstaDesasignado(eventoId), is(true));
     }
 
     @Test
     @Transactional
-    public void eliminarElUltimoEventoDeUnGrupo() throws Exception
+    public void eliminarEventoDeUnGrupoConMasEventos() throws Exception
     {
-        Evento ultimoEventoDelGrupoB = new EventoBuilder(eventosDao)
+        Evento eventoDeGrupoExistente = new EventoBuilder(eventosDao)
                 .withTitulo("Evento de prueba 1 de asignatura 1")
                 .withAsignatura(asignaturaFicticia1)
-                .withInicioYFinFechaString("10/10/2012 09:00", "10/10/2012 11:00").withGrupoId("B")
-                .withSubgrupoId(new Long(1)).withSemestre(semestre).withCalendario(calendarioPR)
-                .withDetalleManual(false).build();
+                .withInicioYFinFechaString("11/10/2012 09:00", "11/10/2012 11:00")
+                .withGrupoId(grupoId).withSubgrupoId(new Long(1)).withSemestre(semestre)
+                .withCalendario(calendarioPR).withDetalleManual(false).build();
 
-        String eventoId = ultimoEventoDelGrupoB.getId().toString();
+        String eventoId = eventoDeGrupoExistente.getId().toString();
 
         resource.path("calendario/eventos/generica/" + eventoId)
                 .accept(MediaType.APPLICATION_JSON_TYPE).delete(ClientResponse.class);
@@ -107,7 +108,7 @@ public class CalendarResourceTest extends AbstractCalendarResourceTest
         List<UIEntity> listaEventos = getListaEventosGenericos();
         assertThat(listaEventos, hasSize(3));
         assertThat(existeEventoGenericoConId(eventoId), is(false));
-        assertThat(elEventoEstaDesasignado(eventoId), is(true));
+        assertThat(elEventoEstaDesasignado(eventoId), is(false));
 
     }
 
@@ -285,7 +286,7 @@ public class CalendarResourceTest extends AbstractCalendarResourceTest
         params.putSingle("estudioId", String.valueOf(estudioId));
         params.putSingle("cursoId", String.valueOf(cursoId));
         params.putSingle("semestreId", String.valueOf(semestreId));
-        params.putSingle("grupoId", "B");
+        params.putSingle("grupoId", grupoId);
         params.putSingle("calendariosIds", calendariosIds);
         return params;
     }
