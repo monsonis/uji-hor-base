@@ -6,6 +6,17 @@ import java.util.Date;
 
 public class GrupoAsignatura
 {
+
+    private static final int HORA_INICIO_POR_DEFECTO = 8;
+    private static final int MINUTO_INICIO_POR_DEFECTO = 0;
+    private static final int SEGUNDO_INICIO_POR_DEFECTO = 0;
+
+    private static final int HORA_FIN_POR_DEFECTO = 10;
+    private static final int MINUTO_FIN_POR_DEFECTO = 0;
+    private static final int SEGUNDO_FIN_POR_DEFECTO = 0;
+
+    private static final String DIA_SEMANA_POR_DEFECTO = "Dilluns";
+
     private Long id;
 
     private String titulo;
@@ -112,16 +123,16 @@ public class GrupoAsignatura
     {
         Calendar calInicio = Calendar.getInstance();
         Calendar calFin = Calendar.getInstance();
-        calInicio.set(Calendar.HOUR_OF_DAY, 8);
-        calInicio.set(Calendar.MINUTE, 0);
-        calInicio.set(Calendar.SECOND, 0);
-        calFin.set(Calendar.HOUR_OF_DAY, 10);
-        calFin.set(Calendar.MINUTE, 0);
-        calFin.set(Calendar.SECOND, 0);
+        calInicio.set(Calendar.HOUR_OF_DAY, HORA_INICIO_POR_DEFECTO);
+        calInicio.set(Calendar.MINUTE, MINUTO_INICIO_POR_DEFECTO);
+        calInicio.set(Calendar.SECOND, SEGUNDO_INICIO_POR_DEFECTO);
+        calFin.set(Calendar.HOUR_OF_DAY, HORA_FIN_POR_DEFECTO);
+        calFin.set(Calendar.MINUTE, MINUTO_FIN_POR_DEFECTO);
+        calFin.set(Calendar.SECOND, SEGUNDO_FIN_POR_DEFECTO);
 
         inicio = calInicio.getTime();
         fin = calFin.getTime();
-        setDiaSemana("Dilluns");
+        setDiaSemana(DIA_SEMANA_POR_DEFECTO);
     }
 
     @Override
