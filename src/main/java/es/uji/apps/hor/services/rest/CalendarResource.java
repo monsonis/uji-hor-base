@@ -46,6 +46,17 @@ import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 @Path("calendario")
 public class CalendarResource
 {
+    private static final String END_DATE_QUERY_PARAM = "endDate";
+    private static final String START_DATE_QUERY_PARAM = "startDate";
+    private static final String CALENDARIOS_IDS_QUERY_PARAM = "calendariosIds";
+    private static final String GRUPO_ID_QUERY_PARAM = "grupoId";
+    private static final String CURSO_ID_QUERY_PARAM = "cursoId";
+    private static final String SEMESTRE_ID_QUERY_PARAM = "semestreId";
+    private static final String ESTUDIO_ID_QUERY_PARAM = "estudioId";
+    private static final String TIPO_ACCION_FORM_PARAM = "tipoAccion";
+    private static final String AULA_ID_FORM_PARAM = "aulaId";
+    private static final String ID_PATH_PARAM = "id";
+
     @InjectParam
     private EventosService eventosService;
 
@@ -67,9 +78,10 @@ public class CalendarResource
     @GET
     @Path("config")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UIEntity> getConfiguracion(@QueryParam("estudioId") String estudioId,
-            @QueryParam("cursoId") String cursoId, @QueryParam("semestreId") String semestreId,
-            @QueryParam("grupoId") String grupoId) throws RegistroNoEncontradoException
+    public List<UIEntity> getConfiguracion(@QueryParam(ESTUDIO_ID_QUERY_PARAM) String estudioId,
+            @QueryParam(CURSO_ID_QUERY_PARAM) String cursoId,
+            @QueryParam(SEMESTRE_ID_QUERY_PARAM) String semestreId,
+            @QueryParam(GRUPO_ID_QUERY_PARAM) String grupoId) throws RegistroNoEncontradoException
     {
 
         ParamUtils.checkNotNull(estudioId, cursoId, semestreId, grupoId);
@@ -113,10 +125,11 @@ public class CalendarResource
     @GET
     @Path("eventos/generica")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UIEntity> getEventosGenerica(@QueryParam("estudioId") String estudioId,
-            @QueryParam("cursoId") String cursoId, @QueryParam("semestreId") String semestreId,
-            @QueryParam("grupoId") String grupoId,
-            @QueryParam("calendariosIds") String calendariosIds) throws ParseException
+    public List<UIEntity> getEventosGenerica(@QueryParam(ESTUDIO_ID_QUERY_PARAM) String estudioId,
+            @QueryParam(CURSO_ID_QUERY_PARAM) String cursoId,
+            @QueryParam(SEMESTRE_ID_QUERY_PARAM) String semestreId,
+            @QueryParam(GRUPO_ID_QUERY_PARAM) String grupoId,
+            @QueryParam(CALENDARIOS_IDS_QUERY_PARAM) String calendariosIds) throws ParseException
     {
         ParamUtils.checkNotNull(estudioId, cursoId, semestreId, grupoId);
 
@@ -147,12 +160,13 @@ public class CalendarResource
     @GET
     @Path("eventos/detalle")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UIEntity> getEventosDetalle(@QueryParam("estudioId") String estudioId,
-            @QueryParam("cursoId") String cursoId, @QueryParam("semestreId") String semestreId,
-            @QueryParam("grupoId") String grupoId,
-            @QueryParam("calendariosIds") String calendariosIds,
-            @QueryParam("startDate") String startDate, @QueryParam("endDate") String endDate)
-            throws ParseException
+    public List<UIEntity> getEventosDetalle(@QueryParam(ESTUDIO_ID_QUERY_PARAM) String estudioId,
+            @QueryParam(CURSO_ID_QUERY_PARAM) String cursoId,
+            @QueryParam(SEMESTRE_ID_QUERY_PARAM) String semestreId,
+            @QueryParam(GRUPO_ID_QUERY_PARAM) String grupoId,
+            @QueryParam(CALENDARIOS_IDS_QUERY_PARAM) String calendariosIds,
+            @QueryParam(START_DATE_QUERY_PARAM) String startDate,
+            @QueryParam(END_DATE_QUERY_PARAM) String endDate) throws ParseException
     {
         ParamUtils.checkNotNull(estudioId, cursoId, semestreId, grupoId, startDate, endDate);
 
@@ -352,7 +366,7 @@ public class CalendarResource
 
     @DELETE
     @Path("eventos/generica/{id}")
-    public Response deleteEventoSemanaGenerica(@PathParam("id") String eventoId)
+    public Response deleteEventoSemanaGenerica(@PathParam(ID_PATH_PARAM) String eventoId)
             throws RegistroNoEncontradoException
     {
         eventosService.deleteEventoSemanaGenerica(Long.parseLong(eventoId));
@@ -361,7 +375,7 @@ public class CalendarResource
 
     @POST
     @Path("eventos/generica/divide/{id}")
-    public Response divideEventoSemanaGenerica(@PathParam("id") String eventoId)
+    public Response divideEventoSemanaGenerica(@PathParam(ID_PATH_PARAM) String eventoId)
             throws RegistroNoEncontradoException, EventoNoDivisibleException
     {
         eventosService.divideEventoSemanaGenerica(Long.parseLong(eventoId));
@@ -446,7 +460,7 @@ public class CalendarResource
     @GET
     @Path("eventos/docencia/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UIEntity> getEventosDocenciaByEventoId(@PathParam("id") String eventoId)
+    public List<UIEntity> getEventosDocenciaByEventoId(@PathParam(ID_PATH_PARAM) String eventoId)
     {
         List<EventoDocencia> eventosDocencia = eventosService
                 .getDiasDocenciaDeUnEventoByEventoId(ParamUtils.parseLong(eventoId));
@@ -457,8 +471,9 @@ public class CalendarResource
     @PUT
     @Path("eventos/aula/evento/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UIEntity> actualizaAulaAsignadaAEvento(@PathParam("id") String eventoId,
-            @FormParam("aulaId") String aulaId, @FormParam("tipoAccion") String tipoAccion)
+    public List<UIEntity> actualizaAulaAsignadaAEvento(@PathParam(ID_PATH_PARAM) String eventoId,
+            @FormParam(AULA_ID_FORM_PARAM) String aulaId,
+            @FormParam(TIPO_ACCION_FORM_PARAM) String tipoAccion)
             throws RegistroNoEncontradoException, AulaNoAsignadaAEstudioDelEventoException,
             NumberFormatException
     {
