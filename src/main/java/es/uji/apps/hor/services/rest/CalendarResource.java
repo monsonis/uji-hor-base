@@ -238,7 +238,7 @@ public class CalendarResource
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> updateEventoSemanaGenerica(UIEntity entity) throws ParseException,
             DuracionEventoIncorrectaException, JSONException, RegistroNoEncontradoException,
-            NumberFormatException, EventoDetalleSinEventoException
+            EventoDetalleSinEventoException
     {
         DateFormat uIEntityDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         Date inicio = uIEntityDateFormat.parse(entity.get("start"));
@@ -474,8 +474,7 @@ public class CalendarResource
     public List<UIEntity> actualizaAulaAsignadaAEvento(@PathParam(ID_PATH_PARAM) String eventoId,
             @FormParam(AULA_ID_FORM_PARAM) String aulaId,
             @FormParam(TIPO_ACCION_FORM_PARAM) String tipoAccion)
-            throws RegistroNoEncontradoException, AulaNoAsignadaAEstudioDelEventoException,
-            NumberFormatException
+            throws RegistroNoEncontradoException, AulaNoAsignadaAEstudioDelEventoException
     {
         boolean propagar = tipoAccion.equals("T");
         Long aula;
