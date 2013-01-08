@@ -8,6 +8,7 @@ public class PlantaEdificioBuilder
 
     public PlantaEdificioBuilder()
     {
+        plantaEdificio = new PlantaEdificio();
     }
 
     public PlantaEdificioBuilder withNombre(String nombre)
