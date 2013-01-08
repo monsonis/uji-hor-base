@@ -51,7 +51,7 @@ public class GrupoHorarioService
 
         List<Evento> eventos = eventosDAO.getEventosDeUnCurso(estudioId, cursoId, semestreId,
                 grupoId);
-        grupoHorario.compruebaValidezRangoHorario(eventos);
+        grupoHorario.compruebaSiLosEventosEstanDentroDelRangoHorario(eventos);
 
         if (grupoHorario.getId() != null)
         {

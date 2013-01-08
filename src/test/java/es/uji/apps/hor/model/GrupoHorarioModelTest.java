@@ -44,7 +44,7 @@ public class GrupoHorarioModelTest
 
         grupoHorario.actualizaRangoHorario(formatter.parse("07/01/2013 9:00"),
                 formatter.parse("07/01/2013 14:00"));
-        grupoHorario.compruebaValidezRangoHorario(eventos);
+        grupoHorario.compruebaSiLosEventosEstanDentroDelRangoHorario(eventos);
 
         assertThat(grupoHorario.getHoraInicio(), is(equalTo(formatter.parse("07/01/2013 9:00"))));
     }
@@ -61,7 +61,7 @@ public class GrupoHorarioModelTest
 
         grupoHorario.actualizaRangoHorario(formatter.parse("07/01/2013 10:00"),
                 formatter.parse("07/01/2013 14:00"));
-        grupoHorario.compruebaValidezRangoHorario(eventos);
+        grupoHorario.compruebaSiLosEventosEstanDentroDelRangoHorario(eventos);
     }
 
     private GrupoHorario buildGrupoHorario(String horaInicio, String horaFin) throws ParseException
