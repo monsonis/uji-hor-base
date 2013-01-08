@@ -226,6 +226,7 @@ public class CalendarResource
             DuracionEventoIncorrectaException, JSONException, RegistroNoEncontradoException,
             NumberFormatException, EventoDetalleSinEventoException
     {
+        System.out.println("------------------------ " + entity.get("start"));
         DateFormat uIEntityDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         Date inicio = uIEntityDateFormat.parse(entity.get("start"));
         Date fin = uIEntityDateFormat.parse(entity.get("end"));
