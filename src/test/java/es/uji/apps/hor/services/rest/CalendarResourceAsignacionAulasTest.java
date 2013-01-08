@@ -18,16 +18,24 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.core.util.StringKeyStringValueIgnoreCaseMultivaluedMap;
 
+import es.uji.apps.hor.builders.AreaEdificioBuilder;
 import es.uji.apps.hor.builders.AulaBuilder;
 import es.uji.apps.hor.builders.AulaPlanificacionBuilder;
 import es.uji.apps.hor.builders.CentroBuilder;
+import es.uji.apps.hor.builders.EdificioBuilder;
 import es.uji.apps.hor.builders.EstudioBuilder;
+import es.uji.apps.hor.builders.PlantaEdificioBuilder;
+import es.uji.apps.hor.builders.TipoAulaBuilder;
 import es.uji.apps.hor.dao.AulaDAO;
 import es.uji.apps.hor.dao.CentroDAO;
+import es.uji.apps.hor.model.AreaEdificio;
 import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.AulaPlanificacion;
 import es.uji.apps.hor.model.Centro;
+import es.uji.apps.hor.model.Edificio;
 import es.uji.apps.hor.model.Estudio;
+import es.uji.apps.hor.model.PlantaEdificio;
+import es.uji.apps.hor.model.TipoAula;
 import es.uji.commons.rest.UIEntity;
 
 public class CalendarResourceAsignacionAulasTest extends AbstractCalendarResourceTest
@@ -55,14 +63,23 @@ public class CalendarResourceAsignacionAulasTest extends AbstractCalendarResourc
         otroEstudioId = otroEstudio.getId();
 
         Centro centro = new CentroBuilder(centroDao).withNombre("Centro de Prueba").build();
+        AreaEdificio areaEdificio = new AreaEdificioBuilder().withNombre("Área 1").build();
+        PlantaEdificio plantaEdificio = new PlantaEdificioBuilder().withNombre("1").build();
+        TipoAula tipoAula = new TipoAulaBuilder().withNombre("1").build();
 
-        Aula aula1 = new AulaBuilder(aulaDao).withArea("Área 1").withCentro(centro)
-                .withCodigo("AUL1").withEdificio("Edificio 1").withNombre("Aula 1").withPlanta("1")
-                .withPlazas(new Long(100)).withTipo("1").build();
+        AreaEdificio areaEdificio2 = new AreaEdificioBuilder().withNombre("Área 2").build();
+        PlantaEdificio plantaEdificio2 = new PlantaEdificioBuilder().withNombre("2").build();
+        TipoAula tipoAula2 = new TipoAulaBuilder().withNombre("2").build();
 
-        Aula aula2 = new AulaBuilder(aulaDao).withArea("Área 2").withCentro(centro)
-                .withCodigo("AUL2").withEdificio("Edificio 1").withNombre("Aula 2").withPlanta("1")
-                .withPlazas(new Long(100)).withTipo("2").build();
+        Edificio edificio = new EdificioBuilder().withNombre("Edificio 1").build();
+
+        Aula aula1 = new AulaBuilder(aulaDao).withArea(areaEdificio).withCentro(centro)
+                .withCodigo("AUL1").withEdificio(edificio).withNombre("Aula 1").withPlanta(plantaEdificio)
+                .withPlazas(new Long(100)).withTipo(tipoAula).build();
+
+        Aula aula2 = new AulaBuilder(aulaDao).withArea(areaEdificio2).withCentro(centro)
+                .withCodigo("AUL2").withEdificio(edificio).withNombre("Aula 2").withPlanta(plantaEdificio2)
+                .withPlazas(new Long(100)).withTipo(tipoAula2).build();
 
         AulaPlanificacion aulaPlanificacion = new AulaPlanificacionBuilder(aulaDao)
                 .withAulaId(aula1.getId()).withEstudioId(estudioId).withSemestreId(semestreId)

@@ -1,8 +1,12 @@
 package es.uji.apps.hor.builders;
 
 import es.uji.apps.hor.dao.AulaDAO;
+import es.uji.apps.hor.model.AreaEdificio;
 import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.Centro;
+import es.uji.apps.hor.model.Edificio;
+import es.uji.apps.hor.model.PlantaEdificio;
+import es.uji.apps.hor.model.TipoAula;
 
 public class AulaBuilder
 {
@@ -32,7 +36,7 @@ public class AulaBuilder
         return this;
     }
     
-    public AulaBuilder withTipo(String tipo)
+    public AulaBuilder withTipo(TipoAula tipo)
     {
         aula.setTipo(tipo);
         return this;
@@ -50,19 +54,19 @@ public class AulaBuilder
         return this;
     }
     
-    public AulaBuilder withArea(String area)
+    public AulaBuilder withArea(AreaEdificio area)
     {
         aula.setArea(area);
         return this;
     }
     
-    public AulaBuilder withEdificio(String edificio)
+    public AulaBuilder withEdificio(Edificio edificio)
     {
         aula.setEdificio(edificio);
         return this;
     }
     
-    public AulaBuilder withPlanta(String planta)
+    public AulaBuilder withPlanta(PlantaEdificio planta)
     {
         aula.setPlanta(planta);
         return this;

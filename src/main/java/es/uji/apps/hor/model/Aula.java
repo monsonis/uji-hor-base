@@ -1,23 +1,21 @@
 package es.uji.apps.hor.model;
 
-
-
 public class Aula
 {
     private Long id;
     private String nombre;
     private Centro centro;
-    private String tipo;
     private Long plazas;
     private String codigo;
-    private String area;
-    private String edificio;
-    private String planta;
+    private AreaEdificio area;
+    private PlantaEdificio planta;
+    private TipoAula tipo;
+    private Edificio edificio;
     
-    public Aula()
-    {
+    public Aula() {
+        
     }
-
+    
     public Aula(Long id)
     {
         this.id = id;
@@ -53,16 +51,6 @@ public class Aula
         this.centro = centro;
     }
 
-    public String getTipo()
-    {
-        return tipo;
-    }
-
-    public void setTipo(String tipo)
-    {
-        this.tipo = tipo;
-    }
-
     public Long getPlazas()
     {
         return plazas;
@@ -83,33 +71,45 @@ public class Aula
         this.codigo = codigo;
     }
 
-    public String getArea()
+    public AreaEdificio getArea()
     {
         return area;
     }
 
-    public void setArea(String area)
+    public void setArea(AreaEdificio area)
     {
         this.area = area;
     }
 
-    public String getEdificio()
-    {
-        return edificio;
-    }
-
-    public void setEdificio(String edificio)
-    {
-        this.edificio = edificio;
-    }
-
-    public String getPlanta()
+    public PlantaEdificio getPlanta()
     {
         return planta;
     }
 
-    public void setPlanta(String planta)
+    public void setPlanta(PlantaEdificio planta)
     {
         this.planta = planta;
     }
+
+    public TipoAula getTipo()
+    {
+        return tipo;
+    }
+
+    public void setTipo(TipoAula tipo)
+    {
+        this.tipo = tipo;
+    }
+
+    public Edificio getEdificio()
+    {
+        return edificio;
+    }
+
+    public void setEdificio(Edificio edificio)
+    {
+        this.edificio = edificio;
+    }
+
+
 }

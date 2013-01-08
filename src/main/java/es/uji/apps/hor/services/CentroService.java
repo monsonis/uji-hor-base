@@ -9,12 +9,12 @@ import es.uji.apps.hor.dao.CentroDAO;
 import es.uji.apps.hor.model.Centro;
 
 @Service
-public class CentrosService
+public class CentroService
 {
     private final CentroDAO centroDAO;
 
     @Autowired
-    public CentrosService(CentroDAO centroDAO)
+    public CentroService(CentroDAO centroDAO)
     {
         this.centroDAO = centroDAO;
     }
@@ -23,4 +23,12 @@ public class CentrosService
     {
         return centroDAO.getCentros();
     }
+    
+    public Centro getCentroById(Long centroId)
+    {
+        Centro centro = centroDAO.getCentroById(centroId);
+        
+        return centro;
+    }
+
 }

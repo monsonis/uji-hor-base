@@ -1,16 +1,26 @@
 package es.uji.apps.hor.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mysema.query.jpa.impl.JPAQuery;
 
+import es.uji.apps.hor.db.AulaDTO;
 import es.uji.apps.hor.db.CentroDTO;
+import es.uji.apps.hor.db.QAulaDTO;
 import es.uji.apps.hor.db.QCentroDTO;
+import es.uji.apps.hor.model.AreaEdificio;
+import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.Centro;
+import es.uji.apps.hor.model.Edificio;
+import es.uji.apps.hor.model.PlantaEdificio;
+import es.uji.apps.hor.model.TipoAula;
 import es.uji.commons.db.BaseDAODatabaseImpl;
 
 @Repository
@@ -39,6 +49,198 @@ public class CentroDAODatabaseImpl extends BaseDAODatabaseImpl implements Centro
     {
         Centro centro = new Centro(centroDTO.getId(), centroDTO.getNombre());
         return centro;
+    }
+
+    @Override
+    public Centro getCentroById(Long centroId)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+
+        QAulaDTO qAula = QAulaDTO.aulaDTO;
+
+        query.from(qAula).where(qAula.centro.id.eq(centroId));
+
+        Centro centro = creaCentroCompletoDesdeAulasDTO(query.list(qAula));
+
+        return centro;
+    }
+
+    private Centro creaCentroCompletoDesdeAulasDTO(List<AulaDTO> listaAulasDTO)
+    {
+        Centro centro = new Centro();
+
+        List<Edificio> listaEdificios = creaListaEdificiosDesdeListaAulasDTO(listaAulasDTO);
+
+        centro.setEdificios(listaEdificios);
+
+        for (Edificio edificio : listaEdificios)
+        {
+            edificio.setCentro(centro);
+        }
+
+        return centro;
+    }
+
+    private List<Edificio> creaListaEdificiosDesdeListaAulasDTO(List<AulaDTO> listaAulasDTO)
+    {
+        List<Edificio> listaEdificios = new ArrayList<Edificio>();
+
+        Map<String, List<AulaDTO>> mapaEdificiosAulasDTO = new HashMap<String, List<AulaDTO>>();
+
+        for (AulaDTO aulaDTO : listaAulasDTO)
+        {
+            if (!mapaEdificiosAulasDTO.containsKey(aulaDTO.getEdificio()))
+            {
+                mapaEdificiosAulasDTO.put(aulaDTO.getEdificio(), new ArrayList<AulaDTO>());
+            }
+
+            mapaEdificiosAulasDTO.get(aulaDTO.getEdificio()).add(aulaDTO);
+        }
+
+        for (List<AulaDTO> listaAulasDTOEdificio : mapaEdificiosAulasDTO.values())
+        {
+            listaEdificios.add(creaEdificioDesdeAulasDTO(listaAulasDTOEdificio));
+        }
+
+        return listaEdificios;
+
+    }
+
+    private Edificio creaEdificioDesdeAulasDTO(List<AulaDTO> listaAulasDTO)
+    {
+        Map<Aula, AulaDTO> mapaAulasYAulasDTO = creaMapaAulasYAulasDTO(listaAulasDTO);
+
+        List<PlantaEdificio> listaPlantasEdificio = creaListaPlantasEdificioDesdeMapaAulasYAulasDTO(mapaAulasYAulasDTO);
+        List<AreaEdificio> listaAreaEdificios = creaListaAreasEdificioDesdeMapaAulasYAulasDTO(mapaAulasYAulasDTO);
+        List<TipoAula> listaTipoAulas = creaTipoAulasDesdeMapaAulasYAulasDTO(mapaAulasYAulasDTO);
+        Edificio edificio = new Edificio();
+
+        edificio.setNombre(listaAulasDTO.get(0).getEdificio());
+        edificio.setPlantas(listaPlantasEdificio);
+        for (PlantaEdificio plantaEdificio : listaPlantasEdificio)
+        {
+            plantaEdificio.setEdificio(edificio);
+        }
+
+        edificio.setAreas(listaAreaEdificios);
+        for (AreaEdificio areaEdificio : listaAreaEdificios)
+        {
+            areaEdificio.setEdificio(edificio);
+        }
+
+        edificio.setTiposAulas(listaTipoAulas);
+        for (TipoAula tipoAula : listaTipoAulas)
+        {
+            tipoAula.setEdificio(edificio);
+        }
+
+        return edificio;
+    }
+
+    private List<TipoAula> creaTipoAulasDesdeMapaAulasYAulasDTO(
+            Map<Aula, AulaDTO> mapaAulasYAulasDTO)
+    {
+        Map<String, TipoAula> mapaTiposAulas = new HashMap<String, TipoAula>();
+
+        for (Entry<Aula, AulaDTO> aulaEntry : mapaAulasYAulasDTO.entrySet())
+        {
+            AulaDTO aulaDTO = aulaEntry.getValue();
+            Aula aula = aulaEntry.getKey();
+
+            if (!mapaTiposAulas.keySet().contains(aulaDTO.getTipo()))
+            {
+                TipoAula tipoAula = new TipoAula();
+                List<Aula> listaAulas = new ArrayList<Aula>();
+                tipoAula.setAulas(listaAulas);
+                tipoAula.setNombre(aulaDTO.getTipo());
+                tipoAula.getAulas().add(aula);
+                aula.setTipo(tipoAula);
+                mapaTiposAulas.put(aulaDTO.getArea(), tipoAula);
+            } else {
+                TipoAula tipoAula = mapaTiposAulas.get(aulaDTO.getTipo());
+                tipoAula.getAulas().add(aula);
+                aula.setTipo(tipoAula);
+            }
+        }
+        return new ArrayList<TipoAula>(mapaTiposAulas.values());
+
+    }
+
+    private List<AreaEdificio> creaListaAreasEdificioDesdeMapaAulasYAulasDTO(
+            Map<Aula, AulaDTO> mapaAulasYAulasDTO)
+    {
+        Map<String, AreaEdificio> mapaAreaEdificios = new HashMap<String, AreaEdificio>();
+
+        for (Entry<Aula, AulaDTO> aulaEntry : mapaAulasYAulasDTO.entrySet())
+        {
+            AulaDTO aulaDTO = aulaEntry.getValue();
+            Aula aula = aulaEntry.getKey();
+
+            if (!mapaAreaEdificios.keySet().contains(aulaDTO.getArea()))
+            {
+                AreaEdificio areaEdificio = new AreaEdificio();
+                List<Aula> listaAulas = new ArrayList<Aula>();
+                areaEdificio.setAulas(listaAulas);
+                areaEdificio.setNombre(aulaDTO.getArea());
+                areaEdificio.getAulas().add(aula);
+                aula.setArea(areaEdificio);
+                mapaAreaEdificios.put(aulaDTO.getArea(), areaEdificio);
+            } else {
+                AreaEdificio areaEdificio = mapaAreaEdificios.get(aulaDTO.getArea());
+                areaEdificio.getAulas().add(aula);
+                aula.setArea(areaEdificio);
+            }
+        }
+        return new ArrayList<AreaEdificio>(mapaAreaEdificios.values());
+    }
+
+    private Map<Aula, AulaDTO> creaMapaAulasYAulasDTO(List<AulaDTO> listaAulasDTO)
+    {
+        Map<Aula, AulaDTO> mapaAulasYAulasDTO = new HashMap<Aula, AulaDTO>();
+
+        for (AulaDTO aulaDTO : listaAulasDTO)
+        {
+            Aula aula = creaAulaDesdeAulaDTO(aulaDTO);
+            mapaAulasYAulasDTO.put(aula, aulaDTO);
+        }
+
+        return mapaAulasYAulasDTO;
+    }
+
+    private List<PlantaEdificio> creaListaPlantasEdificioDesdeMapaAulasYAulasDTO(
+            Map<Aula, AulaDTO> mapaAulasYAulasDTO)
+    {
+        Map<String, PlantaEdificio> mapaPlantaEdificios = new HashMap<String, PlantaEdificio>();
+        
+        for (Entry<Aula, AulaDTO> aulaEntry : mapaAulasYAulasDTO.entrySet())
+        {
+            AulaDTO aulaDTO = aulaEntry.getValue();
+            Aula aula = aulaEntry.getKey();
+
+            if (!mapaPlantaEdificios.keySet().contains(aulaDTO.getPlanta()))
+            {
+                PlantaEdificio plantaEdificio = new PlantaEdificio();
+                List<Aula> listaAulas = new ArrayList<Aula>();
+                plantaEdificio.setAulas(listaAulas);
+                plantaEdificio.setNombre(aulaDTO.getPlanta());
+                plantaEdificio.getAulas().add(aula);
+                mapaPlantaEdificios.put(plantaEdificio.getNombre(), plantaEdificio);
+            }
+            else
+            {
+                PlantaEdificio plantaEdificio = mapaPlantaEdificios.get(aulaDTO.getPlanta());
+                plantaEdificio.getAulas().add(aula);
+                aula.setPlanta(plantaEdificio);
+            }
+        }
+        return new ArrayList<PlantaEdificio>(mapaPlantaEdificios.values());
+    }
+
+    private Aula creaAulaDesdeAulaDTO(AulaDTO aulaDTO)
+    {
+        Aula aula = new Aula();
+
+        return aula;
     }
 
     @Override

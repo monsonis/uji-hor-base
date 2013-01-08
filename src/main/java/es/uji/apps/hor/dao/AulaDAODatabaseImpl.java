@@ -16,9 +16,13 @@ import es.uji.apps.hor.db.CentroDTO;
 import es.uji.apps.hor.db.EstudioDTO;
 import es.uji.apps.hor.db.QAulaDTO;
 import es.uji.apps.hor.db.QAulaPlanificacionDTO;
+import es.uji.apps.hor.model.AreaEdificio;
 import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.AulaPlanificacion;
 import es.uji.apps.hor.model.Centro;
+import es.uji.apps.hor.model.Edificio;
+import es.uji.apps.hor.model.PlantaEdificio;
+import es.uji.apps.hor.model.TipoAula;
 import es.uji.commons.db.BaseDAODatabaseImpl;
 import es.uji.commons.rest.exceptions.RegistroConHijosException;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
@@ -48,15 +52,28 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
     private Aula creaAulaDesdeAulaDTO(AulaDTO aulaDTO)
     {
         Aula aula = new Aula(aulaDTO.getId());
+        
         Centro centro = new Centro(aulaDTO.getCentro().getId(), aulaDTO.getCentro().getNombre());
-
-        aula.setNombre(aulaDTO.getNombre());
         aula.setCentro(centro);
-        aula.setTipo(aulaDTO.getTipo());
-        aula.setPlanta(aulaDTO.getPlanta());
+        
+        TipoAula tipoAula = new TipoAula();
+        tipoAula.setNombre(aulaDTO.getTipo());
+        aula.setTipo(tipoAula);
+        
+        PlantaEdificio planta = new PlantaEdificio();
+        planta.setNombre(aulaDTO.getPlanta());
+        aula.setPlanta(planta);
+        
+        AreaEdificio area = new AreaEdificio();
+        area.setNombre(aulaDTO.getArea());
+        aula.setArea(area);
+        
+        Edificio edificio = new Edificio();
+        edificio.setNombre(aulaDTO.getEdificio());
+        aula.setEdificio(edificio);
+        
+        aula.setNombre(aulaDTO.getNombre());
         aula.setCodigo(aulaDTO.getCodigo());
-        aula.setArea(aulaDTO.getArea());
-        aula.setEdificio(aulaDTO.getEdificio());
         aula.setPlazas(aulaDTO.getPlazas());
         return aula;
     }
@@ -221,14 +238,14 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         centroDTO.setId(aula.getCentro().getId());
         centroDTO.setNombre(aula.getCentro().getNombre());
 
-        aulaDTO.setArea(aula.getArea());
+        aulaDTO.setArea(aula.getArea().getNombre());
         aulaDTO.setCentro(centroDTO);
         aulaDTO.setCodigo(aula.getCodigo());
-        aulaDTO.setEdificio(aula.getEdificio());
+        aulaDTO.setEdificio(aula.getEdificio().getNombre());
         aulaDTO.setNombre(aula.getNombre());
-        aulaDTO.setPlanta(aula.getPlanta());
+        aulaDTO.setPlanta(aula.getPlanta().getNombre());
         aulaDTO.setPlazas(aula.getPlazas());
-        aulaDTO.setTipo(aula.getTipo());
+        aulaDTO.setTipo(aula.getTipo().getNombre());
         aulaDTO = insert(aulaDTO);
 
         return this.creaAulaDesdeAulaDTO(aulaDTO);
