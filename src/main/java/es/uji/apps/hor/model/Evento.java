@@ -164,10 +164,19 @@ public class Evento
         calInicio.setTime(inicio);
         calFin.setTime(fin);
 
+        return mismoDia(calInicio, calFin) && noEsFinDeSemana(calInicio, calFin);
+    }
+
+    private boolean mismoDia(Calendar calInicio, Calendar calFin)
+    {
         return calInicio.get(Calendar.YEAR) == calFin.get(Calendar.YEAR)
                 && calInicio.get(Calendar.MONTH) == calFin.get(Calendar.MONTH)
-                && calInicio.get(Calendar.DAY_OF_MONTH) == calFin.get(Calendar.DAY_OF_MONTH)
-                && calInicio.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY
+                && calInicio.get(Calendar.DAY_OF_MONTH) == calFin.get(Calendar.DAY_OF_MONTH);
+    }
+
+    private boolean noEsFinDeSemana(Calendar calInicio, Calendar calFin)
+    {
+        return calInicio.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY
                 && calInicio.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY;
     }
 
