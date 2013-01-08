@@ -7,5 +7,5 @@ import es.uji.commons.db.BaseDAO;
 
 public interface CalendariosDAO extends BaseDAO
 {
-    public List<Calendario> getCalendarios();
+    List<Calendario> getCalendarios();
 }
