@@ -19,13 +19,11 @@ import es.uji.apps.hor.db.AulaPlanificacionDTO;
 import es.uji.apps.hor.db.DiaSemanaDTO;
 import es.uji.apps.hor.db.EstudioDTO;
 import es.uji.apps.hor.db.ItemCircuitoDTO;
-import es.uji.apps.hor.db.ItemComunDTO;
 import es.uji.apps.hor.db.ItemDTO;
 import es.uji.apps.hor.db.ItemDetalleCompletoDTO;
 import es.uji.apps.hor.db.ItemDetalleDTO;
 import es.uji.apps.hor.db.QDiaSemanaDTO;
 import es.uji.apps.hor.db.QItemCircuitoDTO;
-import es.uji.apps.hor.db.QItemComunDTO;
 import es.uji.apps.hor.db.QItemDTO;
 import es.uji.apps.hor.db.QItemDetalleCompletoDTO;
 import es.uji.apps.hor.db.QItemDetalleDTO;
@@ -605,16 +603,6 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
                 .set(qItemDetalle.inicio, eventoDetalle.getInicio())
                 .set(qItemDetalle.fin, eventoDetalle.getFin()).execute();
 
-    }
-
-    private List<ItemComunDTO> getItemsComunes(Long itemId)
-    {
-        JPAQuery query = new JPAQuery(entityManager);
-        QItemComunDTO itemComunDTO = QItemComunDTO.itemComunDTO;
-
-        query.from(itemComunDTO).where(itemComunDTO.item.id.eq(itemId));
-
-        return query.list(itemComunDTO);
     }
 
     @Override
