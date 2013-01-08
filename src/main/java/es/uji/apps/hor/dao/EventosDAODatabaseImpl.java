@@ -498,8 +498,6 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         // Creamos el nuevo evento
         ItemDTO itemDTO = new ItemDTO();
         itemDTO.setId(evento.getId());
-        AulaPlanificacionDTO aulaPlanificacionDTO = new AulaPlanificacionDTO();
-        // aulaPlanificacionDTO.setId(evento.getAulaPlanificacion().getId());
 
         EstudioDTO estudioDTO = new EstudioDTO();
         estudioDTO.setId(evento.getAsignatura().getEstudio().getId());
@@ -535,7 +533,12 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         itemDTO.setGrupoId(evento.getGrupoId());
         itemDTO.setSubgrupoId(evento.getSubgrupoId());
 
-        // itemDTO.setAulaPlanificacion(aulaPlanificacionDTO);
+        if (evento.getAulaPlanificacion() != null)
+        {
+            AulaPlanificacionDTO aulaPlanificacionDTO = new AulaPlanificacionDTO();
+            aulaPlanificacionDTO.setId(evento.getAulaPlanificacion().getId());
+            itemDTO.setAulaPlanificacion(aulaPlanificacionDTO);
+        }
         itemDTO.setHastaElDia(evento.getHastaElDia());
         itemDTO.setHoraFin(evento.getFin());
         itemDTO.setHoraInicio(evento.getInicio());
