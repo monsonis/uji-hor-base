@@ -52,52 +52,6 @@
 <domain>B784D6D2-343C-97AF-8447-8FE7645FA837</domain>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column class="oracle.dbtools.crest.model.design.relational.Column" name="asignatura_id" id="429CA232-A821-B82E-2A92-D3181CDA4C42">
-<createdBy>ferrerq</createdBy>
-<createdTime>2012-05-28 14:28:56 UTC</createdTime>
-<generatorID>Generado por el Usuario</generatorID>
-<ownerDesignName>uji_horarios</ownerDesignName>
-<use>0</use>
-<logicalDatatype>LOGDT024</logicalDatatype>
-<domain>A4232D0A-6592-A0D0-A6DF-91817C0B6413</domain>
-<autoIncrementCycle>false</autoIncrementCycle>
-</Column>
-<Column class="oracle.dbtools.crest.model.design.relational.Column" name="asignatura" id="ADD01BED-0CFE-2D11-B4E7-0594C2EB1817">
-<createdBy>ferrerq</createdBy>
-<createdTime>2012-05-28 15:05:17 UTC</createdTime>
-<generatorID>Generado por el Usuario</generatorID>
-<ownerDesignName>uji_horarios</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
-<use>0</use>
-<logicalDatatype>LOGDT024</logicalDatatype>
-<domain>E1ADD657-6E07-28E9-9235-7BBC823C4297</domain>
-<autoIncrementCycle>false</autoIncrementCycle>
-</Column>
-<Column class="oracle.dbtools.crest.model.design.relational.Column" name="estudio_id" id="4D9FBA8C-7149-47A4-9879-809BF2231128">
-<createdBy>ferrerq</createdBy>
-<createdTime>2012-05-28 14:28:56 UTC</createdTime>
-<generatorID>Generado por el Usuario</generatorID>
-<ownerDesignName>uji_horarios</ownerDesignName>
-<use>0</use>
-<logicalDatatype>LOGDT019</logicalDatatype>
-<domain>B784D6D2-343C-97AF-8447-8FE7645FA837</domain>
-<delegate>06813FA7-B718-829F-603F-CE6BB365CFDB</delegate>
-<autoIncrementCycle>false</autoIncrementCycle>
-<associations>
-<colAssociation fkAssociation="5256CB84-4581-F3EE-7C2D-B3C7793B62B7" referredColumn="06813FA7-B718-829F-603F-CE6BB365CFDB"/>
-</associations>
-</Column>
-<Column class="oracle.dbtools.crest.model.design.relational.Column" name="estudio" id="CF2F176A-7BF6-D75B-656E-4AC0D96FDABF">
-<createdBy>ferrerq</createdBy>
-<createdTime>2012-05-28 15:04:43 UTC</createdTime>
-<generatorID>Generado por el Usuario</generatorID>
-<ownerDesignName>uji_horarios</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
-<use>0</use>
-<logicalDatatype>LOGDT024</logicalDatatype>
-<domain>E1ADD657-6E07-28E9-9235-7BBC823C4297</domain>
-<autoIncrementCycle>false</autoIncrementCycle>
-</Column>
 <Column class="oracle.dbtools.crest.model.design.relational.Column" name="curso_id" id="4C7D94EC-E7BD-EDF2-452A-40409D6348B5">
 <createdBy>ferrerq</createdBy>
 <createdTime>2012-05-28 14:28:56 UTC</createdTime>
@@ -424,10 +378,8 @@
 <generatorID>Generado por el Usuario</generatorID>
 <ownerDesignName>uji_horarios</ownerDesignName>
 <indexColumnUsage>
-<colUsage columnID="4D9FBA8C-7149-47A4-9879-809BF2231128"/>
 <colUsage columnID="4C7D94EC-E7BD-EDF2-452A-40409D6348B5"/>
 <colUsage columnID="0B34F468-D3F7-2A74-2C69-50FB7A0AE7C0"/>
-<colUsage columnID="429CA232-A821-B82E-2A92-D3181CDA4C42"/>
 <colUsage columnID="84B95FFD-EC47-7819-8889-9F9F339A221D"/>
 <colUsage columnID="86809812-09FC-A0BF-91C0-0907992A565F"/>
 <colUsage columnID="5E889152-6E21-AF2D-9362-1BA81B0FB474"/>
@@ -441,7 +393,6 @@
 <ownerDesignName>uji_horarios</ownerDesignName>
 <indexColumnUsage>
 <colUsage columnID="3C35D93B-F361-CCD8-4B50-81E0EE6166DF"/>
-<colUsage columnID="4D9FBA8C-7149-47A4-9879-809BF2231128"/>
 <colUsage columnID="4D67A757-4A56-0A72-CFEA-00531E069B8B"/>
 <colUsage columnID="7E2044FA-E177-C20C-1DD8-8F1AF76F226F"/>
 </indexColumnUsage>
@@ -474,16 +425,6 @@
 <indexState>Foreign Key</indexState>
 <indexColumnUsage>
 <colUsage columnID="4D67A757-4A56-0A72-CFEA-00531E069B8B"/>
-</indexColumnUsage>
-</ind_PK_UK>
-<ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="18AE2904-5BCA-C593-D664-976D0D20E5BD" name="hor_items_hor_estudios_FK">
-<createdBy>ferrerq</createdBy>
-<createdTime>2012-05-28 14:28:56 UTC</createdTime>
-<generatorID>Generado por el Usuario</generatorID>
-<ownerDesignName>uji_horarios</ownerDesignName>
-<indexState>Foreign Key</indexState>
-<indexColumnUsage>
-<colUsage columnID="4D9FBA8C-7149-47A4-9879-809BF2231128"/>
 </indexColumnUsage>
 </ind_PK_UK>
 <ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="09CE34B8-F091-E61A-BE2E-8402D220C200" name="hor_items_hor_profesores_FK">
