@@ -44,27 +44,6 @@ import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements EventosDAO
 {
 
-    private Evento creaEventoDesde(ItemDetalleDTO detalleItemDTO)
-    {
-        ItemDTO itemDTO = detalleItemDTO.getItem();
-        String titulo = itemDTO.toString();
-
-        Calendario calendario = obtenerCalendarioAsociadoPorTipoSubgrupo(itemDTO);
-
-        Calendar inicio = creaCalendarDesdeFechaHoraInicioYFin(detalleItemDTO.getInicio());
-        Calendar fin = creaCalendarDesdeFechaHoraInicioYFin(detalleItemDTO.getFin());
-
-        return new Evento(itemDTO.getId(), calendario, titulo, inicio.getTime(), fin.getTime());
-    }
-
-    private Calendar creaCalendarDesdeFechaHoraInicioYFin(Date fecha)
-    {
-        Calendar inicio = Calendar.getInstance();
-        inicio.setTime(fecha);
-
-        return inicio;
-    }
-
     private Calendario obtenerCalendarioAsociadoPorTipoSubgrupo(ItemDTO itemDTO)
     {
         String tipoSubgrupoId = itemDTO.getTipoSubgrupoId();
