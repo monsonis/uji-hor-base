@@ -351,8 +351,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         QDiaSemanaDTO qDiaSemana = QDiaSemanaDTO.diaSemanaDTO;
         JPAQuery query = new JPAQuery(entityManager);
         query.from(qDiaSemana).where(qDiaSemana.nombre.eq(diaSemana));
-        DiaSemanaDTO diaSemanaDTO = query.list(qDiaSemana).get(0);
-        return diaSemanaDTO;
+        return query.list(qDiaSemana).get(0);
     }
 
     @Override

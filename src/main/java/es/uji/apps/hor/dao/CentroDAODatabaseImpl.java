@@ -47,8 +47,7 @@ public class CentroDAODatabaseImpl extends BaseDAODatabaseImpl implements Centro
 
     private Centro creaCentroDesdeCentroDTO(CentroDTO centroDTO)
     {
-        Centro centro = new Centro(centroDTO.getId(), centroDTO.getNombre());
-        return centro;
+        return new Centro(centroDTO.getId(), centroDTO.getNombre());
     }
 
     @Override
@@ -156,7 +155,9 @@ public class CentroDAODatabaseImpl extends BaseDAODatabaseImpl implements Centro
                 tipoAula.getAulas().add(aula);
                 aula.setTipo(tipoAula);
                 mapaTiposAulas.put(aulaDTO.getArea(), tipoAula);
-            } else {
+            }
+            else
+            {
                 TipoAula tipoAula = mapaTiposAulas.get(aulaDTO.getTipo());
                 tipoAula.getAulas().add(aula);
                 aula.setTipo(tipoAula);
@@ -185,7 +186,9 @@ public class CentroDAODatabaseImpl extends BaseDAODatabaseImpl implements Centro
                 areaEdificio.getAulas().add(aula);
                 aula.setArea(areaEdificio);
                 mapaAreaEdificios.put(aulaDTO.getArea(), areaEdificio);
-            } else {
+            }
+            else
+            {
                 AreaEdificio areaEdificio = mapaAreaEdificios.get(aulaDTO.getArea());
                 areaEdificio.getAulas().add(aula);
                 aula.setArea(areaEdificio);
@@ -211,7 +214,7 @@ public class CentroDAODatabaseImpl extends BaseDAODatabaseImpl implements Centro
             Map<Aula, AulaDTO> mapaAulasYAulasDTO)
     {
         Map<String, PlantaEdificio> mapaPlantaEdificios = new HashMap<String, PlantaEdificio>();
-        
+
         for (Entry<Aula, AulaDTO> aulaEntry : mapaAulasYAulasDTO.entrySet())
         {
             AulaDTO aulaDTO = aulaEntry.getValue();
