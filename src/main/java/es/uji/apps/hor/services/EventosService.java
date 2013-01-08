@@ -33,13 +33,6 @@ public class EventosService
         this.aulaDAO = aulaDAO;
     }
 
-    public List<Evento> eventosDeUnEstudio(Long estudioId, Long cursoId, Date rangoFechasInicio,
-            Date rangoFechasFin)
-    {
-        return eventosDAO.getEventosByEstudioAndCurso(estudioId, cursoId, rangoFechasInicio,
-                rangoFechasFin);
-    }
-
     public List<Evento> eventosSemanaGenericaDeUnEstudio(Long estudioId, Long cursoId,
             Long semestreId, String grupoId, List<Long> calendariosIds)
     {
@@ -108,11 +101,6 @@ public class EventosService
 
         return eventosDAO.modificaDetallesGrupoAsignatura(evento);
 
-    }
-
-    public List<Evento> getEventosDetalleByEventoId(Long eventoId)
-    {
-        return eventosDAO.getEventosDetalleByEventoId(eventoId);
     }
 
     public List<EventoDocencia> getDiasDocenciaDeUnEventoByEventoId(Long eventoId)

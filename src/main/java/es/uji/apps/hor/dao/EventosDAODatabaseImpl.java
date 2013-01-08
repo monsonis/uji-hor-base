@@ -45,31 +45,6 @@ import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 @Repository
 public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements EventosDAO
 {
-    @Override
-    public List<Evento> getEventosByEstudioAndCurso(Long estudioId, Long cursoId,
-            Date rangoFechasInicio, Date rangoFechasFin)
-    {
-        JPAQuery query = new JPAQuery(entityManager);
-
-        QItemDTO item = QItemDTO.itemDTO;
-        QItemDetalleDTO detalleItem = QItemDetalleDTO.itemDetalleDTO;
-
-        List<ItemDetalleDTO> listaItemsDTO = query
-                .from(detalleItem)
-                .join(detalleItem.item, item)
-                .where(item.estudio.id.eq(estudioId).and(item.cursoId.eq(cursoId))
-                        .and(detalleItem.inicio.goe(rangoFechasInicio))
-                        .and(detalleItem.fin.loe(rangoFechasFin))).list(detalleItem);
-
-        List<Evento> eventos = new ArrayList<Evento>();
-
-        for (ItemDetalleDTO itemDTO : listaItemsDTO)
-        {
-            eventos.add(creaEventoDesde(itemDTO));
-        }
-
-        return eventos;
-    }
 
     private Evento creaEventoDesde(ItemDetalleDTO detalleItemDTO)
     {
@@ -401,27 +376,6 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         query.from(qDiaSemana).where(qDiaSemana.nombre.eq(diaSemana));
         DiaSemanaDTO diaSemanaDTO = query.list(qDiaSemana).get(0);
         return diaSemanaDTO;
-    }
-
-    @Override
-    public List<Evento> getEventosDetalleByEventoId(Long eventoId)
-    {
-        JPAQuery query = new JPAQuery(entityManager);
-
-        QItemDTO item = QItemDTO.itemDTO;
-        QItemDetalleDTO detalleItem = QItemDetalleDTO.itemDetalleDTO;
-
-        List<ItemDetalleDTO> listaItemsDTO = query.from(detalleItem).join(detalleItem.item, item)
-                .where(item.id.eq(eventoId)).orderBy(detalleItem.inicio.asc()).list(detalleItem);
-
-        List<Evento> eventos = new ArrayList<Evento>();
-
-        for (ItemDetalleDTO itemDTO : listaItemsDTO)
-        {
-            eventos.add(creaEventoDesde(itemDTO));
-        }
-
-        return eventos;
     }
 
     @Override

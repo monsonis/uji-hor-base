@@ -12,17 +12,12 @@ import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
 public interface EventosDAO extends BaseDAO
 {
-    List<Evento> getEventosByEstudioAndCurso(Long estudioId, Long cursoId, Date rangoFechasInicio,
-            Date rangoFechasFin);
-
     List<Evento> getEventosSemanaGenerica(Long estudioId, Long cursoId, Long semestreId,
             String grupoId, List<Long> calendariosIds);
 
     List<Evento> getEventosDeUnCurso(Long estudioId, Long cursoId, Long semestreId, String grupoId);
 
     void deleteEventoSemanaGenerica(Long eventoId) throws RegistroNoEncontradoException;
-
-    List<Evento> getEventosDetalleByEventoId(Long eventoId);
 
     List<EventoDocencia> getDiasDocenciaDeUnEventoByEventoId(Long eventoId);
 

@@ -8,7 +8,6 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
@@ -75,9 +74,8 @@ public class CalendarResource
 
         ParamUtils.checkNotNull(estudioId, cursoId, semestreId, grupoId);
 
-        GrupoHorario grupoHorario = grupoHorarioService.getHorario(
-                ParamUtils.parseLong(estudioId), ParamUtils.parseLong(cursoId),
-                ParamUtils.parseLong(semestreId), grupoId);
+        GrupoHorario grupoHorario = grupoHorarioService.getHorario(ParamUtils.parseLong(estudioId),
+                ParamUtils.parseLong(cursoId), ParamUtils.parseLong(semestreId), grupoId);
 
         return grupoHorarioToUI(grupoHorario);
     }
@@ -110,27 +108,6 @@ public class CalendarResource
                 cursoId, semestreId, grupoId, inicio.getTime(), fin.getTime());
 
         return grupoHorarioToUI(grupoHorario);
-    }
-
-    @GET
-    @Path("eventos")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<UIEntity> getEventos(@QueryParam("estudioId") String estudioId,
-            @QueryParam("cursoId") String cursoId, @QueryParam("startDate") String fechaInicio,
-            @QueryParam("endDate") String fechaFin) throws ParseException
-    {
-        // ParamUtils.checkNotNull(estudioId, cursoId);
-
-        estudioId = "224";
-        cursoId = "1";
-
-        Date rangoFechasInicio = queryParamDateFormat.parse(fechaInicio);
-        Date rangoFechasFin = queryParamDateFormat.parse(fechaFin);
-
-        List<Evento> eventos = eventosService.eventosDeUnEstudio(ParamUtils.parseLong(estudioId),
-                ParamUtils.parseLong(cursoId), rangoFechasInicio, rangoFechasFin);
-
-        return toUI(eventos);
     }
 
     @GET
@@ -464,23 +441,6 @@ public class CalendarResource
         }
 
         return calendars;
-    }
-
-    @POST
-    @Path("eventos")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<UIEntity> addEvento(UIEntity evento)
-    {
-        evento.put("id", new Random().nextInt());
-        return Collections.singletonList(evento);
-    }
-
-    @PUT
-    @Path("eventos/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<UIEntity> updateEvento(UIEntity evento)
-    {
-        return Collections.singletonList(evento);
     }
 
     @GET
