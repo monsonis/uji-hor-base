@@ -38,18 +38,6 @@ public class GrupoHorarioDAODatabaseImpl extends BaseDAODatabaseImpl implements 
         }
         else
         {
-            /*
-             * GrupoHorario grupoHorario = new GrupoHorario(estudioId, cursoId, semestreId,
-             * grupoId); Calendar inicio = Calendar.getInstance(); Calendar fin =
-             * Calendar.getInstance();
-             * 
-             * inicio.set(Calendar.HOUR_OF_DAY, 8); inicio.set(Calendar.MINUTE, 0);
-             * inicio.set(Calendar.SECOND, 0);
-             * 
-             * fin.set(Calendar.HOUR_OF_DAY, 22); fin.set(Calendar.MINUTE, 0);
-             * fin.set(Calendar.SECOND, 0); grupoHorario.setHoraInicio(inicio.getTime());
-             * grupoHorario.setHoraFin(fin.getTime()); return grupoHorario;
-             */
             throw new RegistroNoEncontradoException();
         }
     }
