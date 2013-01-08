@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import es.uji.apps.hor.dao.CentroDAO;
 import es.uji.apps.hor.model.Centro;
+import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
 @Service
 public class CentroService
@@ -24,7 +25,7 @@ public class CentroService
         return centroDAO.getCentros();
     }
     
-    public Centro getCentroById(Long centroId)
+    public Centro getCentroById(Long centroId) throws RegistroNoEncontradoException
     {
         Centro centro = centroDAO.getCentroById(centroId);
         

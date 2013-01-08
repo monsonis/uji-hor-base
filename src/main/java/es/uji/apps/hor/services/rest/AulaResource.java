@@ -2,7 +2,6 @@ package es.uji.apps.hor.services.rest;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -18,12 +17,8 @@ import com.sun.jersey.api.core.InjectParam;
 import es.uji.apps.hor.AulaYaAsignadaAEstudioException;
 import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.AulaPlanificacion;
-import es.uji.apps.hor.model.Centro;
-import es.uji.apps.hor.model.Edificio;
 import es.uji.apps.hor.services.AulaService;
 import es.uji.apps.hor.services.CentroService;
-import es.uji.commons.model.tree.TreeRow;
-import es.uji.commons.model.tree.TreeRowset;
 import es.uji.commons.rest.ParamUtils;
 import es.uji.commons.rest.UIEntity;
 import es.uji.commons.rest.exceptions.RegistroConHijosException;

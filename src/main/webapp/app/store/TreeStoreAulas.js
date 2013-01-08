@@ -8,7 +8,7 @@ Ext.define('HOR.store.TreeStoreAulas',
     proxy :
     {
         type : 'ajax',
-        url : '/hor/rest/aula/tree',
+        url : '/hor/rest/centro/tree',
         noCache : false,
 
         reader :

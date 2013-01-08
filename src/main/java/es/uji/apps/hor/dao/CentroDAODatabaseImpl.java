@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,10 +23,19 @@ import es.uji.apps.hor.model.Edificio;
 import es.uji.apps.hor.model.PlantaEdificio;
 import es.uji.apps.hor.model.TipoAula;
 import es.uji.commons.db.BaseDAODatabaseImpl;
+import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
 @Repository
 public class CentroDAODatabaseImpl extends BaseDAODatabaseImpl implements CentroDAO
 {
+    private final AulaDAO aulaDAO;
+    
+    @Autowired
+    public CentroDAODatabaseImpl(AulaDAO aulaDAO)
+    {
+        this.aulaDAO = aulaDAO;
+    }
+    
     @Override
     public List<Centro> getCentros()
     {
@@ -51,33 +61,47 @@ public class CentroDAODatabaseImpl extends BaseDAODatabaseImpl implements Centro
     }
 
     @Override
-    public Centro getCentroById(Long centroId)
+    public Centro getCentroById(Long centroId) throws RegistroNoEncontradoException
     {
         JPAQuery query = new JPAQuery(entityManager);
 
         QAulaDTO qAula = QAulaDTO.aulaDTO;
 
-        query.from(qAula).where(qAula.centro.id.eq(centroId));
+        QCentroDTO qCentro = QCentroDTO.centroDTO;
 
-        Centro centro = creaCentroCompletoDesdeAulasDTO(query.list(qAula));
+        query.from(qCentro).where(qCentro.id.eq(centroId));
 
-        return centro;
+        List<CentroDTO> listaCentrosDTO = query.list(qCentro);
+        
+        if (listaCentrosDTO.size() == 1) {
+            Centro centro = new Centro();
+            centro.setId(centroId);
+            centro.setNombre(listaCentrosDTO.get(0).getNombre());
+            centro.setEdificios(creaEdificiosCompletosDesdeCentro(centro));
+            return centro;
+
+        } else {
+            throw new RegistroNoEncontradoException();
+        }
+        
     }
 
-    private Centro creaCentroCompletoDesdeAulasDTO(List<AulaDTO> listaAulasDTO)
+    private List<Edificio> creaEdificiosCompletosDesdeCentro(Centro centro)
     {
-        Centro centro = new Centro();
+        JPAQuery query = new JPAQuery(entityManager);
+        
+        QAulaDTO qAula = QAulaDTO.aulaDTO;
+        query.from(qAula).where(qAula.centro.id.eq(centro.getId()));
 
+        List<AulaDTO> listaAulasDTO = query.list(qAula);
         List<Edificio> listaEdificios = creaListaEdificiosDesdeListaAulasDTO(listaAulasDTO);
-
-        centro.setEdificios(listaEdificios);
 
         for (Edificio edificio : listaEdificios)
         {
             edificio.setCentro(centro);
         }
 
-        return centro;
+        return listaEdificios;
     }
 
     private List<Edificio> creaListaEdificiosDesdeListaAulasDTO(List<AulaDTO> listaAulasDTO)
@@ -150,11 +174,11 @@ public class CentroDAODatabaseImpl extends BaseDAODatabaseImpl implements Centro
             {
                 TipoAula tipoAula = new TipoAula();
                 List<Aula> listaAulas = new ArrayList<Aula>();
+                listaAulas.add(aula);
                 tipoAula.setAulas(listaAulas);
                 tipoAula.setNombre(aulaDTO.getTipo());
-                tipoAula.getAulas().add(aula);
                 aula.setTipo(tipoAula);
-                mapaTiposAulas.put(aulaDTO.getArea(), tipoAula);
+                mapaTiposAulas.put(aulaDTO.getTipo(), tipoAula);
             }
             else
             {
@@ -203,7 +227,7 @@ public class CentroDAODatabaseImpl extends BaseDAODatabaseImpl implements Centro
 
         for (AulaDTO aulaDTO : listaAulasDTO)
         {
-            Aula aula = creaAulaDesdeAulaDTO(aulaDTO);
+            Aula aula = aulaDAO.creaAulaDesdeAulaDTO(aulaDTO);
             mapaAulasYAulasDTO.put(aula, aulaDTO);
         }
 
@@ -224,10 +248,11 @@ public class CentroDAODatabaseImpl extends BaseDAODatabaseImpl implements Centro
             {
                 PlantaEdificio plantaEdificio = new PlantaEdificio();
                 List<Aula> listaAulas = new ArrayList<Aula>();
+                listaAulas.add(aula);
                 plantaEdificio.setAulas(listaAulas);
                 plantaEdificio.setNombre(aulaDTO.getPlanta());
-                plantaEdificio.getAulas().add(aula);
                 mapaPlantaEdificios.put(plantaEdificio.getNombre(), plantaEdificio);
+                aula.setPlanta(plantaEdificio);
             }
             else
             {
@@ -237,13 +262,6 @@ public class CentroDAODatabaseImpl extends BaseDAODatabaseImpl implements Centro
             }
         }
         return new ArrayList<PlantaEdificio>(mapaPlantaEdificios.values());
-    }
-
-    private Aula creaAulaDesdeAulaDTO(AulaDTO aulaDTO)
-    {
-        Aula aula = new Aula();
-
-        return aula;
     }
 
     @Override

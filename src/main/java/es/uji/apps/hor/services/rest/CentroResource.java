@@ -19,6 +19,7 @@ import es.uji.apps.hor.model.PlantaEdificio;
 import es.uji.apps.hor.model.TipoAula;
 import es.uji.apps.hor.services.CentroService;
 import es.uji.commons.rest.UIEntity;
+import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 import es.uji.commons.rest.model.tree.TreeRow;
 import es.uji.commons.rest.model.tree.TreeRowset;
 
@@ -41,6 +42,7 @@ public class CentroResource
     @Path("{id}/tree")
     @Produces(MediaType.APPLICATION_JSON)
     public TreeRowset getAulasCentroRowSet(@PathParam("id") String centroId)
+            throws RegistroNoEncontradoException, NumberFormatException
     {
         TreeRowset treeRowSetCentro = new TreeRowset();
         Centro centro = consultaCentros.getCentroById(Long.parseLong(centroId));
@@ -86,10 +88,10 @@ public class CentroResource
         List<Aula> listaAulas = tipoAula.getAulas();
         List<PlantaEdificio> listaPlantasEdificio = getPlantasEdificioDeListaAulas(listaAulas);
 
-//        for (PlantaEdificio planta : listaPlantasEdificio)
-//        {
-//            listaTreeRowPlantas.add(plantaToTreeRow(planta));
-//        }
+        for (PlantaEdificio planta : listaPlantasEdificio)
+        {
+            listaTreeRowPlantas.add(plantaPorTipoToTreeRow(planta, tipoAula));
+        }
         treeRowTipoAula.setHijos(listaTreeRowPlantas);
 
         return treeRowTipoAula;
@@ -99,31 +101,36 @@ public class CentroResource
     private List<PlantaEdificio> getPlantasEdificioDeListaAulas(List<Aula> listaAulas)
     {
         List<PlantaEdificio> listaPlantasEdificio = new ArrayList<PlantaEdificio>();
-        
-        for (Aula aula: listaAulas) {
-            if (!listaPlantasEdificio.contains(aula.getPlanta())) {
+
+        for (Aula aula : listaAulas)
+        {
+            if (!listaPlantasEdificio.contains(aula.getPlanta()))
+            {
                 listaPlantasEdificio.add(aula.getPlanta());
             }
         }
-        
+
         return listaPlantasEdificio;
-                
+
     }
 
-    private TreeRow plantaToTreeRow(PlantaEdificio planta)
+    private TreeRow plantaPorTipoToTreeRow(PlantaEdificio planta, TipoAula tipoAula)
     {
         TreeRow treeRowPlanta = new TreeRow();
 
         treeRowPlanta.setId(UUID.randomUUID().toString());
-        treeRowPlanta.setTitle("Tipus " + planta.getNombre());
-        treeRowPlanta.setText("Tipus " + planta.getNombre());
+        treeRowPlanta.setTitle("Planta " + planta.getNombre());
+        treeRowPlanta.setText("Planta " + planta.getNombre());
         treeRowPlanta.setLeaf("false");
 
         List<TreeRow> listaTreeRowAulas = new ArrayList<TreeRow>();
 
         for (Aula aula : planta.getAulas())
         {
-            listaTreeRowAulas.add(aulaToTreeRow(aula));
+            if (aula.getTipo().equals(tipoAula))
+            {
+                listaTreeRowAulas.add(aulaToTreeRow(aula));
+            }
         }
         treeRowPlanta.setHijos(listaTreeRowAulas);
 

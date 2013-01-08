@@ -124,7 +124,7 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
 
         tree.getStore().load(
         {
-            url : '/hor/rest/aula/centro/' + centroId + '/tree'
+            url : '/hor/rest/centro/' + centroId + '/tree'
         });
 
     },

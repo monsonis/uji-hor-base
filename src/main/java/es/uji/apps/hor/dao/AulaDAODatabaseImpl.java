@@ -49,7 +49,7 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         return listaAulas;
     }
 
-    private Aula creaAulaDesdeAulaDTO(AulaDTO aulaDTO)
+    public Aula creaAulaDesdeAulaDTO(AulaDTO aulaDTO)
     {
         Aula aula = new Aula(aulaDTO.getId());
         
