@@ -73,20 +73,20 @@ public class Evento
     @Override
     public String toString()
     {
-        String titulo = MessageFormat.format("{0} {1}{2}", getAsignatura().getId(), getCalendario()
+        String texto = MessageFormat.format("{0} {1}{2}", getAsignatura().getId(), getCalendario()
                 .getLetraId(), subgrupoId);
 
         if (tieneComunes())
         {
-            titulo = MessageFormat.format("{0} - C", titulo);
+            texto = MessageFormat.format("{0} - C", texto);
         }
 
         if (getAulaPlanificacion() != null)
         {
-            titulo = MessageFormat.format("{0} {1}", titulo, getAulaPlanificacion().getNombre());
+            texto = MessageFormat.format("{0} {1}", texto, getAulaPlanificacion().getNombre());
         }
 
-        return titulo;
+        return texto;
     }
 
     private boolean tieneComunes()
