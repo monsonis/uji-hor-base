@@ -8,6 +8,7 @@ public class EdificioBuilder
 
     public EdificioBuilder()
     {
+        edificio = new Edificio();
     }
 
     public EdificioBuilder withNombre(String nombre)

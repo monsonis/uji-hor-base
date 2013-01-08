@@ -8,6 +8,7 @@ public class AreaEdificioBuilder
 
     public AreaEdificioBuilder()
     {
+        areaEdificio = new AreaEdificio();
     }
 
     public AreaEdificioBuilder withNombre(String nombre)

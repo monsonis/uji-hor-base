@@ -8,6 +8,7 @@ public class TipoAulaBuilder
 
     public TipoAulaBuilder()
     {
+        tipoAula = new TipoAula();
     }
 
     public TipoAulaBuilder withNombre(String nombre)
