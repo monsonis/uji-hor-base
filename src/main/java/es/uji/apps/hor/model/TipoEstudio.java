@@ -9,8 +9,8 @@ public class TipoEstudio
     public TipoEstudio(String id, String nombre)
     {
         super();
-        this.setId(id);
-        this.setNombre(nombre);
+        this.id = id;
+        this.nombre = nombre;
     }
 
     public String getId()

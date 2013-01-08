@@ -14,12 +14,13 @@ public class Asignatura
     private String tipoAsignaturaId;
     private String tipoAsignatura;
 
-    public Asignatura() {
+    public Asignatura()
+    {
     }
-    
+
     public Asignatura(String id)
     {
-        this.setId(id);
+        this.id = id;
     }
 
     public String getNombre()

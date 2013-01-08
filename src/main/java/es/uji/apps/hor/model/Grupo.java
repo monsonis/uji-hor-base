@@ -6,7 +6,7 @@ public class Grupo
 
     public Grupo(String grupo)
     {
-        this.setGrupo(grupo);
+        this.grupo = grupo;
     }
 
     public String getGrupo()

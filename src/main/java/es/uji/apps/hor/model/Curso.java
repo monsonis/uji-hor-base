@@ -6,7 +6,7 @@ public class Curso
 
     public Curso(Long curso)
     {
-        this.setCurso(curso);
+        this.curso = curso;
     }
 
     public Long getCurso()
