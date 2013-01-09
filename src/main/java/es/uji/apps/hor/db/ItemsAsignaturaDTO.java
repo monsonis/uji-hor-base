@@ -27,9 +27,8 @@ public class ItemsAsignaturaDTO implements Serializable
     @Column(name = "ASIGNATURA")
     private String nombreAsignatura;
 
-    @ManyToOne
-    @JoinColumn(name = "ASIGNATURA_ID")
-    private ItemsAsignaturaDTO asignatura;
+    @Column(name = "ASIGNATURA_ID")
+    private Long asignaturaId;
 
     private String estudio;
 
@@ -64,16 +63,6 @@ public class ItemsAsignaturaDTO implements Serializable
         this.nombreAsignatura = asignatura;
     }
 
-    public ItemsAsignaturaDTO getAsignatura()
-    {
-        return this.asignatura;
-    }
-
-    public void setAsignatura(ItemsAsignaturaDTO asignaturaId)
-    {
-        this.asignatura = asignaturaId;
-    }
-
     public String getEstudio()
     {
         return this.estudio;
@@ -102,6 +91,16 @@ public class ItemsAsignaturaDTO implements Serializable
     public void setItem(ItemDTO item)
     {
         this.item = item;
+    }
+
+    public Long getAsignaturaId()
+    {
+        return asignaturaId;
+    }
+
+    public void setAsignaturaId(Long asignaturaId)
+    {
+        this.asignaturaId = asignaturaId;
     }
 
 }

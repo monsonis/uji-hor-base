@@ -141,7 +141,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
                 }
 
                 asignatura.setNombre(asig.getNombreAsignatura());
-                asignatura.setId(asig.getAsignatura().getId());
+                asignatura.setId(asig.getId());
                 asignatura.setCursoId(itemDTO.getCursoId());
                 asignatura.setCaracter(itemDTO.getCaracter());
                 asignatura.setCaracterId(itemDTO.getCaracterId());
@@ -496,6 +496,8 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         ItemDTO itemDTO = creaItemDTODesde(evento);
         itemDTO = insert(itemDTO);
 
+        asignaLaAsignaturaSiEsNecesario(itemDTO, evento.getAsignatura());
+
         if (evento.hasDetalleManual())
         {
             for (EventoDetalle eventoDetalle : evento.getEventosDetalle())
@@ -512,6 +514,40 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         return creaEventoConAsignaturaDesdeItemDTO(itemDTO, evento.getAsignatura().getEstudio()
                 .getId());
 
+    }
+
+    private void asignaLaAsignaturaSiEsNecesario(ItemDTO itemDTO, Asignatura asignatura)
+    {
+        if (!tieneAsignadaLaAsignatura(itemDTO, asignatura))
+        {
+            ItemsAsignaturaDTO asignaturaDTO = creaItemAsignaturaDeAsignatura(itemDTO, asignatura);
+            insert(asignaturaDTO);
+        }
+
+    }
+
+    private ItemsAsignaturaDTO creaItemAsignaturaDeAsignatura(ItemDTO itemDTO, Asignatura asignatura)
+    {
+        ItemsAsignaturaDTO asignaturaDTO = new ItemsAsignaturaDTO();
+        asignaturaDTO.setNombreAsignatura(asignatura.getNombre());
+        asignaturaDTO.setItem(itemDTO);
+        asignaturaDTO.setEstudioId(asignatura.getEstudio().getId());
+        asignaturaDTO.setEstudio(asignatura.getEstudio().getNombre());
+
+        return asignaturaDTO;
+    }
+
+    private boolean tieneAsignadaLaAsignatura(ItemDTO itemDTO, Asignatura asignatura)
+    {
+        String asignaturaId = asignatura.getId();
+        for (ItemsAsignaturaDTO asig : itemDTO.getAsignaturas())
+        {
+            if (asig.getId().equals(asignaturaId))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private ItemDTO creaItemDTODesde(Evento evento)

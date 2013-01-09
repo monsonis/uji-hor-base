@@ -10,6 +10,7 @@ import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.types.QTuple;
 
 import es.uji.apps.hor.db.QItemDTO;
+import es.uji.apps.hor.db.QItemsAsignaturaDTO;
 import es.uji.apps.hor.model.Grupo;
 import es.uji.commons.db.BaseDAODatabaseImpl;
 
@@ -22,13 +23,14 @@ public class GruposDAODatabaseImpl extends BaseDAODatabaseImpl implements Grupos
         JPAQuery query = new JPAQuery(entityManager);
 
         QItemDTO item = QItemDTO.itemDTO;
+        QItemsAsignaturaDTO asignatura = QItemsAsignaturaDTO.itemsAsignaturaDTO;
 
         List<Tuple> listaGruposTuples = query
-                .from(item)
-                .where(item.estudio.id.eq(estudioId).and(
-                        item.cursoId.eq(cursoId).and(
-                                item.semestre.id.eq(semestreId)))).orderBy(item.grupoId.asc())
-                .listDistinct(new QTuple(item.grupoId));
+                .from(asignatura)
+                .join(asignatura.item, item)
+                .where(asignatura.estudioId.eq(estudioId).and(
+                        item.cursoId.eq(cursoId).and(item.semestre.id.eq(semestreId))))
+                .orderBy(item.grupoId.asc()).listDistinct(new QTuple(item.grupoId));
 
         List<Grupo> grupos = new ArrayList<Grupo>();
 

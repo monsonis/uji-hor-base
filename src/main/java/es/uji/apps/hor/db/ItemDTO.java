@@ -2,6 +2,7 @@ package es.uji.apps.hor.db;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -113,7 +114,7 @@ public class ItemDTO implements Serializable
 
     // bi-directional many-to-one association to ItemCircuitoDTO
     @OneToMany(mappedBy = "item")
-    private Set<ItemsAsignaturaDTO> itemsAsignaturas;
+    private Set<ItemsAsignaturaDTO> itemsAsignaturas = new HashSet<ItemsAsignaturaDTO>();
 
     // bi-directional many-to-one association to ItemDetalleDTO
     @OneToMany(mappedBy = "item")
