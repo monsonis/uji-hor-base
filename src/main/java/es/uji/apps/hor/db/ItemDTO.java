@@ -385,12 +385,12 @@ public class ItemDTO implements Serializable
         this.itemsCircuitos = itemsCircuitos;
     }
 
-    public Set<ItemsAsignaturaDTO> getItemsAsignaturas()
+    public Set<ItemsAsignaturaDTO> getAsignaturas()
     {
         return this.itemsAsignaturas;
     }
 
-    public void setItemsAsignaturas(Set<ItemsAsignaturaDTO> itemsAsignaturas)
+    public void setAsignaturas(Set<ItemsAsignaturaDTO> itemsAsignaturas)
     {
         this.itemsAsignaturas = itemsAsignaturas;
     }

@@ -22,13 +22,14 @@ public class ItemsAsignaturaDTO implements Serializable
 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private String id;
 
-    private String asignatura;
+    @Column(name = "ASIGNATURA")
+    private String nombreAsignatura;
 
     @ManyToOne
     @JoinColumn(name = "ASIGNATURA_ID")
-    private ItemsAsignaturaDTO asignaturaDTO;
+    private ItemsAsignaturaDTO asignatura;
 
     private String estudio;
 
@@ -43,34 +44,34 @@ public class ItemsAsignaturaDTO implements Serializable
     {
     }
 
-    public Long getId()
+    public String getId()
     {
         return this.id;
     }
 
-    public void setId(Long id)
+    public void setId(String id)
     {
         this.id = id;
     }
 
     public String getNombreAsignatura()
     {
-        return this.asignatura;
+        return this.nombreAsignatura;
     }
 
     public void setNombreAsignatura(String asignatura)
     {
-        this.asignatura = asignatura;
+        this.nombreAsignatura = asignatura;
     }
 
     public ItemsAsignaturaDTO getAsignatura()
     {
-        return this.asignaturaDTO;
+        return this.asignatura;
     }
 
     public void setAsignatura(ItemsAsignaturaDTO asignaturaId)
     {
-        this.asignaturaDTO = asignaturaId;
+        this.asignatura = asignaturaId;
     }
 
     public String getEstudio()

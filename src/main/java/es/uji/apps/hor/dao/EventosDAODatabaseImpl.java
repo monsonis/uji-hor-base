@@ -21,6 +21,7 @@ import es.uji.apps.hor.db.ItemCircuitoDTO;
 import es.uji.apps.hor.db.ItemDTO;
 import es.uji.apps.hor.db.ItemDetalleCompletoDTO;
 import es.uji.apps.hor.db.ItemDetalleDTO;
+import es.uji.apps.hor.db.ItemsAsignaturaDTO;
 import es.uji.apps.hor.db.QDiaSemanaDTO;
 import es.uji.apps.hor.db.QItemCircuitoDTO;
 import es.uji.apps.hor.db.QItemDTO;
@@ -72,7 +73,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
 
         for (ItemDTO itemDTO : listaItemsDTO)
         {
-            eventos.add(creaEventoDesde(itemDTO));
+            eventos.add(creaEventoConAsignaturaDesdeItemDTO(itemDTO, estudioId));
         }
 
         return eventos;
@@ -109,13 +110,54 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
 
     private Evento creaEventoConDetallesDesde(ItemDTO itemDTO)
     {
-        Evento evento = creaEventoDesde(itemDTO);
+        Evento evento = creaEventoDesdeItemDTO(itemDTO);
         evento.setEventosDetalle(getEventosDetalle(evento));
 
         return evento;
     }
 
-    private Evento creaEventoDesde(ItemDTO itemDTO)
+    private Evento creaEventoConAsignaturaDesdeItemDTO(ItemDTO itemDTO, Long estudioId)
+    {
+        Evento evento = creaEventoDesdeItemDTO(itemDTO);
+
+        for (ItemsAsignaturaDTO asig : itemDTO.getAsignaturas())
+        {
+            if (asig.getEstudioId() == estudioId)
+            {
+                Estudio estudio = new Estudio();
+                estudio.setId(estudioId);
+                estudio.setNombre(asig.getEstudio());
+                // Revisar esto de sacar el tipo de estudio del item en lugar de a través de la
+                // asignatura
+                estudio.setTipoEstudio(itemDTO.getTipoEstudio());
+                estudio.setTipoEstudioId(itemDTO.getTipoEstudioId());
+
+                Asignatura asignatura = new Asignatura();
+
+                asignatura.setComun(itemDTO.getComun() == 1);
+                if (itemDTO.getComun() > 0)
+                {
+                    asignatura.setComunes(itemDTO.getComunes());
+                }
+
+                asignatura.setNombre(asig.getNombreAsignatura());
+                asignatura.setId(asig.getAsignatura().getId());
+                asignatura.setCursoId(itemDTO.getCursoId());
+                asignatura.setCaracter(itemDTO.getCaracter());
+                asignatura.setCaracterId(itemDTO.getCaracterId());
+                asignatura.setEstudio(estudio);
+                asignatura.setPorcentajeComun(itemDTO.getPorcentajeComun());
+                asignatura.setTipoAsignatura(itemDTO.getTipoAsignatura());
+                asignatura.setTipoAsignaturaId(itemDTO.getTipoAsignaturaId());
+                evento.setAsignatura(asignatura);
+
+            }
+        }
+
+        return evento;
+    }
+
+    private Evento creaEventoDesdeItemDTO(ItemDTO itemDTO)
     {
         Calendario calendario = obtenerCalendarioAsociadoPorTipoSubgrupo(itemDTO);
 
@@ -151,31 +193,6 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         evento.setSubgrupoId(itemDTO.getSubgrupoId());
         evento.setPlazas(itemDTO.getPlazas());
         evento.setId(itemDTO.getId());
-
-        Estudio estudio = new Estudio();
-        estudio.setId(itemDTO.getEstudio().getId());
-        estudio.setNombre(itemDTO.getEstudioDesc());
-        estudio.setTipoEstudio(itemDTO.getTipoEstudio());
-        estudio.setTipoEstudioId(itemDTO.getTipoEstudioId());
-
-        Asignatura asignatura = new Asignatura();
-
-        asignatura.setComun(itemDTO.getComun() == 1);
-        if (itemDTO.getComun() > 0)
-        {
-            asignatura.setComunes(itemDTO.getComunes());
-        }
-
-        asignatura.setNombre(itemDTO.getNombreAsignatura());
-        asignatura.setId(itemDTO.getAsignatura());
-        asignatura.setCursoId(itemDTO.getCursoId());
-        asignatura.setCaracter(itemDTO.getCaracter());
-        asignatura.setCaracterId(itemDTO.getCaracterId());
-        asignatura.setEstudio(estudio);
-        asignatura.setPorcentajeComun(itemDTO.getPorcentajeComun());
-        asignatura.setTipoAsignatura(itemDTO.getTipoAsignatura());
-        asignatura.setTipoAsignaturaId(itemDTO.getTipoAsignaturaId());
-        evento.setAsignatura(asignatura);
 
         Semestre semestre = new Semestre();
         semestre.setSemestre(itemDTO.getSemestre().getId());
@@ -243,7 +260,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
 
         for (ItemDTO itemDTO : listaItemsDTO)
         {
-            eventos.add(creaEventoDesde(itemDTO));
+            eventos.add(creaEventoConAsignaturaDesdeItemDTO(itemDTO, estudioId));
         }
 
         return eventos;
@@ -337,7 +354,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         item.setDetalleManual(evento.hasDetalleManual());
         update(item);
 
-        return creaEventoDesde(item);
+        return creaEventoDesdeItemDTO(item);
     }
 
     DiaSemanaDTO getDiaSemanaDTOParaFecha(Date fecha)
@@ -417,7 +434,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         {
 
             EventoDetalle eventoDetalle = creaEventoDetalleDesdeItemDetalleDTO(itemDetalleDTO);
-            eventoDetalle.setEvento(creaEventoDesde(itemDetalleDTO.getItem()));
+            eventoDetalle.setEvento(creaEventoDesdeItemDTO(itemDetalleDTO.getItem()));
             listaEventosDetalle.add(eventoDetalle);
         }
         return listaEventosDetalle;
@@ -470,7 +487,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         ItemDTO itemDTO = creaItemDTODesde(evento);
         itemDTO = update(itemDTO);
 
-        return creaEventoDesde(itemDTO);
+        return creaEventoDesdeItemDTO(itemDTO);
     }
 
     @Override
@@ -492,7 +509,8 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             }
         }
 
-        return this.creaEventoDesde(itemDTO);
+        return creaEventoConAsignaturaDesdeItemDTO(itemDTO, evento.getAsignatura().getEstudio()
+                .getId());
 
     }
 
@@ -509,16 +527,15 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         semestreDTO.setId(evento.getSemestre().getSemestre());
         semestreDTO.setNombre(evento.getSemestre().getNombre());
 
-        itemDTO.setNombreAsignatura(evento.getAsignatura().getNombre());
-        itemDTO.setAsignatura(evento.getAsignatura().getId());
+        // itemDTO.setNombreAsignatura(evento.getAsignatura().getNombre());
+        // itemDTO.setAsignatura(evento.getAsignatura().getId());
         itemDTO.setPlazas(evento.getPlazas());
         itemDTO.setComun(evento.getAsignatura().getComun() ? new Long(1) : new Long(0));
         itemDTO.setComunes(evento.getAsignatura().getComunes());
         itemDTO.setPorcentajeComun(evento.getAsignatura().getPorcentajeComun());
         itemDTO.setTipoAsignaturaId(evento.getAsignatura().getTipoAsignaturaId());
         itemDTO.setTipoAsignatura(evento.getAsignatura().getTipoAsignatura());
-        itemDTO.setEstudio(estudioDTO);
-        itemDTO.setEstudioDesc(evento.getAsignatura().getEstudio().getNombre());
+
         itemDTO.setTipoEstudioId(evento.getAsignatura().getEstudio().getTipoEstudioId());
         itemDTO.setTipoEstudio(evento.getAsignatura().getEstudio().getTipoEstudio());
         itemDTO.setCursoId(evento.getAsignatura().getCursoId());
@@ -637,19 +654,20 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         QItemDTO qItem = QItemDTO.itemDTO;
         List<ItemDTO> items = query
                 .from(qItem)
-                .where(qItem.asignaturaId.eq(item.getAsignatura())
-                        .and(qItem.estudio.id.eq(item.getEstudio().getId()))
+                .where(qItem.id
+                        .ne(item.getId())
+                        // .and(qItem.asignaturaId.eq(item.getAsignatura()))
+                        // .and(qItem.estudio.id.eq(item.getEstudio().getId()))
                         .and(qItem.cursoId.eq(item.getCursoId()))
                         .and(qItem.semestre.id.eq(item.getSemestre().getId()))
                         .and(qItem.grupoId.eq(item.getGrupoId()))
                         .and(qItem.tipoSubgrupoId.eq(item.getTipoSubgrupoId()))
-                        .and(qItem.subgrupoId.eq(item.getSubgrupoId()))
-                        .and(qItem.id.ne(item.getId()))).list(qItem);
+                        .and(qItem.subgrupoId.eq(item.getSubgrupoId()))).list(qItem);
 
         List<Evento> eventos = new ArrayList<Evento>();
         for (ItemDTO itemDTO : items)
         {
-            eventos.add(creaEventoDesde(itemDTO));
+            eventos.add(creaEventoDesdeItemDTO(itemDTO));
         }
 
         return eventos;
