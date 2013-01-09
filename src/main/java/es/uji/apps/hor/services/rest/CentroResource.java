@@ -42,7 +42,7 @@ public class CentroResource
     @Path("{id}/tree")
     @Produces(MediaType.APPLICATION_JSON)
     public TreeRowset getAulasCentroRowSet(@PathParam("id") String centroId)
-            throws RegistroNoEncontradoException, NumberFormatException
+            throws RegistroNoEncontradoException
     {
         TreeRowset treeRowSetCentro = new TreeRowset();
         Centro centro = consultaCentros.getCentroById(Long.parseLong(centroId));
