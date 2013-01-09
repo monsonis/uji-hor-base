@@ -5,13 +5,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.mysema.query.Tuple;
 import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.types.QTuple;
 
 import es.uji.apps.hor.db.EstudioDTO;
 import es.uji.apps.hor.db.QEstudioDTO;
-import es.uji.apps.hor.db.QItemDTO;
 import es.uji.apps.hor.db.TipoEstudioDTO;
 import es.uji.apps.hor.model.Estudio;
 import es.uji.commons.db.BaseDAODatabaseImpl;
@@ -22,28 +19,16 @@ public class EstudiosDAODatabaseImpl extends BaseDAODatabaseImpl implements Estu
     @Override
     public List<Estudio> getEstudios()
     {
-        JPAQuery query = new JPAQuery(entityManager);
-
-        QItemDTO item = QItemDTO.itemDTO;
-
-        List<Tuple> listaEstudiosTuples = query.from(item).orderBy(item.estudioDesc.asc())
-                .listDistinct(new QTuple(item.estudioDesc, item.estudio.id));
+        List<EstudioDTO> listaEstudios = get(EstudioDTO.class);
 
         List<Estudio> estudios = new ArrayList<Estudio>();
 
-        for (Tuple tuple : listaEstudiosTuples)
+        for (EstudioDTO estudioDTO : listaEstudios)
         {
-            estudios.add(creaEstudioDesde(tuple, item));
+            estudios.add(creaEstudioDesdeEstudioDTO(estudioDTO));
         }
 
         return estudios;
-    }
-
-    private Estudio creaEstudioDesde(Tuple tuple, QItemDTO item)
-    {
-        Estudio estudio = new Estudio(tuple.get(item.estudio.id), tuple.get(item.estudioDesc));
-
-        return estudio;
     }
 
     @Override
