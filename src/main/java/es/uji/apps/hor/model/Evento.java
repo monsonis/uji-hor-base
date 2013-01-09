@@ -16,7 +16,16 @@ import es.uji.apps.hor.EventoNoDivisibleException;
 @Component
 public class Evento
 {
+    private final static int LUNES = 1;
+    private final static int MARTES = 2;
+    private final static int MIERCOLES = 3;
+    private final static int JUEVES = 4;
+    private final static int VIERNES = 5;
+    private final static int SABADO = 6;
+    private final static int DOMINGO = 7;
+
     private static final Long UNA_HORA_EN_MILISEGUNDOS = (long) 3600000;
+
     private Long id;
     private Calendario calendario;
     private String titulo;
@@ -379,19 +388,19 @@ public class Evento
         switch (diaCalendario)
         {
         case Calendar.MONDAY:
-            return 1;
+            return LUNES;
         case Calendar.TUESDAY:
-            return 2;
+            return MARTES;
         case Calendar.WEDNESDAY:
-            return 3;
+            return MIERCOLES;
         case Calendar.THURSDAY:
-            return 4;
+            return JUEVES;
         case Calendar.FRIDAY:
-            return 5;
+            return VIERNES;
         case Calendar.SATURDAY:
-            return 6;
+            return SABADO;
         case Calendar.SUNDAY:
-            return 7;
+            return DOMINGO;
         }
 
         return 0;
