@@ -55,7 +55,11 @@ public class CalendarResource
     private static final String ESTUDIO_ID_QUERY_PARAM = "estudioId";
     private static final String TIPO_ACCION_FORM_PARAM = "tipoAccion";
     private static final String AULA_ID_FORM_PARAM = "aulaId";
-    private static final String ID_PATH_PARAM = "id";
+    private static final String ID_PATH_PARAM = "id";    
+    private static final int ULTIMA_HORA_DIA = 23;
+    private static final int ULTIMO_MINUTO_HORA = 59;
+    private static final int ULTIMO_SEGUNDO_MINUTO = 59;
+    private static final int COLOR_BASE = 20;
 
     @InjectParam
     private EventosService eventosService;
@@ -176,9 +180,9 @@ public class CalendarResource
         // Todos los eventos hasta el final del día
         Calendar c = Calendar.getInstance();
         c.setTime(rangoFechaFin);
-        c.set(Calendar.HOUR_OF_DAY, 23);
-        c.set(Calendar.MINUTE, 59);
-        c.set(Calendar.SECOND, 59);
+        c.set(Calendar.HOUR_OF_DAY, ULTIMA_HORA_DIA);
+        c.set(Calendar.MINUTE, ULTIMO_MINUTO_HORA);
+        c.set(Calendar.SECOND, ULTIMO_SEGUNDO_MINUTO);
         rangoFechaFin = c.getTime();
 
         String[] calendarios = calendariosIds.split(";");
@@ -448,7 +452,7 @@ public class CalendarResource
             UIEntity calendar = new UIEntity();
             calendar.put("id", calendario.getId());
             calendar.put("title", calendario.getNombre());
-            calendar.put("color", 20 + i);
+            calendar.put("color", COLOR_BASE + i);
 
             calendars.add(calendar);
             i++;
