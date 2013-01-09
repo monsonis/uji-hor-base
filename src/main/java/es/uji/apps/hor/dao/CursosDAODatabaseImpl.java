@@ -5,11 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.mysema.query.Tuple;
-import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.types.QTuple;
-
-import es.uji.apps.hor.db.QItemDTO;
+import es.uji.apps.hor.db.EstudioDTO;
 import es.uji.apps.hor.model.Curso;
 import es.uji.commons.db.BaseDAODatabaseImpl;
 
@@ -19,20 +15,12 @@ public class CursosDAODatabaseImpl extends BaseDAODatabaseImpl implements Cursos
     @Override
     public List<Curso> getCursos(Long estudioId)
     {
-        JPAQuery query = new JPAQuery(entityManager);
-
-        QItemDTO item = QItemDTO.itemDTO;
-
-        List<Tuple> listaCursosTuples = query.from(item).where(item.estudio.id.eq(estudioId))
-                .orderBy(item.cursoId.asc()).listDistinct(new QTuple(item.cursoId));
+        EstudioDTO estudio = get(EstudioDTO.class, estudioId).get(0);
 
         List<Curso> cursos = new ArrayList<Curso>();
-
-        for (Tuple tuple : listaCursosTuples)
+        for (long i = 1; i <= estudio.getNumeroCursos(); i++)
         {
-            Long idCurso = tuple.get(item.cursoId);
-
-            cursos.add(new Curso(idCurso.longValue()));
+            cursos.add(new Curso(i));
         }
 
         return cursos;
