@@ -57,5 +57,6 @@
     <class>es.uji.apps.hor.db.ItemDetalleCompletoDTO</class>
     <class>es.uji.apps.hor.db.AsignaturaComunDTO</class>
     <class>es.uji.apps.hor.db.ItemComunDTO</class>
+    <class>es.uji.apps.hor.db.ItemsAsignaturaDTO</class>
   </persistence-unit>
 </persistence>

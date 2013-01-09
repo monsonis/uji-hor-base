@@ -88,8 +88,8 @@ public class EventosDAOTest
         Date horaFin = sdf.parse(horaFinStr);
 
         item = new ItemDTO();
-        item.setAsignaturaId("PR1001");
-        item.setAsignatura("Prueba");
+        item.setAsignatura("PR1001");
+        item.setNombreAsignatura("Prueba");
         item.setCaracter("Troncal");
         item.setCaracterId("TR");
         item.setComun(new Long(0));
@@ -110,15 +110,15 @@ public class EventosDAOTest
     {
         itemComun1 = new ItemComunDTO();
         itemComun1.setItem(item1);
-        itemComun1.setAsignaturaId(item1.getAsignaturaId());
+        itemComun1.setAsignatura(item1.getAsignatura());
         itemComun1.setItemComun(item2);
-        itemComun1.setAsignaturaComunId(item2.getAsignaturaId());
+        itemComun1.setAsignaturaComunId(item2.getAsignatura());
 
         itemComun2 = new ItemComunDTO();
         itemComun2.setItem(item2);
-        itemComun2.setAsignaturaId(item2.getAsignaturaId());
+        itemComun2.setAsignatura(item2.getAsignatura());
         itemComun2.setItemComun(item1);
-        itemComun2.setAsignaturaComunId(item1.getAsignaturaId());
+        itemComun2.setAsignaturaComunId(item1.getAsignatura());
     }
 
     @Test
@@ -165,7 +165,7 @@ public class EventosDAOTest
     public void rellenaDatosItemComun()
     {
         asignaturaComun1 = new AsignaturaComunDTO();
-        asignaturaComun1.setAsignaturaId(item.getAsignaturaId());
+        asignaturaComun1.setAsignatura(item.getAsignatura());
         asignaturaComun1.setGrupoComunId(new Long(1));
         asignaturaComun1.setNombre("PR1001 i Comun");
         eventosDAO.insert(asignaturaComun1);
@@ -177,8 +177,8 @@ public class EventosDAOTest
         eventosDAO.insert(asignaturaComun2);
 
         comun = new ItemDTO();
-        comun.setAsignaturaId(asignaturaComun2.getAsignaturaId());
         comun.setAsignatura(asignaturaComun2.getAsignaturaId());
+        comun.setNombreAsignatura(asignaturaComun2.getAsignaturaId());
         comun.setCaracter(item.getCaracter());
         comun.setCaracterId(item.getCaracterId());
         comun.setComun(new Long(1));
@@ -252,8 +252,8 @@ public class EventosDAOTest
         rellenaDatosTestsConAulas();
 
         ItemDTO grupoComun = new ItemDTO();
-        grupoComun.setAsignaturaId(item.getAsignaturaId());
         grupoComun.setAsignatura(item.getAsignatura());
+        grupoComun.setNombreAsignatura(item.getNombreAsignatura());
         grupoComun.setCaracter(item.getCaracter());
         grupoComun.setCaracterId(item.getCaracterId());
         grupoComun.setComun(new Long(0));

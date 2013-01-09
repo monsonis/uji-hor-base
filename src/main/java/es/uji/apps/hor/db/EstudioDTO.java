@@ -49,10 +49,6 @@ public class EstudioDTO implements Serializable
     @OneToMany(mappedBy = "estudio")
     private Set<CargoPersonaDTO> cargosPersona;
 
-    // bi-directional many-to-one association to ItemDTO
-    @OneToMany(mappedBy = "estudio")
-    private Set<ItemDTO> items;
-
     // bi-directional many-to-one association to PermisoExtraDTO
     @OneToMany(mappedBy = "estudio")
     private Set<PermisoExtraDTO> permisosExtras;
@@ -132,16 +128,6 @@ public class EstudioDTO implements Serializable
     public void setCargosPersona(Set<CargoPersonaDTO> cargosPersona)
     {
         this.cargosPersona = cargosPersona;
-    }
-
-    public Set<ItemDTO> getItems()
-    {
-        return this.items;
-    }
-
-    public void setItems(Set<ItemDTO> items)
-    {
-        this.items = items;
     }
 
     public Set<PermisoExtraDTO> getPermisosExtras()

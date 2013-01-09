@@ -29,11 +29,6 @@ public class ItemDTO implements Serializable
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String asignatura;
-
-    @Column(name = "ASIGNATURA_ID")
-    private String asignaturaId;
-
     private String caracter;
 
     @Column(name = "CARACTER_ID")
@@ -47,9 +42,6 @@ public class ItemDTO implements Serializable
     @Temporal(TemporalType.DATE)
     @Column(name = "DESDE_EL_DIA")
     private Date desdeElDia;
-
-    @Column(name = "ESTUDIO")
-    private String estudioDesc;
 
     @Column(name = "GRUPO_ID")
     private String grupoId;
@@ -105,11 +97,6 @@ public class ItemDTO implements Serializable
     @JoinColumn(name = "DIA_SEMANA_ID")
     private DiaSemanaDTO diaSemana;
 
-    // bi-directional many-to-one association to EstudioDTO
-    @ManyToOne
-    @JoinColumn(name = "ESTUDIO_ID")
-    private EstudioDTO estudio;
-
     // bi-directional many-to-one association to ProfesorDTO
     @ManyToOne
     @JoinColumn(name = "PROFESOR_ID")
@@ -123,6 +110,10 @@ public class ItemDTO implements Serializable
     // bi-directional many-to-one association to ItemCircuitoDTO
     @OneToMany(mappedBy = "item")
     private Set<ItemCircuitoDTO> itemsCircuitos;
+
+    // bi-directional many-to-one association to ItemCircuitoDTO
+    @OneToMany(mappedBy = "item")
+    private Set<ItemsAsignaturaDTO> itemsAsignaturas;
 
     // bi-directional many-to-one association to ItemDetalleDTO
     @OneToMany(mappedBy = "item")
@@ -152,26 +143,6 @@ public class ItemDTO implements Serializable
     public void setId(Long id)
     {
         this.id = id;
-    }
-
-    public String getAsignatura()
-    {
-        return this.asignatura;
-    }
-
-    public void setAsignatura(String asignatura)
-    {
-        this.asignatura = asignatura;
-    }
-
-    public String getAsignaturaId()
-    {
-        return this.asignaturaId;
-    }
-
-    public void setAsignaturaId(String asignaturaId)
-    {
-        this.asignaturaId = asignaturaId;
     }
 
     public String getCaracter()
@@ -222,16 +193,6 @@ public class ItemDTO implements Serializable
     public void setDesdeElDia(Date desdeElDia)
     {
         this.desdeElDia = desdeElDia;
-    }
-
-    public String getEstudioDesc()
-    {
-        return this.estudioDesc;
-    }
-
-    public void setEstudioDesc(String estudioDesc)
-    {
-        this.estudioDesc = estudioDesc;
     }
 
     public String getGrupoId()
@@ -394,16 +355,6 @@ public class ItemDTO implements Serializable
         this.diaSemana = diaSemana;
     }
 
-    public EstudioDTO getEstudio()
-    {
-        return this.estudio;
-    }
-
-    public void setEstudio(EstudioDTO estudio)
-    {
-        this.estudio = estudio;
-    }
-
     public ProfesorDTO getProfesor()
     {
         return this.profesor;
@@ -432,6 +383,16 @@ public class ItemDTO implements Serializable
     public void setItemsCircuitos(Set<ItemCircuitoDTO> itemsCircuitos)
     {
         this.itemsCircuitos = itemsCircuitos;
+    }
+
+    public Set<ItemsAsignaturaDTO> getItemsAsignaturas()
+    {
+        return this.itemsAsignaturas;
+    }
+
+    public void setItemsAsignaturas(Set<ItemsAsignaturaDTO> itemsAsignaturas)
+    {
+        this.itemsAsignaturas = itemsAsignaturas;
     }
 
     public Set<ItemDetalleDTO> getItemsDetalles()

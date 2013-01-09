@@ -103,9 +103,9 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         eventoDetalle.setDescripcion(itemDetalleDTO.getDescripcion());
         eventoDetalle.setInicio(itemDetalleDTO.getInicio());
 
-        String titulo = MessageFormat.format("{0} {1}{2}", itemDetalleDTO.getItem()
-                .getAsignaturaId(), itemDetalleDTO.getItem().getTipoEstudioId(), itemDetalleDTO
-                .getItem().getTipoSubgrupoId());
+        String titulo = MessageFormat.format("{0} {1}{2}",
+                itemDetalleDTO.getItem().getAsignatura(), itemDetalleDTO.getItem()
+                        .getTipoEstudioId(), itemDetalleDTO.getItem().getTipoSubgrupoId());
         eventoDetalle.setDescripcion(titulo);
         eventoDetalle.setFin(itemDetalleDTO.getFin());
 
@@ -171,8 +171,8 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             asignatura.setComunes(itemDTO.getComunes());
         }
 
-        asignatura.setNombre(itemDTO.getAsignatura());
-        asignatura.setId(itemDTO.getAsignaturaId());
+        asignatura.setNombre(itemDTO.getNombreAsignatura());
+        asignatura.setId(itemDTO.getAsignatura());
         asignatura.setCursoId(itemDTO.getCursoId());
         asignatura.setCaracter(itemDTO.getCaracter());
         asignatura.setCaracterId(itemDTO.getCaracterId());
@@ -514,8 +514,8 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         semestreDTO.setId(evento.getSemestre().getSemestre());
         semestreDTO.setNombre(evento.getSemestre().getNombre());
 
-        itemDTO.setAsignatura(evento.getAsignatura().getNombre());
-        itemDTO.setAsignaturaId(evento.getAsignatura().getId());
+        itemDTO.setNombreAsignatura(evento.getAsignatura().getNombre());
+        itemDTO.setAsignatura(evento.getAsignatura().getId());
         itemDTO.setPlazas(evento.getPlazas());
         itemDTO.setComun(evento.getAsignatura().getComun() ? new Long(1) : new Long(0));
         itemDTO.setComunes(evento.getAsignatura().getComunes());
@@ -642,7 +642,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         QItemDTO qItem = QItemDTO.itemDTO;
         List<ItemDTO> items = query
                 .from(qItem)
-                .where(qItem.asignaturaId.eq(item.getAsignaturaId())
+                .where(qItem.asignaturaId.eq(item.getAsignatura())
                         .and(qItem.estudio.id.eq(item.getEstudio().getId()))
                         .and(qItem.cursoId.eq(item.getCursoId()))
                         .and(qItem.semestre.id.eq(item.getSemestre().getId()))

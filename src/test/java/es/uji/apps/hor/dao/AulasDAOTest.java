@@ -186,7 +186,7 @@ public class AulasDAOTest
         semestre = aulasDAO.insert(semestre);
 
         ItemDTO item = new ItemDTO();
-        item.setAsignaturaId("PA");
+        item.setAsignatura("PA");
         item.setEstudio(estudio);
         item.setCursoId(new Long(1));
         item.setCaracterId("PC");

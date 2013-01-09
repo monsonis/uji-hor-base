@@ -80,8 +80,8 @@ public class GrupoAsignaturaDAODatabaseImpl extends BaseDAODatabaseImpl implemen
             asignatura.setComunes(itemDTO.getComunes());
         }
 
-        asignatura.setNombre(itemDTO.getAsignatura());
-        asignatura.setId(itemDTO.getAsignaturaId());
+        asignatura.setNombre(itemDTO.getNombreAsignatura());
+        asignatura.setId(itemDTO.getAsignatura());
         asignatura.setCursoId(itemDTO.getCursoId());
         asignatura.setCaracter(itemDTO.getCaracter());
         asignatura.setCaracterId(itemDTO.getCaracterId());
