@@ -60,8 +60,7 @@ public class AulaResource
     @Path("estudio")
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> asignaAulaToEstudio(UIEntity entity)
-            throws RegistroNoEncontradoException, AulaYaAsignadaAEstudioException,
-            NumberFormatException
+            throws RegistroNoEncontradoException, AulaYaAsignadaAEstudioException
     {
         String estudioId = entity.get("estudioId");
         Long semestreId = ParamUtils.parseLong(entity.get("semestreId"));
@@ -76,7 +75,7 @@ public class AulaResource
     @DELETE
     @Path("estudio/{id}")
     public void deleteAulaAsignadaToEstudio(@PathParam("id") String aulaPlanificacionId)
-            throws RegistroConHijosException, NumberFormatException
+            throws RegistroConHijosException
     {
         consultaAulas.deleteAulaAsignadaToEstudio(Long.parseLong(aulaPlanificacionId));
     }
