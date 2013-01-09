@@ -6,7 +6,7 @@ import java.util.List;
 
 import es.uji.apps.hor.RangoHorarioFueradeLimites;
 
-public class GrupoHorario
+public class RangoHorario
 {
     private static final int MINUTOS_EN_UNA_HORA = 60;
     private Long id;
@@ -17,7 +17,7 @@ public class GrupoHorario
     private Calendar horaInicio = Calendar.getInstance();;
     private Calendar horaFin = Calendar.getInstance();;
 
-    public GrupoHorario(Long estudioId, Long cursoId, Long semestreId, String grupoId)
+    public RangoHorario(Long estudioId, Long cursoId, Long semestreId, String grupoId)
     {
         this.estudioId = estudioId;
         this.cursoId = cursoId;
@@ -25,7 +25,7 @@ public class GrupoHorario
         this.grupoId = grupoId;
     }
 
-    public GrupoHorario()
+    public RangoHorario()
     {
 
     }
@@ -150,13 +150,13 @@ public class GrupoHorario
         this.horaFin.setTime(fin);
     }
 
-    public static GrupoHorario creaNuevoRangoHorario(Long estudioId, Long cursoId, Long semestreId,
+    public static RangoHorario creaNuevoRangoHorario(Long estudioId, Long cursoId, Long semestreId,
             String grupoId, Date horaInicio, Date horaFin)
     {
-        GrupoHorario grupoHorario = new GrupoHorario(estudioId, cursoId, semestreId, grupoId);
-        grupoHorario.setHoraInicio(horaInicio);
-        grupoHorario.setHoraFin(horaFin);
+        RangoHorario rangoHorario = new RangoHorario(estudioId, cursoId, semestreId, grupoId);
+        rangoHorario.setHoraInicio(horaInicio);
+        rangoHorario.setHoraFin(horaFin);
 
-        return grupoHorario;
+        return rangoHorario;
     }
 }

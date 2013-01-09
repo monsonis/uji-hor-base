@@ -25,21 +25,21 @@ import es.uji.apps.hor.builders.AsignaturaBuilder;
 import es.uji.apps.hor.builders.CalendarioBuilder;
 import es.uji.apps.hor.builders.EstudioBuilder;
 import es.uji.apps.hor.builders.EventoBuilder;
-import es.uji.apps.hor.builders.GrupoHorarioBuilder;
+import es.uji.apps.hor.builders.RangoHorarioBuilder;
 import es.uji.apps.hor.builders.SemestreBuilder;
 import es.uji.apps.hor.dao.EstudiosDAO;
 import es.uji.apps.hor.dao.EventosDAO;
-import es.uji.apps.hor.dao.GrupoHorarioDAO;
+import es.uji.apps.hor.dao.RangoHorarioDAO;
 import es.uji.apps.hor.model.Asignatura;
 import es.uji.apps.hor.model.Calendario;
 import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.model.Evento;
-import es.uji.apps.hor.model.GrupoHorario;
+import es.uji.apps.hor.model.RangoHorario;
 import es.uji.apps.hor.model.Semestre;
 import es.uji.apps.hor.model.TipoSubgrupo;
 import es.uji.commons.rest.UIEntity;
 
-public class CalendarResourceGrupoHorarioTest extends AbstractRestTest
+public class CalendarResourceRangoHorarioTest extends AbstractRestTest
 {
     private Estudio estudio;
     private Semestre semestre;
@@ -48,7 +48,7 @@ public class CalendarResourceGrupoHorarioTest extends AbstractRestTest
     private SimpleDateFormat formatter;
 
     @Autowired
-    private GrupoHorarioDAO grupoHorarioDAO;
+    private RangoHorarioDAO rangoHorarioDAO;
 
     @Autowired
     private EventosDAO eventosDAO;
@@ -56,7 +56,7 @@ public class CalendarResourceGrupoHorarioTest extends AbstractRestTest
     @Autowired
     private EstudiosDAO estudiosDAO;
 
-    public CalendarResourceGrupoHorarioTest()
+    public CalendarResourceRangoHorarioTest()
     {
         formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     }
@@ -79,7 +79,7 @@ public class CalendarResourceGrupoHorarioTest extends AbstractRestTest
         Calendario calendario = new CalendarioBuilder().withId(calendarioPRId)
                 .withNombre(TipoSubgrupo.getTipoSubgrupo(calendarioPRId)).build();
 
-        GrupoHorario grupoHorario = new GrupoHorarioBuilder(grupoHorarioDAO)
+        RangoHorario rangoHorario = new RangoHorarioBuilder(rangoHorarioDAO)
                 .withCursoId(new Long(1)).withEstudioId(estudio.getId()).withGrupoId("A")
                 .withHoraFin(formatter.parse("07/01/2013 8:00"))
                 .withHoraInicio(formatter.parse("07/01/2013 15:00"))

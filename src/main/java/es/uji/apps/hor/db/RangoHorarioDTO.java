@@ -20,7 +20,7 @@ import javax.persistence.TemporalType;
 @Entity
 @SuppressWarnings("serial")
 @Table(name="HOR_HORARIOS_HORAS")
-public class GrupoHorarioDTO implements Serializable {
+public class RangoHorarioDTO implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -46,7 +46,7 @@ public class GrupoHorarioDTO implements Serializable {
 	@Column(name="SEMESTRE_ID")
 	private Long semestreId;
 
-    public GrupoHorarioDTO() {
+    public RangoHorarioDTO() {
     }
 
 	public long getId() {

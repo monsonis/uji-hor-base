@@ -35,10 +35,10 @@ import es.uji.apps.hor.model.Calendario;
 import es.uji.apps.hor.model.Evento;
 import es.uji.apps.hor.model.EventoDetalle;
 import es.uji.apps.hor.model.EventoDocencia;
-import es.uji.apps.hor.model.GrupoHorario;
+import es.uji.apps.hor.model.RangoHorario;
 import es.uji.apps.hor.services.CalendariosService;
 import es.uji.apps.hor.services.EventosService;
-import es.uji.apps.hor.services.GrupoHorarioService;
+import es.uji.apps.hor.services.RangoHorarioService;
 import es.uji.commons.rest.ParamUtils;
 import es.uji.commons.rest.UIEntity;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
@@ -68,7 +68,7 @@ public class CalendarResource
     private CalendariosService calendariosService;
 
     @InjectParam
-    private GrupoHorarioService grupoHorarioService;
+    private RangoHorarioService rangoHorarioService;
 
     private SimpleDateFormat queryParamDateFormat;
     private SimpleDateFormat uIEntitydateFormat;
@@ -90,10 +90,10 @@ public class CalendarResource
 
         ParamUtils.checkNotNull(estudioId, cursoId, semestreId, grupoId);
 
-        GrupoHorario grupoHorario = grupoHorarioService.getHorario(ParamUtils.parseLong(estudioId),
+        RangoHorario rangoHorario = rangoHorarioService.getHorario(ParamUtils.parseLong(estudioId),
                 ParamUtils.parseLong(cursoId), ParamUtils.parseLong(semestreId), grupoId);
 
-        return grupoHorarioToUI(grupoHorario);
+        return rangoHorarioToUI(rangoHorario);
     }
 
     @POST
@@ -120,10 +120,10 @@ public class CalendarResource
         fin.set(Calendar.MINUTE, Integer.parseInt(horaFin.split(":")[1]));
         fin.set(Calendar.SECOND, 0);
 
-        GrupoHorario grupoHorario = grupoHorarioService.guardaConfiguracionGrupoHorario(estudioId,
+        RangoHorario rangoHorario = rangoHorarioService.guardaConfiguracionRangoHorario(estudioId,
                 cursoId, semestreId, grupoId, inicio.getTime(), fin.getTime());
 
-        return grupoHorarioToUI(grupoHorario);
+        return rangoHorarioToUI(rangoHorario);
     }
 
     @GET
@@ -425,17 +425,17 @@ public class CalendarResource
         return eventosUI;
     }
 
-    private List<UIEntity> grupoHorarioToUI(GrupoHorario grupoHorario)
+    private List<UIEntity> rangoHorarioToUI(RangoHorario rangoHorario)
     {
-        UIEntity grupoHorarioUI = new UIEntity();
-        grupoHorarioUI.put("estudioId", grupoHorario.getEstudioId());
-        grupoHorarioUI.put("cursoId", grupoHorario.getCursoId());
-        grupoHorarioUI.put("semestreId", grupoHorario.getSemestreId());
-        grupoHorarioUI.put("grupoId", grupoHorario.getGrupoId());
-        grupoHorarioUI.put("horaFin", grupoHorario.getHoraFin());
-        grupoHorarioUI.put("horaInicio", grupoHorario.getHoraInicio());
+        UIEntity rangoHorarioUI = new UIEntity();
+        rangoHorarioUI.put("estudioId", rangoHorario.getEstudioId());
+        rangoHorarioUI.put("cursoId", rangoHorario.getCursoId());
+        rangoHorarioUI.put("semestreId", rangoHorario.getSemestreId());
+        rangoHorarioUI.put("grupoId", rangoHorario.getGrupoId());
+        rangoHorarioUI.put("horaFin", rangoHorario.getHoraFin());
+        rangoHorarioUI.put("horaInicio", rangoHorario.getHoraInicio());
 
-        return Collections.singletonList(grupoHorarioUI);
+        return Collections.singletonList(rangoHorarioUI);
     }
 
     @GET

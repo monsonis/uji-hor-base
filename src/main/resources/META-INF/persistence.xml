@@ -53,7 +53,7 @@
     <class>es.uji.apps.hor.db.TipoEstudioDTO</class>
     <class>es.uji.apps.hor.db.CursoDTO</class>
     <class>es.uji.apps.hor.db.GrupoDTO</class>
-    <class>es.uji.apps.hor.db.GrupoHorarioDTO</class>
+    <class>es.uji.apps.hor.db.RangoHorarioDTO</class>
     <class>es.uji.apps.hor.db.ItemDetalleCompletoDTO</class>
     <class>es.uji.apps.hor.db.AsignaturaComunDTO</class>
     <class>es.uji.apps.hor.db.ItemComunDTO</class>

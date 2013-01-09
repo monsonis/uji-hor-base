@@ -17,17 +17,17 @@ import es.uji.apps.hor.builders.AsignaturaBuilder;
 import es.uji.apps.hor.builders.CalendarioBuilder;
 import es.uji.apps.hor.builders.EstudioBuilder;
 import es.uji.apps.hor.builders.EventoBuilder;
-import es.uji.apps.hor.builders.GrupoHorarioBuilder;
+import es.uji.apps.hor.builders.RangoHorarioBuilder;
 import es.uji.apps.hor.builders.SemestreBuilder;
 
-public class GrupoHorarioModelTest
+public class RangoHorarioModelTest
 {
     private Estudio estudio;
     private Semestre semestre;
 
     private SimpleDateFormat formatter;
 
-    public GrupoHorarioModelTest()
+    public RangoHorarioModelTest()
     {
         formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     }
@@ -36,35 +36,35 @@ public class GrupoHorarioModelTest
     public void modificaRangoHorarioTest() throws ParseException, RangoHorarioFueradeLimites,
             DuracionEventoIncorrectaException
     {
-        GrupoHorario grupoHorario = buildGrupoHorario("07/01/2013 8:00", "07/01/2013 15:00");
+        RangoHorario rangoHorario = buildRangoHorario("07/01/2013 8:00", "07/01/2013 15:00");
 
         List<Evento> eventos = new ArrayList<Evento>();
         eventos.add(buildEvento("07/01/2013 9:00", "07/01/2013 11:00"));
         eventos.add(buildEvento("07/01/2013 12:00", "07/01/2013 14:00"));
 
-        grupoHorario.actualizaRangoHorario(formatter.parse("07/01/2013 9:00"),
+        rangoHorario.actualizaRangoHorario(formatter.parse("07/01/2013 9:00"),
                 formatter.parse("07/01/2013 14:00"));
-        grupoHorario.compruebaSiLosEventosEstanDentroDelRangoHorario(eventos);
+        rangoHorario.compruebaSiLosEventosEstanDentroDelRangoHorario(eventos);
 
-        assertThat(grupoHorario.getHoraInicio(), is(equalTo(formatter.parse("07/01/2013 9:00"))));
+        assertThat(rangoHorario.getHoraInicio(), is(equalTo(formatter.parse("07/01/2013 9:00"))));
     }
 
     @Test(expected = RangoHorarioFueradeLimites.class)
     public void modificaRangoHorarioConEventosFueraDelRangoTest() throws ParseException,
             RangoHorarioFueradeLimites, DuracionEventoIncorrectaException
     {
-        GrupoHorario grupoHorario = buildGrupoHorario("07/01/2013 8:00", "07/01/2013 15:00");
+        RangoHorario rangoHorario = buildRangoHorario("07/01/2013 8:00", "07/01/2013 15:00");
 
         List<Evento> eventos = new ArrayList<Evento>();
         eventos.add(buildEvento("07/01/2013 9:00", "07/01/2013 11:00"));
         eventos.add(buildEvento("07/01/2013 12:00", "07/01/2013 14:00"));
 
-        grupoHorario.actualizaRangoHorario(formatter.parse("07/01/2013 10:00"),
+        rangoHorario.actualizaRangoHorario(formatter.parse("07/01/2013 10:00"),
                 formatter.parse("07/01/2013 14:00"));
-        grupoHorario.compruebaSiLosEventosEstanDentroDelRangoHorario(eventos);
+        rangoHorario.compruebaSiLosEventosEstanDentroDelRangoHorario(eventos);
     }
 
-    private GrupoHorario buildGrupoHorario(String horaInicio, String horaFin) throws ParseException
+    private RangoHorario buildRangoHorario(String horaInicio, String horaFin) throws ParseException
     {
         estudio = new EstudioBuilder().withNombre("Grau en Psicologia").withTipoEstudio("Grau")
                 .withTipoEstudioId("G").build();
@@ -72,7 +72,7 @@ public class GrupoHorarioModelTest
         semestre = new SemestreBuilder().withSemestre(new Long(1)).withNombre("Primer semestre")
                 .build();
 
-        return new GrupoHorarioBuilder().withCursoId(new Long(1)).withEstudioId(estudio.getId())
+        return new RangoHorarioBuilder().withCursoId(new Long(1)).withEstudioId(estudio.getId())
                 .withGrupoId("A").withHoraFin(formatter.parse(horaFin))
                 .withHoraInicio(formatter.parse(horaInicio)).withSemestreId(semestre.getSemestre())
                 .build();
