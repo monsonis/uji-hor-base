@@ -30,48 +30,29 @@ import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 @Repository
 public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
 {
-    @Override
-    public List<Aula> getAulas()
-    {
-        JPAQuery query = new JPAQuery(entityManager);
-
-        QAulaDTO qAula = QAulaDTO.aulaDTO;
-
-        query.from(qAula);
-
-        List<Aula> listaAulas = new ArrayList<Aula>();
-
-        for (AulaDTO aulaDTO : query.list(qAula))
-        {
-            listaAulas.add(creaAulaDesdeAulaDTO(aulaDTO));
-        }
-
-        return listaAulas;
-    }
-
     public Aula creaAulaDesdeAulaDTO(AulaDTO aulaDTO)
     {
         Aula aula = new Aula(aulaDTO.getId());
-        
+
         Centro centro = new Centro(aulaDTO.getCentro().getId(), aulaDTO.getCentro().getNombre());
         aula.setCentro(centro);
-        
+
         TipoAula tipoAula = new TipoAula();
         tipoAula.setNombre(aulaDTO.getTipo());
         aula.setTipo(tipoAula);
-        
+
         PlantaEdificio planta = new PlantaEdificio();
         planta.setNombre(aulaDTO.getPlanta());
         aula.setPlanta(planta);
-        
+
         AreaEdificio area = new AreaEdificio();
         area.setNombre(aulaDTO.getArea());
         aula.setArea(area);
-        
+
         Edificio edificio = new Edificio();
         edificio.setNombre(aulaDTO.getEdificio());
         aula.setEdificio(edificio);
-        
+
         aula.setNombre(aulaDTO.getNombre());
         aula.setCodigo(aulaDTO.getCodigo());
         aula.setPlazas(aulaDTO.getPlazas());

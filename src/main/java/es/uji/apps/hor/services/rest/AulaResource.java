@@ -15,10 +15,8 @@ import javax.ws.rs.core.MediaType;
 import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.hor.AulaYaAsignadaAEstudioException;
-import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.AulaPlanificacion;
 import es.uji.apps.hor.services.AulaService;
-import es.uji.apps.hor.services.CentroService;
 import es.uji.commons.rest.ParamUtils;
 import es.uji.commons.rest.UIEntity;
 import es.uji.commons.rest.exceptions.RegistroConHijosException;
@@ -29,18 +27,6 @@ public class AulaResource
 {
     @InjectParam
     private AulaService consultaAulas;
-
-    @InjectParam
-    private CentroService consultaCentros;
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<UIEntity> getAulas()
-    {
-        List<Aula> aulas = consultaAulas.getAulas();
-
-        return UIEntity.toUI(aulas);
-    }
 
     @GET
     @Path("estudio/{id}")

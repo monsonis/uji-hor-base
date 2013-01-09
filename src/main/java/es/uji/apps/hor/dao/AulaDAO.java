@@ -12,8 +12,6 @@ import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
 public interface AulaDAO extends BaseDAO
 {
-    List<Aula> getAulas();
-
     List<Aula> getAulasByCentroIdAndestudioId(Long centroId, Long estudioId);
 
     List<Aula> getAulasByCentroId(Long centroId);
@@ -24,13 +22,13 @@ public interface AulaDAO extends BaseDAO
             throws RegistroNoEncontradoException, AulaYaAsignadaAEstudioException;
 
     void deleteAulaAsignadaToEstudio(Long aulaPlanificacionId) throws RegistroConHijosException;
-    
+
     AulaPlanificacion getAulaById(Long aulaId) throws RegistroNoEncontradoException;
-    
+
     Aula insertAula(Aula aula);
-    
+
     AulaPlanificacion insertAulaPlanificacion(AulaPlanificacion aulaPlanificacion);
-    
+
     Aula creaAulaDesdeAulaDTO(AulaDTO aulaDTO);
 
 }

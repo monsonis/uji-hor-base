@@ -23,11 +23,6 @@ public class AulaService
         this.aulaDAO = aulaDAO;
     }
 
-    public List<Aula> getAulas()
-    {
-        return aulaDAO.getAulas();
-    }
-
     public List<Aula> getAulasByCentroId(Long centroId)
     {
         return aulaDAO.getAulasByCentroId(centroId);
