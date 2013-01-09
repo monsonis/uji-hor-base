@@ -6,6 +6,13 @@ import java.util.List;
 public enum TipoSubgrupo
 {
     TE(1L), PR(2L), LA(3L), SE(4L), TU(5L), AV(6L);
+    
+    private final static int TEORIA = 1;
+    private final static int PROBLEMAS = 2;
+    private final static int LABORATORIOS = 3;
+    private final static int SEMINARIOS = 4;
+    private final static int TUTORIAS = 5;
+    private final static int EVALUACION = 6;
 
     private final Long calendarioId;
 
@@ -23,17 +30,17 @@ public enum TipoSubgrupo
     {
         switch (calendarioId.intValue())
         {
-        case 1:
+        case TEORIA:
             return "Teoria";
-        case 2:
+        case PROBLEMAS:
             return "Problemes";
-        case 3:
+        case LABORATORIOS:
             return "Laboratoris";
-        case 4:
+        case SEMINARIOS:
             return "Seminaris";
-        case 5:
+        case TUTORIAS:
             return "Tutories";
-        case 6:
+        case EVALUACION:
             return "Avaluació";
         default:
             return "";
@@ -44,17 +51,17 @@ public enum TipoSubgrupo
     {
         switch (calendarioId.intValue())
         {
-        case 1:
+        case TEORIA:
             return TipoSubgrupo.TE.name();
-        case 2:
+        case PROBLEMAS:
             return TipoSubgrupo.PR.name();
-        case 3:
+        case LABORATORIOS:
             return TipoSubgrupo.LA.name();
-        case 4:
+        case SEMINARIOS:
             return TipoSubgrupo.SE.name();
-        case 5:
+        case TUTORIAS:
             return TipoSubgrupo.TU.name();
-        case 6:
+        case EVALUACION:
             return TipoSubgrupo.AV.name();
         default:
             return "";
