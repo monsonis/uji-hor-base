@@ -1,6 +1,5 @@
 package es.uji.apps.hor.dao;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -103,10 +102,6 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         eventoDetalle.setDescripcion(itemDetalleDTO.getDescripcion());
         eventoDetalle.setInicio(itemDetalleDTO.getInicio());
 
-        String titulo = MessageFormat.format("{0} {1}{2}",
-                itemDetalleDTO.getItem().getAsignatura(), itemDetalleDTO.getItem()
-                        .getTipoEstudioId(), itemDetalleDTO.getItem().getTipoSubgrupoId());
-        eventoDetalle.setDescripcion(titulo);
         eventoDetalle.setFin(itemDetalleDTO.getFin());
 
         return eventoDetalle;

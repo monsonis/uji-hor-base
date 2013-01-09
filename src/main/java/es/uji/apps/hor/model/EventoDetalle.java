@@ -1,5 +1,6 @@
 package es.uji.apps.hor.model;
 
+import java.text.MessageFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -79,12 +80,26 @@ public class EventoDetalle
 
     public String getDescripcion()
     {
-        return descripcion;
+        if (descripcion != null && !descripcion.isEmpty())
+        {
+            return descripcion;
+        }
+        else
+        {
+            return this.toString();
+        }
     }
 
     public void setDescripcion(String descripcion)
     {
         this.descripcion = descripcion;
+    }
+
+    @Override
+    public String toString()
+    {
+        return MessageFormat.format("{0} {1}{2}", evento.getAsignatura().getNombre(), evento
+                .getAsignatura().getEstudio().getTipoEstudioId(), evento.getCalendario().getId());
     }
 
     public EventoDetalle clonar()
