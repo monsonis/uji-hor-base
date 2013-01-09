@@ -67,7 +67,7 @@ public class GrupoAsignaturaResource
     @Path("sinAsignar/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> planificaGruposAsignaturasSinAsignar(@PathParam("id") String id)
-            throws RegistroNoEncontradoException, NumberFormatException
+            throws RegistroNoEncontradoException
     {
         GrupoAsignatura grupoAsignatura = gruposAsignaturasService.planificaGrupoAsignaturaSinAsignar(Long
                 .parseLong(id));
