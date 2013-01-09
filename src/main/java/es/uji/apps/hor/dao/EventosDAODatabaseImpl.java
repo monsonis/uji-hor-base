@@ -282,8 +282,16 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
     @Override
     public void deleteDetallesDeEvento(Evento evento)
     {
-        delete(ItemDetalleDTO.class, "item_id=" + evento.getId());
+        JPAQuery query = new JPAQuery(entityManager);
+        QItemDetalleDTO qItemDetalle = QItemDetalleDTO.itemDetalleDTO;
 
+        List<ItemDetalleDTO> itemsDetalle = query.from(qItemDetalle)
+                .where(qItemDetalle.item.id.eq(evento.getId())).list(qItemDetalle);
+
+        for (ItemDetalleDTO itemDetalle : itemsDetalle)
+        {
+            delete(ItemDetalleDTO.class, itemDetalle.getId());
+        }
     }
 
     @Override
