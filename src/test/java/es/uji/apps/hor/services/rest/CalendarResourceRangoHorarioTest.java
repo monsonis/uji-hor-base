@@ -116,12 +116,24 @@ public class CalendarResourceRangoHorarioTest extends AbstractRestTest
 
     @Test(expected = ClientHandlerException.class)
     @Transactional
-    public void ekServicioIntentaModificarUnRangoHorarioFueraDeLimites() throws JSONException
+    public void elServicioIntentaModificarUnRangoHorarioFueraDeLimites() throws JSONException
     {
         UIEntity entity = modificaRangoHorario(String.valueOf(estudio.getId()),
                 String.valueOf(new Long(1)), String.valueOf(semestre.getSemestre()), grupoId,
                 "10:00", "14:00");
 
+        String horaInicio = entity.get("horaInicio").split(" ", 2)[1].substring(0, 5);
+        assertThat(horaInicio, equalTo("10:00"));
+    }
+    
+    @Test
+    @Transactional
+    public void  elServicioCreaUnNuevoRangoHorario() throws JSONException
+    {
+        UIEntity entity = modificaRangoHorario(String.valueOf(estudio.getId()),
+                String.valueOf(new Long(1)), String.valueOf(semestre.getSemestre()), "B",
+                "10:00", "14:00");
+        
         String horaInicio = entity.get("horaInicio").split(" ", 2)[1].substring(0, 5);
         assertThat(horaInicio, equalTo("10:00"));
     }
