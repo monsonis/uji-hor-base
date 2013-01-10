@@ -10,6 +10,7 @@ import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.types.QTuple;
 
 import es.uji.apps.hor.db.QItemDTO;
+import es.uji.apps.hor.db.QItemsAsignaturaDTO;
 import es.uji.apps.hor.model.Semestre;
 import es.uji.commons.db.BaseDAODatabaseImpl;
 
@@ -22,9 +23,10 @@ public class SemestresDAODatabaseImpl extends BaseDAODatabaseImpl implements Sem
         JPAQuery query = new JPAQuery(entityManager);
 
         QItemDTO item = QItemDTO.itemDTO;
+        QItemsAsignaturaDTO asignatura = QItemsAsignaturaDTO.itemsAsignaturaDTO;
 
-        List<Tuple> listaSemestresTuples = query.from(item)
-                .where(item.estudio.id.eq(estudioId).and(item.cursoId.eq(curso)))
+        List<Tuple> listaSemestresTuples = query.from(asignatura).join(asignatura.item)
+                .where(asignatura.estudioId.eq(estudioId).and(item.cursoId.eq(curso)))
                 .orderBy(item.semestre.id.asc()).listDistinct(new QTuple(item.semestre.id));
 
         List<Semestre> semestres = new ArrayList<Semestre>();
