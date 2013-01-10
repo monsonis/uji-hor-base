@@ -1,5 +1,6 @@
 package es.uji.apps.hor.builders;
 
+import es.uji.apps.hor.model.Centro;
 import es.uji.apps.hor.model.Edificio;
 
 public class EdificioBuilder
@@ -14,6 +15,12 @@ public class EdificioBuilder
     public EdificioBuilder withNombre(String nombre)
     {
         edificio.setNombre(nombre);
+        return this;
+    }
+
+    public EdificioBuilder withCentro(Centro centro)
+    {
+        edificio.setCentro(centro);
         return this;
     }
 

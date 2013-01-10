@@ -64,9 +64,6 @@ public class CentroDAODatabaseImpl extends BaseDAODatabaseImpl implements Centro
     public Centro getCentroById(Long centroId) throws RegistroNoEncontradoException
     {
         JPAQuery query = new JPAQuery(entityManager);
-
-        QAulaDTO qAula = QAulaDTO.aulaDTO;
-
         QCentroDTO qCentro = QCentroDTO.centroDTO;
 
         query.from(qCentro).where(qCentro.id.eq(centroId));

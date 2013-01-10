@@ -1,5 +1,6 @@
 package es.uji.apps.hor.builders;
 
+import es.uji.apps.hor.model.Edificio;
 import es.uji.apps.hor.model.PlantaEdificio;
 
 public class PlantaEdificioBuilder
@@ -14,6 +15,12 @@ public class PlantaEdificioBuilder
     public PlantaEdificioBuilder withNombre(String nombre)
     {
         plantaEdificio.setNombre(nombre);
+        return this;
+    }
+
+    public PlantaEdificioBuilder withEdificio(Edificio edificio)
+    {
+        plantaEdificio.setEdificio(edificio);
         return this;
     }
 

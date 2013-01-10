@@ -4,7 +4,6 @@ public class Aula
 {
     private Long id;
     private String nombre;
-    private Centro centro;
     private Long plazas;
     private String codigo;
     private AreaEdificio area;
@@ -39,16 +38,6 @@ public class Aula
     public void setNombre(String nombre)
     {
         this.nombre = nombre;
-    }
-
-    public Centro getCentro()
-    {
-        return centro;
-    }
-
-    public void setCentro(Centro centro)
-    {
-        this.centro = centro;
     }
 
     public Long getPlazas()

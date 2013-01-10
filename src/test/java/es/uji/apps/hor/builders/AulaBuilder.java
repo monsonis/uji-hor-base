@@ -30,12 +30,6 @@ public class AulaBuilder
         return this;
     }
     
-    public AulaBuilder withCentro(Centro centro)
-    {
-        aula.setCentro(centro);
-        return this;
-    }
-    
     public AulaBuilder withTipo(TipoAula tipo)
     {
         aula.setTipo(tipo);

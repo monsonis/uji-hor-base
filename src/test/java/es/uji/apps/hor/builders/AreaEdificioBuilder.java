@@ -1,6 +1,7 @@
 package es.uji.apps.hor.builders;
 
 import es.uji.apps.hor.model.AreaEdificio;
+import es.uji.apps.hor.model.Edificio;
 
 public class AreaEdificioBuilder
 {
@@ -14,6 +15,12 @@ public class AreaEdificioBuilder
     public AreaEdificioBuilder withNombre(String nombre)
     {
         areaEdificio.setNombre(nombre);
+        return this;
+    }
+
+    public AreaEdificioBuilder withEdificio(Edificio edificio)
+    {
+        areaEdificio.setEdificio(edificio);
         return this;
     }
 
