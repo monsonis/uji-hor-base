@@ -77,8 +77,8 @@ public abstract class AbstractCalendarResourceTest extends AbstractRestTest
                 .withCaracterId("OB").withComun(false).withCursoId(cursoId).withId("I001")
                 .withNombre("Asignatura de Informatica").withEstudio(otroEstudio).build();
 
-        semestre = new SemestreBuilder().withSemestre(semestreId)
-                .withNombre("Primer semestre").build();
+        semestre = new SemestreBuilder().withSemestre(semestreId).withNombre("Primer semestre")
+                .build();
 
         Long calendarioPracticasId = TipoSubgrupo.PR.getCalendarioAsociado();
         calendarioPR = new CalendarioBuilder().withId(calendarioPracticasId)
@@ -226,7 +226,6 @@ public abstract class AbstractCalendarResourceTest extends AbstractRestTest
     protected boolean existeDuplicadoDeEventoGenerico() throws Exception
     {
         String id_original = "1";
-        String titulo_original = "PS1026 PR1";
         int hora_inicio_esperada = 10;
         int minuto_inicio_esperado = 0;
         int segundo_inicio_esperado = 0;
@@ -237,14 +236,12 @@ public abstract class AbstractCalendarResourceTest extends AbstractRestTest
         for (UIEntity entity : getListaEventosGenericos())
         {
             String entity_id = entity.get("id");
-            String entity_title = entity.get("title").replace("\"", "");
             String entity_start_str = entity.get("start");
 
             Date entity_start_date = UIEntityDateFormat.parse(entity_start_str);
             cal.setTime(entity_start_date);
 
-            if (entity_title.equals(titulo_original)
-                    && cal.get(Calendar.HOUR_OF_DAY) == hora_inicio_esperada
+            if (cal.get(Calendar.HOUR_OF_DAY) == hora_inicio_esperada
                     && cal.get(Calendar.MINUTE) == minuto_inicio_esperado
                     && cal.get(Calendar.SECOND) == segundo_inicio_esperado
                     && cal.get(Calendar.DAY_OF_WEEK) == dia_esperado

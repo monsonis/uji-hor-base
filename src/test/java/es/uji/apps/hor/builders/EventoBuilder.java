@@ -3,6 +3,7 @@ package es.uji.apps.hor.builders;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import es.uji.apps.hor.DuracionEventoIncorrectaException;
 import es.uji.apps.hor.dao.EventosDAO;
@@ -70,7 +71,13 @@ public class EventoBuilder
 
     public EventoBuilder withAsignatura(Asignatura asignatura)
     {
-        evento.setAsignatura(asignatura);
+        evento.getAsignaturas().add(asignatura);
+        return this;
+    }
+
+    public EventoBuilder withAsignaturas(List<Asignatura> asignaturas)
+    {
+        evento.setAsignaturas(asignaturas);
         return this;
     }
 

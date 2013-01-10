@@ -55,7 +55,7 @@ public class CalendarResource
     private static final String ESTUDIO_ID_QUERY_PARAM = "estudioId";
     private static final String TIPO_ACCION_FORM_PARAM = "tipoAccion";
     private static final String AULA_ID_FORM_PARAM = "aulaId";
-    private static final String ID_PATH_PARAM = "id";    
+    private static final String ID_PATH_PARAM = "id";
     private static final int ULTIMA_HORA_DIA = 23;
     private static final int ULTIMO_MINUTO_HORA = 59;
     private static final int ULTIMO_SEGUNDO_MINUTO = 59;
@@ -402,7 +402,7 @@ public class CalendarResource
             eventoUI.put("end_date_rep_comp", evento.getHastaElDia());
             eventoUI.put("end_rep_number_comp", evento.getNumeroIteraciones());
             eventoUI.put("detalle_manual", evento.hasDetalleManual());
-            eventoUI.put("comunes", evento.getAsignatura().getComunes());
+            eventoUI.put("comunes", evento.tieneComunes());
 
             if (evento.getAulaPlanificacion() != null)
             {

@@ -37,7 +37,7 @@ public class Evento
     private Integer repetirCadaSemanas;
     private Date desdeElDia;
     private Date hastaElDia;
-    private Asignatura asignatura;
+    private List<Asignatura> asignaturas = new ArrayList<Asignatura>();
     private Semestre semestre;
     private String grupoId;
     private Long subgrupoId;
@@ -79,10 +79,15 @@ public class Evento
         this.calendario = calendario;
     }
 
-    @Override
-    public String toString()
+    public String getDescripcionParaUnEstudio(Long estudioId)
     {
-        String texto = MessageFormat.format("{0} {1}{2}", getAsignatura().getId(), getCalendario()
+        Asignatura asignatura = getAsignaturaDelEstudio(estudioId);
+        if (asignatura == null)
+        {
+            return "";
+        }
+
+        String texto = MessageFormat.format("{0} {1}{2}", asignatura.getId(), getCalendario()
                 .getLetraId(), subgrupoId);
 
         if (tieneComunes())
@@ -98,10 +103,9 @@ public class Evento
         return texto;
     }
 
-    private boolean tieneComunes()
+    public boolean tieneComunes()
     {
-        // TODO - Falta por implementar cuando esté refactorizado el esquema de BBDD
-        return false;
+        return asignaturas.size() > 1;
     }
 
     public String getTitulo()
@@ -302,7 +306,7 @@ public class Evento
         nuevo.setDesdeElDia(this.getDesdeElDia());
         nuevo.setHastaElDia(this.getHastaElDia());
         nuevo.setAulaPlanificacion(this.getAulaPlanificacion());
-        nuevo.setAsignatura(this.getAsignatura());
+        nuevo.setAsignaturas(this.getAsignaturas());
         nuevo.setSemestre(this.getSemestre());
         nuevo.setGrupoId(this.getGrupoId());
         nuevo.setSubgrupoId(this.getSubgrupoId());
@@ -343,14 +347,27 @@ public class Evento
         this.aulaPlanificacion = aulaPlanificacion;
     }
 
-    public Asignatura getAsignatura()
+    public List<Asignatura> getAsignaturas()
     {
-        return asignatura;
+        return asignaturas;
     }
 
-    public void setAsignatura(Asignatura asignatura)
+    public void setAsignaturas(List<Asignatura> asignaturas)
     {
-        this.asignatura = asignatura;
+        this.asignaturas = asignaturas;
+    }
+
+    public Asignatura getAsignaturaDelEstudio(Long estudioId)
+    {
+        for (Asignatura asig : asignaturas)
+        {
+            if (asig.getEstudio().getId() == estudioId)
+            {
+                return asig;
+            }
+        }
+
+        return null;
     }
 
     public Semestre getSemestre()
@@ -449,12 +466,27 @@ public class Evento
     public void actualizaAulaPlanificacion(AulaPlanificacion aulaPlanificacion)
             throws AulaNoAsignadaAEstudioDelEventoException
     {
-        if (!aulaPlanificacion.getEstudioId().equals(asignatura.getEstudio().getId()))
+        if (!aulaAsignadaAAlgunEstudioDelEvento(aulaPlanificacion))
         {
             throw new AulaNoAsignadaAEstudioDelEventoException();
         }
 
         this.aulaPlanificacion = aulaPlanificacion;
+    }
+
+    private boolean aulaAsignadaAAlgunEstudioDelEvento(AulaPlanificacion aula)
+    {
+
+        Long estudioIdDelAula = aula.getEstudioId();
+
+        for (Asignatura asignatura : asignaturas)
+        {
+            if (asignatura.getEstudio().getId() == estudioIdDelAula)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void vaciaEventosDetalle()

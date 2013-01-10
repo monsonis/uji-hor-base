@@ -72,7 +72,7 @@ public class GrupoAsignaturaDAODatabaseImpl extends BaseDAODatabaseImpl implemen
         Calendario calendario = new Calendario(tipoSubgrupo.getCalendarioAsociado(),
                 tipoSubgrupo.getNombre());
 
-        Asignatura asignatura = eventosDAO.creaAsignaturaDesdeItemDTOParaUnEstudio(itemDTO,
+        Asignatura asignatura = eventosDAO.creaAsignaturasDesdeItemDTOParaUnEstudio(itemDTO,
                 estudioId);
 
         grupoAsignatura.setAsignatura(asignatura);

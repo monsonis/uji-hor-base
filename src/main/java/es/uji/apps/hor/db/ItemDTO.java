@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -113,7 +114,7 @@ public class ItemDTO implements Serializable
     private Set<ItemCircuitoDTO> itemsCircuitos;
 
     // bi-directional many-to-one association to ItemCircuitoDTO
-    @OneToMany(mappedBy = "item")
+    @OneToMany(mappedBy = "item", fetch = FetchType.EAGER)
     private Set<ItemsAsignaturaDTO> itemsAsignaturas = new HashSet<ItemsAsignaturaDTO>();
 
     // bi-directional many-to-one association to ItemDetalleDTO

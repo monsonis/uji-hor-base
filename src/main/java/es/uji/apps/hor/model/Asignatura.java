@@ -132,4 +132,18 @@ public class Asignatura
     {
         this.tipoAsignatura = tipoAsignatura;
     }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (!(obj instanceof Asignatura))
+        {
+            return false;
+        }
+
+        Asignatura otraAsignatura = (Asignatura) obj;
+
+        return this.id.equals(otraAsignatura.getId());
+    }
+
 }
