@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.PersistenceException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,9 +16,9 @@ import es.uji.apps.hor.db.DiaSemanaDTO;
 import es.uji.apps.hor.db.ItemDTO;
 import es.uji.apps.hor.db.QDiaSemanaDTO;
 import es.uji.apps.hor.db.QItemDTO;
+import es.uji.apps.hor.db.QItemsAsignaturaDTO;
 import es.uji.apps.hor.model.Asignatura;
 import es.uji.apps.hor.model.Calendario;
-import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.model.GrupoAsignatura;
 import es.uji.apps.hor.model.TipoSubgrupo;
 import es.uji.commons.db.BaseDAODatabaseImpl;
@@ -27,6 +28,9 @@ import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 public class GrupoAsignaturaDAODatabaseImpl extends BaseDAODatabaseImpl implements
         GrupoAsignaturaDAO
 {
+    @Autowired
+    EventosDAO eventosDAO;
+
     @Override
     @Transactional
     public List<GrupoAsignatura> getGruposAsignaturasSinAsignar(Long estudioId, Long cursoId,
@@ -35,12 +39,14 @@ public class GrupoAsignaturaDAODatabaseImpl extends BaseDAODatabaseImpl implemen
         JPAQuery query = new JPAQuery(entityManager);
 
         QItemDTO item = QItemDTO.itemDTO;
+        QItemsAsignaturaDTO asignatura = QItemsAsignaturaDTO.itemsAsignaturaDTO;
 
         List<String> tiposCalendarios = TipoSubgrupo.getTiposSubgrupos(calendariosIds);
 
         List<ItemDTO> listaItemsDTO = query
-                .from(item)
-                .where(item.estudio.id.eq(estudioId).and(
+                .from(asignatura)
+                .join(asignatura.item, item)
+                .where(asignatura.estudioId.eq(estudioId).and(
                         item.cursoId.eq(cursoId).and(item.semestre.id.eq(semestreId))
                                 .and(item.grupoId.eq(grupoId))
                                 .and(item.tipoSubgrupoId.in(tiposCalendarios))
@@ -50,13 +56,13 @@ public class GrupoAsignaturaDAODatabaseImpl extends BaseDAODatabaseImpl implemen
 
         for (ItemDTO itemDTO : listaItemsDTO)
         {
-            gruposAsignaturas.add(creaGrupoAsignaturaDesde(itemDTO));
+            gruposAsignaturas.add(creaGrupoAsignaturaDesde(itemDTO, estudioId));
         }
 
         return gruposAsignaturas;
     }
 
-    private GrupoAsignatura creaGrupoAsignaturaDesde(ItemDTO itemDTO)
+    private GrupoAsignatura creaGrupoAsignaturaDesde(ItemDTO itemDTO, Long estudioId)
     {
         GrupoAsignatura grupoAsignatura = new GrupoAsignatura(itemDTO.getId());
 
@@ -66,29 +72,8 @@ public class GrupoAsignaturaDAODatabaseImpl extends BaseDAODatabaseImpl implemen
         Calendario calendario = new Calendario(tipoSubgrupo.getCalendarioAsociado(),
                 tipoSubgrupo.getNombre());
 
-        Estudio estudio = new Estudio();
-        estudio.setId(itemDTO.getEstudio().getId());
-        estudio.setNombre(itemDTO.getEstudioDesc());
-        estudio.setTipoEstudio(itemDTO.getTipoEstudio());
-        estudio.setTipoEstudioId(itemDTO.getTipoEstudioId());
-
-        Asignatura asignatura = new Asignatura();
-
-        asignatura.setComun(itemDTO.getComun() == 1);
-        if (itemDTO.getComun() > 0)
-        {
-            asignatura.setComunes(itemDTO.getComunes());
-        }
-
-        asignatura.setNombre(itemDTO.getNombreAsignatura());
-        asignatura.setId(itemDTO.getAsignatura());
-        asignatura.setCursoId(itemDTO.getCursoId());
-        asignatura.setCaracter(itemDTO.getCaracter());
-        asignatura.setCaracterId(itemDTO.getCaracterId());
-        asignatura.setEstudio(estudio);
-        asignatura.setPorcentajeComun(itemDTO.getPorcentajeComun());
-        asignatura.setTipoAsignatura(itemDTO.getTipoAsignatura());
-        asignatura.setTipoAsignaturaId(itemDTO.getTipoAsignaturaId());
+        Asignatura asignatura = eventosDAO.creaAsignaturaDesdeItemDTOParaUnEstudio(itemDTO,
+                estudioId);
 
         grupoAsignatura.setAsignatura(asignatura);
         grupoAsignatura.setCalendario(calendario);
@@ -98,7 +83,7 @@ public class GrupoAsignaturaDAODatabaseImpl extends BaseDAODatabaseImpl implemen
 
     @Override
     @Transactional
-    public GrupoAsignatura getGrupoAsignaturaById(Long grupoAsignaturaId)
+    public GrupoAsignatura getGrupoAsignaturaById(Long grupoAsignaturaId, Long estudioId)
             throws RegistroNoEncontradoException
     {
         JPAQuery query = new JPAQuery(entityManager);
@@ -110,7 +95,7 @@ public class GrupoAsignaturaDAODatabaseImpl extends BaseDAODatabaseImpl implemen
 
         if (listaItemsDTO.size() == 1)
         {
-            return creaGrupoAsignaturaDesde(listaItemsDTO.get(0));
+            return creaGrupoAsignaturaDesde(listaItemsDTO.get(0), estudioId);
         }
         else
         {

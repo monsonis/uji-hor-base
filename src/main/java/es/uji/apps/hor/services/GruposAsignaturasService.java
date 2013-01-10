@@ -27,11 +27,11 @@ public class GruposAsignaturasService
                 grupoId, calendariosIds);
     }
 
-    public GrupoAsignatura planificaGrupoAsignaturaSinAsignar(Long grupoAsignaturaId)
+    public GrupoAsignatura planificaGrupoAsignaturaSinAsignar(Long grupoAsignaturaId, Long estudioId)
             throws RegistroNoEncontradoException
     {
-        GrupoAsignatura grupoAsignatura = grupoAsignaturaDAO
-                .getGrupoAsignaturaById(grupoAsignaturaId);
+        GrupoAsignatura grupoAsignatura = grupoAsignaturaDAO.getGrupoAsignaturaById(
+                grupoAsignaturaId, estudioId);
         grupoAsignatura.planificaGrupoAsignaturaSinAsignar();
         grupoAsignaturaDAO.updateGrupoAsignaturaPlanificado(grupoAsignatura);
 

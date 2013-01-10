@@ -11,7 +11,7 @@ public interface GrupoAsignaturaDAO extends BaseDAO
     List<GrupoAsignatura> getGruposAsignaturasSinAsignar(Long estudioId, Long cursoId,
             Long semestreId, String grupoId, List<Long> calendariosIds);
 
-    GrupoAsignatura getGrupoAsignaturaById(Long grupoAsignaturaId)
+    GrupoAsignatura getGrupoAsignaturaById(Long grupoAsignaturaId, Long estudioId)
             throws RegistroNoEncontradoException;
 
     void updateGrupoAsignaturaPlanificado(GrupoAsignatura grupoAsignatura)

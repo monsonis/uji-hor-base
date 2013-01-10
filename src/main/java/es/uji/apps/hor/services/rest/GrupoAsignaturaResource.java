@@ -66,11 +66,12 @@ public class GrupoAsignaturaResource
     @PUT
     @Path("sinAsignar/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UIEntity> planificaGruposAsignaturasSinAsignar(@PathParam("id") String id)
-            throws RegistroNoEncontradoException
+    public List<UIEntity> planificaGruposAsignaturasSinAsignar(@PathParam("id") String id,
+            @QueryParam("estudioId") String estudioId) throws RegistroNoEncontradoException
     {
-        GrupoAsignatura grupoAsignatura = gruposAsignaturasService.planificaGrupoAsignaturaSinAsignar(Long
-                .parseLong(id));
+        GrupoAsignatura grupoAsignatura = gruposAsignaturasService
+                .planificaGrupoAsignaturaSinAsignar(ParamUtils.parseLong(id),
+                        ParamUtils.parseLong(estudioId));
         return Collections.singletonList(UIEntity.toUI(grupoAsignatura));
     }
 
