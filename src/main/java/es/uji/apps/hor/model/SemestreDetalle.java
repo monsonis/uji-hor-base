@@ -11,7 +11,7 @@ public class SemestreDetalle
     private Date fechaFin = null;
     private Date fechaExamenesInicio = null;
     private Date fechaExamenesFin = null;
-    private Long numeroFemanas;
+    private Long numeroSemanas;
 
     public SemestreDetalle(Long id, Semestre semestre, TipoEstudio tipoEstudio, Date fechaInicio,
             Date fechaFin, Long numeroSemanas)
@@ -22,7 +22,7 @@ public class SemestreDetalle
         this.tipoEstudio = tipoEstudio;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
-        this.numeroFemanas = numeroSemanas;
+        this.numeroSemanas = numeroSemanas;
     }
 
     public SemestreDetalle(Long id, Semestre semestre, TipoEstudio tipoEstudio, Date fechaInicio,
@@ -36,7 +36,11 @@ public class SemestreDetalle
         this.fechaFin = fechaFin;
         this.fechaExamenesInicio = fechaExamenesInicio;
         this.fechaExamenesFin = fechaExamenesFin;
-        this.numeroFemanas = numeroSemanas;
+        this.numeroSemanas = numeroSemanas;
+    }
+    
+    public SemestreDetalle()
+    {  
     }
 
     public Long getId()
@@ -111,12 +115,12 @@ public class SemestreDetalle
 
     public Long getNumeroSemanas()
     {
-        return numeroFemanas;
+        return numeroSemanas;
     }
 
     public void setNumeroSemanas(Long numeroSemanas)
     {
-        this.numeroFemanas = numeroSemanas;
+        this.numeroSemanas = numeroSemanas;
     }
 
 }

@@ -14,8 +14,8 @@ public class RangoHorario
     private Long cursoId;
     private Long semestreId;
     private String grupoId;
-    private Calendar horaInicio = Calendar.getInstance();;
-    private Calendar horaFin = Calendar.getInstance();;
+    private Calendar horaInicio = Calendar.getInstance();
+    private Calendar horaFin = Calendar.getInstance();
 
     public RangoHorario(Long estudioId, Long cursoId, Long semestreId, String grupoId)
     {

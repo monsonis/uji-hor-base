@@ -10,4 +10,6 @@ public interface SemestresDetalleDAO extends BaseDAO
     List<SemestreDetalle> getSemestresDetalleTodos();
 
     List<SemestreDetalle> getSemestresDetallesPorEstudioIdYSemestreId(Long estudioId, Long semestreId);
+    
+    SemestreDetalle insert(SemestreDetalle semestreDetalle);
 }

@@ -42,4 +42,14 @@ public class SemestresDAODatabaseImpl extends BaseDAODatabaseImpl implements Sem
 
         return semestres;
     }
+
+    @Override
+    public Semestre insert(Semestre semestre)
+    {
+        SemestreDTO semestreDTO = new SemestreDTO();
+        semestreDTO.setNombre(semestre.getNombre());
+        semestreDTO = insert(semestreDTO);
+
+        return new Semestre(semestreDTO.getId(), semestreDTO.getNombre());
+    }
 }

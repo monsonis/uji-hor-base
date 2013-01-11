@@ -17,6 +17,10 @@ public class TipoEstudio
         this.nombre = nombre;
     }
 
+    public TipoEstudio()
+    {
+    }
+
     public String getId()
     {
         return id;

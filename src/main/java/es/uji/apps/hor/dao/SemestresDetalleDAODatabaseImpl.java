@@ -92,4 +92,36 @@ public class SemestresDetalleDAODatabaseImpl extends BaseDAODatabaseImpl impleme
         return semestresDetalle;
     }
 
+    private DetalleSemestreDTO convierteSemestreDetalleADetalleSemestreDTO(
+            SemestreDetalle semestreDetalle)
+    {
+        SemestreDTO semestreDTO = new SemestreDTO();
+        semestreDTO.setId(semestreDetalle.getSemestre().getSemestre());
+        semestreDTO.setNombre(semestreDetalle.getSemestre().getNombre());
+
+        TipoEstudioDTO tipoEstudioDTO = new TipoEstudioDTO();
+        tipoEstudioDTO.setId(semestreDetalle.getTipoEstudio().getId());
+        tipoEstudioDTO.setNombre(semestreDetalle.getTipoEstudio().getNombre());
+        tipoEstudioDTO.setOrden(new Long(semestreDetalle.getTipoEstudio().getOrden()));
+
+        DetalleSemestreDTO detalleSemestreDTO = new DetalleSemestreDTO();
+        detalleSemestreDTO.setFechaExamenesFin(semestreDetalle.getFechaExamenesFin());
+        detalleSemestreDTO.setFechaExamenesInicio(semestreDetalle.getFechaExamenesInicio());
+        detalleSemestreDTO.setFechaFin(semestreDetalle.getFechaFin());
+        detalleSemestreDTO.setFechaInicio(semestreDetalle.getFechaInicio());
+        detalleSemestreDTO.setNumeroSemanas(semestreDetalle.getNumeroSemanas());
+        detalleSemestreDTO.setSemestre(semestreDTO);
+        detalleSemestreDTO.setTiposEstudio(tipoEstudioDTO);
+
+        return detalleSemestreDTO;
+    }
+
+    @Override
+    public SemestreDetalle insert(SemestreDetalle semestreDetalle)
+    {
+        DetalleSemestreDTO detalleSemestreDTO = convierteSemestreDetalleADetalleSemestreDTO(semestreDetalle);
+        detalleSemestreDTO = this.insert(detalleSemestreDTO);
+        return convierteDetalleDTOEnDetalleModelo(detalleSemestreDTO);
+    }
+
 }
