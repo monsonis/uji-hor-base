@@ -27,9 +27,16 @@ public class RangoHorarioService
     }
 
     public RangoHorario getHorario(Long estudioId, Long cursoId, Long semestreId, String grupoId)
-            throws RegistroNoEncontradoException
     {
-        return rangoHorarioDAO.getRangoHorario(estudioId, cursoId, semestreId, grupoId);
+        try
+        {
+            return rangoHorarioDAO.getRangoHorario(estudioId, cursoId, semestreId, grupoId);
+        }
+        catch (RegistroNoEncontradoException e)
+        {
+            return RangoHorario.getRangoHorarioPorDefecto(estudioId, cursoId, semestreId, grupoId);
+        }
+
     }
 
     public RangoHorario guardaConfiguracionRangoHorario(Long estudioId, Long cursoId,

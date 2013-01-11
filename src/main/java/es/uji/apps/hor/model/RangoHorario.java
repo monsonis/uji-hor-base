@@ -159,4 +159,29 @@ public class RangoHorario
 
         return rangoHorario;
     }
+
+    private static RangoHorario rangoPorDefecto = null;
+
+    public static RangoHorario getRangoHorarioPorDefecto(Long estudioId, Long cursoId,
+            Long semestreId, String grupoId)
+    {
+        if (rangoPorDefecto == null)
+        {
+            Calendar inicio = Calendar.getInstance();
+            Calendar fin = Calendar.getInstance();
+
+            inicio.set(Calendar.HOUR_OF_DAY, 8);
+            inicio.set(Calendar.MINUTE, 0);
+            inicio.set(Calendar.SECOND, 0);
+
+            fin.set(Calendar.HOUR_OF_DAY, 22);
+            fin.set(Calendar.MINUTE, 0);
+            fin.set(Calendar.SECOND, 0);
+
+            rangoPorDefecto = creaNuevoRangoHorario(estudioId, cursoId, semestreId, grupoId,
+                    inicio.getTime(), fin.getTime());
+        }
+
+        return rangoPorDefecto;
+    }
 }
