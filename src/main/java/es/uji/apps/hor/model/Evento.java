@@ -361,7 +361,7 @@ public class Evento
     {
         for (Asignatura asig : asignaturas)
         {
-            if (asig.getEstudio().getId() == estudioId)
+            if (asig.getEstudio().getId().equals(estudioId))
             {
                 return asig;
             }

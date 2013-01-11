@@ -151,14 +151,15 @@ public class CalendarResource
 
         List<Evento> eventos = new ArrayList<Evento>();
 
+        Long estudioIdComoLong = ParamUtils.parseLong(estudioId);
         if (calendariosList.size() != 0)
         {
-            eventos = eventosService.eventosSemanaGenericaDeUnEstudio(
-                    ParamUtils.parseLong(estudioId), ParamUtils.parseLong(cursoId),
-                    ParamUtils.parseLong(semestreId), grupoId, calendariosList);
+            eventos = eventosService.eventosSemanaGenericaDeUnEstudio(estudioIdComoLong,
+                    ParamUtils.parseLong(cursoId), ParamUtils.parseLong(semestreId), grupoId,
+                    calendariosList);
         }
 
-        return toUI(eventos);
+        return toUI(eventos, estudioIdComoLong);
     }
 
     @GET
@@ -386,43 +387,70 @@ public class CalendarResource
         return Response.ok().build();
     }
 
+    private List<UIEntity> toUI(List<Evento> eventos, Long estudioId)
+    {
+        List<UIEntity> eventosUI = new ArrayList<UIEntity>();
+
+        for (Evento evento : eventos)
+        {
+            UIEntity eventoUI = convierteEventoAUIEntity(evento, estudioId);
+
+            eventosUI.add(eventoUI);
+        }
+
+        return eventosUI;
+    }
+
     private List<UIEntity> toUI(List<Evento> eventos)
     {
         List<UIEntity> eventosUI = new ArrayList<UIEntity>();
 
         for (Evento evento : eventos)
         {
-            UIEntity eventoUI = new UIEntity();
-            eventoUI.put("id", evento.getId());
-            eventoUI.put("cid", evento.getCalendario().getId());
-            eventoUI.put("title", evento.getTitulo());
-            eventoUI.put("notes", evento.getObservaciones());
-            eventoUI.put("repetir_cada", evento.getRepetirCadaSemanas());
-            eventoUI.put("start_date_rep", evento.getDesdeElDia());
-            eventoUI.put("end_date_rep_comp", evento.getHastaElDia());
-            eventoUI.put("end_rep_number_comp", evento.getNumeroIteraciones());
-            eventoUI.put("detalle_manual", evento.hasDetalleManual());
-            eventoUI.put("comunes", evento.tieneComunes());
-
-            if (evento.getAulaPlanificacion() != null)
-            {
-                eventoUI.put("aula_planificacion_id", evento.getAulaPlanificacion().getId());
-            }
-
-            if (evento.getInicio() != null)
-            {
-                eventoUI.put("start", uIEntitydateFormat.format(evento.getInicio()));
-            }
-
-            if (evento.getFin() != null)
-            {
-                eventoUI.put("end", uIEntitydateFormat.format(evento.getFin()));
-            }
+            UIEntity eventoUI = convierteEventoAUIEntity(evento);
 
             eventosUI.add(eventoUI);
         }
 
         return eventosUI;
+    }
+
+    public UIEntity convierteEventoAUIEntity(Evento evento, Long estudioId)
+    {
+        UIEntity entity = convierteEventoAUIEntity(evento);
+        entity.put("title", evento.getDescripcionParaUnEstudio(estudioId));
+        return entity;
+
+    }
+
+    public UIEntity convierteEventoAUIEntity(Evento evento)
+    {
+        UIEntity eventoUI = new UIEntity();
+        eventoUI.put("id", evento.getId());
+        eventoUI.put("cid", evento.getCalendario().getId());
+        eventoUI.put("notes", evento.getObservaciones());
+        eventoUI.put("repetir_cada", evento.getRepetirCadaSemanas());
+        eventoUI.put("start_date_rep", evento.getDesdeElDia());
+        eventoUI.put("end_date_rep_comp", evento.getHastaElDia());
+        eventoUI.put("end_rep_number_comp", evento.getNumeroIteraciones());
+        eventoUI.put("detalle_manual", evento.hasDetalleManual());
+        eventoUI.put("comunes", evento.tieneComunes());
+
+        if (evento.getAulaPlanificacion() != null)
+        {
+            eventoUI.put("aula_planificacion_id", evento.getAulaPlanificacion().getId());
+        }
+
+        if (evento.getInicio() != null)
+        {
+            eventoUI.put("start", uIEntitydateFormat.format(evento.getInicio()));
+        }
+
+        if (evento.getFin() != null)
+        {
+            eventoUI.put("end", uIEntitydateFormat.format(evento.getFin()));
+        }
+        return eventoUI;
     }
 
     private List<UIEntity> rangoHorarioToUI(RangoHorario rangoHorario)
