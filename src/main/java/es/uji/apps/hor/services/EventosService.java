@@ -72,38 +72,48 @@ public class EventosService
 
     private long cantidadEventosDelMismoGrupo(Evento evento)
     {
-        if (evento.getAsignaturas().isEmpty())
-        {
-            return 0;
-        }
 
-        Asignatura unaAsignatura = evento.getAsignaturas().get(0);
-        Long estudioId = unaAsignatura.getEstudio().getId();
-        Long cursoId = unaAsignatura.getCursoId();
-        Long semestreId = evento.getSemestre().getSemestre();
-        String grupoId = evento.getGrupoId();
-        List<Long> calendariosIds = new ArrayList<Long>();
-        calendariosIds.add(evento.getCalendario().getId());
-
-        List<Evento> eventos = eventosDAO.getEventosSemanaGenerica(estudioId, cursoId, semestreId,
-                grupoId, calendariosIds);
-
-        return cuentaEventosDelMismoGrupo(evento, eventos);
+        return getEventosDelMismoGrupo(evento).size();
     }
 
-    private long cuentaEventosDelMismoGrupo(Evento eventoReferencia, List<Evento> eventos)
+    private List<Evento> getEventosDelMismoGrupo(Evento eventoReferencia)
     {
-        long eventosDistintos = 0;
+        List<Evento> eventosDeLaMismaSemana = getEventosDeLaMismaSemanaGenericaQueElEvento(eventoReferencia);
+        return getEventosDelMismoGrupoEnLaLista(eventoReferencia, eventosDeLaMismaSemana);
 
+    }
+
+    private List<Evento> getEventosDeLaMismaSemanaGenericaQueElEvento(Evento eventoReferencia)
+    {
+        if (eventoReferencia.getAsignaturas().isEmpty())
+        {
+            return new ArrayList<Evento>();
+        }
+
+        Asignatura unaAsignatura = eventoReferencia.getAsignaturas().get(0);
+        Long estudioId = unaAsignatura.getEstudio().getId();
+        Long cursoId = unaAsignatura.getCursoId();
+        Long semestreId = eventoReferencia.getSemestre().getSemestre();
+        String grupoId = eventoReferencia.getGrupoId();
+        List<Long> calendariosIds = new ArrayList<Long>();
+        calendariosIds.add(eventoReferencia.getCalendario().getId());
+
+        return eventosDAO.getEventosSemanaGenerica(estudioId, cursoId, semestreId, grupoId,
+                calendariosIds);
+    }
+
+    private List<Evento> getEventosDelMismoGrupoEnLaLista(Evento eventoReferencia,
+            List<Evento> eventos)
+    {
+        List<Evento> eventosDelMismoGrupo = new ArrayList<Evento>();
         for (Evento evento : eventos)
         {
             if (elEventoEsDelMismoGrupo(eventoReferencia, evento))
             {
-                eventosDistintos += 1;
+                eventosDelMismoGrupo.add(evento);
             }
         }
-
-        return eventosDistintos;
+        return eventosDelMismoGrupo;
     }
 
     private boolean elEventoEsDelMismoGrupo(Evento eventoReferencia, Evento evento)
