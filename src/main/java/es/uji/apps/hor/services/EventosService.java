@@ -13,6 +13,7 @@ import es.uji.apps.hor.EventoDetalleSinEventoException;
 import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.dao.AulaDAO;
 import es.uji.apps.hor.dao.EventosDAO;
+import es.uji.apps.hor.model.Asignatura;
 import es.uji.apps.hor.model.AulaPlanificacion;
 import es.uji.apps.hor.model.Evento;
 import es.uji.apps.hor.model.EventoDetalle;
@@ -69,9 +70,58 @@ public class EventosService
         }
     }
 
+    private long cantidadEventosDelMismoGrupo(Evento evento)
+    {
+        if (evento.getAsignaturas().isEmpty())
+        {
+            return 0;
+        }
+
+        Asignatura unaAsignatura = evento.getAsignaturas().get(0);
+        Long estudioId = unaAsignatura.getEstudio().getId();
+        Long cursoId = unaAsignatura.getCursoId();
+        Long semestreId = evento.getSemestre().getSemestre();
+        String grupoId = evento.getGrupoId();
+        List<Long> calendariosIds = new ArrayList<Long>();
+        calendariosIds.add(evento.getCalendario().getId());
+
+        List<Evento> eventos = eventosDAO.getEventosSemanaGenerica(estudioId, cursoId, semestreId,
+                grupoId, calendariosIds);
+
+        return cuentaEventosDelMismoGrupo(evento, eventos);
+    }
+
+    private long cuentaEventosDelMismoGrupo(Evento eventoReferencia, List<Evento> eventos)
+    {
+        long eventosDistintos = 0;
+
+        for (Evento evento : eventos)
+        {
+            if (elEventoEsDelMismoGrupo(eventoReferencia, evento))
+            {
+                eventosDistintos += 1;
+            }
+        }
+
+        return eventosDistintos;
+    }
+
+    private boolean elEventoEsDelMismoGrupo(Evento eventoReferencia, Evento evento)
+    {
+        for (Asignatura asignatura : evento.getAsignaturas())
+        {
+            if (!eventoReferencia.getAsignaturas().contains(asignatura))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     private boolean esElultimoEventoAsignadoDelGrupo(Evento evento)
     {
-        long cantidadEventosDelMismoGrupo = eventosDAO.cantidadEventosDelMismoGrupo(evento);
+        long cantidadEventosDelMismoGrupo = cantidadEventosDelMismoGrupo(evento);
         return cantidadEventosDelMismoGrupo == 1;
     }
 

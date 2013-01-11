@@ -128,7 +128,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         }
 
         asignatura.setNombre(asig.getNombreAsignatura());
-        asignatura.setId(asig.getId());
+        asignatura.setId(asig.getAsignaturaId());
         asignatura.setCursoId(itemDTO.getCursoId());
         asignatura.setCaracter(itemDTO.getCaracter());
         asignatura.setCaracterId(itemDTO.getCaracterId());
@@ -262,81 +262,6 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
     }
 
     @Override
-    public long cantidadEventosDelMismoGrupo(Evento evento)
-    {
-        if (evento.getAsignaturas().isEmpty())
-        {
-            return 0;
-        }
-
-        Asignatura unaAsignatura = evento.getAsignaturas().get(0);
-        Long estudioId = unaAsignatura.getEstudio().getId();
-        Long cursoId = unaAsignatura.getCursoId();
-        Long semestreId = evento.getSemestre().getSemestre();
-        String grupoId = evento.getGrupoId();
-        List<Long> calendariosIds = new ArrayList<Long>();
-        calendariosIds.add(evento.getCalendario().getId());
-
-        List<Evento> eventos = getEventosSemanaGenerica(estudioId, cursoId, semestreId, grupoId,
-                calendariosIds);
-
-        return cuentaEventosDistintosDelMismoGrupo(evento, eventos);
-
-        // JPAQuery query = new JPAQuery(entityManager);
-        // QItemDTO item = QItemDTO.itemDTO;
-        // QItemsAsignaturaDTO asignatura = QItemsAsignaturaDTO.itemsAsignaturaDTO;
-        //
-        // return query
-        // .from(asignatura)
-        // .join(asignatura.item, item)
-        // .where(asignatura.estudioId
-        // .eq(evento.getAsignatura().getEstudio().getId())
-        // .and(item.cursoId.eq(evento.getAsignatura().getCursoId()))
-        // .and(item.semestre.id.eq(evento.getSemestre().getSemestre()))
-        // .and(item.grupoId.eq(evento.getGrupoId()))
-        // .and(asignatura.id.eq(evento.getAsignatura().getId()))
-        // .and(item.subgrupoId.eq(evento.getSubgrupoId()))
-        // .and(item.tipoSubgrupoId.eq(TipoSubgrupo.getTipoSubgrupo(evento
-        // .getCalendario().getId())))).list(item).size();
-        // //
-        // return 1;
-    }
-
-    private long cuentaEventosDistintosDelMismoGrupo(Evento eventoReferencia, List<Evento> eventos)
-    {
-        long eventosDistintos = 0;
-
-        for (Evento evento : eventos)
-        {
-            if (esEventoDistinto(eventoReferencia, evento)
-                    && elEventoEsDelMismoGrupo(eventoReferencia, evento))
-            {
-                eventosDistintos += 1;
-            }
-        }
-
-        return eventosDistintos;
-    }
-
-    private boolean elEventoEsDelMismoGrupo(Evento eventoReferencia, Evento evento)
-    {
-        for (Asignatura asignatura : evento.getAsignaturas())
-        {
-            if (!eventoReferencia.getAsignaturas().contains(asignatura))
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private boolean esEventoDistinto(Evento eventoReferencia, Evento evento)
-    {
-        return eventoReferencia.getId() != evento.getId();
-    }
-
-    @Override
     public void deleteEventoDetalle(EventoDetalle detalle)
     {
         delete(ItemDetalleDTO.class, detalle.getId());
@@ -462,25 +387,22 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             String grupoId, List<Long> calendariosIds, Date rangoFechaInicio, Date rangoFechaFin)
     {
         JPAQuery query = new JPAQuery(entityManager);
-        QItemDTO item = QItemDTO.itemDTO;
-        QItemDetalleDTO itemDetalle = QItemDetalleDTO.itemDetalleDTO;
-        QItemsAsignaturaDTO asignatura = QItemsAsignaturaDTO.itemsAsignaturaDTO;
         List<String> tiposCalendarios = TipoSubgrupo.getTiposSubgrupos(calendariosIds);
 
+        QItemDTO item = QItemDTO.itemDTO;
+        QItemsAsignaturaDTO itemsAsignatura = QItemsAsignaturaDTO.itemsAsignaturaDTO;
+        QItemDetalleDTO itemsDetalle = QItemDetalleDTO.itemDetalleDTO;
+
         List<ItemDetalleDTO> listaItemsDetalleDTO = query
-                .from(asignatura, itemDetalle)
-                .join(asignatura.item, item)
-                .join(itemDetalle.item, item)
-                .fetch()
-                .where(itemDetalle.item.id.eq(item.id).and(
-                        asignatura.estudioId.eq(estudioId).and(
-                                item.cursoId.eq(cursoId).and(item.semestre.id.eq(semestreId))
-                                        .and(itemDetalle.inicio.goe(rangoFechaInicio))
-                                        .and(itemDetalle.fin.loe(rangoFechaFin))
-                                        .and(item.grupoId.eq(grupoId))
-                                        .and(item.diaSemana.isNotNull())
-                                        .and(item.tipoSubgrupoId.in(tiposCalendarios)))))
-                .list(itemDetalle);
+                .from(item)
+                .join(item.itemsAsignaturas, itemsAsignatura)
+                .join(item.itemsDetalles, itemsDetalle)
+                .where(itemsAsignatura.estudioId.eq(estudioId).and(
+                        item.cursoId.eq(cursoId).and(item.semestre.id.eq(semestreId))
+                                .and(itemsDetalle.inicio.goe(rangoFechaInicio))
+                                .and(itemsDetalle.fin.loe(rangoFechaFin))
+                                .and(item.grupoId.eq(grupoId)).and(item.diaSemana.isNotNull())
+                                .and(item.tipoSubgrupoId.in(tiposCalendarios)))).list(itemsDetalle);
 
         List<EventoDetalle> listaEventosDetalle = new ArrayList<EventoDetalle>();
         for (ItemDetalleDTO itemDetalleDTO : listaItemsDetalleDTO)
@@ -596,6 +518,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
     private ItemsAsignaturaDTO creaItemAsignaturaDeAsignatura(ItemDTO itemDTO, Asignatura asignatura)
     {
         ItemsAsignaturaDTO asignaturaDTO = new ItemsAsignaturaDTO();
+        asignaturaDTO.setAsignaturaId(asignatura.getId());
         asignaturaDTO.setNombreAsignatura(asignatura.getNombre());
         asignaturaDTO.setItem(itemDTO);
         asignaturaDTO.setEstudioId(asignatura.getEstudio().getId());

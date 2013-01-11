@@ -28,7 +28,7 @@ public class ItemsAsignaturaDTO implements Serializable
     private String nombreAsignatura;
 
     @Column(name = "ASIGNATURA_ID")
-    private Long asignaturaId;
+    private String asignaturaId;
 
     private String estudio;
 
@@ -93,12 +93,12 @@ public class ItemsAsignaturaDTO implements Serializable
         this.item = item;
     }
 
-    public Long getAsignaturaId()
+    public String getAsignaturaId()
     {
         return asignaturaId;
     }
 
-    public void setAsignaturaId(Long asignaturaId)
+    public void setAsignaturaId(String asignaturaId)
     {
         this.asignaturaId = asignaturaId;
     }

@@ -160,7 +160,7 @@ public abstract class AbstractCalendarResourceTest extends AbstractRestTest
                 .build();
 
         new EventoDetalleBuilder(eventosDao).withEvento(eventoOtraTitulacion)
-                .withInicioFechaString("19/10/2012 13:00").withFinFechaString("11/10/2012 14:00")
+                .withInicioFechaString("19/10/2012 13:00").withFinFechaString("19/10/2012 14:00")
                 .build();
 
     }

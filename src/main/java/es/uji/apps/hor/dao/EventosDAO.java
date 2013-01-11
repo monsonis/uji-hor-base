@@ -41,8 +41,6 @@ public interface EventosDAO extends BaseDAO
     EventoDetalle insertEventoDetalle(EventoDetalle eventoDetalle)
             throws EventoDetalleSinEventoException;
 
-    long cantidadEventosDelMismoGrupo(Evento evento);
-
     void deleteEventoDetalle(EventoDetalle detalle);
 
     List<Evento> getGruposComunesAEvento(Long eventoId);
