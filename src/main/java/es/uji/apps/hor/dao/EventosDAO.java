@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.List;
 
 import es.uji.apps.hor.EventoDetalleSinEventoException;
+import es.uji.apps.hor.db.ItemDTO;
+import es.uji.apps.hor.db.ItemsAsignaturaDTO;
+import es.uji.apps.hor.model.Asignatura;
 import es.uji.apps.hor.model.Evento;
 import es.uji.apps.hor.model.EventoDetalle;
 import es.uji.apps.hor.model.EventoDocencia;
@@ -49,5 +52,7 @@ public interface EventosDAO extends BaseDAO
     Evento updateEvento(Evento evento);
 
     Evento modificaDetallesGrupoAsignatura(Evento evento);
+
+    Asignatura creaAsignaturasDesdeItemAsignaturaDTO(ItemsAsignaturaDTO asig, ItemDTO itemDTO);
 
 }

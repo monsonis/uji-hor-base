@@ -14,6 +14,7 @@ import com.mysema.query.jpa.impl.JPAUpdateClause;
 
 import es.uji.apps.hor.db.DiaSemanaDTO;
 import es.uji.apps.hor.db.ItemDTO;
+import es.uji.apps.hor.db.ItemsAsignaturaDTO;
 import es.uji.apps.hor.db.QDiaSemanaDTO;
 import es.uji.apps.hor.db.QItemDTO;
 import es.uji.apps.hor.db.QItemsAsignaturaDTO;
@@ -72,13 +73,25 @@ public class GrupoAsignaturaDAODatabaseImpl extends BaseDAODatabaseImpl implemen
         Calendario calendario = new Calendario(tipoSubgrupo.getCalendarioAsociado(),
                 tipoSubgrupo.getNombre());
 
-        Asignatura asignatura = eventosDAO.creaAsignaturasDesdeItemDTOParaUnEstudio(itemDTO,
-                estudioId);
+        Asignatura asignatura = asignaturaDelEstudio(itemDTO, estudioId);
 
         grupoAsignatura.setAsignatura(asignatura);
         grupoAsignatura.setCalendario(calendario);
         grupoAsignatura.setSubgrupoId(itemDTO.getSubgrupoId());
         return grupoAsignatura;
+    }
+
+    private Asignatura asignaturaDelEstudio(ItemDTO item, Long estudioId)
+    {
+        for (ItemsAsignaturaDTO asigDTO : item.getAsignaturas())
+        {
+            if (asigDTO.getEstudioId() == estudioId)
+            {
+                return eventosDAO.creaAsignaturasDesdeItemAsignaturaDTO(asigDTO, item);
+
+            }
+        }
+        return null;
     }
 
     @Override
