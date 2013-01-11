@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -114,7 +115,7 @@ public class ItemDTO implements Serializable
     private Set<ItemCircuitoDTO> itemsCircuitos;
 
     // bi-directional many-to-one association to ItemCircuitoDTO
-    @OneToMany(mappedBy = "item", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "item", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<ItemsAsignaturaDTO> itemsAsignaturas = new HashSet<ItemsAsignaturaDTO>();
 
     // bi-directional many-to-one association to ItemDetalleDTO
