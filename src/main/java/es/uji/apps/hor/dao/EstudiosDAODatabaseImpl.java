@@ -11,6 +11,7 @@ import es.uji.apps.hor.db.EstudioDTO;
 import es.uji.apps.hor.db.QEstudioDTO;
 import es.uji.apps.hor.db.TipoEstudioDTO;
 import es.uji.apps.hor.model.Estudio;
+import es.uji.apps.hor.model.TipoEstudio;
 import es.uji.commons.db.BaseDAODatabaseImpl;
 
 @Repository
@@ -53,8 +54,9 @@ public class EstudiosDAODatabaseImpl extends BaseDAODatabaseImpl implements Estu
     private Estudio creaEstudioDesdeEstudioDTO(EstudioDTO estudioDTO)
     {
         Estudio estudio = new Estudio(estudioDTO.getId(), estudioDTO.getNombre());
-        estudio.setTipoEstudio(estudioDTO.getTipoEstudio().getNombre());
-        estudio.setTipoEstudioId(estudioDTO.getTipoEstudio().getId());
+        TipoEstudio tipoEstudio = new TipoEstudio(estudioDTO.getTipoEstudio().getId(), estudioDTO.getTipoEstudio().getNombre());
+        
+        estudio.setTipoEstudio(tipoEstudio);
         estudio.setId(estudioDTO.getId());
         return estudio;
     }
@@ -62,8 +64,8 @@ public class EstudiosDAODatabaseImpl extends BaseDAODatabaseImpl implements Estu
     private EstudioDTO convierteEstudioAEstudioDTO(Estudio estudio)
     {
         TipoEstudioDTO tipoEstudioDTO = new TipoEstudioDTO();
-        tipoEstudioDTO.setId(estudio.getTipoEstudioId());
-        tipoEstudioDTO.setNombre(estudio.getTipoEstudio());
+        tipoEstudioDTO.setId(estudio.getTipoEstudio().getId());
+        tipoEstudioDTO.setNombre(estudio.getTipoEstudio().getNombre());
 
         EstudioDTO estudioDTO = new EstudioDTO();
         estudioDTO.setId(estudio.getId());

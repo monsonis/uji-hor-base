@@ -19,6 +19,7 @@ import es.uji.apps.hor.builders.EstudioBuilder;
 import es.uji.apps.hor.builders.EventoBuilder;
 import es.uji.apps.hor.builders.RangoHorarioBuilder;
 import es.uji.apps.hor.builders.SemestreBuilder;
+import es.uji.apps.hor.builders.TipoEstudioBuilder;
 
 public class RangoHorarioModelTest
 {
@@ -66,8 +67,10 @@ public class RangoHorarioModelTest
 
     private RangoHorario buildRangoHorario(String horaInicio, String horaFin) throws ParseException
     {
-        estudio = new EstudioBuilder().withNombre("Grau en Psicologia").withTipoEstudio("Grau")
-                .withTipoEstudioId("G").build();
+        TipoEstudio tipoEstudio = new TipoEstudioBuilder().withId("G").withNombre("Grau").build();
+
+        estudio = new EstudioBuilder().withNombre("Grau en Psicologia")
+                .withTipoEstudio(tipoEstudio).build();
 
         semestre = new SemestreBuilder().withSemestre(new Long(1)).withNombre("Primer semestre")
                 .build();

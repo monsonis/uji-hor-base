@@ -6,6 +6,10 @@ public class TipoEstudio
     private String nombre;
     private Integer orden = 0;
 
+    public TipoEstudio() {
+        
+    }
+    
     public TipoEstudio(String id, String nombre)
     {
         super();

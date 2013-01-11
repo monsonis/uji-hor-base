@@ -21,6 +21,7 @@ import es.uji.apps.hor.builders.EstudioBuilder;
 import es.uji.apps.hor.builders.EventoBuilder;
 import es.uji.apps.hor.builders.EventoDetalleBuilder;
 import es.uji.apps.hor.builders.SemestreBuilder;
+import es.uji.apps.hor.builders.TipoEstudioBuilder;
 import es.uji.apps.hor.dao.EstudiosDAO;
 import es.uji.apps.hor.dao.EventosDAO;
 import es.uji.apps.hor.model.Asignatura;
@@ -28,6 +29,7 @@ import es.uji.apps.hor.model.Calendario;
 import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.model.Evento;
 import es.uji.apps.hor.model.Semestre;
+import es.uji.apps.hor.model.TipoEstudio;
 import es.uji.apps.hor.model.TipoSubgrupo;
 import es.uji.commons.rest.UIEntity;
 
@@ -58,12 +60,14 @@ public abstract class AbstractCalendarResourceTest extends AbstractRestTest
 
     protected void creaEventosIniciales() throws Exception
     {
+        TipoEstudio tipoEstudio = new TipoEstudioBuilder().withNombre("Grau").withId("G").build();
+        
         Estudio estudio = new EstudioBuilder(estudiosDao).withNombre("Grau en Psicologia")
-                .withTipoEstudio("Grau").withTipoEstudioId("G").build();
+                .withTipoEstudio(tipoEstudio).build();
         estudioId = estudio.getId();
 
         Estudio otroEstudio = new EstudioBuilder(estudiosDao).withNombre("Grau en Informática")
-                .withTipoEstudio("Grau").withTipoEstudioId("G").build();
+                .withTipoEstudio(tipoEstudio).build();
 
         asignaturaFicticia1 = new AsignaturaBuilder().withCaracter("Obligatoria")
                 .withCaracterId("OB").withComun(false).withCursoId(cursoId).withId("PS1026")

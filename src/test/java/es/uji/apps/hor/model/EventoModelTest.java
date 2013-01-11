@@ -16,6 +16,7 @@ import es.uji.apps.hor.builders.CalendarioBuilder;
 import es.uji.apps.hor.builders.EstudioBuilder;
 import es.uji.apps.hor.builders.EventoBuilder;
 import es.uji.apps.hor.builders.SemestreBuilder;
+import es.uji.apps.hor.builders.TipoEstudioBuilder;
 
 public class EventoModelTest
 {
@@ -89,8 +90,10 @@ public class EventoModelTest
 
     private Evento buildEvento(String fechaInicial, String fechaFinal) throws Exception
     {
+        TipoEstudio tipoEstudio = new TipoEstudioBuilder().withId("G").withNombre("Grau").build();
+
         Estudio estudio = new EstudioBuilder().withNombre("Grau en Psicologia")
-                .withTipoEstudio("Grau").withTipoEstudioId("G").build();
+                .withTipoEstudio(tipoEstudio).build();
 
         Asignatura asignatura = new AsignaturaBuilder().withCaracter("Obligatoria")
                 .withCaracterId("OB").withComun(false).withCursoId(new Long(3)).withId("PS1026")

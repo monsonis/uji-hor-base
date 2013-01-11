@@ -1,7 +1,9 @@
 package es.uji.apps.hor.builders;
 
 import es.uji.apps.hor.dao.EstudiosDAO;
+import es.uji.apps.hor.model.Centro;
 import es.uji.apps.hor.model.Estudio;
+import es.uji.apps.hor.model.TipoEstudio;
 
 public class EstudioBuilder
 {
@@ -31,15 +33,27 @@ public class EstudioBuilder
         return this;
     }
 
-    public EstudioBuilder withTipoEstudioId(String tipoEstudioId)
+    public EstudioBuilder withTipoEstudio(TipoEstudio tipoEstudio)
     {
-        estudio.setTipoEstudioId(tipoEstudioId);
+        estudio.setTipoEstudio(tipoEstudio);
         return this;
     }
 
-    public EstudioBuilder withTipoEstudio(String tipoEstudio)
+    public EstudioBuilder withCentro(Centro centro)
     {
-        estudio.setTipoEstudio(tipoEstudio);
+        estudio.setCentro(centro);
+        return this;
+    }
+
+    public EstudioBuilder withOficial(Boolean oficial)
+    {
+        estudio.setOficial(oficial);
+        return this;
+    }
+
+    public EstudioBuilder withNumeroCursos(Integer numeroCursos)
+    {
+        estudio.setNumeroCursos(numeroCursos);
         return this;
     }
 

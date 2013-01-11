@@ -1,9 +1,6 @@
 package es.uji.apps.hor.dao;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Assert;
@@ -14,270 +11,117 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import es.uji.apps.hor.AulaNoAsignadaAEstudioDelEventoException;
-import es.uji.apps.hor.db.AsignaturaComunDTO;
-import es.uji.apps.hor.db.AulaDTO;
-import es.uji.apps.hor.db.AulaPlanificacionDTO;
-import es.uji.apps.hor.db.CentroDTO;
-import es.uji.apps.hor.db.DiaSemanaDTO;
-import es.uji.apps.hor.db.EstudioDTO;
-import es.uji.apps.hor.db.ItemComunDTO;
-import es.uji.apps.hor.db.ItemDTO;
-import es.uji.apps.hor.db.SemestreDTO;
-import es.uji.apps.hor.db.TipoEstudioDTO;
+import es.uji.apps.hor.builders.AsignaturaBuilder;
+import es.uji.apps.hor.builders.CalendarioBuilder;
+import es.uji.apps.hor.builders.CentroBuilder;
+import es.uji.apps.hor.builders.EstudioBuilder;
+import es.uji.apps.hor.builders.EventoBuilder;
+import es.uji.apps.hor.builders.SemestreBuilder;
+import es.uji.apps.hor.builders.TipoEstudioBuilder;
+import es.uji.apps.hor.model.Asignatura;
+import es.uji.apps.hor.model.Calendario;
+import es.uji.apps.hor.model.Centro;
+import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.model.Evento;
-import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
+import es.uji.apps.hor.model.Semestre;
+import es.uji.apps.hor.model.TipoEstudio;
+import es.uji.apps.hor.model.TipoSubgrupo;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@Transactional
-@ContextConfiguration(locations = { "/applicationContext.xml" })
+@ContextConfiguration(locations = { "classpath:applicationContext-test.xml" })
+@TransactionConfiguration(defaultRollback = false)
 public class EventosDAOTest
 {
     @Autowired
+    private CentroDAO centroDAO;
+
+    @Autowired
     private EventosDAO eventosDAO;
 
-    private ItemDTO item;
-    private ItemDTO comun;
+    @Autowired
+    protected EstudiosDAO estudiosDao;
+    
+    @Autowired
+    protected TipoEstudioDAO tipoEstudioDAO;
 
-    private CentroDTO centro;
-    private TipoEstudioDTO tipoEstudio;
-    private EstudioDTO estudio;
-    private DiaSemanaDTO diaSemana;
-    private SemestreDTO semestre;
-    private AulaDTO aula;
-    private AulaPlanificacionDTO aulaPlanificacion;
-    private AsignaturaComunDTO asignaturaComun1;
-    private AsignaturaComunDTO asignaturaComun2;
-    private ItemComunDTO itemComun1;
-    private ItemComunDTO itemComun2;
+
+    private Long estudioId;
+    private List<Long> listaCalendariosId = new ArrayList<Long>();
+
+    protected final Long cursoId = new Long(1);
+    protected final Long semestreId = new Long(1);
+    protected final String grupoId = "A";
 
     @Before
-    public void rellenaItem() throws ParseException
+    @Transactional
+    public void creaDatosIniciales() throws Exception
     {
-        centro = new CentroDTO();
-        centro.setNombre("Centro de prueba");
-        eventosDAO.insert(centro);
 
-        tipoEstudio = new TipoEstudioDTO();
-        tipoEstudio.setId("PR");
-        tipoEstudio.setNombre("Pruebas");
-        eventosDAO.insert(tipoEstudio);
+        Centro centro = new CentroBuilder(centroDAO).withNombre("Centro de prueba").build();
+        TipoEstudio tipoEstudio = new TipoEstudioBuilder(tipoEstudioDAO).withId("PR").withNombre("Pruebas")
+                .build();
+        Estudio estudio = new EstudioBuilder(estudiosDao).withNombre("Estudio de prueba")
+                .withTipoEstudio(tipoEstudio).withCentro(centro).withOficial(true).build();
+        estudioId = estudio.getId();
 
-        estudio = new EstudioDTO();
-        estudio.setNombre("Estudio de prueba");
-        estudio.setTipoEstudio(tipoEstudio);
-        estudio.setCentro(centro);
-        estudio.setOficial(new Long(1));
-        eventosDAO.insert(estudio);
+        Semestre semestre = new SemestreBuilder().withSemestre(semestreId)
+                .withNombre("Primer semestre").build();
 
-        diaSemana = new DiaSemanaDTO();
-        diaSemana.setNombre("Prueba");
-        eventosDAO.insert(diaSemana);
+        Long calendarioPracticasId = TipoSubgrupo.PR.getCalendarioAsociado();
+        Calendario calendarioPR = new CalendarioBuilder().withId(calendarioPracticasId)
+                .withNombre(TipoSubgrupo.getTipoSubgrupo(calendarioPracticasId)).build();
 
-        semestre = new SemestreDTO();
-        semestre.setNombre("Semestre Prueba");
-        eventosDAO.insert(semestre);
+        Long calendarioTeoriaId = TipoSubgrupo.TE.getCalendarioAsociado();
+        Calendario calendarioTE = new CalendarioBuilder().withId(calendarioTeoriaId)
+                .withNombre(TipoSubgrupo.getTipoSubgrupo(calendarioTeoriaId)).build();
 
-        String horaInicioStr = "30/07/2012 9:00";
-        String horaFinStr = "30/07/2012 11:00";
+        listaCalendariosId.add(calendarioPracticasId);
+        listaCalendariosId.add(calendarioTeoriaId);
+        
+        Asignatura asignaturaFicticia1 = new AsignaturaBuilder().withCaracter("Obligatoria")
+                .withCaracterId("OB").withComun(false).withCursoId(cursoId).withId("PS1026")
+                .withNombre("Intervenció Psicosocial").withEstudio(estudio).build();
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        Date horaInicio = sdf.parse(horaInicioStr);
-        Date horaFin = sdf.parse(horaFinStr);
+        Asignatura asignaturaFicticia2 = new AsignaturaBuilder().withCaracter("Obligatoria")
+                .withCaracterId("OB").withComun(false).withCursoId(cursoId).withId("PS1027")
+                .withNombre("Asignatura de Psicologia").withEstudio(estudio).build();
 
-        item = new ItemDTO();
-        // item.setAsignatura("PR1001");
-        // item.setNombreAsignatura("Prueba");
-        item.setCaracter("Troncal");
-        item.setCaracterId("TR");
-        item.setComun(new Long(0));
-        item.setCursoId(new Long(1));
-        item.setDiaSemana(diaSemana);
-        // item.setEstudio(estudio);
-        // item.setEstudioDesc(estudio.getNombre());
-        item.setGrupoId("A");
-        item.setHoraFin(horaFin);
-        item.setHoraInicio(horaInicio);
-        item.setDetalleManual(false);
-        item.setSemestre(semestre);
-        item.setSubgrupoId(new Long(1));
-        item.setTipoSubgrupoId("TU");
-    }
+        new EventoBuilder(eventosDAO).withTitulo("Evento de prueba 1 de asignatura 1")
+                .withAsignatura(asignaturaFicticia1)
+                .withInicioYFinFechaString("10/10/2012 09:00", "10/10/2012 11:00")
+                .withGrupoId(grupoId).withSubgrupoId(new Long(1)).withSemestre(semestre)
+                .withCalendario(calendarioPR).withDetalleManual(false).build();
 
-    private void rellenaItemsComunes(ItemDTO item1, ItemDTO item2)
-    {
-        itemComun1 = new ItemComunDTO();
-        itemComun1.setItem(item1);
-        // itemComun1.setAsignatura(item1.getAsignatura());
-        itemComun1.setItemComun(item2);
-        // itemComun1.setAsignaturaComunId(item2.getAsignatura());
+        new EventoBuilder(eventosDAO).withTitulo("Evento de prueba 2 de asignatura 1")
+                .withAsignatura(asignaturaFicticia1)
+                .withInicioYFinFechaString("10/10/2012 10:00", "10/10/2012 12:00")
+                .withGrupoId(grupoId).withSubgrupoId(new Long(1)).withSemestre(semestre)
+                .withCalendario(calendarioTE).withDetalleManual(false).build();
 
-        itemComun2 = new ItemComunDTO();
-        itemComun2.setItem(item2);
-        // itemComun2.setAsignatura(item2.getAsignatura());
-        itemComun2.setItemComun(item1);
-        // itemComun2.setAsignaturaComunId(item1.getAsignatura());
+        new EventoBuilder(eventosDAO).withTitulo("Evento de prueba 1 de asignatura 2")
+                .withAsignatura(asignaturaFicticia2)
+                .withInicioYFinFechaString("11/10/2012 10:00", "11/10/2012 12:00")
+                .withGrupoId(grupoId).withSubgrupoId(new Long(1)).withSemestre(semestre)
+                .withGrupoId(grupoId).withCalendario(calendarioTE).withDetalleManual(false).build();
+
     }
 
     @Test
+    @Transactional
     public void getEventosSemanaGenericaTest()
     {
-        eventosDAO.insert(item);
+        List<Evento> listaEventos = eventosDAO.getEventosSemanaGenerica(estudioId, cursoId, semestreId, grupoId, listaCalendariosId);
 
-        List<Long> calendarios = new ArrayList<Long>();
-        calendarios.add(new Long(1));
-        calendarios.add(new Long(2));
-        calendarios.add(new Long(3));
-        calendarios.add(new Long(4));
-        calendarios.add(new Long(5));
-
-        List<Evento> listaEventos = eventosDAO.getEventosSemanaGenerica(estudio.getId(),
-                new Long(1), semestre.getId(), "A", calendarios);
         Assert.assertTrue(listaEventos.size() > 0);
     }
 
     @Test
+    @Ignore
     public void getEventosDeUnCursoTest()
     {
-        eventosDAO.insert(item);
-
-        List<Evento> listaEventos = eventosDAO.getEventosDeUnCurso(estudio.getId(), new Long(1),
-                semestre.getId(), "A");
-        Assert.assertTrue(listaEventos.size() > 0);
-    }
-
-    public void rellenaDatosTestsConAulas()
-    {
-        aula = new AulaDTO();
-        aula.setNombre("Aula1000");
-        aula.setCentro(centro);
-        eventosDAO.insert(aula);
-
-        aulaPlanificacion = new AulaPlanificacionDTO();
-        aulaPlanificacion.setNombre("Aula1000-1");
-        aulaPlanificacion.setAula(aula);
-        aulaPlanificacion.setEstudio(estudio);
-        eventosDAO.insert(aulaPlanificacion);
-    }
-
-    public void rellenaDatosItemComun()
-    {
-        asignaturaComun1 = new AsignaturaComunDTO();
-        // asignaturaComun1.setAsignatura(item.getAsignatura());
-        asignaturaComun1.setGrupoComunId(new Long(1));
-        asignaturaComun1.setNombre("PR1001 i Comun");
-        eventosDAO.insert(asignaturaComun1);
-
-        asignaturaComun2 = new AsignaturaComunDTO();
-        asignaturaComun2.setAsignaturaId("Comun");
-        asignaturaComun2.setGrupoComunId(new Long(1));
-        asignaturaComun2.setNombre("PR1001 i Comun");
-        eventosDAO.insert(asignaturaComun2);
-
-        comun = new ItemDTO();
-        // comun.setAsignatura(asignaturaComun2.getAsignaturaId());
-        // comun.setNombreAsignatura(asignaturaComun2.getAsignaturaId());
-        comun.setCaracter(item.getCaracter());
-        comun.setCaracterId(item.getCaracterId());
-        comun.setComun(new Long(1));
-        comun.setCursoId(item.getCursoId());
-        comun.setDiaSemana(item.getDiaSemana());
-        // comun.setEstudio(estudio);
-        // comun.setEstudioDesc(estudio.getNombre());
-        comun.setGrupoId(item.getGrupoId());
-        comun.setHoraFin(item.getHoraFin());
-        comun.setHoraInicio(item.getHoraInicio());
-        comun.setDetalleManual(false);
-        comun.setSemestre(item.getSemestre());
-        comun.setSubgrupoId(item.getSubgrupoId());
-        comun.setTipoSubgrupoId(item.getTipoSubgrupoId());
-    }
-
-    @Test
-    @Ignore
-    public void actualizaAulaPlanificacionEventoConAsignaturasComunesTest()
-            throws RegistroNoEncontradoException, AulaNoAsignadaAEstudioDelEventoException
-    {
-        rellenaDatosTestsConAulas();
-
-        item.setComun(new Long(1));
-        eventosDAO.insert(item);
-
-        rellenaDatosItemComun();
-        eventosDAO.insert(comun);
-
-        rellenaItemsComunes(item, comun);
-        eventosDAO.insert(itemComun1);
-        eventosDAO.insert(itemComun2);
-
-        // eventosDAO.actualizaAulaAsignadaAEvento(item.getId(), aulaPlanificacion.getId(), false);
-        item = eventosDAO.get(ItemDTO.class, item.getId()).get(0);
-
-        Assert.assertEquals(aulaPlanificacion, item.getAulaPlanificacion());
-
-        comun = eventosDAO.get(ItemDTO.class, comun.getId()).get(0);
-
-        Assert.assertEquals(item.getAulaPlanificacion(), comun.getAulaPlanificacion());
-    }
-
-    @Test
-    @Ignore
-    public void desasignaAulaPlanificacionEventoConAsignaturasComunesTest()
-            throws RegistroNoEncontradoException, AulaNoAsignadaAEstudioDelEventoException
-    {
-        rellenaDatosTestsConAulas();
-
-        item.setComun(new Long(1));
-        eventosDAO.insert(item);
-
-        rellenaDatosItemComun();
-        eventosDAO.insert(comun);
-
-        // eventosDAO.actualizaAulaAsignadaAEvento(item.getId(), null, false);
-        item = eventosDAO.get(ItemDTO.class, item.getId()).get(0);
-
-        Assert.assertNull(item.getAulaPlanificacion());
-
-        comun = eventosDAO.get(ItemDTO.class, comun.getId()).get(0);
-        Assert.assertEquals(item.getAulaPlanificacion(), comun.getAulaPlanificacion());
-    }
-
-    @Test
-    @Ignore
-    public void actualizaAulaPlanificacionEventoConGruposComunesTest()
-            throws RegistroNoEncontradoException, AulaNoAsignadaAEstudioDelEventoException
-    {
-        rellenaDatosTestsConAulas();
-
-        ItemDTO grupoComun = new ItemDTO();
-        // grupoComun.setAsignatura(item.getAsignatura());
-        // grupoComun.setNombreAsignatura(item.getNombreAsignatura());
-        grupoComun.setCaracter(item.getCaracter());
-        grupoComun.setCaracterId(item.getCaracterId());
-        grupoComun.setComun(new Long(0));
-        grupoComun.setCursoId(item.getCursoId());
-        grupoComun.setDiaSemana(item.getDiaSemana());
-        grupoComun.setGrupoId(item.getGrupoId());
-        grupoComun.setHoraFin(new Date());
-        grupoComun.setHoraInicio(new Date());
-        grupoComun.setDetalleManual(false);
-        grupoComun.setSemestre(item.getSemestre());
-        grupoComun.setSubgrupoId(item.getSubgrupoId());
-        grupoComun.setTipoSubgrupoId(item.getTipoSubgrupoId());
-
-        eventosDAO.insert(item);
-        eventosDAO.insert(grupoComun);
-
-        // eventosDAO.actualizaAulaAsignadaAEvento(item.getId(), aulaPlanificacion.getId(), true);
-        item = eventosDAO.get(ItemDTO.class, item.getId()).get(0);
-
-        Assert.assertEquals(aulaPlanificacion, item.getAulaPlanificacion());
-
-        grupoComun = eventosDAO.get(ItemDTO.class, grupoComun.getId()).get(0);
-
-        Assert.assertEquals(item.getAulaPlanificacion(), grupoComun.getAulaPlanificacion());
     }
 
 }

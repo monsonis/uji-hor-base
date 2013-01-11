@@ -5,8 +5,10 @@ public class Estudio
 {
     private Long id;
     private String nombre;
-    private String tipoEstudioId;
-    private String tipoEstudio;
+    private TipoEstudio tipoEstudio;
+    private Centro centro;
+    private Boolean oficial;
+    private Integer numeroCursos;
 
     public Estudio(Long id, String nombre)
     {
@@ -37,23 +39,43 @@ public class Estudio
         this.nombre = nombre;
     }
 
-    public String getTipoEstudioId()
-    {
-        return tipoEstudioId;
-    }
-
-    public void setTipoEstudioId(String tipoEstudioId)
-    {
-        this.tipoEstudioId = tipoEstudioId;
-    }
-
-    public String getTipoEstudio()
+    public TipoEstudio getTipoEstudio()
     {
         return tipoEstudio;
     }
 
-    public void setTipoEstudio(String tipoEstudio)
+    public void setTipoEstudio(TipoEstudio tipoEstudio)
     {
         this.tipoEstudio = tipoEstudio;
+    }
+
+    public Centro getCentro()
+    {
+        return centro;
+    }
+
+    public void setCentro(Centro centro)
+    {
+        this.centro = centro;
+    }
+
+    public Boolean getOficial()
+    {
+        return oficial;
+    }
+
+    public void setOficial(Boolean oficial)
+    {
+        this.oficial = oficial;
+    }
+
+    public Integer getNumeroCursos()
+    {
+        return numeroCursos;
+    }
+
+    public void setNumeroCursos(Integer numeroCursos)
+    {
+        this.numeroCursos = numeroCursos;
     }
 }

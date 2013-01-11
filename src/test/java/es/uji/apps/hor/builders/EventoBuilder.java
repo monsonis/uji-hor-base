@@ -8,6 +8,7 @@ import java.util.List;
 import es.uji.apps.hor.DuracionEventoIncorrectaException;
 import es.uji.apps.hor.dao.EventosDAO;
 import es.uji.apps.hor.model.Asignatura;
+import es.uji.apps.hor.model.AulaPlanificacion;
 import es.uji.apps.hor.model.Calendario;
 import es.uji.apps.hor.model.Evento;
 import es.uji.apps.hor.model.Semestre;
@@ -90,6 +91,12 @@ public class EventoBuilder
     public EventoBuilder withDetalleManual(Boolean detalleManual)
     {
         evento.setDetalleManual(detalleManual);
+        return this;
+    }
+
+    public EventoBuilder withAulaPlanficacion(AulaPlanificacion aulaPlanificacion)
+    {
+        evento.setAulaPlanificacion(aulaPlanificacion);
         return this;
     }
 

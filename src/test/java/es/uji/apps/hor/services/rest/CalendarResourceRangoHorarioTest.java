@@ -27,6 +27,7 @@ import es.uji.apps.hor.builders.EstudioBuilder;
 import es.uji.apps.hor.builders.EventoBuilder;
 import es.uji.apps.hor.builders.RangoHorarioBuilder;
 import es.uji.apps.hor.builders.SemestreBuilder;
+import es.uji.apps.hor.builders.TipoEstudioBuilder;
 import es.uji.apps.hor.dao.EstudiosDAO;
 import es.uji.apps.hor.dao.EventosDAO;
 import es.uji.apps.hor.dao.RangoHorarioDAO;
@@ -36,6 +37,7 @@ import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.model.Evento;
 import es.uji.apps.hor.model.RangoHorario;
 import es.uji.apps.hor.model.Semestre;
+import es.uji.apps.hor.model.TipoEstudio;
 import es.uji.apps.hor.model.TipoSubgrupo;
 import es.uji.commons.rest.UIEntity;
 
@@ -65,8 +67,10 @@ public class CalendarResourceRangoHorarioTest extends AbstractRestTest
     @Transactional
     public void creaDatosIniciales() throws ParseException, DuracionEventoIncorrectaException
     {
+        TipoEstudio tipoEstudio = new TipoEstudioBuilder().withId("G").withNombre("Grau").build();
+        
         estudio = new EstudioBuilder(estudiosDAO).withNombre("Grau en Psicologia")
-                .withTipoEstudio("Grau").withTipoEstudioId("G").build();
+                .withTipoEstudio(tipoEstudio).build();
 
         semestre = new SemestreBuilder().withSemestre(new Long(1)).withNombre("Primer semestre")
                 .build();

@@ -209,7 +209,7 @@ public class EventosService
 
         if (propagar)
         {
-            eventos = eventosDAO.getGruposComunesAEvento(eventoId);
+            eventos = getEventosDelMismoGrupo(evento);
             for (Evento grupoComun : eventos)
             {
                 grupoComun.actualizaAulaPlanificacion(aula);

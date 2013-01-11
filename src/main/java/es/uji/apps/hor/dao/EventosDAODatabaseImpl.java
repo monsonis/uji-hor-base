@@ -36,6 +36,7 @@ import es.uji.apps.hor.model.Evento;
 import es.uji.apps.hor.model.EventoDetalle;
 import es.uji.apps.hor.model.EventoDocencia;
 import es.uji.apps.hor.model.Semestre;
+import es.uji.apps.hor.model.TipoEstudio;
 import es.uji.apps.hor.model.TipoSubgrupo;
 import es.uji.commons.db.BaseDAODatabaseImpl;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
@@ -114,10 +115,13 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
     {
 
         Estudio estudio = new Estudio();
+        TipoEstudio tipoEstudio = new TipoEstudio();
+        tipoEstudio.setNombre(itemDTO.getTipoEstudio());
+        tipoEstudio.setId(itemDTO.getTipoEstudioId());
+        
         estudio.setId(asig.getEstudioId());
         estudio.setNombre(asig.getEstudio());
-        estudio.setTipoEstudio(itemDTO.getTipoEstudio());
-        estudio.setTipoEstudioId(itemDTO.getTipoEstudioId());
+        estudio.setTipoEstudio(tipoEstudio);
 
         Asignatura asignatura = new Asignatura();
 
@@ -416,6 +420,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
     }
 
     @Override
+    @Transactional
     public void actualizaAulaAsignadaAEvento(Long eventoId, Long aulaId)
             throws RegistroNoEncontradoException
     {
@@ -563,8 +568,8 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             itemDTO.setTipoAsignaturaId(unaAsignatura.getTipoAsignaturaId());
             itemDTO.setTipoAsignatura(unaAsignatura.getTipoAsignatura());
 
-            itemDTO.setTipoEstudioId(unaAsignatura.getEstudio().getTipoEstudioId());
-            itemDTO.setTipoEstudio(unaAsignatura.getEstudio().getTipoEstudio());
+            itemDTO.setTipoEstudioId(unaAsignatura.getEstudio().getTipoEstudio().getId());
+            itemDTO.setTipoEstudio(unaAsignatura.getEstudio().getTipoEstudio().getNombre());
             itemDTO.setCursoId(unaAsignatura.getCursoId());
             itemDTO.setCaracter(unaAsignatura.getCaracter());
             itemDTO.setCaracterId(unaAsignatura.getCaracterId());
