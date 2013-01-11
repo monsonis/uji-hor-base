@@ -5,12 +5,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.mysema.query.Tuple;
 import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.types.QTuple;
 
 import es.uji.apps.hor.db.QItemDTO;
 import es.uji.apps.hor.db.QItemsAsignaturaDTO;
+import es.uji.apps.hor.db.QSemestreDTO;
+import es.uji.apps.hor.db.SemestreDTO;
 import es.uji.apps.hor.model.Semestre;
 import es.uji.commons.db.BaseDAODatabaseImpl;
 
@@ -22,19 +22,21 @@ public class SemestresDAODatabaseImpl extends BaseDAODatabaseImpl implements Sem
     {
         JPAQuery query = new JPAQuery(entityManager);
 
-        QItemDTO item = QItemDTO.itemDTO;
-        QItemsAsignaturaDTO asignatura = QItemsAsignaturaDTO.itemsAsignaturaDTO;
+        QItemDTO itemDTO = QItemDTO.itemDTO;
+        QItemsAsignaturaDTO asignaturaDTO = QItemsAsignaturaDTO.itemsAsignaturaDTO;
+        QSemestreDTO semestreDTO = QSemestreDTO.semestreDTO;
 
-        List<Tuple> listaSemestresTuples = query.from(asignatura).join(asignatura.item)
-                .where(asignatura.estudioId.eq(estudioId).and(item.cursoId.eq(curso)))
-                .orderBy(item.semestre.id.asc()).listDistinct(new QTuple(item.semestre.id));
+        List<SemestreDTO> listaSemestresTuples = query.from(asignaturaDTO)
+                .join(asignaturaDTO.item, itemDTO).join(itemDTO.semestre, semestreDTO)
+                .where(asignaturaDTO.estudioId.eq(estudioId).and(itemDTO.cursoId.eq(curso)))
+                .orderBy(semestreDTO.id.asc()).listDistinct(semestreDTO);
 
         List<Semestre> semestres = new ArrayList<Semestre>();
 
-        for (Tuple tuple : listaSemestresTuples)
+        for (SemestreDTO sem : listaSemestresTuples)
         {
-            Semestre semestre = new Semestre(tuple.get(item.semestre.id));
-            semestre.setNombre(tuple.get(item.semestre.nombre));
+            Semestre semestre = new Semestre(sem.getId());
+            semestre.setNombre(sem.getNombre());
             semestres.add(semestre);
         }
 
