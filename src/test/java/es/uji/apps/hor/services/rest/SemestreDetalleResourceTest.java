@@ -25,6 +25,7 @@ import es.uji.apps.hor.builders.SemestreDetalleBuilder;
 import es.uji.apps.hor.builders.TipoEstudioBuilder;
 import es.uji.apps.hor.dao.EstudiosDAO;
 import es.uji.apps.hor.dao.SemestresDetalleDAO;
+import es.uji.apps.hor.dao.TipoEstudioDAO;
 import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.model.Semestre;
 import es.uji.apps.hor.model.SemestreDetalle;
@@ -35,26 +36,29 @@ public class SemestreDetalleResourceTest extends AbstractRestTest
 {
     @Autowired
     private SemestresDetalleDAO semestresDetalleDAO;
-    
+
     @Autowired
     private EstudiosDAO estudiosDAO;
-    
+
+    @Autowired
+    TipoEstudioDAO tipoEstudioDAO;
+
     private Long estudioId;
     private Long semestreId;
 
     @Before
     public void creaDatosIniciales()
     {
-        TipoEstudio tipoEstudio = new TipoEstudioBuilder().withNombre("Tipo Estudio Prueba 1")
-                .withOrden(new Integer(1)).build();
+        TipoEstudio tipoEstudio = new TipoEstudioBuilder(tipoEstudioDAO).withNombre("Tipo Estudio Prueba 1")
+                .withOrden(new Integer(1)).withId("Id prueba").build();
 
-        Estudio estudio = new EstudioBuilder(estudiosDAO).withNombre("Estudio 1").withTipoEstudio("Grau")
-                .withTipoEstudioId("G").build();
+        Estudio estudio = new EstudioBuilder(estudiosDAO).withNombre("Estudio 1")
+                .withTipoEstudio(tipoEstudio).build();
         estudioId = estudio.getId();
 
         Semestre semestre1 = new SemestreBuilder().withNombre("Semestre 1").build();
         semestreId = semestre1.getSemestre();
-        
+
         Semestre semestre2 = new SemestreBuilder().withNombre("Semestre 1").build();
 
         SemestreDetalle semestreDetalle1 = new SemestreDetalleBuilder(semestresDetalleDAO)
@@ -85,11 +89,11 @@ public class SemestreDetalleResourceTest extends AbstractRestTest
 
         assertThat(tieneDatosDuplicados(listaSemestres), is(false));
     }
-    
+
     public void elServicioDevuelveLosDetallesDeLosSemestresPorHorarioYSemestre()
     {
         List<UIEntity> listaSemestres = getDetallesSemestrePorEstudio(estudioId, semestreId);
-        
+
         assertThat(listaSemestres, hasSize(2));
     }
 
