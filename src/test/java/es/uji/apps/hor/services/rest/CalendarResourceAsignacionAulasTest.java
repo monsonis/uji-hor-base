@@ -71,7 +71,7 @@ public class CalendarResourceAsignacionAulasTest extends AbstractCalendarResourc
         PlantaEdificio plantaEdificio2 = new PlantaEdificioBuilder().withNombre("2").build();
         TipoAula tipoAula2 = new TipoAulaBuilder().withNombre("2").build();
 
-        Edificio edificio = new EdificioBuilder().withNombre("Edificio 1").build();
+        Edificio edificio = new EdificioBuilder().withNombre("Edificio 1").withCentro(centro).build();
 
         Aula aula1 = new AulaBuilder(aulaDao).withArea(areaEdificio).withCodigo("AUL1")
                 .withEdificio(edificio).withNombre("Aula 1").withPlanta(plantaEdificio)
