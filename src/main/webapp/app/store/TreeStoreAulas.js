@@ -5,6 +5,7 @@ Ext.define('HOR.store.TreeStoreAulas',
     expanded: true,
     sorters: [{property:'text', direction: 'ASC'}],
     folderSort : true,
+    
     proxy :
     {
         type : 'ajax',

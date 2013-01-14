@@ -38,6 +38,17 @@ public class CentroResource
         return UIEntity.toUI(centros);
     }
 
+   
+    @GET
+    @Path("tree")
+    @Produces(MediaType.APPLICATION_JSON)
+    public TreeRowset getCentroRowSet()
+            throws RegistroNoEncontradoException
+    {
+        TreeRowset treeRowSetCentro = new TreeRowset();
+        return treeRowSetCentro;
+    }
+
     @GET
     @Path("{id}/tree")
     @Produces(MediaType.APPLICATION_JSON)
