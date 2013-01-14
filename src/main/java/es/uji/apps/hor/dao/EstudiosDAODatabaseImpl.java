@@ -20,7 +20,11 @@ public class EstudiosDAODatabaseImpl extends BaseDAODatabaseImpl implements Estu
     @Override
     public List<Estudio> getEstudios()
     {
-        List<EstudioDTO> listaEstudios = get(EstudioDTO.class);
+        JPAQuery query = new JPAQuery(entityManager);
+        QEstudioDTO qEstudio = QEstudioDTO.estudioDTO;
+
+        List<EstudioDTO> listaEstudios = query.from(qEstudio).orderBy(qEstudio.nombre.asc())
+                .list(qEstudio);
 
         List<Estudio> estudios = new ArrayList<Estudio>();
 
@@ -39,7 +43,7 @@ public class EstudiosDAODatabaseImpl extends BaseDAODatabaseImpl implements Estu
 
         QEstudioDTO qEstudio = QEstudioDTO.estudioDTO;
 
-        query.from(qEstudio).where(qEstudio.centro.id.eq(centroId));
+        query.from(qEstudio).where(qEstudio.centro.id.eq(centroId)).orderBy(qEstudio.nombre.asc());
 
         List<Estudio> listaEstudios = new ArrayList<Estudio>();
 
@@ -54,8 +58,9 @@ public class EstudiosDAODatabaseImpl extends BaseDAODatabaseImpl implements Estu
     private Estudio creaEstudioDesdeEstudioDTO(EstudioDTO estudioDTO)
     {
         Estudio estudio = new Estudio(estudioDTO.getId(), estudioDTO.getNombre());
-        TipoEstudio tipoEstudio = new TipoEstudio(estudioDTO.getTipoEstudio().getId(), estudioDTO.getTipoEstudio().getNombre());
-        
+        TipoEstudio tipoEstudio = new TipoEstudio(estudioDTO.getTipoEstudio().getId(), estudioDTO
+                .getTipoEstudio().getNombre());
+
         estudio.setTipoEstudio(tipoEstudio);
         estudio.setId(estudioDTO.getId());
         return estudio;
