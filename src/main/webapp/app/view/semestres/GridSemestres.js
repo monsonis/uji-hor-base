@@ -19,28 +19,28 @@ Ext.define('HOR.view.semestres.GridSemestres', {
 		menuDisabled : true
 	}, {
 		text : 'Inicio docencia',
-		dataIndex : 'fecha_inicio',
+		dataIndex : 'fechaInicio',
 		menuDisabled : true,
 		renderer : function(value) {
 			return Ext.Date.format(value, "d/m/Y");
 		}
 	}, {
 		text : 'Fin docencia',
-		dataIndex : 'fecha_fin',
+		dataIndex : 'fechaFin',
 		menuDisabled : true,
 		renderer : function(value) {
 			return Ext.Date.format(value, "d/m/Y");
 		}
 	}, {
 		text : 'Inicio exámenes',
-		dataIndex : 'fecha_examenes_inicio',
+		dataIndex : 'fechaExamenesInicio',
 		menuDisabled : true,
 		renderer : function(value) {
 			return Ext.Date.format(value, "d/m/Y");
 		}
 	}, {
 		text : 'Fin exámenes',
-		dataIndex : 'fecha_examenes_fin',
+		dataIndex : 'fechaExamenesFin',
 		menuDisabled : true,
 		renderer : function(value) {
 			return Ext.Date.format(value, "d/m/Y");

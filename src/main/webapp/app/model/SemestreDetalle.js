@@ -4,13 +4,13 @@ Ext.define('HOR.model.SemestreDetalle',
 
     
     fields : [ 'id', 
-               {name: 'fecha_fin', type : 'date', dateFormat : 'd/m/Y H:i:s' },               
-               'tipo_estudioId', 
+               {name: 'fechaFin', type : 'date', dateFormat : 'd/m/Y H:i:s' },               
+               'tipoEstudioId', 
                'nombreSemestre', 
                'nombreTipoEstudio', 
-               'numero_semanas', 
-               {name: 'fecha_inicio', type : 'date', dateFormat : 'd/m/Y H:i:s' },
-               {name: 'fecha_examenes_fin', type : 'date', dateFormat : 'd/m/Y H:i:s' },
-               {name: 'fecha_examenes_inicio', type : 'date', dateFormat : 'd/m/Y H:i:s' }
+               'numeroSemanas', 
+               {name: 'fechaInicio', type : 'date', dateFormat : 'd/m/Y H:i:s' },
+               {name: 'fechaExamenesFin', type : 'date', dateFormat : 'd/m/Y H:i:s' },
+               {name: 'fechaExamenesInicio', type : 'date', dateFormat : 'd/m/Y H:i:s' }
      		]
 });
