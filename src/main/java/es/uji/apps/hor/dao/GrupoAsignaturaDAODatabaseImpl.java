@@ -85,10 +85,9 @@ public class GrupoAsignaturaDAODatabaseImpl extends BaseDAODatabaseImpl implemen
     {
         for (ItemsAsignaturaDTO asigDTO : item.getAsignaturas())
         {
-            if (asigDTO.getEstudioId() == estudioId)
+            if (asigDTO.getEstudioId().equals(estudioId))
             {
                 return eventosDAO.creaAsignaturasDesdeItemAsignaturaDTO(asigDTO, item);
-
             }
         }
         return null;
