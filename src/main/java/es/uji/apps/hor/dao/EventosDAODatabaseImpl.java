@@ -677,32 +677,4 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
 
         return eventoDetalle;
     }
-
-    @Override
-    public List<Evento> getGruposComunesAEvento(Long eventoId)
-    {
-        ItemDTO item = get(ItemDTO.class, eventoId).get(0);
-
-        JPAQuery query = new JPAQuery(entityManager);
-        QItemDTO qItem = QItemDTO.itemDTO;
-        List<ItemDTO> items = query
-                .from(qItem)
-                .where(qItem.id
-                        .ne(item.getId())
-                        // .and(qItem.asignaturaId.eq(item.getAsignatura()))
-                        // .and(qItem.estudio.id.eq(item.getEstudio().getId()))
-                        .and(qItem.cursoId.eq(item.getCursoId()))
-                        .and(qItem.semestre.id.eq(item.getSemestre().getId()))
-                        .and(qItem.grupoId.eq(item.getGrupoId()))
-                        .and(qItem.tipoSubgrupoId.eq(item.getTipoSubgrupoId()))
-                        .and(qItem.subgrupoId.eq(item.getSubgrupoId()))).list(qItem);
-
-        List<Evento> eventos = new ArrayList<Evento>();
-        for (ItemDTO itemDTO : items)
-        {
-            eventos.add(creaEventoDesdeItemDTO(itemDTO));
-        }
-
-        return eventos;
-    }
 }
