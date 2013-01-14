@@ -42,16 +42,13 @@ Ext.define('HOR.controller.ControllerFiltroCalendario',
         });
     },
 
-    onTitulacionSelected : function(combo, records)
-    {
-        this.getFiltroGrupos().down('combobox[name=curso]').clearValue();
-        this.getFiltroGrupos().down('combobox[name=semestre]').clearValue();
+    limpiaCamposComunes: function() {
         this.getFiltroGrupos().down('combobox[name=grupo]').clearValue();
         this.getFiltroGrupos().down('button[name=intervaloHorario]').hide();
         this.getFiltroGrupos().down('button[name=calendarioDetalle]').hide();
         this.getFiltroGrupos().down('button[name=calendarioGenerica]').hide();
         this.getFiltroGrupos().down('button[name=imprimir]').hide();
-
+        
         if (this.getPanelCalendario()) {
             this.getPanelCalendario().limpiaCalendario();
         }
@@ -59,12 +56,17 @@ Ext.define('HOR.controller.ControllerFiltroCalendario',
         if (this.getPanelCalendarioDetalle()) {
             this.getPanelCalendarioDetalle().limpiaCalendario();
         }
-        
+
         this.getSelectorGrupos().limpiaGrupos();
-
-        this.getStoreSemestresStore().removeAll();
-        this.getStoreGruposStore().removeAll();
-
+        
+    },
+    
+    onTitulacionSelected : function(combo, records)
+    {
+        this.getFiltroGrupos().down('combobox[name=curso]').clearValue();
+        this.getFiltroGrupos().down('combobox[name=semestre]').clearValue();
+        this.limpiaCamposComunes();
+        
         var store = this.getStoreCursosStore();
 
         store.load(
@@ -82,22 +84,7 @@ Ext.define('HOR.controller.ControllerFiltroCalendario',
     onCursoSelected : function(combo, records)
     {
         this.getFiltroGrupos().down('combobox[name=semestre]').clearValue();
-        this.getFiltroGrupos().down('combobox[name=grupo]').clearValue();
-        this.getFiltroGrupos().down('button[name=intervaloHorario]').hide();
-        this.getFiltroGrupos().down('button[name=calendarioDetalle]').hide();
-        this.getFiltroGrupos().down('button[name=calendarioGenerica]').hide();
-        this.getFiltroGrupos().down('button[name=imprimir]').hide();
-
-        if (this.getPanelCalendario()) {
-            this.getPanelCalendario().limpiaCalendario();
-        }
-        
-        if (this.getPanelCalendarioDetalle()) {
-            this.getPanelCalendarioDetalle().limpiaCalendario();
-        }
-
-        this.getSelectorGrupos().limpiaGrupos();
-
+        this.limpiaCamposComunes();
         this.getStoreGruposStore().removeAll();
 
         var estudio = this.getFiltroGrupos().down('combobox[name=estudio]').getValue();
@@ -119,25 +106,13 @@ Ext.define('HOR.controller.ControllerFiltroCalendario',
 
     onSemestreSelected : function(combo, records)
     {
-        this.getFiltroGrupos().down('combobox[name=grupo]').clearValue();
-        this.getFiltroGrupos().down('button[name=intervaloHorario]').hide();
-        this.getFiltroGrupos().down('button[name=calendarioDetalle]').hide();
-        this.getFiltroGrupos().down('button[name=calendarioGenerica]').hide();
-        this.getFiltroGrupos().down('button[name=imprimir]').hide();
+        this.limpiaCamposComunes();
         
-        if (this.getPanelCalendario()) {
-            this.getPanelCalendario().limpiaCalendario();
-        }
-        
-        if (this.getPanelCalendarioDetalle()) {
-            this.getPanelCalendarioDetalle().limpiaCalendario();
-        }
-
-        this.getSelectorGrupos().limpiaGrupos();
+        this.getStoreSemestresStore().removeAll();
+        this.getStoreGruposStore().removeAll();
 
         var estudio = this.getFiltroGrupos().down('combobox[name=estudio]').getValue();
         var curso = this.getFiltroGrupos().down('combobox[name=curso]').getValue();
-
         var store = this.getStoreGruposStore();
 
         store.load(
