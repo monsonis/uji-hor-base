@@ -434,10 +434,10 @@ public class CalendarResource
         eventoUI.put("end_date_rep_comp", evento.getHastaElDia());
         eventoUI.put("end_rep_number_comp", evento.getNumeroIteraciones());
         eventoUI.put("detalle_manual", evento.hasDetalleManual());
-        
+
         if (estudioId != null && evento.tieneComunes())
         {
-           eventoUI.put("comunes", evento.getAsignaturasComunes(estudioId));
+            eventoUI.put("comunes", evento.getAsignaturasComunes(estudioId));
         }
 
         if (evento.getAulaPlanificacion() != null)
@@ -509,23 +509,34 @@ public class CalendarResource
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> actualizaAulaAsignadaAEvento(@PathParam(ID_PATH_PARAM) String eventoId,
             @FormParam(AULA_ID_FORM_PARAM) String aulaId,
-            @FormParam(TIPO_ACCION_FORM_PARAM) String tipoAccion)
+            @FormParam(TIPO_ACCION_FORM_PARAM) String tipoAccion,
+            @QueryParam(ESTUDIO_ID_QUERY_PARAM) String estudioId)
             throws RegistroNoEncontradoException, AulaNoAsignadaAEstudioDelEventoException
     {
         boolean propagar = tipoAccion.equals("T");
         Long aula;
+        Long estudio;
         try
         {
             aula = Long.parseLong(aulaId);
+
         }
         catch (Exception e)
         {
             aula = null;
         }
+        try
+        {
+            estudio = Long.parseLong(estudioId);
+        }
+        catch (Exception e)
+        {
+            estudio = null;
+        }
 
         List<Evento> eventos = eventosService.actualizaAulaAsignadaAEvento(
                 Long.parseLong(eventoId), aula, propagar);
 
-        return toUI(eventos);
+        return toUI(eventos, estudio);
     }
 }

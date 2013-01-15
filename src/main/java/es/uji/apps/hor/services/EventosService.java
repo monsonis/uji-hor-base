@@ -201,9 +201,13 @@ public class EventosService
             throws RegistroNoEncontradoException, AulaNoAsignadaAEstudioDelEventoException
     {
         Evento evento = eventosDAO.getEventoById(eventoId);
-        AulaPlanificacion aula = aulaDAO.getAulaById(aulaId);
-        evento.actualizaAulaPlanificacion(aula);
-        eventosDAO.actualizaAulaAsignadaAEvento(eventoId, aulaId);
+        AulaPlanificacion aula = null;
+
+        if (aulaId != null)
+        {
+            aula = aulaDAO.getAulaById(aulaId);
+        }      
+        actualizaAulaPlanificacion(evento, aula);
 
         List<Evento> eventos = new ArrayList<Evento>();
 
@@ -212,12 +216,26 @@ public class EventosService
             eventos = getEventosDelMismoGrupo(evento);
             for (Evento grupoComun : eventos)
             {
-                grupoComun.actualizaAulaPlanificacion(aula);
-                eventosDAO.actualizaAulaAsignadaAEvento(grupoComun.getId(), aulaId);
+                actualizaAulaPlanificacion(grupoComun, aula);
             }
         }
         eventos.add(evento);
 
         return eventos;
+    }
+
+    private void actualizaAulaPlanificacion(Evento evento, AulaPlanificacion aula)
+            throws AulaNoAsignadaAEstudioDelEventoException, RegistroNoEncontradoException
+    {
+        if (aula != null)
+        {
+            evento.actualizaAulaPlanificacion(aula);
+            eventosDAO.actualizaAulaAsignadaAEvento(evento.getId(), aula.getId());
+        }
+        else
+        {
+            evento.desasignaAulaPlanificacion();
+            eventosDAO.desasignaAulaPlanificacion(evento.getId());
+        }
     }
 }

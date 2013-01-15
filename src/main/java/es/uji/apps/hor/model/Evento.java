@@ -474,6 +474,11 @@ public class Evento
         this.aulaPlanificacion = aulaPlanificacion;
     }
 
+    public void desasignaAulaPlanificacion()
+    {
+        aulaPlanificacion = null;
+    }
+
     private boolean aulaAsignadaAAlgunEstudioDelEvento(AulaPlanificacion aula)
     {
 
@@ -481,7 +486,7 @@ public class Evento
 
         for (Asignatura asignatura : asignaturas)
         {
-            if (asignatura.getEstudio().getId() == estudioIdDelAula)
+            if (asignatura.getEstudio().getId().equals(estudioIdDelAula))
             {
                 return true;
             }

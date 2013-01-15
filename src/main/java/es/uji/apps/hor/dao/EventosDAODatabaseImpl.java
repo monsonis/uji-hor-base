@@ -118,7 +118,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         TipoEstudio tipoEstudio = new TipoEstudio();
         tipoEstudio.setNombre(itemDTO.getTipoEstudio());
         tipoEstudio.setId(itemDTO.getTipoEstudioId());
-        
+
         estudio.setId(asig.getEstudioId());
         estudio.setNombre(asig.getEstudio());
         estudio.setTipoEstudio(tipoEstudio);
@@ -677,5 +677,25 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         }
 
         return eventoDetalle;
+    }
+
+    @Override
+    public void desasignaAulaPlanificacion(Long eventoId) throws RegistroNoEncontradoException
+    {
+        ItemDTO item;
+
+        try
+        {
+            item = get(ItemDTO.class, eventoId).get(0);
+        }
+        catch (Exception e)
+        {
+            throw new RegistroNoEncontradoException();
+        }
+
+        item.setAulaPlanificacion(null);
+        item.setAulaPlanificacionNombre("");
+
+        update(item);
     }
 }

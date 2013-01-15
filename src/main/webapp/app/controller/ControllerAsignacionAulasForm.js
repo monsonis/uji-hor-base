@@ -156,10 +156,11 @@ Ext.define('HOR.controller.ControllerAsignacionAulasForm',
         var eventoId = formulario.down('hiddenfield[name=eventId]').getValue();
         var aulaId = formulario.down('combobox[name=aulaPlanificacion]').getValue();
         var tipoAccion = formulario.down('combobox[name=tipoAccion]').getValue();
+        var estudioId = Ext.ComponentQuery.query('panelHorarios filtroGrupos combobox[name=estudio]')[0].getValue();
 
         Ext.Ajax.request(
         {
-            url : '/hor/rest/calendario/eventos/aula/evento/' + eventoId,
+            url : '/hor/rest/calendario/eventos/aula/evento/' + eventoId + "?estudioId=" + estudioId,
             method : 'PUT',
             params :
             {
