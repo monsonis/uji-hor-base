@@ -494,4 +494,25 @@ public class Evento
         getEventosDetalle().clear();
     }
 
+    public String getAsignaturasComunes(Long estudioId)
+    {
+        if (!tieneComunes())
+        {
+            return "";
+        }
+
+        String comunes = "";
+
+        for (Asignatura asignatura : asignaturas)
+        {
+            if (!asignatura.getEstudio().getId().equals(estudioId))
+            {
+                comunes = comunes + ", " + asignatura.getId();
+            }
+        }
+
+        comunes = comunes.substring(2);
+        return comunes;
+    }
+
 }

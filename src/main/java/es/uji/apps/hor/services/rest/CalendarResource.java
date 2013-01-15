@@ -393,7 +393,7 @@ public class CalendarResource
 
         for (Evento evento : eventos)
         {
-            UIEntity eventoUI = convierteEventoAUIEntity(evento, estudioId);
+            UIEntity eventoUI = convierteEventoAUIEntityConTitulo(evento, estudioId);
 
             eventosUI.add(eventoUI);
         }
@@ -407,7 +407,7 @@ public class CalendarResource
 
         for (Evento evento : eventos)
         {
-            UIEntity eventoUI = convierteEventoAUIEntity(evento);
+            UIEntity eventoUI = convierteEventoAUIEntity(evento, null);
 
             eventosUI.add(eventoUI);
         }
@@ -415,15 +415,15 @@ public class CalendarResource
         return eventosUI;
     }
 
-    public UIEntity convierteEventoAUIEntity(Evento evento, Long estudioId)
+    public UIEntity convierteEventoAUIEntityConTitulo(Evento evento, Long estudioId)
     {
-        UIEntity entity = convierteEventoAUIEntity(evento);
+        UIEntity entity = convierteEventoAUIEntity(evento, estudioId);
         entity.put("title", evento.getDescripcionParaUnEstudio(estudioId));
         return entity;
 
     }
 
-    public UIEntity convierteEventoAUIEntity(Evento evento)
+    public UIEntity convierteEventoAUIEntity(Evento evento, Long estudioId)
     {
         UIEntity eventoUI = new UIEntity();
         eventoUI.put("id", evento.getId());
@@ -434,7 +434,11 @@ public class CalendarResource
         eventoUI.put("end_date_rep_comp", evento.getHastaElDia());
         eventoUI.put("end_rep_number_comp", evento.getNumeroIteraciones());
         eventoUI.put("detalle_manual", evento.hasDetalleManual());
-        eventoUI.put("comunes", evento.tieneComunes());
+        
+        if (estudioId != null && evento.tieneComunes())
+        {
+           eventoUI.put("comunes", evento.getAsignaturasComunes(estudioId));
+        }
 
         if (evento.getAulaPlanificacion() != null)
         {
