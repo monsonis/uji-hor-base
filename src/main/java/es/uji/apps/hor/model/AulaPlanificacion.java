@@ -18,6 +18,8 @@ public class AulaPlanificacion
 
     private String planta;
 
+    private String codigo;
+
     public Long getId()
     {
         return id;
@@ -96,6 +98,16 @@ public class AulaPlanificacion
     public void setPlanta(String planta)
     {
         this.planta = planta;
+    }
+
+    public String getCodigo()
+    {
+        return codigo == null ? "" : codigo;
+    }
+
+    public void setCodigo(String codigo)
+    {
+        this.codigo = codigo;
     }
 
 }

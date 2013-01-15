@@ -175,6 +175,7 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         aulaPlanificacion.setEdificio(aulaPlanificacionDTO.getAula().getEdificio());
         aulaPlanificacion.setTipo(aulaPlanificacionDTO.getAula().getTipo());
         aulaPlanificacion.setPlanta(aulaPlanificacionDTO.getAula().getPlanta());
+        aulaPlanificacion.setCodigo(aulaPlanificacionDTO.getAula().getCodigo());
 
         return aulaPlanificacion;
     }

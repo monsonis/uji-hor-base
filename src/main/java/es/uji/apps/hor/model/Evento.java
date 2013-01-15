@@ -97,7 +97,7 @@ public class Evento
 
         if (getAulaPlanificacion() != null)
         {
-            texto = MessageFormat.format("{0} {1}", texto, getAulaPlanificacion().getNombre());
+            texto = MessageFormat.format("{0} {1}", texto, getAulaPlanificacion().getCodigo());
         }
 
         return texto;
