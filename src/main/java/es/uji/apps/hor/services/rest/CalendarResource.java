@@ -219,7 +219,7 @@ public class CalendarResource
         {
             UIEntity eventoUI = new UIEntity();
             eventoUI.put("id", eventoDetalle.getId());
-            eventoUI.put("title", eventoDetalle.getEvento().getDescripcionParaUnEstudio(estudioId));
+            eventoUI.put("title", eventoDetalle.getEvento().getAulaPlanificacion().getCodigo());
             eventoUI.put("cid", eventoDetalle.getEvento().getCalendario().getId());
 
             if (eventoDetalle.getInicio() != null)
