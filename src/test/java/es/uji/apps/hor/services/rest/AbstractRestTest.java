@@ -13,6 +13,7 @@ import org.springframework.web.util.Log4jConfigListener;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.client.filter.LoggingFilter;
 import com.sun.jersey.spi.spring.container.servlet.SpringServlet;
 import com.sun.jersey.test.framework.JerseyTest;
 import com.sun.jersey.test.framework.WebAppDescriptor;
@@ -48,11 +49,14 @@ public abstract class AbstractRestTest extends JerseyTest
                         "es.uji.commons.rest; " + packageName).build());
 
         this.resource = resource();
+        
+        this.client().addFilter(new LoggingFilter());
     }
 
     private static ClientConfig createClientConfig()
     {
         ClientConfig config = new DefaultClientConfig();
+        config.getClasses().add(JsonProvider.class);
         config.getClasses().add(UIEntityJSONMessageBodyReader.class);
         config.getClasses().add(UIEntityListJSONMessageBodyReader.class);
         config.getClasses().add(UIEntityJSONMessageBodyWriter.class);
