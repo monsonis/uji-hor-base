@@ -196,7 +196,7 @@ Ext.define('HOR.controller.ControllerCalendario',
                             success : function(response)
                             {
                                 var jsonResp = Ext.decode(response.responseText);
-                                var cadenaFechaInicio = jsonResp.data[0].fecha_inicio;
+                                var cadenaFechaInicio = jsonResp.data[0].fechaInicio;
                                 var inicio = Ext.Date.parse(cadenaFechaInicio, 'd/m/Y H:i:s', true);
                                 var fin = new Date();
                                 fin.setDate(inicio.getDate() + 7);

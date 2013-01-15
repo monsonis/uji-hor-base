@@ -208,10 +208,10 @@ public class CalendarResource
                     rangoFechaFin);
         }
 
-        return eventosDetalletoUI(eventosDetalle);
+        return eventosDetalletoUI(eventosDetalle, Long.parseLong(estudioId));
     }
 
-    private List<UIEntity> eventosDetalletoUI(List<EventoDetalle> eventosDetalle)
+    private List<UIEntity> eventosDetalletoUI(List<EventoDetalle> eventosDetalle, Long estudioId)
     {
         List<UIEntity> eventosUI = new ArrayList<UIEntity>();
 
@@ -219,7 +219,7 @@ public class CalendarResource
         {
             UIEntity eventoUI = new UIEntity();
             eventoUI.put("id", eventoDetalle.getId());
-            eventoUI.put("title", eventoDetalle.getDescripcion());
+            eventoUI.put("title", eventoDetalle.getEvento().getDescripcionParaUnEstudio(estudioId));
             eventoUI.put("cid", eventoDetalle.getEvento().getCalendario().getId());
 
             if (eventoDetalle.getInicio() != null)

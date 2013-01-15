@@ -189,7 +189,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         {
             AulaPlanificacion aulaPlanificacion = new AulaPlanificacion();
             aulaPlanificacion.setId(itemDTO.getAulaPlanificacion().getId());
-            aulaPlanificacion.setNombre(itemDTO.getAulaPlanificacionNombre());
+            aulaPlanificacion.setNombre(itemDTO.getAulaPlanificacion().getNombre());
             evento.setAulaPlanificacion(aulaPlanificacion);
         }
 
