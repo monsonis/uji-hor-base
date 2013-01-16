@@ -82,22 +82,6 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         return eventos;
     }
 
-    // private List<EventoDetalle> getEventosDetalle(Evento evento)
-    // {
-    // JPAQuery query = new JPAQuery(entityManager);
-    // QItemDetalleDTO qItemDetalleDTO = QItemDetalleDTO.itemDetalleDTO;
-    //
-    // query.from(qItemDetalleDTO).where(qItemDetalleDTO.item.id.eq(evento.getId()));
-    //
-    // List<EventoDetalle> listaEventosDetalle = new ArrayList<EventoDetalle>();
-    //
-    // for (ItemDetalleDTO itemDetalleDTO : query.list(qItemDetalleDTO))
-    // {
-    // listaEventosDetalle.add(creaEventoDetalleDesdeItemDetalleDTO(itemDetalleDTO));
-    // }
-    // return listaEventosDetalle;
-    // }
-
     private EventoDetalle creaEventoDetalleDesdeItemDetalleDTO(ItemDetalleDTO itemDetalleDTO)
     {
         EventoDetalle eventoDetalle = new EventoDetalle();
@@ -507,8 +491,6 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         }
 
         return creaEventoDesdeItemDTO(itemDTO);
-        // return creaEventoConAsignaturaDesdeItemDTO(itemDTO, evento.getAsignatura().getEstudio()
-        // .getId());
 
     }
 
@@ -559,12 +541,8 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         semestreDTO.setId(evento.getSemestre().getSemestre());
         semestreDTO.setNombre(evento.getSemestre().getNombre());
 
-        // itemDTO.setNombreAsignatura(evento.getAsignatura().getNombre());
-        // itemDTO.setAsignatura(evento.getAsignatura().getId());
         itemDTO.setPlazas(evento.getPlazas());
         itemDTO.setComun(evento.tieneComunes() ? new Long(1) : new Long(0));
-        // itemDTO.setComunes(evento.getAsignatura().getComunes());
-
         if (!evento.getAsignaturas().isEmpty())
         {
             Asignatura unaAsignatura = evento.getAsignaturas().get(0);
