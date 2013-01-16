@@ -10,6 +10,7 @@ import java.util.List;
 import javax.ws.rs.core.MediaType;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -83,6 +84,7 @@ public class CentroResourceTest extends AbstractRestTest
 
     @Test
     @Transactional
+    @Ignore
     public void recuperaUnaEstructuraDeCentroEnModoTreeRowSet()
     {
         ClientResponse response = resource

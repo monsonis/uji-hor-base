@@ -56,10 +56,10 @@ public abstract class AbstractRestTest extends JerseyTest
     private static ClientConfig createClientConfig()
     {
         ClientConfig config = new DefaultClientConfig();
-        config.getClasses().add(JsonProvider.class);
         config.getClasses().add(UIEntityJSONMessageBodyReader.class);
         config.getClasses().add(UIEntityListJSONMessageBodyReader.class);
         config.getClasses().add(UIEntityJSONMessageBodyWriter.class);
+        //config.getClasses().add(JsonProvider.class);
 
         return config;
     }

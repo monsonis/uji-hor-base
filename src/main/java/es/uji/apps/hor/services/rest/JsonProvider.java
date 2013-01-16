@@ -7,6 +7,7 @@ import javax.ws.rs.ext.Provider;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 
 @Provider
@@ -19,6 +20,7 @@ public class JsonProvider extends JacksonJaxbJsonProvider
         super();
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+        //mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         setMapper(mapper);
     }
 }
