@@ -133,7 +133,24 @@ public class CalendarResourceTest extends AbstractCalendarResourceTest
         List<UIEntity> lista_eventos = getListaEventosGenericos();
 
         assertThat(lista_eventos, everyItem(hasTitle()));
+        assertThat(evento1TieneTituloEsperado(lista_eventos), is(true));
 
+    }
+
+    private boolean evento1TieneTituloEsperado(List<UIEntity> lista_eventos)
+    {
+        String tituloEsperado = "PS1026 PR1";
+
+        for (UIEntity entity : lista_eventos)
+        {
+            String id = entity.get("id").replace("\"", "");
+            if (id.equals("1"))
+            {
+                String title = entity.get("title").replace("\"", "");
+                return title.equals(tituloEsperado);
+            }
+        }
+        return false;
     }
 
     @Test
