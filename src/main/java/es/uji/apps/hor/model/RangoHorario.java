@@ -8,7 +8,15 @@ import es.uji.apps.hor.RangoHorarioFueradeLimites;
 
 public class RangoHorario
 {
+    private static final int HORA_INICIO_RANGO_DEFECTO = 8;
+    private static final int MINUTO_INICIO_RANGO_DEFECTO = 0;
+    private static final int SEGUNDO_INICIO_RANGO_DEFECTO = 0;
+    private static final int HORA_FIN_RANGO_DEFECTO = 22;
+    private static final int MINUTO_FIN_RANGO_DEFECTO = 0;
+    private static final int SEGUNDO_FIN_RANGO_DEFECTO = 0;
+
     private static final int MINUTOS_EN_UNA_HORA = 60;
+
     private Long id;
     private Long estudioId;
     private Long cursoId;
@@ -170,13 +178,13 @@ public class RangoHorario
             Calendar inicio = Calendar.getInstance();
             Calendar fin = Calendar.getInstance();
 
-            inicio.set(Calendar.HOUR_OF_DAY, 8);
-            inicio.set(Calendar.MINUTE, 0);
-            inicio.set(Calendar.SECOND, 0);
+            inicio.set(Calendar.HOUR_OF_DAY, HORA_INICIO_RANGO_DEFECTO);
+            inicio.set(Calendar.MINUTE, MINUTO_INICIO_RANGO_DEFECTO);
+            inicio.set(Calendar.SECOND, SEGUNDO_INICIO_RANGO_DEFECTO);
 
-            fin.set(Calendar.HOUR_OF_DAY, 22);
-            fin.set(Calendar.MINUTE, 0);
-            fin.set(Calendar.SECOND, 0);
+            fin.set(Calendar.HOUR_OF_DAY, HORA_FIN_RANGO_DEFECTO);
+            fin.set(Calendar.MINUTE, MINUTO_FIN_RANGO_DEFECTO);
+            fin.set(Calendar.SECOND, SEGUNDO_FIN_RANGO_DEFECTO);
 
             rangoPorDefecto = creaNuevoRangoHorario(estudioId, cursoId, semestreId, grupoId,
                     inicio.getTime(), fin.getTime());
