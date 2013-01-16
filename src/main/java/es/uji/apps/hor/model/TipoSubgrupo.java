@@ -6,13 +6,13 @@ import java.util.List;
 public enum TipoSubgrupo
 {
     TE(1L), PR(2L), LA(3L), SE(4L), TU(5L), AV(6L);
-    
-    private final static int TEORIA = 1;
-    private final static int PROBLEMAS = 2;
-    private final static int LABORATORIOS = 3;
-    private final static int SEMINARIOS = 4;
-    private final static int TUTORIAS = 5;
-    private final static int EVALUACION = 6;
+
+    private static final int TEORIA = 1;
+    private static final int PROBLEMAS = 2;
+    private static final int LABORATORIOS = 3;
+    private static final int SEMINARIOS = 4;
+    private static final int TUTORIAS = 5;
+    private static final int EVALUACION = 6;
 
     private final Long calendarioId;
 
@@ -46,7 +46,7 @@ public enum TipoSubgrupo
             return "";
         }
     }
-    
+
     public static String getTipoSubgrupo(Long calendarioId)
     {
         switch (calendarioId.intValue())

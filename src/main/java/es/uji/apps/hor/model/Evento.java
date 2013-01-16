@@ -16,13 +16,13 @@ import es.uji.apps.hor.EventoNoDivisibleException;
 @Component
 public class Evento
 {
-    private final static int LUNES = 1;
-    private final static int MARTES = 2;
-    private final static int MIERCOLES = 3;
-    private final static int JUEVES = 4;
-    private final static int VIERNES = 5;
-    private final static int SABADO = 6;
-    private final static int DOMINGO = 7;
+    private static final int LUNES = 1;
+    private static final int MARTES = 2;
+    private static final int MIERCOLES = 3;
+    private static final int JUEVES = 4;
+    private static final int VIERNES = 5;
+    private static final int SABADO = 6;
+    private static final int DOMINGO = 7;
 
     private static final Long UNA_HORA_EN_MILISEGUNDOS = (long) 3600000;
 
