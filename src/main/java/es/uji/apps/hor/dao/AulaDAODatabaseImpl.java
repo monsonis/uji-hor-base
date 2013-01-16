@@ -34,8 +34,6 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
     {
         Aula aula = new Aula(aulaDTO.getId());
 
-        Centro centro = new Centro(aulaDTO.getCentro().getId(), aulaDTO.getCentro().getNombre());
-
         TipoAula tipoAula = new TipoAula();
         tipoAula.setNombre(aulaDTO.getTipo());
         aula.setTipo(tipoAula);
@@ -50,6 +48,8 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
 
         Edificio edificio = new Edificio();
         edificio.setNombre(aulaDTO.getEdificio());
+        Centro centro = new Centro(aulaDTO.getCentro().getId(), aulaDTO.getCentro().getNombre());
+        edificio.setCentro(centro);
         aula.setEdificio(edificio);
 
         aula.setNombre(aulaDTO.getNombre());
