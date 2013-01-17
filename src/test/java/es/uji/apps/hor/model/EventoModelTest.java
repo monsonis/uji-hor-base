@@ -12,6 +12,7 @@ import org.junit.Test;
 import es.uji.apps.hor.DuracionEventoIncorrectaException;
 import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.builders.AsignaturaBuilder;
+import es.uji.apps.hor.builders.AulaPlanificacionBuilder;
 import es.uji.apps.hor.builders.CalendarioBuilder;
 import es.uji.apps.hor.builders.EstudioBuilder;
 import es.uji.apps.hor.builders.EventoBuilder;
@@ -85,6 +86,41 @@ public class EventoModelTest
         Date fin = formatter.parse("06/01/2013 12:00");
 
         evento.setFechaInicioYFin(inicio, fin);
+
+    }
+
+    @Test
+    public void creaDescripcionEventoConComunesYAula() throws Exception
+    {
+        Long idEstudio = (long) 1;
+        String codigoAsignatura = "PS1026";
+        Long subgrupo = (long) 2;
+        String codigoAula = "AA203143";
+
+        Estudio estudio1 = new EstudioBuilder().withId(idEstudio).build();
+
+        Estudio estudio2 = new EstudioBuilder().withId(idEstudio + 1).build();
+
+        Asignatura asignatura1 = new AsignaturaBuilder().withId(codigoAsignatura)
+                .withEstudio(estudio1).build();
+        Asignatura asignatura2 = new AsignaturaBuilder().withId("PS1023").withEstudio(estudio2)
+                .build();
+
+        Long calendarioPRId = TipoSubgrupo.PR.getCalendarioAsociado();
+        Calendario calendario = new CalendarioBuilder().withId(calendarioPRId).build();
+
+        AulaPlanificacion aula = new AulaPlanificacionBuilder().withCodigo(codigoAula).build();
+
+        Evento evento = new EventoBuilder().withTitulo("Evento de prueba")
+                .withAsignatura(asignatura1).withAsignatura(asignatura2).withSubgrupoId(subgrupo)
+                .withCalendario(calendario).withAulaPlanficacion(aula).build();
+
+        String descripcion = evento.getDescripcionParaUnEstudio(estudio1.getId());
+
+        String descripcionEsperada = codigoAsignatura + " PR" + String.valueOf(subgrupo) + " - C "
+                + codigoAula;
+
+        assertThat(descripcion, is(descripcionEsperada));
 
     }
 

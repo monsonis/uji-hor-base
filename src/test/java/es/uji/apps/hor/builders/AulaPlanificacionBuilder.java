@@ -61,6 +61,12 @@ public class AulaPlanificacionBuilder
         return this;
     }
 
+    public AulaPlanificacionBuilder withCodigo(String codigo)
+    {
+        aulaPlanificacion.setCodigo(codigo);
+        return this;
+    }
+
     public AulaPlanificacion build()
     {
         if (aulaDAO != null)
