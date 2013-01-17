@@ -18,6 +18,7 @@ public class EventoDetalle
     public EventoDetalle(Evento evento, Date fecha)
     {
         this.evento = evento;
+        evento.addEventoDetalle(this);
         this.descripcion = evento.getTitulo();
 
         Calendar calFecha = Calendar.getInstance();
@@ -54,6 +55,7 @@ public class EventoDetalle
 
     public void setEvento(Evento evento)
     {
+        evento.addEventoDetalle(this);
         this.evento = evento;
     }
 
@@ -128,7 +130,7 @@ public class EventoDetalle
         calendario.setTime(original);
         calendarioHorasNuevas.setTime(horas);
 
-        calendario.set(Calendar.HOUR, calendarioHorasNuevas.get(Calendar.HOUR));
+        calendario.set(Calendar.HOUR_OF_DAY, calendarioHorasNuevas.get(Calendar.HOUR_OF_DAY));
         calendario.set(Calendar.MINUTE, calendarioHorasNuevas.get(Calendar.MINUTE));
 
         return calendario.getTime();

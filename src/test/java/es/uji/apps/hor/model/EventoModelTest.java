@@ -5,7 +5,9 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -16,6 +18,7 @@ import es.uji.apps.hor.builders.AulaPlanificacionBuilder;
 import es.uji.apps.hor.builders.CalendarioBuilder;
 import es.uji.apps.hor.builders.EstudioBuilder;
 import es.uji.apps.hor.builders.EventoBuilder;
+import es.uji.apps.hor.builders.EventoDetalleBuilder;
 import es.uji.apps.hor.builders.SemestreBuilder;
 import es.uji.apps.hor.builders.TipoEstudioBuilder;
 
@@ -122,6 +125,60 @@ public class EventoModelTest
 
         assertThat(descripcion, is(descripcionEsperada));
 
+    }
+
+    @Test
+    public void progragaModificionesDeHorarioDeUnEventoASusDetalles() throws Exception
+    {
+        String fechaInicioInicial = "30/07/2012 09:00";
+        String fechaFinInicial = "30/07/2012 10:00";
+
+        String fechaInicioActualizada = "30/07/2012 13:00";
+        String fechaFinActualizada = "30/07/2012 14:00";
+
+        Evento evento = buildEvento(fechaInicioInicial, fechaFinInicial);
+
+        new EventoDetalleBuilder().withInicioFechaString(fechaInicioInicial)
+                .withFinFechaString(fechaInicioInicial).withEvento(evento).build();
+        new EventoDetalleBuilder().withInicioFechaString(fechaInicioInicial)
+                .withFinFechaString(fechaFinInicial).withEvento(evento).build();
+
+        evento.setFechaInicioYFin(formatter.parse(fechaInicioActualizada),
+                formatter.parse(fechaFinActualizada));
+
+        assertThat(detallesTienenHoraActualizada(evento.getEventosDetalle()), is(true));
+
+    }
+
+    private Boolean detallesTienenHoraActualizada(List<EventoDetalle> eventosDetalle)
+    {
+        int horaInicioEsperada = 13;
+        int minutoInicioEsperado = 0;
+        int horaFinEsperada = 14;
+        int minutoFinEsperado = 0;
+
+        for (EventoDetalle detalle : eventosDetalle)
+        {
+            Calendar inicio = Calendar.getInstance();
+            inicio.setTime(detalle.getInicio());
+
+            if (inicio.get(Calendar.HOUR_OF_DAY) != horaInicioEsperada
+                    || inicio.get(Calendar.MINUTE) != minutoInicioEsperado)
+            {
+                return false;
+            }
+
+            Calendar fin = Calendar.getInstance();
+            fin.setTime(detalle.getFin());
+
+            if (fin.get(Calendar.HOUR_OF_DAY) != horaFinEsperada
+                    || fin.get(Calendar.MINUTE) != minutoFinEsperado)
+            {
+                return false;
+            }
+
+        }
+        return true;
     }
 
     private Evento buildEvento(String fechaInicial, String fechaFinal) throws Exception

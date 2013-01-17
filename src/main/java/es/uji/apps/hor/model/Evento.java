@@ -325,9 +325,9 @@ public class Evento
         return nuevo;
     }
 
-    private void addEventoDetalle(EventoDetalle nuevoEventoDetalle)
+    public void addEventoDetalle(EventoDetalle nuevoEventoDetalle)
     {
-        this.getEventosDetalle().add(nuevoEventoDetalle);
+        this.eventosDetalle.add(nuevoEventoDetalle);
     }
 
     public EventoDetalle creaDetalleEnFecha(Date fecha)

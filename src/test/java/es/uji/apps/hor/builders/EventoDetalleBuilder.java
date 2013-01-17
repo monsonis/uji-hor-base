@@ -16,12 +16,17 @@ public class EventoDetalleBuilder
 
     private SimpleDateFormat formatter;
 
-    public EventoDetalleBuilder(EventosDAO eventoDAO)
+    public EventoDetalleBuilder()
     {
         formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        this.eventoDAO = eventoDAO;
         eventoDetalle = new EventoDetalle();
         eventoDetalle.setDescripcion("");
+    }
+
+    public EventoDetalleBuilder(EventosDAO eventoDAO)
+    {
+        this();
+        this.eventoDAO = eventoDAO;
     }
 
     public EventoDetalleBuilder withInicioFechaString(String inicio) throws ParseException
