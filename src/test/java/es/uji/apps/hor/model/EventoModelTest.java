@@ -128,6 +128,36 @@ public class EventoModelTest
     }
 
     @Test
+    public void creaDescripcionAsignaturasComunes() throws Exception
+    {
+        Long idEstudio = (long) 1;
+        String codigoAsignatura = "PS1026";
+        String codigoAsignaturaComun = "PS1023";
+        Long subgrupo = (long) 2;
+
+        Estudio estudio1 = new EstudioBuilder().withId(idEstudio).build();
+
+        Estudio estudio2 = new EstudioBuilder().withId(idEstudio + 1).build();
+
+        Asignatura asignatura1 = new AsignaturaBuilder().withId(codigoAsignatura)
+                .withEstudio(estudio1).build();
+        Asignatura asignatura2 = new AsignaturaBuilder().withId(codigoAsignaturaComun)
+                .withEstudio(estudio2).build();
+
+        Long calendarioPRId = TipoSubgrupo.PR.getCalendarioAsociado();
+        Calendario calendario = new CalendarioBuilder().withId(calendarioPRId).build();
+
+        Evento evento = new EventoBuilder().withTitulo("Evento de prueba")
+                .withAsignatura(asignatura1).withAsignatura(asignatura2).withSubgrupoId(subgrupo)
+                .withCalendario(calendario).build();
+
+        String codigoComunes = evento.getAsignaturasComunes(estudio1.getId());
+
+        assertThat(codigoComunes, is(codigoAsignaturaComun));
+
+    }
+
+    @Test
     public void progragaModificionesDeHorarioDeUnEventoASusDetalles() throws Exception
     {
         String fechaInicioInicial = "30/07/2012 09:00";
