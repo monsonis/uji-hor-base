@@ -3,7 +3,7 @@ StartTest(function(t) {
 	 t.requireOk('HOR.model.SemestreDetalle', function() {
 	        var mod = Ext.create('HOR.model.SemestreDetalle', {
 	            id : 1, 
-	            fecha_fin : '24/09/2012 00:00:00', 
+	            fechaFin : '24/09/2012 00:00:00', 
 	            nombreSemestre : 'Primer Semestre' 
 	        });
 	        
