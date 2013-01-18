@@ -4,7 +4,7 @@
 	<groupId>es.uji.apps.hor</groupId>
 	<artifactId>uji-hor-base</artifactId>
 	<packaging>war</packaging>
-	<version>0.0.7-SNAPSHOT</version>
+	<version>0.0.7</version>
 	<name>uji-hor-base</name>
 
 
@@ -67,8 +67,8 @@
   </dependencies>
 
   <scm>
-    <connection>scm:svn:http://jira.uji.es/repos/uji/HOR/uji-hor-base/trunk</connection>
-    <url>http://jira.uji.es/repos/uji/HOR/uji-hor-base/trunk</url>
+    <connection>scm:svn:http://jira.uji.es/repos/uji/HOR/uji-hor-base/tags/uji-hor-base_0.0.7</connection>
+    <url>http://jira.uji.es/repos/uji/HOR/uji-hor-base/tags/uji-hor-base_0.0.7</url>
   </scm>
 
   <distributionManagement>
