@@ -262,6 +262,8 @@ Extensible.calendar.form.EventDetails.override(
 
                             this.dateRangeField.disableFields();
                             this.dateRepeatField.disableFields();
+                            
+                            this.detalleManualButton.show();
                         }
                         else
                         {
@@ -269,6 +271,8 @@ Extensible.calendar.form.EventDetails.override(
 
                             this.dateRangeField.enableFields();
                             this.dateRepeatField.enableFields();
+                            
+                            this.detalleManualButton.hide();
                         }
                     },
                     scope : this
@@ -280,7 +284,28 @@ Extensible.calendar.form.EventDetails.override(
         {
             anchor : '90%',
             nameCheckbox : Extensible.calendar.data.EventMappings.FechaDetalleManual.name,
-            nameHidden : Extensible.calendar.data.EventMappings.FechaDetalleManualInt.name
+            nameHidden : Extensible.calendar.data.EventMappings.FechaDetalleManualInt.name,
+        });
+        
+        this.detalleManualButton = Ext.create('Ext.Button',
+        {
+            text : 'Desmarcar totes',
+            hidden : true,
+            style :
+            {
+                marginTop : '5px'
+            },
+            listeners :
+            {
+                'click' :
+                {
+                    fn : function()
+                    {
+                        this.detalleManualFechas.uncheckAllBoxes();
+                    },
+                },
+                scope : this
+            }
         });
 
         this.detalleClases = Ext.create('Event.form.DetalleClases',
@@ -299,7 +324,7 @@ Extensible.calendar.form.EventDetails.override(
             anchor : '90%'
         });
 
-        var leftFields = [ this.titleField, this.dateRangeField, this.dateRepeatField, this.detalleManualField, this.detalleManualFechas, this.detalleClases, this.posteoDetalleField,
+        var leftFields = [ this.titleField, this.dateRangeField, this.dateRepeatField, this.detalleManualField, this.detalleManualFechas, this.detalleManualButton, this.detalleClases, this.posteoDetalleField,
                 this.notaExamenes, this.panelAviso ];
 
         if (this.calendarStore)

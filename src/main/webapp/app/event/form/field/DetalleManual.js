@@ -8,6 +8,7 @@ Ext.define('Event.form.field.DetalleManual',
     nameCheckbox : '',
     nameHidden : '',
     seleccionadas : false,
+    textButton : '',
 
     items : [
     {
@@ -19,7 +20,7 @@ Ext.define('Event.form.field.DetalleManual',
     {
         xtype : 'hidden',
         name : this.nameHidden
-    } ],
+    }],
 
     initComponent : function()
     {
@@ -95,6 +96,18 @@ Ext.define('Event.form.field.DetalleManual',
         }
         return nselecs;
     },
+    
+    uncheckAllBoxes : function()
+    {
+        var checkboxes = this.down('checkboxgroup').items.items;
 
+        for ( var i = 0; i < checkboxes.length; i++)
+        {
+            if (checkboxes[i].getValue())
+            {
+                checkboxes[i].setValue(false);
+            }
+        }
+    }
 
 });
