@@ -10,6 +10,9 @@ import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.util.Log4jConfigListener;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
@@ -27,7 +30,6 @@ import es.uji.commons.rest.UIEntityListJSONMessageBodyReader;
 @TransactionConfiguration(defaultRollback = false)
 public abstract class AbstractRestTest extends JerseyTest
 {
-
     protected WebResource resource;
     static String packageName = "es.uji.apps.hor.services.rest";
 
@@ -49,7 +51,7 @@ public abstract class AbstractRestTest extends JerseyTest
                         "es.uji.commons.rest; " + packageName).build());
 
         this.resource = resource();
-        
+
         this.client().addFilter(new LoggingFilter());
     }
 
@@ -57,9 +59,9 @@ public abstract class AbstractRestTest extends JerseyTest
     {
         ClientConfig config = new DefaultClientConfig();
         config.getClasses().add(UIEntityJSONMessageBodyReader.class);
-        config.getClasses().add(UIEntityListJSONMessageBodyReader.class);
         config.getClasses().add(UIEntityJSONMessageBodyWriter.class);
-        //config.getClasses().add(JsonProvider.class);
+        config.getClasses().add(UIEntityListJSONMessageBodyReader.class);
+        config.getClasses().add(JsonProvider.class);
 
         return config;
     }

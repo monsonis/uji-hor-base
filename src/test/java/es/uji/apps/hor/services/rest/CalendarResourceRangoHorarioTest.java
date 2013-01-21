@@ -5,12 +5,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.core.MediaType;
 
 import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -145,7 +146,7 @@ public class CalendarResourceRangoHorarioTest extends AbstractRestTest
     private UIEntity modificaRangoHorario(String estudioId, String cursoId, String semestreId,
             String grupoId, String horaInicio, String horaFin) throws JSONException
     {
-        JSONObject entity = new JSONObject();
+        Map<String, String> entity = new HashMap<String, String>();
         entity.put("estudioId", String.valueOf(estudioId));
         entity.put("cursoId", String.valueOf(cursoId));
         entity.put("semestreId", String.valueOf(semestreId));
@@ -153,7 +154,7 @@ public class CalendarResourceRangoHorarioTest extends AbstractRestTest
         entity.put("horaInicio", horaInicio);
         entity.put("horaFin", horaFin);
 
-        ClientResponse response = resource.path("calendario/config")
+        ClientResponse response = resource.path("calendario/config").type(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, entity);
 
         return response.getEntity(new GenericType<List<UIEntity>>()

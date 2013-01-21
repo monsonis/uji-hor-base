@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -99,6 +100,7 @@ public class CalendarResource
     @POST
     @Path("config")
     @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public List<UIEntity> guardaConfiguracion(UIEntity entity) throws ParseException,
             RangoHorarioFueradeLimites
     {
@@ -245,6 +247,7 @@ public class CalendarResource
 
     @PUT
     @Path("eventos/generica/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> updateEventoSemanaGenerica(UIEntity entity) throws ParseException,
             DuracionEventoIncorrectaException, JSONException, RegistroNoEncontradoException,

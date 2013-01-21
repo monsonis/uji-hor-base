@@ -10,13 +10,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -231,14 +232,15 @@ public class CalendarResourceTest extends AbstractCalendarResourceTest
             String fechaFin) throws NumberFormatException, UniformInterfaceException, JSONException
     {
 
-        JSONObject entity = new JSONObject();
+        Map<String, String> entity = new HashMap<String, String>();
         entity.put("id", idEvento);
         entity.put("posteo_detalle", "0");
 
         entity.put("start", fechaInicio);
         entity.put("end", fechaFin);
-        resource.path("calendario/eventos/generica/" + idEvento).accept(MediaType.APPLICATION_JSON)
-                .put(entity);
+        
+        resource.path("calendario/eventos/generica/" + idEvento).type(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON).put(entity);
     }
 
     private Boolean todosEventosEnRango(List<UIEntity> listaEventos, String fecha_inicio,

@@ -4,14 +4,17 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.core.MediaType;
 
 import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.sun.jersey.api.client.ClientResponse;
 
 import es.uji.commons.rest.UIEntity;
 
@@ -21,7 +24,7 @@ public class CalendarResourcesEdicionDetallesTest extends AbstractCalendarResour
     @Transactional
     public void cambiaFechasDetalleManualDeUnEvento() throws Exception
     {
-        JSONObject nuevosDatos = creaJSONBasicoDelEventoGenericoConDetalle1();
+        Map<String, String> nuevosDatos = creaJSONBasicoDelEventoGenericoConDetalle1();
         nuevosDatos.put("detalle_manual", "on");
         nuevosDatos.put("fecha_detalle_manual_int",
                 "[\"10/10/2012 09:00:00\", \"17/10/2012 09:00:00\"]");
@@ -40,7 +43,7 @@ public class CalendarResourcesEdicionDetallesTest extends AbstractCalendarResour
     @Transactional
     public void cambiaInformacionRepeticionDeUnEvento() throws Exception
     {
-        JSONObject nuevosDatos = creaJSONBasicoDelEventoGenericoConDetalle1();
+        Map<String, String> nuevosDatos = creaJSONBasicoDelEventoGenericoConDetalle1();
         String nuevaStartDateRep = "20/12/2012";
         String repetirCada2 = "2";
         String tipoSeleccionFechaFinEsRepeticiones = "R";
@@ -66,7 +69,7 @@ public class CalendarResourcesEdicionDetallesTest extends AbstractCalendarResour
     @Transactional
     public void cambiaFinRepeticionesEventoYEnviaTambienFechaFin() throws Exception
     {
-        JSONObject nuevosDatos = creaJSONBasicoDelEventoGenericoConDetalle1();
+        Map<String, String> nuevosDatos = creaJSONBasicoDelEventoGenericoConDetalle1();
         String nuevaStartDateRep = "20/12/2012";
         String nuevaEndDateRep = "20/04/2013";
         String repetirCada2 = "2";
@@ -95,7 +98,7 @@ public class CalendarResourcesEdicionDetallesTest extends AbstractCalendarResour
     @Transactional
     public void cambiaFechaFinRepeticionesEventoYEnviaTambienNumeroRepeticiones() throws Exception
     {
-        JSONObject nuevosDatos = creaJSONBasicoDelEventoGenericoConDetalle1();
+        Map<String, String> nuevosDatos = creaJSONBasicoDelEventoGenericoConDetalle1();
         String nuevaStartDateRep = "20/12/2012";
         String nuevaEndDateRep = "20/04/2013";
         String repetirCada2 = "2";
@@ -138,22 +141,23 @@ public class CalendarResourcesEdicionDetallesTest extends AbstractCalendarResour
             return "";
     }
 
-    private void llamaServicioModificacionEventoGenerico1(JSONObject nuevosDatos)
+    private void llamaServicioModificacionEventoGenerico1(Map<String, String> nuevosDatos)
     {
-        resource.path("calendario/eventos/generica/1").accept(MediaType.APPLICATION_JSON)
-                .put(nuevosDatos);
+        resource.path("calendario/eventos/generica/1").type(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON).put(ClientResponse.class, nuevosDatos);
     }
 
-    private JSONObject creaJSONBasicoDelEventoGenericoConDetalle1() throws JSONException
+    private Map<String, String> creaJSONBasicoDelEventoGenericoConDetalle1() throws JSONException
     {
         String fechaInicio = "2012-10-10T09:00:00";
         String fechaFin = "2012-10-10T11:00:00";
 
-        JSONObject entity = new JSONObject();
+        Map<String, String> entity = new HashMap<String, String>();
         entity.put("id", "1");
         entity.put("posteo_detalle", "1");
         entity.put("start", fechaInicio);
         entity.put("end", fechaFin);
+        
         return entity;
     }
 }
