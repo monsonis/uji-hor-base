@@ -85,11 +85,7 @@
 <use>0</use>
 <logicalDatatype>LOGDT019</logicalDatatype>
 <domain>B784D6D2-343C-97AF-8447-8FE7645FA837</domain>
-<delegate>06813FA7-B718-829F-603F-CE6BB365CFDB</delegate>
 <autoIncrementCycle>false</autoIncrementCycle>
-<associations>
-<colAssociation fkAssociation="9B395F58-AFBB-6D9B-9148-F6B8FD2ADE45" referredColumn="06813FA7-B718-829F-603F-CE6BB365CFDB"/>
-</associations>
 </Column>
 <Column class="oracle.dbtools.crest.model.design.relational.Column" name="curso_id" id="92E90704-7E5A-E141-F2AE-46162C520C31">
 <createdBy>ferrerq</createdBy>
@@ -144,6 +140,15 @@
 <colUsage columnID="22AEFC39-F2D9-6A98-6D49-F44FE0E93034"/>
 </indexColumnUsage>
 </ind_PK_UK>
+<ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="FB6F3EB7-B44C-F113-76F1-C95499B16647" name="hor_aulas_planif_hor_est_FK">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-11-13 14:59:49 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<indexColumnUsage>
+<colUsage columnID="22AEFC39-F2D9-6A98-6D49-F44FE0E93034"/>
+</indexColumnUsage>
+</ind_PK_UK>
 <ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="53D0E0D7-6BBE-65DA-5495-CCC299077EE6" name="hor_aulas_planif_aulas_FK">
 <createdBy>ferrerq</createdBy>
 <createdTime>2012-05-28 14:28:56 UTC</createdTime>
@@ -152,16 +157,6 @@
 <indexState>Foreign Key</indexState>
 <indexColumnUsage>
 <colUsage columnID="B0CAE4F7-2928-CE89-AE39-EA6603ADEE42"/>
-</indexColumnUsage>
-</ind_PK_UK>
-<ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="FB6F3EB7-B44C-F113-76F1-C95499B16647" name="hor_aulas_planif_hor_est_FK">
-<createdBy>ferrerq</createdBy>
-<createdTime>2012-11-13 14:59:49 UTC</createdTime>
-<generatorID>Generado por el Usuario</generatorID>
-<ownerDesignName>uji_horarios</ownerDesignName>
-<indexState>Foreign Key</indexState>
-<indexColumnUsage>
-<colUsage columnID="22AEFC39-F2D9-6A98-6D49-F44FE0E93034"/>
 </indexColumnUsage>
 </ind_PK_UK>
 </indexes>
