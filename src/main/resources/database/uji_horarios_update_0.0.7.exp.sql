@@ -37,7 +37,80 @@ CREATE TABLE uji_horarios.hor_items_asignaturas
 ALTER TABLE uji_horarios.hor_items_asignaturas 
     ADD CONSTRAINT hor_items_asignaturas_PK PRIMARY KEY ( id ) ;
 
-
+CREATE OR REPLACE FORCE VIEW UJI_HORARIOS.HOR_EXT_CARGOS_PER (ID,
+                                                              PERSONA_ID,
+                                                              NOMBRE,
+                                                              CENTRO_ID,
+                                                              CENTRO,
+                                                              ESTUDIO_ID,
+                                                              ESTUDIO,
+                                                              CARGO_ID,
+                                                              CARGO
+                                                             ) AS
+   select rownum id, PERSONA_ID, NOMBRE, CENTRO_ID, CENTRO, TITULACION_ID estudio_id, TITULACION estudio, CARGO_ID, CARGO
+   from   (select cp.per_id persona_id, p.nombre || ' ' || apellido1 || ' ' || apellido2 nombre, ulogica_id centro_id,
+                  ubic.nombre centro, tit.id titulacion_id, tit.nombre titulacion, tc.id cargo_id, tc.nombre cargo
+           from   grh_grh.grh_cargos_per cp,
+                  gri_est.est_ubic_estructurales ubic,
+                  gra_Exp.exp_v_titu_todas tit,
+                  uji_horarios.hor_tipos_Cargos tc,
+                  gri_per.per_personas p
+           where  (    f_fin is null
+                   and (   f_fin is null
+                        or f_fin >= sysdate)
+                   and crg_id in (189, 195, 188, 30))
+           and    ulogica_id = ubic.id
+           and    ulogica_id = tit.uest_id
+           and    tit.activa = 'S'
+           and    tit.tipo = 'G'
+           and    tc.id = 3
+           and    cp.per_id = p.id
+           union all
+/* PAS de centro */
+           select cp.per_id persona_id, p.nombre || ' ' || apellido1 || ' ' || apellido2 nombre, ubicacion_id centro_id,
+                  ubic.nombre centro, tit.id titulacion_id, tit.nombre titulacion, tc.id cargo_id, tc.nombre cargo
+           from   grh_grh.grh_vw_contrataciones_ult cp,
+                  gri_est.est_ubic_estructurales ubic,
+                  gra_Exp.exp_v_titu_todas tit,
+                  uji_horarios.hor_tipos_Cargos tc,
+                  gri_per.per_personas p
+           where  ubicacion_id = ubic.id
+           and    ubicacion_id = tit.uest_id
+           and    tit.activa = 'S'
+           and    tit.tipo = 'G'
+           and    tc.id = 4
+           and    cp.per_id = p.id
+           union all
+/* directores de titulacion */
+           select cp.per_id persona_id, p.nombre || ' ' || apellido1 || ' ' || apellido2 nombre, ulogica_id centro_id,
+                  ubic.nombre centro, tit.id titulacion_id, tit.nombre titulacion, tc.id cargo_id, tc.nombre cargo
+           from   grh_grh.grh_cargos_per cp,
+                  gri_est.est_ubic_estructurales ubic,
+                  gra_Exp.exp_v_titu_todas tit,
+                  uji_horarios.hor_tipos_Cargos tc,
+                  gri_per.per_personas p
+           where  (    f_fin is null
+                   and (   f_fin is null
+                        or f_fin >= sysdate)
+                   and crg_id in (192, 193))
+           and    ulogica_id = ubic.id
+           and    ulogica_id = tit.uest_id
+           and    tit.activa = 'S'
+           and    tit.tipo = 'G'
+           and    tc.id = 1
+           and    cp.per_id = p.id
+           and    cp.tit_id = tit.id
+           union all
+/* permisos extra */
+           select per.persona_id, p.nombre || ' ' || apellido1 || ' ' || apellido2 nombre, null centro_id, null centro,
+                  tit.id titulacion_id, tit.nombre titulacion, tc.id cargo_id, tc.nombre cargo
+           from   uji_horarios.hor_permisos_extra per,
+                  gri_per.per_personas p,
+                  gra_Exp.exp_v_titu_todas tit,
+                  uji_horarios.hor_tipos_cargos tc
+           where  persona_id = p.id
+           and    estudio_id = tit.id
+           and    tipo_Cargo_id = tc.id);
 
 
 ALTER TABLE uji_horarios.hor_items_asignaturas 
@@ -753,3 +826,268 @@ EXCEPTION
    WHEN OTHERS THEN
       htp.p (sqlerrm);
 END;
+
+CREATE OR REPLACE FORCE VIEW UJI_HORARIOS.HOR_V_ITEMS_DETALLE (ID,
+                                                               FECHA,
+                                                               DOCENCIA_PASO_1,
+                                                               DOCENCIA_PASO_2,
+                                                               DOCENCIA,
+                                                               ORDEN_ID,
+                                                               NUMERO_ITERACIONES,
+                                                               REPETIR_CADA_SEMANAS,
+                                                               FECHA_INICIO,
+                                                               FECHA_FIN,
+                                                               ESTUDIO_ID,
+                                                               SEMESTRE_ID,
+                                                               CURSO_ID,
+                                                               ASIGNATURA_ID,
+                                                               GRUPO_ID,
+                                                               TIPO_SUBGRUPO_ID,
+                                                               SUBGRUPO_ID,
+                                                               DIA_SEMANA_ID,
+                                                               TIPO_DIA,
+                                                               FESTIVOS
+                                                              ) AS
+   SELECT i.id, fecha, docencia docencia_paso_1,
+          DECODE (NVL (d.repetir_cada_semanas, 1),
+                  1, docencia,
+                  DECODE (MOD (orden_id, d.repetir_cada_semanas), 1, docencia, 'N')
+                 ) docencia_paso_2,
+          decode (tipo_dia,
+                  'F', 'N',
+                  DECODE (d.numero_iteraciones,
+                          NULL, DECODE (NVL (d.repetir_cada_semanas, 1),
+                                        1, docencia,
+                                        DECODE (MOD (orden_id, d.repetir_cada_semanas), 1, docencia, 'N')
+                                       ),
+                          DECODE (SIGN (((orden_id - festivos) / d.repetir_cada_Semanas) - (d.numero_iteraciones)),
+                                  1, 'N',
+                                  DECODE (NVL (d.repetir_cada_semanas, 1),
+                                          1, docencia,
+                                          DECODE (MOD (orden_id, d.repetir_cada_semanas), 1, docencia, 'N')
+                                         )
+                                 )
+                         )
+                 ) docencia,
+          d.orden_id, d.numero_iteraciones, d.repetir_cada_semanas, d.fecha_inicio, d.fecha_fin, d.estudio_id,
+          d.semestre_id, d.curso_id, d.asignatura_id, d.grupo_id, d.tipo_subgrupo_id, d.subgrupo_id, d.dia_semana_id,
+          tipo_dia, festivos
+   FROM   (SELECT id, fecha,
+                  hor_contar_festivos (NVL (x.desde_el_dia, fecha_inicio), x.fecha, x.dia_semana_id,
+                                       x.repetir_cada_semanas) festivos,
+                  ROW_NUMBER () OVER (PARTITION BY DECODE
+                                                       (decode (sign (x.fecha - fecha_inicio),
+                                                                -1, 'N',
+                                                                decode (sign (fecha_fin - x.fecha), -1, 'N', 'S')
+                                                               ),
+                                                        'S', DECODE (decode (sign (x.fecha
+                                                                                   - NVL (x.desde_el_dia, fecha_inicio)),
+                                                                             -1, 'N',
+                                                                             decode (sign (NVL (x.hasta_el_dia,
+                                                                                                fecha_fin)
+                                                                                           - x.fecha),
+                                                                                     -1, 'N',
+                                                                                     'S'
+                                                                                    )
+                                                                            ),
+                                                                     'S', 'S',
+                                                                     'N'
+                                                                    ),
+                                                        'N'
+                                                       ), id, estudio_id, semestre_id, curso_id, asignatura_id, grupo_id, tipo_subgrupo_id, subgrupo_id, dia_semana_id ORDER BY fecha)
+                                                                                                               orden_id,
+                  DECODE (hor_f_fecha_entre (x.fecha, fecha_inicio, fecha_fin),
+                          'S', DECODE (hor_f_fecha_entre (x.fecha, NVL (desde_el_dia, fecha_inicio),
+                                                          NVL (hasta_el_dia, fecha_fin)),
+                                       'S', 'S',
+                                       'N'
+                                      ),
+                          'N'
+                         ) docencia,
+                  estudio_id, curso_id, semestre_id, grupo_id, tipo_subgrupo_id, subgrupo_id, dia_Semana_id,
+                  asignatura_id, fecha_inicio, fecha_fin, fecha_examenes_inicio, fecha_examenes_fin, desde_el_dia,
+                  hasta_el_dia, repetir_cada_semanas, numero_iteraciones, detalle_manual, tipo_dia, dia_semana
+           FROM   (SELECT i.id, ia.estudio_id, i.curso_id, i.semestre_id, i.grupo_id, i.tipo_subgrupo_id, i.subgrupo_id,
+                          i.dia_Semana_id, ia.asignatura_id, fecha_inicio, fecha_fin, fecha_examenes_inicio,
+                          fecha_examenes_fin, i.desde_el_dia, hasta_el_dia, repetir_cada_semanas, numero_iteraciones,
+                          detalle_manual, c.fecha, tipo_dia, dia_semana
+                   FROM   hor_estudios e,
+                          hor_semestres_detalle s,
+                          hor_items i,
+                          hor_items_asignaturas ia,
+                          hor_ext_calendario c
+                   WHERE  i.id = ia.item_id
+                   and    e.tipo_id = s.tipo_estudio_id
+                   AND    ia.estudio_id = e.id
+                   AND    i.semestre_id = s.semestre_id
+                   AND    trunc (c.fecha) BETWEEN fecha_inicio AND NVL (fecha_examenes_fin, fecha_fin)
+                   AND    c.dia_semana_id = i.dia_semana_id
+                   AND    tipo_dia IN ('L', 'E', 'F')
+                   and    vacaciones = 0
+                   AND    detalle_manual = 0) x) d,
+          hor_items i,
+          hor_items_asignaturas ia
+   WHERE  i.id = ia.item_id
+   and    ia.estudio_id = d.estudio_id
+   AND    i.curso_id = d.curso_id
+   AND    i.semestre_id = d.semestre_id
+   AND    ia.asignatura_id = d.asignatura_id
+   AND    i.grupo_id = d.grupo_id
+   AND    i.tipo_subgrupo_id = d.tipo_subgrupo_id
+   AND    i.subgrupo_id = d.subgrupo_id
+   AND    i.dia_semana_id = d.dia_semana_id
+   AND    i.detalle_manual = 0
+   AND    i.id = d.id
+   UNION ALL
+   SELECT c.id, c.fecha, 'N' docencia_paso_1, 'N' docencia_paso_2, DECODE (d.id, NULL, 'N', 'S') docencia, 1 orden_id,
+          numero_iteraciones, repetir_cada_semanas, fecha_inicio, fecha_fin, estudio_id, semestre_id, curso_id,
+          asignatura_id, grupo_id, tipo_subgrupo_id, subgrupo_id, dia_semana_id, tipo_dia,
+          decode (tipo_dia, 'F', 1, 0) festivos
+   FROM   (SELECT i.id, c.fecha, numero_iteraciones, repetir_cada_semanas, s.fecha_inicio, s.fecha_fin, ia.estudio_id,
+                  i.semestre_id, i.curso_id, ia.asignatura_id, i.grupo_id, i.tipo_subgrupo_id, i.subgrupo_id,
+                  i.dia_semana_id, tipo_dia
+           FROM   hor_estudios e,
+                  hor_semestres_detalle s,
+                  hor_items i,
+                  hor_items_asignaturas ia,
+                  hor_ext_calendario c
+           WHERE  i.id = ia.item_id
+           and    e.tipo_id = s.tipo_estudio_id
+           AND    ia.estudio_id = e.id
+           AND    i.semestre_id = s.semestre_id
+           AND    trunc (c.fecha) BETWEEN fecha_inicio AND NVL (fecha_examenes_fin, fecha_fin)
+           AND    c.dia_semana_id = i.dia_semana_id
+           AND    tipo_dia IN ('L', 'E', 'F')
+           and    vacaciones = 0
+           AND    detalle_manual = 1) c,
+          hor_items_detalle d
+   WHERE  c.id = d.item_id(+)
+   AND    trunc (c.fecha) = trunc (d.inicio(+));
+
+
+  CREATE OR REPLACE FORCE VIEW UJI_HORARIOS.HOR_V_ITEMS_DETALLE (ID,
+                                                               FECHA,
+                                                               DOCENCIA_PASO_1,
+                                                               DOCENCIA_PASO_2,
+                                                               DOCENCIA,
+                                                               ORDEN_ID,
+                                                               NUMERO_ITERACIONES,
+                                                               REPETIR_CADA_SEMANAS,
+                                                               FECHA_INICIO,
+                                                               FECHA_FIN,
+                                                               ESTUDIO_ID,
+                                                               SEMESTRE_ID,
+                                                               CURSO_ID,
+                                                               ASIGNATURA_ID,
+                                                               GRUPO_ID,
+                                                               TIPO_SUBGRUPO_ID,
+                                                               SUBGRUPO_ID,
+                                                               DIA_SEMANA_ID,
+                                                               TIPO_DIA,
+                                                               FESTIVOS
+                                                              ) AS
+   SELECT i.id, fecha, docencia docencia_paso_1,
+          DECODE (NVL (d.repetir_cada_semanas, 1),
+                  1, docencia,
+                  DECODE (MOD (orden_id, d.repetir_cada_semanas), 1, docencia, 'N')
+                 ) docencia_paso_2,
+          decode (tipo_dia,
+                  'F', 'N',
+                  DECODE (d.numero_iteraciones,
+                          NULL, DECODE (NVL (d.repetir_cada_semanas, 1),
+                                        1, docencia,
+                                        DECODE (MOD (orden_id, d.repetir_cada_semanas), 1, docencia, 'N')
+                                       ),
+                          DECODE (SIGN (((orden_id - festivos) / d.repetir_cada_Semanas) - (d.numero_iteraciones)),
+                                  1, 'N',
+                                  DECODE (NVL (d.repetir_cada_semanas, 1),
+                                          1, docencia,
+                                          DECODE (MOD (orden_id, d.repetir_cada_semanas), 1, docencia, 'N')
+                                         )
+                                 )
+                         )
+                 ) docencia,
+          d.orden_id, d.numero_iteraciones, d.repetir_cada_semanas, d.fecha_inicio, d.fecha_fin, d.estudio_id,
+          d.semestre_id, d.curso_id, d.asignatura_id, d.grupo_id, d.tipo_subgrupo_id, d.subgrupo_id, d.dia_semana_id,
+          tipo_dia, festivos
+   FROM   (SELECT id, fecha,
+                  hor_contar_festivos (NVL (x.desde_el_dia, fecha_inicio), x.fecha, x.dia_semana_id,
+                                       x.repetir_cada_semanas) festivos,
+                  ROW_NUMBER () OVER (PARTITION BY DECODE
+                                                       (decode (sign (x.fecha - fecha_inicio),
+                                                                -1, 'N',
+                                                                decode (sign (fecha_fin - x.fecha), -1, 'N', 'S')
+                                                               ),
+                                                        'S', DECODE (decode (sign (x.fecha
+                                                                                   - NVL (x.desde_el_dia, fecha_inicio)),
+                                                                             -1, 'N',
+                                                                             decode (sign (NVL (x.hasta_el_dia,
+                                                                                                fecha_fin)
+                                                                                           - x.fecha),
+                                                                                     -1, 'N',
+                                                                                     'S'
+                                                                                    )
+                                                                            ),
+                                                                     'S', 'S',
+                                                                     'N'
+                                                                    ),
+                                                        'N'
+                                                       ), id, estudio_id, semestre_id, curso_id, asignatura_id, grupo_id, tipo_subgrupo_id, subgrupo_id, dia_semana_id ORDER BY fecha)
+                                                                                                               orden_id,
+                  DECODE (hor_f_fecha_entre (x.fecha, fecha_inicio, fecha_fin),
+                          'S', DECODE (hor_f_fecha_entre (x.fecha, NVL (desde_el_dia, fecha_inicio),
+                                                          NVL (hasta_el_dia, fecha_fin)),
+                                       'S', 'S',
+                                       'N'
+                                      ),
+                          'N'
+                         ) docencia,
+                  estudio_id, curso_id, semestre_id, grupo_id, tipo_subgrupo_id, subgrupo_id, dia_Semana_id,
+                  asignatura_id, fecha_inicio, fecha_fin, fecha_examenes_inicio, fecha_examenes_fin, desde_el_dia,
+                  hasta_el_dia, repetir_cada_semanas, numero_iteraciones, detalle_manual, tipo_dia, dia_semana
+           FROM   (SELECT i.id, null estudio_id, i.curso_id, i.semestre_id, i.grupo_id, i.tipo_subgrupo_id,
+                          i.subgrupo_id, i.dia_Semana_id, null asignatura_id, fecha_inicio, fecha_fin,
+                          fecha_examenes_inicio, fecha_examenes_fin, i.desde_el_dia, hasta_el_dia, repetir_cada_semanas,
+                          numero_iteraciones, detalle_manual, c.fecha, tipo_dia, dia_semana
+                   FROM   hor_semestres_detalle s,
+                          hor_items i,
+                          hor_ext_calendario c
+                   WHERE  i.semestre_id = s.semestre_id
+                   AND    trunc (c.fecha) BETWEEN fecha_inicio AND NVL (fecha_examenes_fin, fecha_fin)
+                   AND    c.dia_semana_id = i.dia_semana_id
+                   AND    tipo_dia IN ('L', 'E', 'F')
+                   and    vacaciones = 0
+                   AND    detalle_manual = 0) x) d,
+          hor_items i
+   WHERE  i.curso_id = d.curso_id
+   AND    i.semestre_id = d.semestre_id
+   AND    i.grupo_id = d.grupo_id
+   AND    i.tipo_subgrupo_id = d.tipo_subgrupo_id
+   AND    i.subgrupo_id = d.subgrupo_id
+   AND    i.dia_semana_id = d.dia_semana_id
+   AND    i.detalle_manual = 0
+   AND    i.id = d.id
+   UNION ALL
+   SELECT c.id, c.fecha, 'N' docencia_paso_1, 'N' docencia_paso_2, DECODE (d.id, NULL, 'N', 'S') docencia, 1 orden_id,
+          numero_iteraciones, repetir_cada_semanas, fecha_inicio, fecha_fin, estudio_id, semestre_id, curso_id,
+          asignatura_id, grupo_id, tipo_subgrupo_id, subgrupo_id, dia_semana_id, tipo_dia,
+          decode (tipo_dia, 'F', 1, 0) festivos
+   FROM   (SELECT i.id, c.fecha, numero_iteraciones, repetir_cada_semanas, s.fecha_inicio, s.fecha_fin, null estudio_id,
+                  i.semestre_id, i.curso_id, null asignatura_id, i.grupo_id, i.tipo_subgrupo_id, i.subgrupo_id,
+                  i.dia_semana_id, tipo_dia
+           FROM   hor_semestres_detalle s,
+                  hor_items i,
+                  hor_ext_calendario c
+           WHERE  i.semestre_id = s.semestre_id
+           AND    trunc (c.fecha) BETWEEN fecha_inicio AND NVL (fecha_examenes_fin, fecha_fin)
+           AND    c.dia_semana_id = i.dia_semana_id
+           AND    tipo_dia IN ('L', 'E', 'F')
+           and    vacaciones = 0
+           AND    detalle_manual = 1) c,
+          hor_items_detalle d
+   WHERE  c.id = d.item_id(+)
+   AND    trunc (c.fecha) = trunc (d.inicio(+));
+
+grant select on est_ubic_estructurales to uji_horarios
+
+ 

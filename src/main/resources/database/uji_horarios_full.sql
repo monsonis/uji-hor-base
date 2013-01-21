@@ -1,5 +1,5 @@
 -- Generado por Oracle SQL Developer Data Modeler 3.1.1.703
---   en:        2013-01-08 11:05:22 CET
+--   en:        2013-01-21 13:37:09 CET
 --   sitio:      Oracle Database 11g
 --   tipo:      Oracle Database 11g
 
@@ -15,7 +15,7 @@ DROP TABLE uji_horarios.hor_areas CASCADE CONSTRAINTS
 ;
 DROP TABLE uji_horarios.hor_aulas CASCADE CONSTRAINTS 
 ;
-DROP TABLE hor_aulas_planificacion CASCADE CONSTRAINTS 
+DROP TABLE uji_horarios.hor_aulas_planificacion CASCADE CONSTRAINTS 
 ;
 DROP TABLE uji_horarios.hor_centros CASCADE CONSTRAINTS 
 ;
@@ -61,11 +61,6 @@ DROP TABLE uji_horarios.hor_tipos_cargos CASCADE CONSTRAINTS
 ;
 DROP TABLE uji_horarios.hor_tipos_estudios CASCADE CONSTRAINTS 
 ;
-CREATE USER uji_horarios 
-    IDENTIFIED BY  
-    ACCOUNT UNLOCK 
-;
-
 CREATE TABLE uji_horarios.hor_areas 
     ( 
      id NUMBER  NOT NULL , 
@@ -73,7 +68,6 @@ CREATE TABLE uji_horarios.hor_areas
      departamento_id NUMBER  NOT NULL , 
      activa NUMBER DEFAULT 1  NOT NULL CHECK ( activa IN (0, 1)) 
     ) 
-    LOGGING 
 ;
 
 
@@ -95,7 +89,6 @@ CREATE TABLE uji_horarios.hor_aulas
      edificio VARCHAR2 (10) , 
      planta VARCHAR2 (10) 
     ) 
-    LOGGING 
 ;
 
 
@@ -103,7 +96,6 @@ CREATE INDEX uji_horarios.hor_aulas_centro_IDX ON uji_horarios.hor_aulas
     ( 
      centro_id ASC 
     ) 
-    LOGGING 
 ;
 
 ALTER TABLE uji_horarios.hor_aulas 
@@ -111,7 +103,7 @@ ALTER TABLE uji_horarios.hor_aulas
 
 
 
-CREATE TABLE hor_aulas_planificacion 
+CREATE TABLE uji_horarios.hor_aulas_planificacion 
     ( 
      id NUMBER  NOT NULL , 
      nombre VARCHAR2 (100)  NOT NULL , 
@@ -120,24 +112,21 @@ CREATE TABLE hor_aulas_planificacion
      curso_id NUMBER , 
      semestre_id NUMBER 
     ) 
-    LOGGING 
 ;
 
 
-CREATE INDEX hor_aulas_plan_aula_IDX ON hor_aulas_planificacion 
+CREATE INDEX uji_horarios.hor_aulas_plan_aula_IDX ON uji_horarios.hor_aulas_planificacion 
     ( 
      aula_id ASC 
     ) 
-    LOGGING 
 ;
-CREATE INDEX hor_aulas_plan_est_IDX ON hor_aulas_planificacion 
+CREATE INDEX uji_horarios.hor_aulas_plan_est_IDX ON uji_horarios.hor_aulas_planificacion 
     ( 
      estudio_id ASC 
     ) 
-    LOGGING 
 ;
 
-ALTER TABLE hor_aulas_planificacion 
+ALTER TABLE uji_horarios.hor_aulas_planificacion 
     ADD CONSTRAINT hor_aulas_planificacion_PK PRIMARY KEY ( id ) ;
 
 
@@ -147,7 +136,6 @@ CREATE TABLE uji_horarios.hor_centros
      id NUMBER  NOT NULL , 
      nombre VARCHAR2 (100)  NOT NULL 
     ) 
-    LOGGING 
 ;
 
 
@@ -166,7 +154,6 @@ CREATE TABLE uji_horarios.hor_circuitos
      nombre VARCHAR2 (100)  NOT NULL , 
      especial NUMBER DEFAULT 0  NOT NULL CHECK ( especial IN (0, 1)) 
     ) 
-    LOGGING 
 ;
 
 
@@ -183,7 +170,6 @@ CREATE TABLE uji_horarios.hor_departamentos
      centro_id NUMBER  NOT NULL , 
      activo NUMBER DEFAULT 1  NOT NULL CHECK ( activo IN (0, 1)) 
     ) 
-    LOGGING 
 ;
 
 
@@ -198,7 +184,6 @@ CREATE TABLE uji_horarios.hor_dias_semana
      id NUMBER  NOT NULL , 
      nombre VARCHAR2 (10)  NOT NULL 
     ) 
-    LOGGING 
 ;
 
 
@@ -217,7 +202,6 @@ CREATE TABLE uji_horarios.hor_estudios
      oficial NUMBER DEFAULT 1  NOT NULL CHECK ( oficial IN (0, 1)) , 
      numero_cursos NUMBER 
     ) 
-    LOGGING 
 ;
 
 
@@ -234,7 +218,6 @@ CREATE TABLE uji_horarios.hor_ext_asignaturas_comunes
      nombre VARCHAR2 (1000)  NOT NULL , 
      asignatura_id VARCHAR2 (10)  NOT NULL 
     ) 
-    LOGGING 
 ;
 
 
@@ -242,13 +225,11 @@ CREATE INDEX uji_horarios.hor_ext_asi_comunes_nom_IDX ON uji_horarios.hor_ext_as
     ( 
      nombre ASC 
     ) 
-    LOGGING 
 ;
 CREATE INDEX uji_horarios.hor_ext_asi_comunes_ca_IDX ON uji_horarios.hor_ext_asignaturas_comunes 
     ( 
      asignatura_id ASC 
     ) 
-    LOGGING 
 ;
 
 ALTER TABLE uji_horarios.hor_ext_asignaturas_comunes 
@@ -268,7 +249,6 @@ CREATE TABLE uji_horarios.hor_ext_calendario
      fecha DATE  NOT NULL , 
      vacaciones NUMBER DEFAULT 0  NOT NULL CHECK ( vacaciones IN (0, 1)) 
     ) 
-    LOGGING 
 ;
 
 
@@ -278,7 +258,6 @@ CREATE INDEX uji_horarios.hor_ext_cal_fecha_idx ON uji_horarios.hor_ext_calendar
      tipo_dia ASC , 
      dia_semana_id ASC 
     ) 
-    LOGGING 
 ;
 CREATE INDEX uji_horarios.hor_ext_cal_fecha_vac_IDX ON uji_horarios.hor_ext_calendario 
     ( 
@@ -287,7 +266,6 @@ CREATE INDEX uji_horarios.hor_ext_cal_fecha_vac_IDX ON uji_horarios.hor_ext_cale
      dia_semana_id ASC , 
      vacaciones ASC 
     ) 
-    LOGGING 
 ;
 
 ALTER TABLE uji_horarios.hor_ext_calendario 
@@ -306,23 +284,17 @@ ALTER TABLE uji_horarios.hor_ext_calendario
 CREATE TABLE uji_horarios.hor_ext_cargos_per 
     ( 
      id NUMBER  NOT NULL , 
-     tipo_cargo_id NUMBER  NOT NULL , 
      persona_id NUMBER  NOT NULL , 
-     departamento_id NUMBER , 
+     nombre VARCHAR2 (1000) , 
+     centro_id NUMBER , 
+     centro VARCHAR2 (1000) , 
      estudio_id NUMBER , 
-     curso_id NUMBER 
+     estudio VARCHAR2 (1000) , 
+     cargo_id NUMBER  NOT NULL , 
+     cargo VARCHAR2 (1000) 
     ) 
-    LOGGING 
 ;
 
-
-
-ALTER TABLE uji_horarios.hor_ext_cargos_per 
-    ADD CONSTRAINT hor_ext_cargos_per_CK 
-    CHECK ((departamento_id is not null and estudio_id is null)
- or
-(departamento_id is null and estudio_id is not null) )
-;
 
 
 ALTER TABLE uji_horarios.hor_ext_cargos_per 
@@ -343,7 +315,6 @@ CREATE TABLE uji_horarios.hor_ext_circuitos
      estudio_id NUMBER  NOT NULL , 
      plazas NUMBER  NOT NULL 
     ) 
-    LOGGING 
 ;
 
 
@@ -361,7 +332,6 @@ CREATE TABLE uji_horarios.hor_ext_personas
      actividad_id VARCHAR2 (10)  NOT NULL , 
      departamento_id NUMBER  NOT NULL 
     ) 
-    LOGGING 
 ;
 
 
@@ -385,7 +355,6 @@ CREATE TABLE uji_horarios.hor_horarios_horas
      hora_inicio DATE , 
      hora_fin DATE 
     ) 
-    LOGGING 
 ;
 
 
@@ -426,7 +395,6 @@ CREATE TABLE uji_horarios.hor_items
      numero_iteraciones NUMBER , 
      detalle_manual NUMBER DEFAULT 0  NOT NULL CHECK ( detalle_manual IN (0, 1)) 
     ) 
-    LOGGING 
 ;
 
 
@@ -439,7 +407,6 @@ CREATE INDEX uji_horarios.hor_items_v_idx ON uji_horarios.hor_items
      subgrupo_id ASC , 
      dia_semana_id ASC 
     ) 
-    LOGGING 
 ;
 CREATE INDEX uji_horarios.hor_items_v2_IDX ON uji_horarios.hor_items 
     ( 
@@ -447,14 +414,12 @@ CREATE INDEX uji_horarios.hor_items_v2_IDX ON uji_horarios.hor_items
      dia_semana_id ASC , 
      detalle_manual ASC 
     ) 
-    LOGGING 
 ;
 CREATE INDEX uji_horarios.hor_item_det_man_idx ON uji_horarios.hor_items 
     ( 
      id ASC , 
      detalle_manual ASC 
     ) 
-    LOGGING 
 ;
 
 ALTER TABLE uji_horarios.hor_items 
@@ -471,7 +436,6 @@ CREATE TABLE uji_horarios.hor_items_asignaturas
      estudio_id NUMBER  NOT NULL , 
      estudio VARCHAR2 (1000) 
     ) 
-    LOGGING 
 ;
 
 
@@ -479,20 +443,17 @@ CREATE INDEX uji_horarios.hor_items_asig_it_IDX ON uji_horarios.hor_items_asigna
     ( 
      item_id ASC 
     ) 
-    LOGGING 
 ;
 CREATE INDEX uji_horarios.hor_items_asig_est_IDX ON uji_horarios.hor_items_asignaturas 
     ( 
      estudio_id ASC 
     ) 
-    LOGGING 
 ;
 CREATE INDEX uji_horarios.hor_items_asig_est_asi_IDX ON uji_horarios.hor_items_asignaturas 
     ( 
      asignatura_id ASC , 
      estudio_id ASC 
     ) 
-    LOGGING 
 ;
 
 ALTER TABLE uji_horarios.hor_items_asignaturas 
@@ -507,7 +468,6 @@ CREATE TABLE uji_horarios.hor_items_circuitos
      circuito_id NUMBER  NOT NULL , 
      plazas NUMBER 
     ) 
-    LOGGING 
 ;
 
 
@@ -525,7 +485,6 @@ CREATE TABLE uji_horarios.hor_items_comunes
      asignatura_comun_id VARCHAR2 (100) , 
      item_comun_id NUMBER  NOT NULL 
     ) 
-    LOGGING 
 ;
 
 
@@ -533,13 +492,11 @@ CREATE INDEX uji_horarios.hor_items_comunes__IDX ON uji_horarios.hor_items_comun
     ( 
      item_id ASC 
     ) 
-    LOGGING 
 ;
 CREATE INDEX uji_horarios.hor_items_comunes_com_IDX ON uji_horarios.hor_items_comunes 
     ( 
      item_comun_id ASC 
     ) 
-    LOGGING 
 ;
 
 ALTER TABLE uji_horarios.hor_items_comunes 
@@ -555,7 +512,6 @@ CREATE TABLE uji_horarios.hor_items_detalle
      fin DATE  NOT NULL , 
      descripcion VARCHAR2 (1000) 
     ) 
-    LOGGING 
 ;
 
 
@@ -564,7 +520,6 @@ CREATE INDEX uji_horarios.hor_items_detalle_fechas_IDX ON uji_horarios.hor_items
      item_id ASC , 
      inicio ASC 
     ) 
-    LOGGING 
 ;
 
 ALTER TABLE uji_horarios.hor_items_detalle 
@@ -580,7 +535,6 @@ CREATE TABLE uji_horarios.hor_permisos_extra
      estudio_id NUMBER , 
      departamento_id NUMBER 
     ) 
-    LOGGING 
 ;
 
 
@@ -599,7 +553,6 @@ CREATE TABLE uji_horarios.hor_profesores
      departamento_id NUMBER  NOT NULL , 
      pendiente_contratacion NUMBER DEFAULT 0  NOT NULL CHECK ( pendiente_contratacion IN (0, 1)) 
     ) 
-    LOGGING 
 ;
 
 
@@ -614,7 +567,6 @@ CREATE TABLE uji_horarios.hor_semestres
      id NUMBER  NOT NULL , 
      nombre VARCHAR2 (100)  NOT NULL 
     ) 
-    LOGGING 
 ;
 
 
@@ -636,7 +588,6 @@ CREATE TABLE uji_horarios.hor_semestres_detalle
      numero_semanas NUMBER  NOT NULL , 
      curso_academico_id NUMBER  NOT NULL 
     ) 
-    LOGGING 
 ;
 
 
@@ -644,7 +595,6 @@ CREATE INDEX uji_horarios.hor_semestres_detalle_v_idx ON uji_horarios.hor_semest
     ( 
      tipo_estudio_id ASC 
     ) 
-    LOGGING 
 ;
 
 ALTER TABLE uji_horarios.hor_semestres_detalle 
@@ -661,7 +611,6 @@ CREATE TABLE uji_horarios.hor_tipos_cargos
      id NUMBER  NOT NULL , 
      nombre VARCHAR2 (100)  NOT NULL 
     ) 
-    LOGGING 
 ;
 
 
@@ -677,7 +626,6 @@ CREATE TABLE uji_horarios.hor_tipos_estudios
      nombre VARCHAR2 (100)  NOT NULL , 
      orden NUMBER 
     ) 
-    LOGGING 
 ;
 
 
@@ -697,7 +645,6 @@ ALTER TABLE uji_horarios.hor_areas
     ( 
      id
     ) 
-    NOT DEFERRABLE 
 ;
 
 
@@ -710,11 +657,10 @@ ALTER TABLE uji_horarios.hor_aulas
     ( 
      id
     ) 
-    NOT DEFERRABLE 
 ;
 
 
-ALTER TABLE hor_aulas_planificacion 
+ALTER TABLE uji_horarios.hor_aulas_planificacion 
     ADD CONSTRAINT hor_aulas_planif_aulas_FK FOREIGN KEY 
     ( 
      aula_id
@@ -723,11 +669,10 @@ ALTER TABLE hor_aulas_planificacion
     ( 
      id
     ) 
-    NOT DEFERRABLE 
 ;
 
 
-ALTER TABLE hor_aulas_planificacion 
+ALTER TABLE uji_horarios.hor_aulas_planificacion 
     ADD CONSTRAINT hor_aulas_planif_hor_est_FK FOREIGN KEY 
     ( 
      estudio_id
@@ -736,7 +681,6 @@ ALTER TABLE hor_aulas_planificacion
     ( 
      id
     ) 
-    NOT DEFERRABLE 
 ;
 
 
@@ -749,7 +693,6 @@ ALTER TABLE uji_horarios.hor_circuitos
     ( 
      id
     ) 
-    NOT DEFERRABLE 
 ;
 
 
@@ -762,7 +705,6 @@ ALTER TABLE uji_horarios.hor_departamentos
     ( 
      id
     ) 
-    NOT DEFERRABLE 
 ;
 
 
@@ -775,7 +717,6 @@ ALTER TABLE uji_horarios.hor_estudios
     ( 
      id
     ) 
-    NOT DEFERRABLE 
 ;
 
 
@@ -788,20 +729,6 @@ ALTER TABLE uji_horarios.hor_estudios
     ( 
      id
     ) 
-    NOT DEFERRABLE 
-;
-
-
-ALTER TABLE uji_horarios.hor_ext_cargos_per 
-    ADD CONSTRAINT hor_ext_car_per_dep_FK FOREIGN KEY 
-    ( 
-     departamento_id
-    ) 
-    REFERENCES uji_horarios.hor_departamentos 
-    ( 
-     id
-    ) 
-    NOT DEFERRABLE 
 ;
 
 
@@ -814,7 +741,6 @@ ALTER TABLE uji_horarios.hor_ext_cargos_per
     ( 
      id
     ) 
-    NOT DEFERRABLE 
 ;
 
 
@@ -827,20 +753,18 @@ ALTER TABLE uji_horarios.hor_ext_cargos_per
     ( 
      id
     ) 
-    NOT DEFERRABLE 
 ;
 
 
 ALTER TABLE uji_horarios.hor_ext_cargos_per 
     ADD CONSTRAINT hor_ext_car_per_tip_car_FK FOREIGN KEY 
     ( 
-     tipo_cargo_id
+     cargo_id
     ) 
     REFERENCES uji_horarios.hor_tipos_cargos 
     ( 
      id
     ) 
-    NOT DEFERRABLE 
 ;
 
 
@@ -853,7 +777,6 @@ ALTER TABLE uji_horarios.hor_ext_personas
     ( 
      id
     ) 
-    NOT DEFERRABLE 
 ;
 
 
@@ -866,7 +789,6 @@ ALTER TABLE uji_horarios.hor_horarios_horas
     ( 
      id
     ) 
-    NOT DEFERRABLE 
 ;
 
 
@@ -879,7 +801,6 @@ ALTER TABLE uji_horarios.hor_items_asignaturas
     ( 
      id
     ) 
-    NOT DEFERRABLE 
 ;
 
 
@@ -892,7 +813,6 @@ ALTER TABLE uji_horarios.hor_items_asignaturas
     ( 
      id
     ) 
-    NOT DEFERRABLE 
 ;
 
 
@@ -905,7 +825,6 @@ ALTER TABLE uji_horarios.hor_items_circuitos
     ( 
      id
     ) 
-    NOT DEFERRABLE 
 ;
 
 
@@ -918,7 +837,6 @@ ALTER TABLE uji_horarios.hor_items_circuitos
     ( 
      id
     ) 
-    NOT DEFERRABLE 
 ;
 
 
@@ -931,7 +849,6 @@ ALTER TABLE uji_horarios.hor_items_comunes
     ( 
      id
     ) 
-    NOT DEFERRABLE 
 ;
 
 
@@ -944,7 +861,6 @@ ALTER TABLE uji_horarios.hor_items_comunes
     ( 
      id
     ) 
-    NOT DEFERRABLE 
 ;
 
 
@@ -957,7 +873,6 @@ ALTER TABLE uji_horarios.hor_items_detalle
     ( 
      id
     ) 
-    NOT DEFERRABLE 
 ;
 
 
@@ -966,11 +881,10 @@ ALTER TABLE uji_horarios.hor_items
     ( 
      aula_planificacion_id
     ) 
-    REFERENCES hor_aulas_planificacion 
+    REFERENCES uji_horarios.hor_aulas_planificacion 
     ( 
      id
     ) 
-    NOT DEFERRABLE 
 ;
 
 
@@ -983,7 +897,6 @@ ALTER TABLE uji_horarios.hor_items
     ( 
      id
     ) 
-    NOT DEFERRABLE 
 ;
 
 
@@ -996,7 +909,6 @@ ALTER TABLE uji_horarios.hor_items
     ( 
      id
     ) 
-    NOT DEFERRABLE 
 ;
 
 
@@ -1009,7 +921,6 @@ ALTER TABLE uji_horarios.hor_items
     ( 
      id
     ) 
-    NOT DEFERRABLE 
 ;
 
 
@@ -1022,7 +933,6 @@ ALTER TABLE uji_horarios.hor_permisos_extra
     ( 
      id
     ) 
-    NOT DEFERRABLE 
 ;
 
 
@@ -1035,7 +945,6 @@ ALTER TABLE uji_horarios.hor_permisos_extra
     ( 
      id
     ) 
-    NOT DEFERRABLE 
 ;
 
 
@@ -1048,7 +957,6 @@ ALTER TABLE uji_horarios.hor_permisos_extra
     ( 
      id
     ) 
-    NOT DEFERRABLE 
 ;
 
 
@@ -1061,7 +969,6 @@ ALTER TABLE uji_horarios.hor_permisos_extra
     ( 
      id
     ) 
-    NOT DEFERRABLE 
 ;
 
 
@@ -1074,7 +981,6 @@ ALTER TABLE uji_horarios.hor_profesores
     ( 
      id
     ) 
-    NOT DEFERRABLE 
 ;
 
 
@@ -1087,7 +993,6 @@ ALTER TABLE uji_horarios.hor_semestres_detalle
     ( 
      id
     ) 
-    NOT DEFERRABLE 
 ;
 
 
@@ -1100,7 +1005,6 @@ ALTER TABLE uji_horarios.hor_semestres_detalle
     ( 
      id
     ) 
-    NOT DEFERRABLE 
 ;
 
 CREATE OR REPLACE VIEW uji_horarios.hor_v_cursos AS
@@ -1172,14 +1076,14 @@ FROM
     x.dia_semana
   FROM
     (SELECT i.id,
-      ia.estudio_id,
+      NULL estudio_id,
       i.curso_id,
       i.semestre_id,
       i.grupo_id,
       i.tipo_subgrupo_id,
       i.subgrupo_id,
       i.dia_semana_id,
-      ia.asignatura_id,
+      NULL asignatura_id,
       s.fecha_inicio,
       s.fecha_fin,
       s.fecha_examenes_inicio,
@@ -1192,15 +1096,10 @@ FROM
       c.fecha,
       c.tipo_dia,
       c.dia_semana
-    FROM hor_estudios e,
-      hor_semestres_detalle s,
+    FROM hor_semestres_detalle s,
       hor_items i,
-      hor_items_asignaturas ia,
       hor_ext_calendario c
-    WHERE i.id            = ia.item_id
-    AND e.tipo_id         = s.tipo_estudio_id
-    AND ia.estudio_id     = e.id
-    AND i.semestre_id     = s.semestre_id
+    WHERE i.semestre_id   = s.semestre_id
     AND c.dia_semana_id   = i.dia_semana_id
     AND (i.detalle_manual = 0
     AND c.tipo_dia       IN ('L', 'E', 'F')
@@ -1208,13 +1107,9 @@ FROM
     AND c.vacaciones = 0)
     ) x
   ) d,
-  hor_items i,
-  hor_items_asignaturas ia
-WHERE i.id             = ia.item_id
-AND ia.estudio_id      = d.estudio_id
-AND i.curso_id         = d.curso_id
+  hor_items i
+WHERE i.curso_id       = d.curso_id
 AND i.semestre_id      = d.semestre_id
-AND ia.asignatura_id   = d.asignatura_id
 AND i.grupo_id         = d.grupo_id
 AND i.tipo_subgrupo_id = d.tipo_subgrupo_id
 AND i.subgrupo_id      = d.subgrupo_id
@@ -1249,24 +1144,19 @@ FROM
     i.repetir_cada_semanas,
     s.fecha_inicio,
     s.fecha_fin,
-    ia.estudio_id,
+    NULL estudio_id,
     i.semestre_id,
     i.curso_id,
-    ia.asignatura_id,
+    NULL asignatura_id,
     i.grupo_id,
     i.tipo_subgrupo_id,
     i.subgrupo_id,
     i.dia_semana_id,
     c.tipo_dia
-  FROM hor_estudios e,
-    hor_semestres_detalle s,
+  FROM hor_semestres_detalle s,
     hor_items i,
-    hor_items_asignaturas ia,
     hor_ext_calendario c
-  WHERE i.id          = ia.item_id
-  AND e.tipo_id       = s.tipo_estudio_id
-  AND ia.estudio_id   = e.id
-  AND i.semestre_id   = s.semestre_id
+  WHERE i.semestre_id = s.semestre_id
   AND c.dia_semana_id = i.dia_semana_id
   AND (c.tipo_dia    IN ('L', 'E', 'F')
   AND TRUNC(c.fecha) BETWEEN s.fecha_inicio AND NVL(s.fecha_examenes_fin, s.fecha_fin)
@@ -1279,120 +1169,20 @@ AND TRUNC(c.fecha) = TRUNC(d.inicio(+)) ;
 
 
 
-CREATE OR REPLACE TRIGGER uji_horarios.hor_items_delete 
-    BEFORE DELETE ON uji_horarios.hor_items REFERENCING 
-    NEW AS new 
-    OLD AS old 
-    FOR EACH ROW 
-begin
-   delete      uji_horarios.hor_items_detalle
-   where       item_id = :old.id;
-end hor_items_delete; 
-/
-
-ALTER TRIGGER uji_horarios.hor_items_delete ENABLE 
-
-
-CREATE OR REPLACE TRIGGER uji_horarios.mutante_1_inicial 
-    BEFORE INSERT OR UPDATE ON uji_horarios.hor_items 
-    
-BEGIN
-  MUTANTE_ITEMS.V_NUM := 0;
-END; 
-/
-
-ALTER TRIGGER uji_horarios.mutante_1_inicial ENABLE 
-
-
-CREATE OR REPLACE TRIGGER uji_horarios.mutante_2_por_fila 
-    AFTER INSERT OR UPDATE ON uji_horarios.hor_items REFERENCING 
-    NEW AS new 
-    OLD AS old 
-    FOR EACH ROW 
-begin
-   mutante_items.v_num := mutante_items.v_num + 1;
-   mutante_items.v_var_tabla (mutante_items.v_num) := :new.rowid;
-end; 
-/
-
-ALTER TRIGGER uji_horarios.mutante_2_por_fila ENABLE 
-
-
-CREATE OR REPLACE TRIGGER uji_horarios.mutante_3_final 
-    AFTER INSERT OR UPDATE OF dia_semana_id, desde_el_dia, hasta_el_dia, repetir_cada_semanas, numero_iteraciones ON uji_horarios.hor_items 
-    
-begin
-   declare
-      v_aux   NUMBER;
-      v_id    number;
-
-      cursor reg (v_rowid rowid) is
-         select *
-         from   uji_horarios.hor_items
-         where  rowid = v_rowid;
-
-      cursor lista_detalle (p_id in number) is
-         select distinct id, fecha, docencia_paso_1, docencia_paso_2, docencia, orden_id, numero_iteraciones,
-                         repetir_cada_semanas, fecha_inicio, fecha_fin, semestre_id, curso_id, grupo_id,
-                         tipo_subgrupo_id, subgrupo_id, dia_semana_id, tipo_dia, festivos
-         from            uji_horarios.hor_v_items_detalle
-         where           id = p_id
-         and             docencia = 'S';
-   begin
-      for i in 1 .. mutante_items.v_num loop
-         for v_reg in reg (mutante_items.v_var_tabla (i)) loop
-            if v_reg.detalle_manual = 0 then
-               delete      uji_horarios.hor_items_detalle
-               where       item_id = v_reg.id;
-
-               for x in lista_detalle (v_reg.id) loop
-                  if x.docencia = 'S' then
-                     begin
-                        v_aux := uji_horarios.hibernate_sequence.nextval;
-
-                        insert into hor_items_detalle
-                                    (id, item_id,
-                                     inicio,
-                                     fin
-                                    )
-                        values      (v_aux, v_reg.id,
-                                     to_date (to_char (x.fecha, 'dd/mm/yyyy') || ' '
-                                              || to_char (v_reg.hora_inicio, 'hh24:mi:ss'),
-                                              'dd/mm/yyyy hh24:mi:ss'),
-                                     to_date (to_char (x.fecha, 'dd/mm/yyyy') || ' '
-                                              || to_char (v_reg.hora_fin, 'hh24:mi:ss'),
-                                              'dd/mm/yyyy hh24:mi:ss')
-                                    );
-                     exception
-                        when others then
-                           null;
-                     end;
-                  end if;
-               end loop;
-            end if;
-         end loop;
-      end loop;
-   end;
-end mutante_3_final; 
-/
-
-ALTER TRIGGER uji_horarios.mutante_3_final ENABLE 
-
-
 
 
 -- Informe de Resumen de Oracle SQL Developer Data Modeler: 
 -- 
 -- CREATE TABLE                            25
 -- CREATE INDEX                            17
--- ALTER TABLE                             62
+-- ALTER TABLE                             60
 -- CREATE VIEW                              3
 -- CREATE PACKAGE                           0
 -- CREATE PACKAGE BODY                      0
 -- CREATE PROCEDURE                         0
 -- CREATE FUNCTION                          0
--- CREATE TRIGGER                           4
--- ALTER TRIGGER                            4
+-- CREATE TRIGGER                           0
+-- ALTER TRIGGER                            0
 -- CREATE STRUCTURED TYPE                   0
 -- CREATE COLLECTION TYPE                   0
 -- CREATE CLUSTER                           0
@@ -1407,7 +1197,7 @@ ALTER TRIGGER uji_horarios.mutante_3_final ENABLE
 -- CREATE MATERIALIZED VIEW                 0
 -- CREATE SYNONYM                           0
 -- CREATE TABLESPACE                        0
--- CREATE USER                              1
+-- CREATE USER                              0
 -- 
 -- DROP TABLESPACE                          0
 -- DROP DATABASE                            0

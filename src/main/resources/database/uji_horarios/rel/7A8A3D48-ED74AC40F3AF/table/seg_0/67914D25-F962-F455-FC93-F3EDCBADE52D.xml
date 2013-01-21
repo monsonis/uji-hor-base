@@ -52,20 +52,6 @@
 <domain>B784D6D2-343C-97AF-8447-8FE7645FA837</domain>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column class="oracle.dbtools.crest.model.design.relational.Column" name="tipo_cargo_id" id="159E5D2F-CEA3-5EC7-DBFE-BC7A7AD72820">
-<createdBy>ferrerq</createdBy>
-<createdTime>2012-05-28 14:28:56 UTC</createdTime>
-<generatorID>Generado por el Usuario</generatorID>
-<ownerDesignName>uji_horarios</ownerDesignName>
-<use>0</use>
-<logicalDatatype>LOGDT019</logicalDatatype>
-<domain>B784D6D2-343C-97AF-8447-8FE7645FA837</domain>
-<delegate>0F361F62-8CDD-801E-4C08-B6BF849BD021</delegate>
-<autoIncrementCycle>false</autoIncrementCycle>
-<associations>
-<colAssociation fkAssociation="B1F692F3-257E-3447-ACA3-93A0CC0D4F61" referredColumn="0F361F62-8CDD-801E-4C08-B6BF849BD021"/>
-</associations>
-</Column>
 <Column class="oracle.dbtools.crest.model.design.relational.Column" name="persona_id" id="1EF96884-8A49-69EE-BBB5-7E5BED982532">
 <createdBy>ferrerq</createdBy>
 <createdTime>2012-05-28 14:28:56 UTC</createdTime>
@@ -80,20 +66,38 @@
 <colAssociation fkAssociation="107A1700-355C-577A-9243-DB142AFAF91F" referredColumn="DA1FE1BF-74AD-4FC1-EBE4-C07EA1A9F224"/>
 </associations>
 </Column>
-<Column class="oracle.dbtools.crest.model.design.relational.Column" name="departamento_id" id="A0240AC4-164D-E687-D6F6-545F1242D58C">
+<Column class="oracle.dbtools.crest.model.design.relational.Column" name="nombre" id="4E18FFC8-7728-E128-4F33-6F587E85985E">
 <createdBy>ferrerq</createdBy>
-<createdTime>2012-05-28 14:28:56 UTC</createdTime>
+<createdTime>2013-01-21 12:30:46 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<use>0</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<domain>E1ADD657-6E07-28E9-9235-7BBC823C4297</domain>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column class="oracle.dbtools.crest.model.design.relational.Column" name="centro_id" id="0E2281E0-BCDF-5095-E8EF-931A7B93CD9C">
+<createdBy>ferrerq</createdBy>
+<createdTime>2013-01-21 12:30:46 UTC</createdTime>
 <generatorID>Generado por el Usuario</generatorID>
 <ownerDesignName>uji_horarios</ownerDesignName>
 <nullsAllowed>true</nullsAllowed>
 <use>0</use>
 <logicalDatatype>LOGDT019</logicalDatatype>
 <domain>B784D6D2-343C-97AF-8447-8FE7645FA837</domain>
-<delegate>F5C5DAC7-EFED-708F-82DC-AE2517E2902D</delegate>
 <autoIncrementCycle>false</autoIncrementCycle>
-<associations>
-<colAssociation fkAssociation="C76FE11C-CB4A-2F1E-F605-0FBF81EAF78B" referredColumn="F5C5DAC7-EFED-708F-82DC-AE2517E2902D"/>
-</associations>
+</Column>
+<Column class="oracle.dbtools.crest.model.design.relational.Column" name="centro" id="7328694B-B41B-163C-3BBB-4896D4E0BFCB">
+<createdBy>ferrerq</createdBy>
+<createdTime>2013-01-21 12:30:46 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<use>0</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<domain>E1ADD657-6E07-28E9-9235-7BBC823C4297</domain>
+<autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column class="oracle.dbtools.crest.model.design.relational.Column" name="estudio_id" id="3D8DDC2A-FB39-DD04-8904-C0E4FCA1F6FB">
 <createdBy>ferrerq</createdBy>
@@ -110,15 +114,40 @@
 <colAssociation fkAssociation="88E1F889-82E7-C466-346C-929AC20F37F2" referredColumn="06813FA7-B718-829F-603F-CE6BB365CFDB"/>
 </associations>
 </Column>
-<Column class="oracle.dbtools.crest.model.design.relational.Column" name="curso_id" id="543C6889-8A94-9A9F-4894-2FED49E4B400">
+<Column class="oracle.dbtools.crest.model.design.relational.Column" name="estudio" id="A3D6EE67-460F-A027-2FAA-7287554C0457">
 <createdBy>ferrerq</createdBy>
-<createdTime>2012-05-28 15:16:10 UTC</createdTime>
+<createdTime>2013-01-21 12:30:46 UTC</createdTime>
 <generatorID>Generado por el Usuario</generatorID>
 <ownerDesignName>uji_horarios</ownerDesignName>
 <nullsAllowed>true</nullsAllowed>
 <use>0</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<domain>E1ADD657-6E07-28E9-9235-7BBC823C4297</domain>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column class="oracle.dbtools.crest.model.design.relational.Column" name="cargo_id" id="159E5D2F-CEA3-5EC7-DBFE-BC7A7AD72820">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-05-28 14:28:56 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<use>0</use>
 <logicalDatatype>LOGDT019</logicalDatatype>
 <domain>B784D6D2-343C-97AF-8447-8FE7645FA837</domain>
+<delegate>0F361F62-8CDD-801E-4C08-B6BF849BD021</delegate>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="B1F692F3-257E-3447-ACA3-93A0CC0D4F61" referredColumn="0F361F62-8CDD-801E-4C08-B6BF849BD021"/>
+</associations>
+</Column>
+<Column class="oracle.dbtools.crest.model.design.relational.Column" name="cargo" id="1A5DC68F-00DE-2F12-5B1B-C514BF284DD2">
+<createdBy>ferrerq</createdBy>
+<createdTime>2013-01-21 12:30:46 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<use>0</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<domain>E1ADD657-6E07-28E9-9235-7BBC823C4297</domain>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 </columns>
@@ -132,16 +161,6 @@
 <indexState>Primary Constraint</indexState>
 <indexColumnUsage>
 <colUsage columnID="2A95B932-07ED-F53E-CB68-F01F7F9D1853"/>
-</indexColumnUsage>
-</ind_PK_UK>
-<ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="CF8EA307-B018-D00E-8E26-C1F8B3735DE7" name="hor_ext_car_per_dep_FK">
-<createdBy>ferrerq</createdBy>
-<createdTime>2012-05-28 14:28:56 UTC</createdTime>
-<generatorID>Generado por el Usuario</generatorID>
-<ownerDesignName>uji_horarios</ownerDesignName>
-<indexState>Foreign Key</indexState>
-<indexColumnUsage>
-<colUsage columnID="A0240AC4-164D-E687-D6F6-545F1242D58C"/>
 </indexColumnUsage>
 </ind_PK_UK>
 <ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="ADD41A5E-F146-CFAC-2D30-BEFB1EF6E733" name="hor_ext_car_per_est_FK">
@@ -175,13 +194,4 @@
 </indexColumnUsage>
 </ind_PK_UK>
 </indexes>
-<tableCheckConstraints>
-<tableCheckConstraint class="oracle.dbtools.crest.model.design.constraint.TableLevelConstraint" name="hor_ext_cargos_per_CK" id="802F098A-FEDD-6F64-4DA1-F989F79CEB9C" directorySegmentName="seg_0">
-<createdBy>ferrerq</createdBy>
-<createdTime>2012-05-28 14:28:56 UTC</createdTime>
-<generatorID>Generado por el Usuario</generatorID>
-<ownerDesignName>uji_horarios</ownerDesignName>
-<rule>(departamento_id is not null and estudio_id is null)&lt;br&gt; or&lt;br&gt;(departamento_id is null and estudio_id is not null) </rule>
-</tableCheckConstraint>
-</tableCheckConstraints>
 </Table>
