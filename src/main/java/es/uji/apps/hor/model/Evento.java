@@ -461,6 +461,7 @@ public class Evento
     {
         this.setInicio(null);
         this.setFin(null);
+        this.setAulaPlanificacion(null);
     }
 
     public void actualizaAulaPlanificacion(AulaPlanificacion aulaPlanificacion)

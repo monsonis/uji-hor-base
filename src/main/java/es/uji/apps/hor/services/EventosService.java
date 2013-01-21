@@ -63,6 +63,7 @@ public class EventosService
         {
             evento.desplanificar();
             eventosDAO.updateHorasEventoYSusDetalles(evento);
+            eventosDAO.desasignaAulaPlanificacion(eventoId);
         }
         else
         {
@@ -206,7 +207,7 @@ public class EventosService
         if (aulaId != null)
         {
             aula = aulaDAO.getAulaById(aulaId);
-        }      
+        }
         actualizaAulaPlanificacion(evento, aula);
 
         List<Evento> eventos = new ArrayList<Evento>();

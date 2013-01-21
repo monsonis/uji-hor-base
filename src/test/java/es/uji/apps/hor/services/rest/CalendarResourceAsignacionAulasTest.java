@@ -167,6 +167,29 @@ public class CalendarResourceAsignacionAulasTest extends AbstractCalendarResourc
         assertThat(coincidenAulasEventoDividido(evento_id, duplicado.get("id")), is(true));
     }
 
+    @Test
+    @Transactional
+    public void asignaAulaAEventoYCompruebaQueAlDesplanificarEventoSeDesasignaElAula()
+    {
+        this.getListaEventosGenericos();
+        String eventoId = this.getListaEventosGenericos().get(0).get("id");
+
+        MultivaluedMap<String, String> params = new StringKeyStringValueIgnoreCaseMultivaluedMap();
+        params.putSingle("aulaId", String.valueOf(aulaPlanificacionId));
+        params.putSingle("tipoAccion", "F");
+
+        resource.path("calendario/eventos/aula/evento/" + eventoId)
+                .accept(MediaType.APPLICATION_JSON).put(ClientResponse.class, params);
+
+        resource.path("calendario/eventos/generica/" + eventoId)
+                .accept(MediaType.APPLICATION_JSON_TYPE).delete(ClientResponse.class);
+
+        resource.path("grupoAsignatura/sinAsignar/" + eventoId)
+                .accept(MediaType.APPLICATION_JSON_TYPE).put(ClientResponse.class);
+
+        assertThat(tieneAulaAsignada(eventoId), is(false));
+    }
+
     private boolean tieneAulaAsignada(String eventoId)
     {
         UIEntity entity = getDatosEventoGenerico(eventoId);
