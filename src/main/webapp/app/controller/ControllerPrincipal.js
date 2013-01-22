@@ -23,6 +23,10 @@ Ext.define('HOR.controller.ControllerPrincipal',
             'menuSuperior menuitem[action=asignacion-aulas]' :
             {
                 click : this.showAsignacionAulas
+            },
+            'menuSuperior menuitem[action=ocupacion-aulas]' :
+            {
+                click : this.showOcupacionAulas
             }
         });
     },
@@ -40,5 +44,10 @@ Ext.define('HOR.controller.ControllerPrincipal',
     showAsignacionAulas: function()
     {
         this.getViewportHorarios().addNewTab('HOR.view.aulas.PanelAulas');
+    },
+    
+    showOcupacionAulas : function()
+    {
+        this.getViewportHorarios().addNewTab('HOR.view.aulas.calendar.PanelCalendarioAulas');
     }
 });

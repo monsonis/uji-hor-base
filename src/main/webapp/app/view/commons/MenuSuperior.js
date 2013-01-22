@@ -25,7 +25,11 @@ Ext.define('HOR.view.commons.MenuSuperior',
             {
                 text : 'Assignació d\'aules',
                 action : 'asignacion-aulas'
-            } ]
+            },
+            {
+                text : 'Ocupació d\'aules',
+                action : 'ocupacion-aulas'
+            }]
         },
         handler: function(button, event) {
             if (!this.menuVisible) {
