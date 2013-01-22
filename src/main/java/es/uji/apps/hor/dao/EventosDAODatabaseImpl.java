@@ -679,4 +679,19 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
 
         update(item);
     }
+
+    @Override
+    @Transactional
+    public void desplanificaEvento(Evento evento)
+    {
+        DiaSemanaDTO diaSemanaDTO = getDiaSemanaDTOParaFecha(evento.getInicio());
+        AulaPlanificacionDTO aulaPlanificacionDTO = null;
+
+        QItemDTO qItem = QItemDTO.itemDTO;
+        JPAUpdateClause updateClause = new JPAUpdateClause(entityManager, qItem);
+        updateClause.where(qItem.id.eq(evento.getId())).set(qItem.horaInicio, evento.getInicio())
+                .set(qItem.horaFin, evento.getFin()).set(qItem.diaSemana, diaSemanaDTO)
+                .set(qItem.aulaPlanificacion, aulaPlanificacionDTO)
+                .set(qItem.aulaPlanificacionNombre, "").execute();
+    }
 }

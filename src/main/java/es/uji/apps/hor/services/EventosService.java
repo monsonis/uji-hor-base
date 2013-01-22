@@ -62,8 +62,7 @@ public class EventosService
         if (esElultimoEventoAsignadoDelGrupo(evento))
         {
             evento.desplanificar();
-            eventosDAO.updateHorasEventoYSusDetalles(evento);
-            eventosDAO.desasignaAulaPlanificacion(eventoId);
+            eventosDAO.desplanificaEvento(evento);
         }
         else
         {

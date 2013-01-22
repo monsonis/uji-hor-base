@@ -52,4 +52,6 @@ public interface EventosDAO extends BaseDAO
     Asignatura creaAsignaturasDesdeItemAsignaturaDTO(ItemsAsignaturaDTO asig, ItemDTO itemDTO);
 
     void desasignaAulaPlanificacion(Long eventoId) throws RegistroNoEncontradoException;
+
+    void desplanificaEvento(Evento evento);
 }
