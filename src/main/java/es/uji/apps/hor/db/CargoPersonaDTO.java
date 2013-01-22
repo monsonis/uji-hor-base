@@ -2,7 +2,6 @@ package es.uji.apps.hor.db;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,92 +10,104 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-
 /**
  * The persistent class for the HOR_EXT_CARGOS_PER database table.
  * 
  */
 @Entity
-@Table(name="HOR_EXT_CARGOS_PER")
-public class CargoPersonaDTO implements Serializable {
-	private static final long serialVersionUID = 1L;
+@Table(name = "HOR_EXT_CARGOS_PER")
+public class CargoPersonaDTO implements Serializable
+{
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-	@Column(name="CURSO_ID")
-	private Long cursoId;
+    private String nombre;
 
-	//bi-directional many-to-one association to DepartamentoDTO
+    // bi-directional many-to-one association to EstudioDTO
     @ManyToOne
-	@JoinColumn(name="DEPARTAMENTO_ID")
-	private DepartamentoDTO departamento;
+    @JoinColumn(name = "ESTUDIO_ID")
+    private EstudioDTO estudio;
 
-	//bi-directional many-to-one association to EstudioDTO
+    // bi-directional many-to-one association to EstudioDTO
     @ManyToOne
-	@JoinColumn(name="ESTUDIO_ID")
-	private EstudioDTO estudio;
+    @JoinColumn(name = "CENTRO_ID")
+    private CentroDTO centro;
 
-	//bi-directional many-to-one association to PersonaDTO
+    // bi-directional many-to-one association to PersonaDTO
     @ManyToOne
-	@JoinColumn(name="PERSONA_ID")
-	private PersonaDTO persona;
+    @JoinColumn(name = "PERSONA_ID")
+    private PersonaDTO persona;
 
-	//bi-directional many-to-one association to TipoCargoDTO
+    // bi-directional many-to-one association to PersonaDTO
     @ManyToOne
-	@JoinColumn(name="TIPO_CARGO_ID")
-	private TipoCargoDTO tiposCargo;
+    @JoinColumn(name = "CARGO_ID")
+    private TipoCargoDTO cargo;
 
-    public CargoPersonaDTO() {
+    public CargoPersonaDTO()
+    {
     }
 
-	public Long getId() {
-		return this.id;
-	}
+    public Long getId()
+    {
+        return this.id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id)
+    {
+        this.id = id;
+    }
 
-	public Long getCursoId() {
-		return this.cursoId;
-	}
+    public EstudioDTO getEstudio()
+    {
+        return this.estudio;
+    }
 
-	public void setCursoId(Long cursoId) {
-		this.cursoId = cursoId;
-	}
+    public void setEstudio(EstudioDTO estudio)
+    {
+        this.estudio = estudio;
+    }
 
-	public DepartamentoDTO getDepartamento() {
-		return this.departamento;
-	}
+    public PersonaDTO getPersona()
+    {
+        return this.persona;
+    }
 
-	public void setDepartamento(DepartamentoDTO departamento) {
-		this.departamento = departamento;
-	}
-	
-	public EstudioDTO getEstudio() {
-		return this.estudio;
-	}
+    public void setPersona(PersonaDTO persona)
+    {
+        this.persona = persona;
+    }
 
-	public void setEstudio(EstudioDTO estudio) {
-		this.estudio = estudio;
-	}
-	
-	public PersonaDTO getPersona() {
-		return this.persona;
-	}
+    public CentroDTO getCentro()
+    {
+        return centro;
+    }
 
-	public void setPersona(PersonaDTO persona) {
-		this.persona = persona;
-	}
-	
-	public TipoCargoDTO getTiposCargo() {
-		return this.tiposCargo;
-	}
+    public void setCentro(CentroDTO centro)
+    {
+        this.centro = centro;
+    }
 
-	public void setTiposCargo(TipoCargoDTO tiposCargo) {
-		this.tiposCargo = tiposCargo;
-	}
-	
+    public String getNombre()
+    {
+        return nombre;
+    }
+
+    public void setNombre(String nombre)
+    {
+        this.nombre = nombre;
+    }
+
+    public TipoCargoDTO getCargo()
+    {
+        return cargo;
+    }
+
+    public void setCargo(TipoCargoDTO cargo)
+    {
+        this.cargo = cargo;
+    }
+
 }
