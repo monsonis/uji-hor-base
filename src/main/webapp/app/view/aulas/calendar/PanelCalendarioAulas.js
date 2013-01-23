@@ -2,7 +2,7 @@ Ext.define('HOR.view.aulas.calendar.PanelCalendarioAulas',
 {
     extend : 'Ext.panel.Panel',
     title : 'Ocupació d\'aules',
-    requires : [ 'HOR.view.aulas.calendar.FiltroAulas', 'HOR.view.aulas.calendar.SelectorAulas', 'HOR.view.horarios.SelectorCalendarios'],
+    requires : [ 'HOR.view.aulas.calendar.FiltroAulas', 'HOR.view.aulas.calendar.SelectorAulas', 'HOR.view.horarios.SelectorCalendarios', 'HOR.view.aulas.calendar.PanelCalendarioPorAula'],
     alias : 'widget.panelCalendarioAulas',
     closable : true,
     layout :
@@ -43,10 +43,10 @@ Ext.define('HOR.view.aulas.calendar.PanelCalendarioAulas',
                 xtype : 'selectorCalendarios'
             } ]
         },
-        /*{
-            xtype : 'panel',
+        {
+            xtype : 'panelCalendarioPorAula',
             flex : 1
-        }*/ ]
+        } ]
     }]
 
 });
