@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import es.uji.apps.hor.dao.SemestresDetalleDAO;
 import es.uji.apps.hor.model.SemestreDetalle;
+import es.uji.commons.rest.Role;
 
 @Service
 public class SemestresDetalleService
@@ -20,12 +21,14 @@ public class SemestresDetalleService
         this.semestresDetalleDAO = semestresDetalleDAO;
     }
 
-    public List<SemestreDetalle> getSemestresDetallesTodos()
+    @Role({ "ADMIN", "USUARIO" })
+    public List<SemestreDetalle> getSemestresDetallesTodos(Long connectedUserId)
     {
         return semestresDetalleDAO.getSemestresDetalleTodos();
     }
 
-    public List<SemestreDetalle> getSemestresDetallesPorEstudioIdYSemestreId(Long estudioId, Long semestreId)
+    @Role({ "ADMIN", "USUARIO" })
+    public List<SemestreDetalle> getSemestresDetallesPorEstudioIdYSemestreId(Long estudioId, Long semestreId, Long connectedUserId)
     {
         return semestresDetalleDAO.getSemestresDetallesPorEstudioIdYSemestreId(estudioId, semestreId);
     }

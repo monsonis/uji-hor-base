@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import es.uji.apps.hor.dao.GrupoAsignaturaDAO;
 import es.uji.apps.hor.model.GrupoAsignatura;
+import es.uji.commons.rest.Role;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
 @Service
@@ -20,14 +21,16 @@ public class GruposAsignaturasService
         this.grupoAsignaturaDAO = grupoAsignaturaDAO;
     }
 
+    @Role({ "ADMIN", "USUARIO" })
     public List<GrupoAsignatura> getGruposAsignaturasSinAsignar(Long estudioId, Long cursoId,
-            Long semestreId, String grupoId, List<Long> calendariosIds)
+            Long semestreId, String grupoId, List<Long> calendariosIds, Long connectedUserId)
     {
         return grupoAsignaturaDAO.getGruposAsignaturasSinAsignar(estudioId, cursoId, semestreId,
                 grupoId, calendariosIds);
     }
 
-    public GrupoAsignatura planificaGrupoAsignaturaSinAsignar(Long grupoAsignaturaId, Long estudioId)
+    @Role({ "ADMIN", "USUARIO" })
+    public GrupoAsignatura planificaGrupoAsignaturaSinAsignar(Long grupoAsignaturaId, Long estudioId, Long connectedUserId)
             throws RegistroNoEncontradoException
     {
         GrupoAsignatura grupoAsignatura = grupoAsignaturaDAO.getGrupoAsignaturaById(

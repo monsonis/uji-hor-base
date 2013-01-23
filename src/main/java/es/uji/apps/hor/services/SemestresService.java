@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import es.uji.apps.hor.dao.SemestresDAO;
 import es.uji.apps.hor.model.Semestre;
+import es.uji.commons.rest.Role;
 
 @Service
 public class SemestresService
@@ -19,7 +20,8 @@ public class SemestresService
         this.semestresDAO = semestresDAO;
     }
 
-    public List<Semestre> getSemestres(Long cursoId, Long estudioId)
+    @Role({ "ADMIN", "USUARIO" })
+    public List<Semestre> getSemestres(Long cursoId, Long estudioId, Long connectedUserId)
     {
         return semestresDAO.getSemestres(cursoId, estudioId);
     }

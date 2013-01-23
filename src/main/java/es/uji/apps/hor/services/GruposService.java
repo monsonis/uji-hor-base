@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import es.uji.apps.hor.dao.GruposDAO;
 import es.uji.apps.hor.model.Grupo;
+import es.uji.commons.rest.Role;
 
 @Service
 public class GruposService
@@ -19,7 +20,8 @@ public class GruposService
         this.gruposDAO = gruposDAO;
     }
 
-    public List<Grupo> getGrupos(Long semestreId, Long cursoId, Long estudioId)
+    @Role({ "ADMIN", "USUARIO" })
+    public List<Grupo> getGrupos(Long semestreId, Long cursoId, Long estudioId, Long connectedUserId)
     {
         return gruposDAO.getGrupos(semestreId, cursoId, estudioId);
     }

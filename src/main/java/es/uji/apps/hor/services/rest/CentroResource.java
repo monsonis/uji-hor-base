@@ -18,13 +18,15 @@ import es.uji.apps.hor.model.Edificio;
 import es.uji.apps.hor.model.PlantaEdificio;
 import es.uji.apps.hor.model.TipoAula;
 import es.uji.apps.hor.services.CentroService;
+import es.uji.commons.rest.CoreBaseService;
 import es.uji.commons.rest.UIEntity;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 import es.uji.commons.rest.model.tree.TreeRow;
 import es.uji.commons.rest.model.tree.TreeRowset;
+import es.uji.commons.sso.AccessManager;
 
 @Path("centro")
-public class CentroResource
+public class CentroResource extends CoreBaseService
 {
     @InjectParam
     private CentroService consultaCentros;
@@ -33,7 +35,9 @@ public class CentroResource
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> getCentros()
     {
-        List<Centro> centros = consultaCentros.getCentros();
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+
+        List<Centro> centros = consultaCentros.getCentros(connectedUserId);
 
         return UIEntity.toUI(centros);
     }
@@ -45,6 +49,8 @@ public class CentroResource
     public TreeRowset getCentroRowSet()
             throws RegistroNoEncontradoException
     {
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+
         TreeRowset treeRowSetCentro = new TreeRowset();
         return treeRowSetCentro;
     }
@@ -55,8 +61,10 @@ public class CentroResource
     public TreeRowset getAulasCentroRowSet(@PathParam("id") String centroId)
             throws RegistroNoEncontradoException
     {
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+
         TreeRowset treeRowSetCentro = new TreeRowset();
-        Centro centro = consultaCentros.getCentroById(Long.parseLong(centroId));
+        Centro centro = consultaCentros.getCentroById(Long.parseLong(centroId), connectedUserId);
 
         for (Edificio edificio : centro.getEdificios())
         {

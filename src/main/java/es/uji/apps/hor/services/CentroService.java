@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import es.uji.apps.hor.dao.CentroDAO;
 import es.uji.apps.hor.model.Centro;
+import es.uji.commons.rest.Role;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
 @Service
@@ -20,12 +21,14 @@ public class CentroService
         this.centroDAO = centroDAO;
     }
 
-    public List<Centro> getCentros()
+    @Role({ "ADMIN", "USUARIO" })
+    public List<Centro> getCentros(Long connectedUserId)
     {
         return centroDAO.getCentros();
     }
     
-    public Centro getCentroById(Long centroId) throws RegistroNoEncontradoException
+    @Role({ "ADMIN", "USUARIO" })
+    public Centro getCentroById(Long centroId, Long connectedUserId) throws RegistroNoEncontradoException
     {
         Centro centro = centroDAO.getCentroById(centroId);
         

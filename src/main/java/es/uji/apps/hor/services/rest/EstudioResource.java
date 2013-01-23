@@ -13,10 +13,13 @@ import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.services.EstudiosService;
+import es.uji.commons.rest.CoreBaseService;
+import es.uji.commons.rest.Role;
 import es.uji.commons.rest.UIEntity;
+import es.uji.commons.sso.AccessManager;
 
 @Path("estudio")
-public class EstudioResource
+public class EstudioResource extends CoreBaseService
 {
     @InjectParam
     private EstudiosService consultaEstudios;
@@ -27,13 +30,15 @@ public class EstudioResource
     {
         List<Estudio> estudios = new ArrayList<Estudio>();
 
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+
         if (centroId == null || centroId.isEmpty())
         {
-            estudios = consultaEstudios.getEstudios();
+            estudios = consultaEstudios.getEstudios(connectedUserId);
         }
         else
         {
-            estudios = consultaEstudios.getEstudiosByCentroId(Long.parseLong(centroId));
+            estudios = consultaEstudios.getEstudiosByCentroId(Long.parseLong(centroId), connectedUserId);
         }
 
         return UIEntity.toUI(estudios);

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import es.uji.apps.hor.dao.CalendariosDAO;
 import es.uji.apps.hor.model.Calendario;
+import es.uji.commons.rest.Role;
 
 @Service
 public class CalendariosService
@@ -19,7 +20,8 @@ public class CalendariosService
         this.calendariosDAO = calendariosDAO;
     }
 
-    public List<Calendario> getCalendarios()
+    @Role({ "ADMIN", "USUARIO" })
+    public List<Calendario> getCalendarios(Long connectedUserId)
     {
         return calendariosDAO.getCalendarios();
     }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import es.uji.apps.hor.dao.EstudiosDAO;
 import es.uji.apps.hor.model.Estudio;
+import es.uji.commons.rest.Role;
 
 @Service
 public class EstudiosService
@@ -19,12 +20,14 @@ public class EstudiosService
         this.estudiosDAO = estudiosDAO;
     }
 
-    public List<Estudio> getEstudios()
+    @Role({ "ADMIN", "USUARIO" })
+    public List<Estudio> getEstudios(Long connectedUserId)
     {
         return estudiosDAO.getEstudios();
     }
 
-    public List<Estudio> getEstudiosByCentroId(Long centroId)
+    @Role({ "ADMIN", "USUARIO" })
+    public List<Estudio> getEstudiosByCentroId(Long centroId, Long connectedUserId)
     {
         return estudiosDAO.getEstudiosByCentroId(centroId);
     }

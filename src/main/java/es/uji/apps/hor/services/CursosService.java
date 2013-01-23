@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import es.uji.apps.hor.dao.CursosDAO;
 import es.uji.apps.hor.model.Curso;
+import es.uji.commons.rest.Role;
 
 @Service
 public class CursosService
@@ -19,7 +20,8 @@ public class CursosService
         this.cursosDAO = cursosDAO;
     }
 
-    public List<Curso> getCursos(Long estudioId)
+    @Role({ "ADMIN", "USUARIO" })
+    public List<Curso> getCursos(Long estudioId, Long connectedUserId)
     {
         return cursosDAO.getCursos(estudioId);
     }

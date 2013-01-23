@@ -40,12 +40,14 @@ import es.uji.apps.hor.model.RangoHorario;
 import es.uji.apps.hor.services.CalendariosService;
 import es.uji.apps.hor.services.EventosService;
 import es.uji.apps.hor.services.RangoHorarioService;
+import es.uji.commons.rest.CoreBaseService;
 import es.uji.commons.rest.ParamUtils;
 import es.uji.commons.rest.UIEntity;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
+import es.uji.commons.sso.AccessManager;
 
 @Path("calendario")
-public class CalendarResource
+public class CalendarResource extends CoreBaseService
 {
     private static final String END_DATE_QUERY_PARAM = "endDate";
     private static final String START_DATE_QUERY_PARAM = "startDate";
@@ -89,10 +91,12 @@ public class CalendarResource
             @QueryParam(GRUPO_ID_QUERY_PARAM) String grupoId) throws RegistroNoEncontradoException
     {
 
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+
         ParamUtils.checkNotNull(estudioId, cursoId, semestreId, grupoId);
 
         RangoHorario rangoHorario = rangoHorarioService.getHorario(ParamUtils.parseLong(estudioId),
-                ParamUtils.parseLong(cursoId), ParamUtils.parseLong(semestreId), grupoId);
+                ParamUtils.parseLong(cursoId), ParamUtils.parseLong(semestreId), grupoId, connectedUserId);
 
         return rangoHorarioToUI(rangoHorario);
     }
@@ -104,6 +108,9 @@ public class CalendarResource
     public List<UIEntity> guardaConfiguracion(UIEntity entity) throws ParseException,
             RangoHorarioFueradeLimites
     {
+        
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+
         Long estudioId = ParamUtils.parseLong(entity.get("estudioId"));
         Long cursoId = ParamUtils.parseLong(entity.get("cursoId"));
         Long semestreId = ParamUtils.parseLong(entity.get("semestreId"));
@@ -123,7 +130,7 @@ public class CalendarResource
         fin.set(Calendar.SECOND, 0);
 
         RangoHorario rangoHorario = rangoHorarioService.guardaConfiguracionRangoHorario(estudioId,
-                cursoId, semestreId, grupoId, inicio.getTime(), fin.getTime());
+                cursoId, semestreId, grupoId, inicio.getTime(), fin.getTime(), connectedUserId);
 
         return rangoHorarioToUI(rangoHorario);
     }
@@ -137,6 +144,9 @@ public class CalendarResource
             @QueryParam(GRUPO_ID_QUERY_PARAM) String grupoId,
             @QueryParam(CALENDARIOS_IDS_QUERY_PARAM) String calendariosIds) throws ParseException
     {
+        
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+
         ParamUtils.checkNotNull(estudioId, cursoId, semestreId, grupoId);
 
         String[] calendarios = calendariosIds.split(";");
@@ -158,7 +168,7 @@ public class CalendarResource
         {
             eventos = eventosService.eventosSemanaGenericaDeUnEstudio(estudioIdComoLong,
                     ParamUtils.parseLong(cursoId), ParamUtils.parseLong(semestreId), grupoId,
-                    calendariosList);
+                    calendariosList, connectedUserId);
         }
 
         return toUI(eventos, estudioIdComoLong);
@@ -175,6 +185,9 @@ public class CalendarResource
             @QueryParam(START_DATE_QUERY_PARAM) String startDate,
             @QueryParam(END_DATE_QUERY_PARAM) String endDate) throws ParseException
     {
+        
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+
         ParamUtils.checkNotNull(estudioId, cursoId, semestreId, grupoId, startDate, endDate);
 
         Date rangoFechaInicio = queryParamDateFormat.parse(startDate);
@@ -207,7 +220,7 @@ public class CalendarResource
             eventosDetalle = eventosService.eventosDetalleDeUnEstudio(
                     ParamUtils.parseLong(estudioId), ParamUtils.parseLong(cursoId),
                     ParamUtils.parseLong(semestreId), grupoId, calendariosList, rangoFechaInicio,
-                    rangoFechaFin);
+                    rangoFechaFin, connectedUserId);
         }
 
         return eventosDetalletoUI(eventosDetalle);
@@ -253,6 +266,9 @@ public class CalendarResource
             DuracionEventoIncorrectaException, JSONException, RegistroNoEncontradoException,
             EventoDetalleSinEventoException
     {
+        
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+
         DateFormat uIEntityDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         Date inicio = uIEntityDateFormat.parse(entity.get("start"));
         Date fin = uIEntityDateFormat.parse(entity.get("end"));
@@ -260,7 +276,7 @@ public class CalendarResource
 
         if (!enviandoDatosDetalleEvento(entity))
         {
-            Evento evento = eventosService.modificaDiaYHoraEvento(idEvento, inicio, fin);
+            Evento evento = eventosService.modificaDiaYHoraEvento(idEvento, inicio, fin, connectedUserId);
             return toUI(Collections.singletonList(evento));
         }
         else
@@ -269,7 +285,7 @@ public class CalendarResource
             {
                 List<Date> fechas = getListaFechasDetalleManual(entity);
                 Evento evento = eventosService.updateEventoConDetalleManual(idEvento, fechas,
-                        inicio, fin);
+                        inicio, fin, connectedUserId);
                 return toUI(Collections.singletonList(evento));
             }
             else
@@ -289,7 +305,7 @@ public class CalendarResource
                 }
 
                 Evento evento = eventosService.modificaDetallesGrupoAsignatura(idEvento, inicio,
-                        fin, desdeElDia, numeroIteraciones, repetirCadaSemanas, hastaElDia, false);
+                        fin, desdeElDia, numeroIteraciones, repetirCadaSemanas, hastaElDia, false, connectedUserId);
                 return toUI(Collections.singletonList(evento));
             }
         }
@@ -382,7 +398,10 @@ public class CalendarResource
     public Response deleteEventoSemanaGenerica(@PathParam(ID_PATH_PARAM) String eventoId)
             throws RegistroNoEncontradoException
     {
-        eventosService.deleteEventoSemanaGenerica(Long.parseLong(eventoId));
+        
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+
+        eventosService.deleteEventoSemanaGenerica(Long.parseLong(eventoId), connectedUserId);
         return Response.ok().build();
     }
 
@@ -391,7 +410,10 @@ public class CalendarResource
     public Response divideEventoSemanaGenerica(@PathParam(ID_PATH_PARAM) String eventoId)
             throws RegistroNoEncontradoException, EventoNoDivisibleException
     {
-        eventosService.divideEventoSemanaGenerica(Long.parseLong(eventoId));
+        
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+
+        eventosService.divideEventoSemanaGenerica(Long.parseLong(eventoId), connectedUserId);
         return Response.ok().build();
     }
 
@@ -482,9 +504,12 @@ public class CalendarResource
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> getCalendarios()
     {
+        
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+
         List<UIEntity> calendars = new ArrayList<UIEntity>();
 
-        List<Calendario> calendarios = calendariosService.getCalendarios();
+        List<Calendario> calendarios = calendariosService.getCalendarios(connectedUserId);
 
         int i = 1;
         for (Calendario calendario : calendarios)
@@ -506,8 +531,11 @@ public class CalendarResource
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> getEventosDocenciaByEventoId(@PathParam(ID_PATH_PARAM) String eventoId)
     {
+        
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+
         List<EventoDocencia> eventosDocencia = eventosService
-                .getDiasDocenciaDeUnEventoByEventoId(ParamUtils.parseLong(eventoId));
+                .getDiasDocenciaDeUnEventoByEventoId(ParamUtils.parseLong(eventoId), connectedUserId);
 
         return UIEntity.toUI(eventosDocencia);
     }
@@ -521,6 +549,9 @@ public class CalendarResource
             @QueryParam(ESTUDIO_ID_QUERY_PARAM) String estudioId)
             throws RegistroNoEncontradoException, AulaNoAsignadaAEstudioDelEventoException
     {
+        
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+
         boolean propagar = tipoAccion.equals("T");
         Long aula;
         Long estudio;
@@ -543,7 +574,7 @@ public class CalendarResource
         }
 
         List<Evento> eventos = eventosService.actualizaAulaAsignadaAEvento(
-                Long.parseLong(eventoId), aula, propagar);
+                Long.parseLong(eventoId), aula, propagar, connectedUserId);
 
         return toUI(eventos, estudio);
     }

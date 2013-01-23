@@ -12,11 +12,13 @@ import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.hor.model.Semestre;
 import es.uji.apps.hor.services.SemestresService;
+import es.uji.commons.rest.CoreBaseService;
 import es.uji.commons.rest.ParamUtils;
 import es.uji.commons.rest.UIEntity;
+import es.uji.commons.sso.AccessManager;
 
 @Path("semestre")
-public class SemestreResource
+public class SemestreResource extends CoreBaseService
 {
     @InjectParam
     private SemestresService consultaSemestres;
@@ -26,10 +28,12 @@ public class SemestreResource
     public List<UIEntity> getSemestres(@QueryParam("cursoId") String cursoId,
             @QueryParam("estudioId") String estudioId)
     {
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+
         ParamUtils.checkNotNull(cursoId, estudioId);
 
         List<Semestre> semestres = consultaSemestres.getSemestres(ParamUtils.parseLong(cursoId),
-                ParamUtils.parseLong(estudioId));
+                ParamUtils.parseLong(estudioId), connectedUserId);
 
         return UIEntity.toUI(semestres);
     }

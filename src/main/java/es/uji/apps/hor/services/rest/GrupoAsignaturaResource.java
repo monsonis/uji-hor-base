@@ -16,12 +16,14 @@ import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.hor.model.GrupoAsignatura;
 import es.uji.apps.hor.services.GruposAsignaturasService;
+import es.uji.commons.rest.CoreBaseService;
 import es.uji.commons.rest.ParamUtils;
 import es.uji.commons.rest.UIEntity;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
+import es.uji.commons.sso.AccessManager;
 
 @Path("grupoAsignatura")
-public class GrupoAsignaturaResource
+public class GrupoAsignaturaResource extends CoreBaseService
 {
     @InjectParam
     private GruposAsignaturasService gruposAsignaturasService;
@@ -34,6 +36,8 @@ public class GrupoAsignaturaResource
             @QueryParam("grupoId") String grupoId,
             @QueryParam("calendariosIds") String calendariosIds)
     {
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+
         ParamUtils.checkNotNull(estudioId, cursoId, semestreId, grupoId);
 
         String[] calendarios = calendariosIds.split(";");
@@ -55,7 +59,7 @@ public class GrupoAsignaturaResource
             List<GrupoAsignatura> gruposAsignaturas = gruposAsignaturasService
                     .getGruposAsignaturasSinAsignar(ParamUtils.parseLong(estudioId),
                             ParamUtils.parseLong(cursoId), ParamUtils.parseLong(semestreId),
-                            grupoId, calendariosList);
+                            grupoId, calendariosList, connectedUserId);
 
             list = UIEntity.toUI(gruposAsignaturas);
         }
@@ -69,9 +73,11 @@ public class GrupoAsignaturaResource
     public List<UIEntity> planificaGruposAsignaturasSinAsignar(@PathParam("id") String id,
             @QueryParam("estudioId") String estudioId) throws RegistroNoEncontradoException
     {
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+
         GrupoAsignatura grupoAsignatura = gruposAsignaturasService
                 .planificaGrupoAsignaturaSinAsignar(ParamUtils.parseLong(id),
-                        ParamUtils.parseLong(estudioId));
+                        ParamUtils.parseLong(estudioId), connectedUserId);
         return Collections.singletonList(UIEntity.toUI(grupoAsignatura));
     }
 

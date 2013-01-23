@@ -17,13 +17,15 @@ import com.sun.jersey.api.core.InjectParam;
 import es.uji.apps.hor.AulaYaAsignadaAEstudioException;
 import es.uji.apps.hor.model.AulaPlanificacion;
 import es.uji.apps.hor.services.AulaService;
+import es.uji.commons.rest.CoreBaseService;
 import es.uji.commons.rest.ParamUtils;
 import es.uji.commons.rest.UIEntity;
 import es.uji.commons.rest.exceptions.RegistroConHijosException;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
+import es.uji.commons.sso.AccessManager;
 
 @Path("aula")
-public class AulaResource
+public class AulaResource extends CoreBaseService
 {
     @InjectParam
     private AulaService consultaAulas;
@@ -34,10 +36,12 @@ public class AulaResource
     public List<UIEntity> getAulasAsignadasToEstudio(@PathParam("id") String estudioId,
             @QueryParam("semestreId") String semestreId)
     {
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+
         Long semestre = Long.parseLong(semestreId);
 
         List<AulaPlanificacion> aulasAsignadas = consultaAulas.getAulasAsignadasToEstudio(
-                Long.parseLong(estudioId), semestre);
+                Long.parseLong(estudioId), semestre, connectedUserId);
 
         return UIEntity.toUI(aulasAsignadas);
     }
@@ -48,12 +52,14 @@ public class AulaResource
     public List<UIEntity> asignaAulaToEstudio(UIEntity entity)
             throws RegistroNoEncontradoException, AulaYaAsignadaAEstudioException
     {
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+
         String estudioId = entity.get("estudioId");
         Long semestreId = ParamUtils.parseLong(entity.get("semestreId"));
         String aulaId = entity.get("aulaId");
 
         AulaPlanificacion aulaPlanificacion = consultaAulas.asignaAulaToEstudio(
-                Long.parseLong(estudioId), Long.parseLong(aulaId), semestreId);
+                Long.parseLong(estudioId), Long.parseLong(aulaId), semestreId, connectedUserId);
 
         return Collections.singletonList(UIEntity.toUI(aulaPlanificacion));
     }
@@ -63,6 +69,8 @@ public class AulaResource
     public void deleteAulaAsignadaToEstudio(@PathParam("id") String aulaPlanificacionId)
             throws RegistroConHijosException
     {
-        consultaAulas.deleteAulaAsignadaToEstudio(Long.parseLong(aulaPlanificacionId));
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+
+        consultaAulas.deleteAulaAsignadaToEstudio(Long.parseLong(aulaPlanificacionId), connectedUserId);
     }
 }

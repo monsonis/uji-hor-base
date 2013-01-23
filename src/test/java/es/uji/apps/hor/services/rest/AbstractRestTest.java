@@ -1,6 +1,8 @@
 package es.uji.apps.hor.services.rest;
 
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -10,9 +12,6 @@ import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.util.Log4jConfigListener;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
@@ -24,6 +23,7 @@ import com.sun.jersey.test.framework.WebAppDescriptor;
 import es.uji.commons.rest.UIEntityJSONMessageBodyReader;
 import es.uji.commons.rest.UIEntityJSONMessageBodyWriter;
 import es.uji.commons.rest.UIEntityListJSONMessageBodyReader;
+import es.uji.commons.sso.AuthFilter;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext-test.xml" })
@@ -46,6 +46,7 @@ public abstract class AbstractRestTest extends JerseyTest
                 .contextListenerClass(ContextLoaderListener.class)
                 .requestListenerClass(RequestContextListener.class)
                 .servletClass(SpringServlet.class)
+                .addFilter(AuthFilter.class, "/*", getAuthFilterConfig())
                 .clientConfig(createClientConfig())
                 .initParam("com.sun.jersey.config.property.packages",
                         "es.uji.commons.rest; " + packageName).build());
@@ -53,6 +54,16 @@ public abstract class AbstractRestTest extends JerseyTest
         this.resource = resource();
 
         this.client().addFilter(new LoggingFilter());
+    }
+
+    private static Map<String, String> getAuthFilterConfig() {
+        Map<String, String> initAuthFilterConfig = new HashMap<String, String>();
+        
+        initAuthFilterConfig.put("domainCookie", "LSMSessionlocalhost");
+        initAuthFilterConfig.put("defaultUsername", "vrubert");
+        initAuthFilterConfig.put("defaultUserId", "831");
+
+        return initAuthFilterConfig;
     }
 
     private static ClientConfig createClientConfig()

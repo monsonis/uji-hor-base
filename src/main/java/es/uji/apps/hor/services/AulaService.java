@@ -9,6 +9,7 @@ import es.uji.apps.hor.AulaYaAsignadaAEstudioException;
 import es.uji.apps.hor.dao.AulaDAO;
 import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.AulaPlanificacion;
+import es.uji.commons.rest.Role;
 import es.uji.commons.rest.exceptions.RegistroConHijosException;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
@@ -33,18 +34,21 @@ public class AulaService
         return aulaDAO.getAulasByCentroIdAndestudioId(centroId, estudioId);
     }
 
-    public List<AulaPlanificacion> getAulasAsignadasToEstudio(Long estudioId, Long semestreId)
+    @Role({ "ADMIN", "USUARIO" })
+    public List<AulaPlanificacion> getAulasAsignadasToEstudio(Long estudioId, Long semestreId, Long connectedUserId)
     {
         return aulaDAO.getAulasAsignadasToEstudio(estudioId, semestreId);
     }
 
-    public AulaPlanificacion asignaAulaToEstudio(Long estudioId, Long aulaId, Long semestreId)
+    @Role({ "ADMIN", "USUARIO" })
+    public AulaPlanificacion asignaAulaToEstudio(Long estudioId, Long aulaId, Long semestreId, Long connectedUserId)
             throws RegistroNoEncontradoException, AulaYaAsignadaAEstudioException
     {
         return aulaDAO.asignaAulaToEstudio(estudioId, aulaId, semestreId);
     }
 
-    public void deleteAulaAsignadaToEstudio(Long aulaPlanificacionId)
+    @Role({ "ADMIN", "USUARIO" })
+    public void deleteAulaAsignadaToEstudio(Long aulaPlanificacionId, Long connectedUserId)
             throws RegistroConHijosException
     {
         aulaDAO.deleteAulaAsignadaToEstudio(aulaPlanificacionId);

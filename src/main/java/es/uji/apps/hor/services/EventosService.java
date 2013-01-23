@@ -18,6 +18,7 @@ import es.uji.apps.hor.model.AulaPlanificacion;
 import es.uji.apps.hor.model.Evento;
 import es.uji.apps.hor.model.EventoDetalle;
 import es.uji.apps.hor.model.EventoDocencia;
+import es.uji.commons.rest.Role;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
 @Service
@@ -34,14 +35,16 @@ public class EventosService
         this.aulaDAO = aulaDAO;
     }
 
+    @Role({ "ADMIN", "USUARIO" })
     public List<Evento> eventosSemanaGenericaDeUnEstudio(Long estudioId, Long cursoId,
-            Long semestreId, String grupoId, List<Long> calendariosIds)
+            Long semestreId, String grupoId, List<Long> calendariosIds, Long connectedUserId)
     {
         return eventosDAO.getEventosSemanaGenerica(estudioId, cursoId, semestreId, grupoId,
                 calendariosIds);
     }
 
-    public Evento modificaDiaYHoraEvento(Long eventoId, Date inicio, Date fin)
+    @Role({ "ADMIN", "USUARIO" })
+    public Evento modificaDiaYHoraEvento(Long eventoId, Date inicio, Date fin, Long connectedUserId)
             throws DuracionEventoIncorrectaException, RegistroNoEncontradoException
     {
         Evento evento = eventosDAO.getEventoById(eventoId);
@@ -50,7 +53,8 @@ public class EventosService
         return evento;
     }
 
-    public void deleteEventoSemanaGenerica(Long eventoId) throws RegistroNoEncontradoException
+    @Role({ "ADMIN", "USUARIO" })
+    public void deleteEventoSemanaGenerica(Long eventoId, Long connectedUserId) throws RegistroNoEncontradoException
     {
         Evento evento = eventosDAO.getEventoById(eventoId);
 
@@ -135,7 +139,8 @@ public class EventosService
         return cantidadEventosDelMismoGrupo == 1;
     }
 
-    public void divideEventoSemanaGenerica(Long eventoId) throws RegistroNoEncontradoException,
+    @Role({ "ADMIN", "USUARIO" })
+    public void divideEventoSemanaGenerica(Long eventoId, Long connectedUserId) throws RegistroNoEncontradoException,
             EventoNoDivisibleException
     {
         Evento evento = eventosDAO.getEventoById(eventoId);
@@ -145,9 +150,10 @@ public class EventosService
         eventosDAO.updateHorasEventoYSusDetalles(evento);
     }
 
+    @Role({ "ADMIN", "USUARIO" })
     public Evento modificaDetallesGrupoAsignatura(Long eventoId, Date inicio, Date fin,
             Date desdeElDia, Integer numeroIteraciones, Integer repetirCadaSemanas,
-            Date hastaElDia, Boolean detalleManual) throws DuracionEventoIncorrectaException,
+            Date hastaElDia, Boolean detalleManual, Long connectedUserId) throws DuracionEventoIncorrectaException,
             RegistroNoEncontradoException
     {
 
@@ -163,13 +169,15 @@ public class EventosService
 
     }
 
-    public List<EventoDocencia> getDiasDocenciaDeUnEventoByEventoId(Long eventoId)
+    @Role({ "ADMIN", "USUARIO" })
+    public List<EventoDocencia> getDiasDocenciaDeUnEventoByEventoId(Long eventoId, Long connectedUserId)
     {
         return eventosDAO.getDiasDocenciaDeUnEventoByEventoId(eventoId);
     }
 
+    @Role({ "ADMIN", "USUARIO" })
     public Evento updateEventoConDetalleManual(Long eventoId, List<Date> fechas, Date inicio,
-            Date fin) throws RegistroNoEncontradoException, EventoDetalleSinEventoException,
+            Date fin, Long connectedUserId) throws RegistroNoEncontradoException, EventoDetalleSinEventoException,
             DuracionEventoIncorrectaException
     {
         Evento evento = eventosDAO.getEventoById(eventoId);
@@ -189,15 +197,17 @@ public class EventosService
         return evento;
     }
 
+    @Role({ "ADMIN", "USUARIO" })
     public List<EventoDetalle> eventosDetalleDeUnEstudio(Long estudioId, Long cursoId,
             Long semestreId, String grupoId, List<Long> calendariosIds, Date rangoFechaInicio,
-            Date rangoFechaFin)
+            Date rangoFechaFin, Long connectedUserId)
     {
         return eventosDAO.getEventosDetalle(estudioId, cursoId, semestreId, grupoId,
                 calendariosIds, rangoFechaInicio, rangoFechaFin);
     }
 
-    public List<Evento> actualizaAulaAsignadaAEvento(Long eventoId, Long aulaId, boolean propagar)
+    @Role({ "ADMIN", "USUARIO" })
+    public List<Evento> actualizaAulaAsignadaAEvento(Long eventoId, Long aulaId, boolean propagar, Long connectedUserId)
             throws RegistroNoEncontradoException, AulaNoAsignadaAEstudioDelEventoException
     {
         Evento evento = eventosDAO.getEventoById(eventoId);

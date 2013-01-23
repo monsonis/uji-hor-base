@@ -13,10 +13,12 @@ import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.hor.model.SemestreDetalle;
 import es.uji.apps.hor.services.SemestresDetalleService;
+import es.uji.commons.rest.CoreBaseService;
 import es.uji.commons.rest.UIEntity;
+import es.uji.commons.sso.AccessManager;
 
 @Path("semestredetalle")
-public class SemestreDetalleResource
+public class SemestreDetalleResource extends CoreBaseService
 {
 
     @InjectParam
@@ -26,8 +28,10 @@ public class SemestreDetalleResource
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> getSemestresDetailTodos()
     {
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+
         List<SemestreDetalle> semestresDetalles = consultaSemestresDetalle
-                .getSemestresDetallesTodos();
+                .getSemestresDetallesTodos(connectedUserId);
 
         List<UIEntity> listaResultados = new ArrayList<UIEntity>();
 
@@ -47,7 +51,9 @@ public class SemestreDetalleResource
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> getSemestresDetallePorTipoEstudio(@PathParam("estudioId") Long estudioId, @PathParam("semestreId") String semestreId)
     {
-        List<SemestreDetalle> semestresDetalles = consultaSemestresDetalle.getSemestresDetallesPorEstudioIdYSemestreId(estudioId, Long.parseLong(semestreId));
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+
+        List<SemestreDetalle> semestresDetalles = consultaSemestresDetalle.getSemestresDetallesPorEstudioIdYSemestreId(estudioId, Long.parseLong(semestreId), connectedUserId);
 
         List<UIEntity> listaResultados = new ArrayList<UIEntity>();
 

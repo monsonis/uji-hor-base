@@ -11,6 +11,7 @@ import es.uji.apps.hor.dao.EventosDAO;
 import es.uji.apps.hor.dao.RangoHorarioDAO;
 import es.uji.apps.hor.model.Evento;
 import es.uji.apps.hor.model.RangoHorario;
+import es.uji.commons.rest.Role;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
 @Service
@@ -26,7 +27,8 @@ public class RangoHorarioService
         this.eventosDAO = eventosDAO;
     }
 
-    public RangoHorario getHorario(Long estudioId, Long cursoId, Long semestreId, String grupoId)
+    @Role({ "ADMIN", "USUARIO" })
+    public RangoHorario getHorario(Long estudioId, Long cursoId, Long semestreId, String grupoId, Long connectedUserId)
     {
         try
         {
@@ -39,8 +41,9 @@ public class RangoHorarioService
 
     }
 
+    @Role({ "ADMIN", "USUARIO" })
     public RangoHorario guardaConfiguracionRangoHorario(Long estudioId, Long cursoId,
-            Long semestreId, String grupoId, Date horaInicio, Date horaFin)
+            Long semestreId, String grupoId, Date horaInicio, Date horaFin, Long connectedUserId)
             throws RangoHorarioFueradeLimites
     {
         RangoHorario rangoHorario;

@@ -12,11 +12,13 @@ import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.hor.model.Grupo;
 import es.uji.apps.hor.services.GruposService;
+import es.uji.commons.rest.CoreBaseService;
 import es.uji.commons.rest.ParamUtils;
 import es.uji.commons.rest.UIEntity;
+import es.uji.commons.sso.AccessManager;
 
 @Path("grupo")
-public class GrupoResource
+public class GrupoResource extends CoreBaseService
 {
     @InjectParam
     private GruposService consultaGrupos;
@@ -26,10 +28,12 @@ public class GrupoResource
     public List<UIEntity> getGrupos(@QueryParam("semestreId") String semestreId,
             @QueryParam("cursoId") String cursoId, @QueryParam("estudioId") String estudioId)
     {
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+
         ParamUtils.checkNotNull(cursoId, estudioId, semestreId);
 
         List<Grupo> grupos = consultaGrupos.getGrupos(ParamUtils.parseLong(semestreId),
-                ParamUtils.parseLong(cursoId), ParamUtils.parseLong(estudioId));
+                ParamUtils.parseLong(cursoId), ParamUtils.parseLong(estudioId), connectedUserId);
 
         return UIEntity.toUI(grupos);
     }
