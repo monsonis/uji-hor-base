@@ -25,6 +25,12 @@ public class CentroBuilder
         return this;
     }
 
+    public CentroBuilder withId(Long id)
+    {
+        centro.setId(id);
+        return this;
+    }
+
     public Centro build()
     {
         if (centroDAO != null)

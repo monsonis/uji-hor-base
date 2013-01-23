@@ -16,6 +16,7 @@ import es.uji.apps.hor.services.SemestresDetalleService;
 import es.uji.commons.rest.CoreBaseService;
 import es.uji.commons.rest.UIEntity;
 import es.uji.commons.sso.AccessManager;
+import es.uji.commons.sso.exceptions.UnauthorizedUserException;
 
 @Path("semestredetalle")
 public class SemestreDetalleResource extends CoreBaseService
@@ -45,15 +46,19 @@ public class SemestreDetalleResource extends CoreBaseService
 
         return listaResultados;
     }
-    
+
     @GET
     @Path("estudio/{estudioId}/semestre/{semestreId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UIEntity> getSemestresDetallePorTipoEstudio(@PathParam("estudioId") Long estudioId, @PathParam("semestreId") String semestreId)
+    public List<UIEntity> getSemestresDetallePorTipoEstudio(@PathParam("estudioId") Long estudioId,
+            @PathParam("semestreId") String semestreId) throws NumberFormatException,
+            UnauthorizedUserException
     {
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
-        List<SemestreDetalle> semestresDetalles = consultaSemestresDetalle.getSemestresDetallesPorEstudioIdYSemestreId(estudioId, Long.parseLong(semestreId), connectedUserId);
+        List<SemestreDetalle> semestresDetalles = consultaSemestresDetalle
+                .getSemestresDetallesPorEstudioIdYSemestreId(estudioId, Long.parseLong(semestreId),
+                        connectedUserId);
 
         List<UIEntity> listaResultados = new ArrayList<UIEntity>();
 

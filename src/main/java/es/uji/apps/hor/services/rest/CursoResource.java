@@ -16,6 +16,7 @@ import es.uji.commons.rest.CoreBaseService;
 import es.uji.commons.rest.ParamUtils;
 import es.uji.commons.rest.UIEntity;
 import es.uji.commons.sso.AccessManager;
+import es.uji.commons.sso.exceptions.UnauthorizedUserException;
 
 @Path("curso")
 public class CursoResource extends CoreBaseService
@@ -26,13 +27,15 @@ public class CursoResource extends CoreBaseService
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> getCursos(@QueryParam("estudioId") String estudioId)
+            throws UnauthorizedUserException
     {
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
         ParamUtils.checkNotNull(estudioId);
-        
-        List<Curso> cursos = consultaCursos.getCursos(ParamUtils.parseLong(estudioId), connectedUserId);
-        
+
+        List<Curso> cursos = consultaCursos.getCursos(ParamUtils.parseLong(estudioId),
+                connectedUserId);
+
         return UIEntity.toUI(cursos);
     }
 }

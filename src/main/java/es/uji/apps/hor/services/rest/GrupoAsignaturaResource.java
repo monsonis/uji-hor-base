@@ -21,6 +21,7 @@ import es.uji.commons.rest.ParamUtils;
 import es.uji.commons.rest.UIEntity;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 import es.uji.commons.sso.AccessManager;
+import es.uji.commons.sso.exceptions.UnauthorizedUserException;
 
 @Path("grupoAsignatura")
 public class GrupoAsignaturaResource extends CoreBaseService
@@ -34,7 +35,7 @@ public class GrupoAsignaturaResource extends CoreBaseService
     public List<UIEntity> getGruposAsignaturasSinAsignar(@QueryParam("estudioId") String estudioId,
             @QueryParam("cursoId") String cursoId, @QueryParam("semestreId") String semestreId,
             @QueryParam("grupoId") String grupoId,
-            @QueryParam("calendariosIds") String calendariosIds)
+            @QueryParam("calendariosIds") String calendariosIds) throws UnauthorizedUserException
     {
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
@@ -71,7 +72,8 @@ public class GrupoAsignaturaResource extends CoreBaseService
     @Path("sinAsignar/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> planificaGruposAsignaturasSinAsignar(@PathParam("id") String id,
-            @QueryParam("estudioId") String estudioId) throws RegistroNoEncontradoException
+            @QueryParam("estudioId") String estudioId) throws RegistroNoEncontradoException,
+            UnauthorizedUserException
     {
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 

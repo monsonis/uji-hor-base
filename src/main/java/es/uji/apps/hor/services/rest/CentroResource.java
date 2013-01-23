@@ -24,6 +24,7 @@ import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 import es.uji.commons.rest.model.tree.TreeRow;
 import es.uji.commons.rest.model.tree.TreeRowset;
 import es.uji.commons.sso.AccessManager;
+import es.uji.commons.sso.exceptions.UnauthorizedUserException;
 
 @Path("centro")
 public class CentroResource extends CoreBaseService
@@ -42,12 +43,10 @@ public class CentroResource extends CoreBaseService
         return UIEntity.toUI(centros);
     }
 
-   
     @GET
     @Path("tree")
     @Produces(MediaType.APPLICATION_JSON)
-    public TreeRowset getCentroRowSet()
-            throws RegistroNoEncontradoException
+    public TreeRowset getCentroRowSet() throws RegistroNoEncontradoException
     {
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
@@ -59,7 +58,7 @@ public class CentroResource extends CoreBaseService
     @Path("{id}/tree")
     @Produces(MediaType.APPLICATION_JSON)
     public TreeRowset getAulasCentroRowSet(@PathParam("id") String centroId)
-            throws RegistroNoEncontradoException
+            throws RegistroNoEncontradoException, NumberFormatException, UnauthorizedUserException
     {
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 

@@ -45,6 +45,7 @@ import es.uji.commons.rest.ParamUtils;
 import es.uji.commons.rest.UIEntity;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 import es.uji.commons.sso.AccessManager;
+import es.uji.commons.sso.exceptions.UnauthorizedUserException;
 
 @Path("calendario")
 public class CalendarResource extends CoreBaseService
@@ -88,7 +89,8 @@ public class CalendarResource extends CoreBaseService
     public List<UIEntity> getConfiguracion(@QueryParam(ESTUDIO_ID_QUERY_PARAM) String estudioId,
             @QueryParam(CURSO_ID_QUERY_PARAM) String cursoId,
             @QueryParam(SEMESTRE_ID_QUERY_PARAM) String semestreId,
-            @QueryParam(GRUPO_ID_QUERY_PARAM) String grupoId) throws RegistroNoEncontradoException
+            @QueryParam(GRUPO_ID_QUERY_PARAM) String grupoId) throws RegistroNoEncontradoException,
+            UnauthorizedUserException
     {
 
         Long connectedUserId = AccessManager.getConnectedUserId(request);
@@ -96,7 +98,8 @@ public class CalendarResource extends CoreBaseService
         ParamUtils.checkNotNull(estudioId, cursoId, semestreId, grupoId);
 
         RangoHorario rangoHorario = rangoHorarioService.getHorario(ParamUtils.parseLong(estudioId),
-                ParamUtils.parseLong(cursoId), ParamUtils.parseLong(semestreId), grupoId, connectedUserId);
+                ParamUtils.parseLong(cursoId), ParamUtils.parseLong(semestreId), grupoId,
+                connectedUserId);
 
         return rangoHorarioToUI(rangoHorario);
     }
@@ -106,9 +109,9 @@ public class CalendarResource extends CoreBaseService
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public List<UIEntity> guardaConfiguracion(UIEntity entity) throws ParseException,
-            RangoHorarioFueradeLimites
+            RangoHorarioFueradeLimites, UnauthorizedUserException
     {
-        
+
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
         Long estudioId = ParamUtils.parseLong(entity.get("estudioId"));
@@ -142,9 +145,10 @@ public class CalendarResource extends CoreBaseService
             @QueryParam(CURSO_ID_QUERY_PARAM) String cursoId,
             @QueryParam(SEMESTRE_ID_QUERY_PARAM) String semestreId,
             @QueryParam(GRUPO_ID_QUERY_PARAM) String grupoId,
-            @QueryParam(CALENDARIOS_IDS_QUERY_PARAM) String calendariosIds) throws ParseException
+            @QueryParam(CALENDARIOS_IDS_QUERY_PARAM) String calendariosIds) throws ParseException,
+            UnauthorizedUserException
     {
-        
+
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
         ParamUtils.checkNotNull(estudioId, cursoId, semestreId, grupoId);
@@ -183,9 +187,10 @@ public class CalendarResource extends CoreBaseService
             @QueryParam(GRUPO_ID_QUERY_PARAM) String grupoId,
             @QueryParam(CALENDARIOS_IDS_QUERY_PARAM) String calendariosIds,
             @QueryParam(START_DATE_QUERY_PARAM) String startDate,
-            @QueryParam(END_DATE_QUERY_PARAM) String endDate) throws ParseException
+            @QueryParam(END_DATE_QUERY_PARAM) String endDate) throws ParseException,
+            UnauthorizedUserException
     {
-        
+
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
         ParamUtils.checkNotNull(estudioId, cursoId, semestreId, grupoId, startDate, endDate);
@@ -264,9 +269,9 @@ public class CalendarResource extends CoreBaseService
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> updateEventoSemanaGenerica(UIEntity entity) throws ParseException,
             DuracionEventoIncorrectaException, JSONException, RegistroNoEncontradoException,
-            EventoDetalleSinEventoException
+            EventoDetalleSinEventoException, UnauthorizedUserException
     {
-        
+
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
         DateFormat uIEntityDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
@@ -276,7 +281,8 @@ public class CalendarResource extends CoreBaseService
 
         if (!enviandoDatosDetalleEvento(entity))
         {
-            Evento evento = eventosService.modificaDiaYHoraEvento(idEvento, inicio, fin, connectedUserId);
+            Evento evento = eventosService.modificaDiaYHoraEvento(idEvento, inicio, fin,
+                    connectedUserId);
             return toUI(Collections.singletonList(evento));
         }
         else
@@ -305,7 +311,8 @@ public class CalendarResource extends CoreBaseService
                 }
 
                 Evento evento = eventosService.modificaDetallesGrupoAsignatura(idEvento, inicio,
-                        fin, desdeElDia, numeroIteraciones, repetirCadaSemanas, hastaElDia, false, connectedUserId);
+                        fin, desdeElDia, numeroIteraciones, repetirCadaSemanas, hastaElDia, false,
+                        connectedUserId);
                 return toUI(Collections.singletonList(evento));
             }
         }
@@ -396,9 +403,9 @@ public class CalendarResource extends CoreBaseService
     @DELETE
     @Path("eventos/generica/{id}")
     public Response deleteEventoSemanaGenerica(@PathParam(ID_PATH_PARAM) String eventoId)
-            throws RegistroNoEncontradoException
+            throws RegistroNoEncontradoException, NumberFormatException, UnauthorizedUserException
     {
-        
+
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
         eventosService.deleteEventoSemanaGenerica(Long.parseLong(eventoId), connectedUserId);
@@ -408,9 +415,10 @@ public class CalendarResource extends CoreBaseService
     @POST
     @Path("eventos/generica/divide/{id}")
     public Response divideEventoSemanaGenerica(@PathParam(ID_PATH_PARAM) String eventoId)
-            throws RegistroNoEncontradoException, EventoNoDivisibleException
+            throws RegistroNoEncontradoException, EventoNoDivisibleException,
+            NumberFormatException, UnauthorizedUserException
     {
-        
+
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
         eventosService.divideEventoSemanaGenerica(Long.parseLong(eventoId), connectedUserId);
@@ -504,7 +512,7 @@ public class CalendarResource extends CoreBaseService
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> getCalendarios()
     {
-        
+
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
         List<UIEntity> calendars = new ArrayList<UIEntity>();
@@ -530,12 +538,13 @@ public class CalendarResource extends CoreBaseService
     @Path("eventos/docencia/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> getEventosDocenciaByEventoId(@PathParam(ID_PATH_PARAM) String eventoId)
+            throws RegistroNoEncontradoException, UnauthorizedUserException
     {
-        
+
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
-        List<EventoDocencia> eventosDocencia = eventosService
-                .getDiasDocenciaDeUnEventoByEventoId(ParamUtils.parseLong(eventoId), connectedUserId);
+        List<EventoDocencia> eventosDocencia = eventosService.getDiasDocenciaDeUnEventoByEventoId(
+                ParamUtils.parseLong(eventoId), connectedUserId);
 
         return UIEntity.toUI(eventosDocencia);
     }
@@ -547,9 +556,10 @@ public class CalendarResource extends CoreBaseService
             @FormParam(AULA_ID_FORM_PARAM) String aulaId,
             @FormParam(TIPO_ACCION_FORM_PARAM) String tipoAccion,
             @QueryParam(ESTUDIO_ID_QUERY_PARAM) String estudioId)
-            throws RegistroNoEncontradoException, AulaNoAsignadaAEstudioDelEventoException
+            throws RegistroNoEncontradoException, AulaNoAsignadaAEstudioDelEventoException,
+            NumberFormatException, UnauthorizedUserException
     {
-        
+
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
         boolean propagar = tipoAccion.equals("T");

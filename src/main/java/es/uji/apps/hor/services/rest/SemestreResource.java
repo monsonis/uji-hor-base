@@ -16,6 +16,7 @@ import es.uji.commons.rest.CoreBaseService;
 import es.uji.commons.rest.ParamUtils;
 import es.uji.commons.rest.UIEntity;
 import es.uji.commons.sso.AccessManager;
+import es.uji.commons.sso.exceptions.UnauthorizedUserException;
 
 @Path("semestre")
 public class SemestreResource extends CoreBaseService
@@ -26,7 +27,7 @@ public class SemestreResource extends CoreBaseService
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> getSemestres(@QueryParam("cursoId") String cursoId,
-            @QueryParam("estudioId") String estudioId)
+            @QueryParam("estudioId") String estudioId) throws UnauthorizedUserException
     {
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 

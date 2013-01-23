@@ -23,6 +23,7 @@ import es.uji.commons.rest.UIEntity;
 import es.uji.commons.rest.exceptions.RegistroConHijosException;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 import es.uji.commons.sso.AccessManager;
+import es.uji.commons.sso.exceptions.UnauthorizedUserException;
 
 @Path("aula")
 public class AulaResource extends CoreBaseService
@@ -34,7 +35,8 @@ public class AulaResource extends CoreBaseService
     @Path("estudio/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> getAulasAsignadasToEstudio(@PathParam("id") String estudioId,
-            @QueryParam("semestreId") String semestreId)
+            @QueryParam("semestreId") String semestreId) throws NumberFormatException,
+            UnauthorizedUserException
     {
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
@@ -50,7 +52,8 @@ public class AulaResource extends CoreBaseService
     @Path("estudio")
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> asignaAulaToEstudio(UIEntity entity)
-            throws RegistroNoEncontradoException, AulaYaAsignadaAEstudioException
+            throws RegistroNoEncontradoException, AulaYaAsignadaAEstudioException,
+            NumberFormatException, UnauthorizedUserException
     {
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
@@ -67,10 +70,12 @@ public class AulaResource extends CoreBaseService
     @DELETE
     @Path("estudio/{id}")
     public void deleteAulaAsignadaToEstudio(@PathParam("id") String aulaPlanificacionId)
-            throws RegistroConHijosException
+            throws RegistroConHijosException, RegistroNoEncontradoException, NumberFormatException,
+            UnauthorizedUserException
     {
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
-        consultaAulas.deleteAulaAsignadaToEstudio(Long.parseLong(aulaPlanificacionId), connectedUserId);
+        consultaAulas.deleteAulaAsignadaToEstudio(Long.parseLong(aulaPlanificacionId),
+                connectedUserId);
     }
 }

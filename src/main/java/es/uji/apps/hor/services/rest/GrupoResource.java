@@ -16,6 +16,7 @@ import es.uji.commons.rest.CoreBaseService;
 import es.uji.commons.rest.ParamUtils;
 import es.uji.commons.rest.UIEntity;
 import es.uji.commons.sso.AccessManager;
+import es.uji.commons.sso.exceptions.UnauthorizedUserException;
 
 @Path("grupo")
 public class GrupoResource extends CoreBaseService
@@ -27,6 +28,7 @@ public class GrupoResource extends CoreBaseService
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> getGrupos(@QueryParam("semestreId") String semestreId,
             @QueryParam("cursoId") String cursoId, @QueryParam("estudioId") String estudioId)
+            throws UnauthorizedUserException
     {
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
