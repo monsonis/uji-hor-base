@@ -1,5 +1,6 @@
 package es.uji.apps.hor.dao;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.mysema.query.jpa.impl.JPAQuery;
@@ -10,6 +11,7 @@ import es.uji.apps.hor.model.Centro;
 import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.model.Usuario;
 import es.uji.commons.db.BaseDAODatabaseImpl;
+import es.uji.commons.sso.dao.ApaDAO;
 
 @Repository
 public class UsuarioDAOImpl extends BaseDAODatabaseImpl implements UsuarioDAO
@@ -52,6 +54,15 @@ public class UsuarioDAOImpl extends BaseDAODatabaseImpl implements UsuarioDAO
         centroNuevo.setId(cargoDTO.getCentro().getId());
         centroNuevo.setNombre(cargoDTO.getCentro().getNombre());
         return centroNuevo;
+    }
+
+    @Autowired
+    private ApaDAO apaDAO;
+
+    @Override
+    public boolean elUsuarioEsAdmin(long usuarioId)
+    {
+        return apaDAO.hasPerfil("HOR", "ADMIN", usuarioId);
     }
 
 }

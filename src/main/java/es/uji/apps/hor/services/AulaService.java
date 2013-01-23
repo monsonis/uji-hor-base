@@ -33,8 +33,11 @@ public class AulaService
     public List<AulaPlanificacion> getAulasAsignadasToEstudio(Long estudioId, Long semestreId,
             Long connectedUserId) throws UnauthorizedUserException
     {
-        Usuario usuario = usuarioDAO.getUsuarioById(connectedUserId);
-        usuario.compruebaAccesoAEstudio(estudioId);
+        if (!usuarioDAO.elUsuarioEsAdmin(connectedUserId))
+        {
+            Usuario usuario = usuarioDAO.getUsuarioById(connectedUserId);
+            usuario.compruebaAccesoAEstudio(estudioId);
+        }
 
         return aulaDAO.getAulasAsignadasToEstudio(estudioId, semestreId);
     }
@@ -44,8 +47,11 @@ public class AulaService
             Long connectedUserId) throws RegistroNoEncontradoException,
             AulaYaAsignadaAEstudioException, UnauthorizedUserException
     {
-        Usuario usuario = usuarioDAO.getUsuarioById(connectedUserId);
-        usuario.compruebaAccesoAEstudio(estudioId);
+        if (!usuarioDAO.elUsuarioEsAdmin(connectedUserId))
+        {
+            Usuario usuario = usuarioDAO.getUsuarioById(connectedUserId);
+            usuario.compruebaAccesoAEstudio(estudioId);
+        }
 
         return aulaDAO.asignaAulaToEstudio(estudioId, aulaId, semestreId);
     }
@@ -56,8 +62,12 @@ public class AulaService
             RegistroNoEncontradoException
     {
         AulaPlanificacion aula = aulaDAO.getAulaById(aulaPlanificacionId);
-        Usuario usuario = usuarioDAO.getUsuarioById(connectedUserId);
-        usuario.compruebaAccesoAEstudio(aula.getEstudioId());
+
+        if (!usuarioDAO.elUsuarioEsAdmin(connectedUserId))
+        {
+            Usuario usuario = usuarioDAO.getUsuarioById(connectedUserId);
+            usuario.compruebaAccesoAEstudio(aula.getEstudioId());
+        }
 
         aulaDAO.deleteAulaAsignadaToEstudio(aulaPlanificacionId);
     }

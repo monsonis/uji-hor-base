@@ -7,4 +7,6 @@ public interface UsuarioDAO extends BaseDAO
 {
     Usuario getUsuarioById(Long usuarioId);
 
+    boolean elUsuarioEsAdmin(long usuarioId);
+
 }

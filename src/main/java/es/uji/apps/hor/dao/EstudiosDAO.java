@@ -9,8 +9,12 @@ public interface EstudiosDAO extends BaseDAO
 {
     List<Estudio> getEstudios();
 
+    List<Estudio> getEstudiosVisiblesPorUsuario(Long userId);
+
     List<Estudio> getEstudiosByCentroId(Long centroId);
 
     Estudio insert(Estudio estudio);
+
+    List<Estudio> getEstudiosByCentroIdVisiblesPorUsuario(Long centroId, Long connectedUserId);
 
 }

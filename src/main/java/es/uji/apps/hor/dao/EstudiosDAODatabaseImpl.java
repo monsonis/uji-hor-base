@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.mysema.query.jpa.impl.JPAQuery;
 
 import es.uji.apps.hor.db.EstudioDTO;
+import es.uji.apps.hor.db.QCargoPersonaDTO;
 import es.uji.apps.hor.db.QEstudioDTO;
 import es.uji.apps.hor.db.TipoEstudioDTO;
 import es.uji.apps.hor.model.Estudio;
@@ -37,6 +38,27 @@ public class EstudiosDAODatabaseImpl extends BaseDAODatabaseImpl implements Estu
     }
 
     @Override
+    public List<Estudio> getEstudiosVisiblesPorUsuario(Long userId)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        QEstudioDTO qEstudio = QEstudioDTO.estudioDTO;
+        QCargoPersonaDTO qCargo = QCargoPersonaDTO.cargoPersonaDTO;
+
+        List<EstudioDTO> listaEstudios = query.from(qEstudio, qCargo)
+                .join(qCargo.estudio, qEstudio).where(qCargo.persona.id.eq(userId))
+                .orderBy(qEstudio.nombre.asc()).list(qEstudio);
+
+        List<Estudio> estudios = new ArrayList<Estudio>();
+
+        for (EstudioDTO estudioDTO : listaEstudios)
+        {
+            estudios.add(creaEstudioDesdeEstudioDTO(estudioDTO));
+        }
+
+        return estudios;
+    }
+
+    @Override
     public List<Estudio> getEstudiosByCentroId(Long centroId)
     {
         JPAQuery query = new JPAQuery(entityManager);
@@ -53,6 +75,28 @@ public class EstudiosDAODatabaseImpl extends BaseDAODatabaseImpl implements Estu
         }
 
         return listaEstudios;
+    }
+
+    @Override
+    public List<Estudio> getEstudiosByCentroIdVisiblesPorUsuario(Long centroId, Long userId)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        QEstudioDTO qEstudio = QEstudioDTO.estudioDTO;
+        QCargoPersonaDTO qCargo = QCargoPersonaDTO.cargoPersonaDTO;
+
+        List<EstudioDTO> listaEstudios = query.from(qEstudio, qCargo)
+                .join(qCargo.estudio, qEstudio)
+                .where(qCargo.persona.id.eq(userId).and(qEstudio.centro.id.eq(centroId)))
+                .orderBy(qEstudio.nombre.asc()).list(qEstudio);
+
+        List<Estudio> estudios = new ArrayList<Estudio>();
+
+        for (EstudioDTO estudioDTO : listaEstudios)
+        {
+            estudios.add(creaEstudioDesdeEstudioDTO(estudioDTO));
+        }
+
+        return estudios;
     }
 
     private Estudio creaEstudioDesdeEstudioDTO(EstudioDTO estudioDTO)

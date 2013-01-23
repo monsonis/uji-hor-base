@@ -15,6 +15,7 @@ import com.mysema.query.jpa.impl.JPAQuery;
 import es.uji.apps.hor.db.AulaDTO;
 import es.uji.apps.hor.db.CentroDTO;
 import es.uji.apps.hor.db.QAulaDTO;
+import es.uji.apps.hor.db.QCargoPersonaDTO;
 import es.uji.apps.hor.db.QCentroDTO;
 import es.uji.apps.hor.model.AreaEdificio;
 import es.uji.apps.hor.model.Aula;
@@ -29,13 +30,13 @@ import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 public class CentroDAODatabaseImpl extends BaseDAODatabaseImpl implements CentroDAO
 {
     private final AulaDAO aulaDAO;
-    
+
     @Autowired
     public CentroDAODatabaseImpl(AulaDAO aulaDAO)
     {
         this.aulaDAO = aulaDAO;
     }
-    
+
     @Override
     public List<Centro> getCentros()
     {
@@ -44,6 +45,27 @@ public class CentroDAODatabaseImpl extends BaseDAODatabaseImpl implements Centro
         QCentroDTO qCentro = QCentroDTO.centroDTO;
 
         query.from(qCentro);
+
+        List<Centro> listaCentros = new ArrayList<Centro>();
+
+        for (CentroDTO centroDTO : query.list(qCentro))
+        {
+            listaCentros.add(creaCentroDesdeCentroDTO(centroDTO));
+        }
+
+        return listaCentros;
+    }
+
+    @Override
+    public List<Centro> getCentrosVisiblesPorUsuario(Long connectedUserId)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+
+        QCentroDTO qCentro = QCentroDTO.centroDTO;
+        QCargoPersonaDTO qCargo = QCargoPersonaDTO.cargoPersonaDTO;
+
+        query.from(qCentro, qCargo).join(qCargo.centro, qCentro)
+                .where(qCargo.persona.id.eq(connectedUserId));
 
         List<Centro> listaCentros = new ArrayList<Centro>();
 
@@ -69,24 +91,27 @@ public class CentroDAODatabaseImpl extends BaseDAODatabaseImpl implements Centro
         query.from(qCentro).where(qCentro.id.eq(centroId));
 
         List<CentroDTO> listaCentrosDTO = query.list(qCentro);
-        
-        if (listaCentrosDTO.size() == 1) {
+
+        if (listaCentrosDTO.size() == 1)
+        {
             Centro centro = new Centro();
             centro.setId(centroId);
             centro.setNombre(listaCentrosDTO.get(0).getNombre());
             centro.setEdificios(creaEdificiosCompletosDesdeCentro(centro));
             return centro;
 
-        } else {
+        }
+        else
+        {
             throw new RegistroNoEncontradoException();
         }
-        
+
     }
 
     private List<Edificio> creaEdificiosCompletosDesdeCentro(Centro centro)
     {
         JPAQuery query = new JPAQuery(entityManager);
-        
+
         QAulaDTO qAula = QAulaDTO.aulaDTO;
         query.from(qAula).where(qAula.centro.id.eq(centro.getId()));
 

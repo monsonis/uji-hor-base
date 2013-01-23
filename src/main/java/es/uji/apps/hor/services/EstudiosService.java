@@ -29,16 +29,30 @@ public class EstudiosService
     @Role({ "ADMIN", "USUARIO" })
     public List<Estudio> getEstudios(Long connectedUserId)
     {
-        return estudiosDAO.getEstudios();
+        if (usuarioDAO.elUsuarioEsAdmin(connectedUserId))
+        {
+            return estudiosDAO.getEstudios();
+        }
+        else
+        {
+            return estudiosDAO.getEstudiosVisiblesPorUsuario(connectedUserId);
+        }
     }
 
     @Role({ "ADMIN", "USUARIO" })
     public List<Estudio> getEstudiosByCentroId(Long centroId, Long connectedUserId)
             throws UnauthorizedUserException
     {
-        Usuario usuario = usuarioDAO.getUsuarioById(connectedUserId);
-        usuario.compruebaAccesoACentro(centroId);
-        return estudiosDAO.getEstudiosByCentroId(centroId);
+        if (!usuarioDAO.elUsuarioEsAdmin(connectedUserId))
+        {
+            Usuario usuario = usuarioDAO.getUsuarioById(connectedUserId);
+            usuario.compruebaAccesoACentro(centroId);
+            return estudiosDAO.getEstudiosByCentroIdVisiblesPorUsuario(centroId, connectedUserId);
+        }
+        else
+        {
+            return estudiosDAO.getEstudiosByCentroId(centroId);
+        }
     }
 
 }

@@ -30,7 +30,14 @@ public class CentroService
     @Role({ "ADMIN", "USUARIO" })
     public List<Centro> getCentros(Long connectedUserId)
     {
-        return centroDAO.getCentros();
+        if (!usuarioDAO.elUsuarioEsAdmin(connectedUserId))
+        {
+            return centroDAO.getCentrosVisiblesPorUsuario(connectedUserId);
+        }
+        else
+        {
+            return centroDAO.getCentros();
+        }
     }
 
     @Role({ "ADMIN", "USUARIO" })

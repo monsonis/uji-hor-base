@@ -14,10 +14,9 @@ import com.sun.jersey.api.core.InjectParam;
 import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.services.EstudiosService;
 import es.uji.commons.rest.CoreBaseService;
-import es.uji.commons.rest.Role;
 import es.uji.commons.rest.UIEntity;
-import es.uji.commons.sso.exceptions.UnauthorizedUserException;
 import es.uji.commons.sso.AccessManager;
+import es.uji.commons.sso.exceptions.UnauthorizedUserException;
 
 @Path("estudio")
 public class EstudioResource extends CoreBaseService
@@ -40,7 +39,8 @@ public class EstudioResource extends CoreBaseService
         }
         else
         {
-            estudios = consultaEstudios.getEstudiosByCentroId(Long.parseLong(centroId), connectedUserId);
+            estudios = consultaEstudios.getEstudiosByCentroId(Long.parseLong(centroId),
+                    connectedUserId);
         }
 
         return UIEntity.toUI(estudios);

@@ -9,6 +9,11 @@ import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 public interface CentroDAO extends BaseDAO
 {
     List<Centro> getCentros();
+
+    List<Centro> getCentrosVisiblesPorUsuario(Long connectedUserId);
+
     Centro getCentroById(Long centroId) throws RegistroNoEncontradoException;
+
     Centro insertCentro(Centro centro);
+
 }
