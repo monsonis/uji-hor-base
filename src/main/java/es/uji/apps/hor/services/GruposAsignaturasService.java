@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.uji.apps.hor.dao.GrupoAsignaturaDAO;
-import es.uji.apps.hor.dao.UsuarioDAO;
+import es.uji.apps.hor.dao.PersonaDAO;
 import es.uji.apps.hor.model.GrupoAsignatura;
-import es.uji.apps.hor.model.Usuario;
+import es.uji.apps.hor.model.Persona;
 import es.uji.commons.rest.Role;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 import es.uji.commons.sso.exceptions.UnauthorizedUserException;
@@ -17,7 +17,7 @@ import es.uji.commons.sso.exceptions.UnauthorizedUserException;
 public class GruposAsignaturasService
 {
     @Autowired
-    private UsuarioDAO usuarioDAO;
+    private PersonaDAO personaDAO;
 
     private final GrupoAsignaturaDAO grupoAsignaturaDAO;
 
@@ -32,8 +32,8 @@ public class GruposAsignaturasService
             Long semestreId, String grupoId, List<Long> calendariosIds, Long connectedUserId)
             throws UnauthorizedUserException
     {
-        Usuario usuario = usuarioDAO.getUsuarioById(connectedUserId);
-        usuario.compruebaAccesoAEstudio(estudioId);
+        Persona persona = personaDAO.getPersonaById(connectedUserId);
+        persona.compruebaAccesoAEstudio(estudioId);
 
         return grupoAsignaturaDAO.getGruposAsignaturasSinAsignar(estudioId, cursoId, semestreId,
                 grupoId, calendariosIds);
@@ -44,8 +44,8 @@ public class GruposAsignaturasService
             Long estudioId, Long connectedUserId) throws RegistroNoEncontradoException,
             UnauthorizedUserException
     {
-        Usuario usuario = usuarioDAO.getUsuarioById(connectedUserId);
-        usuario.compruebaAccesoAEstudio(estudioId);
+        Persona persona = personaDAO.getPersonaById(connectedUserId);
+        persona.compruebaAccesoAEstudio(estudioId);
 
         GrupoAsignatura grupoAsignatura = grupoAsignaturaDAO.getGrupoAsignaturaById(
                 grupoAsignaturaId, estudioId);

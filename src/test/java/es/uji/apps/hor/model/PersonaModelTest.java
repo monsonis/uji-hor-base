@@ -7,10 +7,10 @@ import org.junit.Test;
 
 import es.uji.apps.hor.builders.CentroBuilder;
 import es.uji.apps.hor.builders.EstudioBuilder;
-import es.uji.apps.hor.builders.UsuarioBuilder;
+import es.uji.apps.hor.builders.PersonaBuilder;
 import es.uji.commons.sso.exceptions.UnauthorizedUserException;
 
-public class UsuarioModelTest
+public class PersonaModelTest
 {
 
     @Test
@@ -18,9 +18,9 @@ public class UsuarioModelTest
     {
         Centro centro = new CentroBuilder().withId(new Long(1)).withNombre("Centro de estudios")
                 .build();
-        Usuario usuario = new UsuarioBuilder().withNombre("Un nombre").withCentro(centro).build();
+        Persona persona = new PersonaBuilder().withNombre("Un nombre").withCentroAutorizado(centro).build();
 
-        assertThat(usuario.puedeAccederACentro(centro), is(true));
+        assertThat(persona.puedeAccederACentro(centro), is(true));
 
     }
 
@@ -33,10 +33,10 @@ public class UsuarioModelTest
         Centro otroCentro = new CentroBuilder().withId(new Long(2))
                 .withNombre("Otro centro de estudios").build();
 
-        Usuario usuario = new UsuarioBuilder().withNombre("Un nombre").withCentro(centroDelUsuario)
+        Persona persona = new PersonaBuilder().withNombre("Un nombre").withCentroAutorizado(centroDelUsuario)
                 .build();
 
-        usuario.compruebaAccesoACentro(otroCentro);
+        persona.compruebaAccesoACentro(otroCentro);
 
     }
 
@@ -48,9 +48,9 @@ public class UsuarioModelTest
         Centro otroCentro = new CentroBuilder().withId(new Long(2))
                 .withNombre("Otro centro de estudios").build();
 
-        Usuario usuario = new UsuarioBuilder().withNombre("Un nombre").build();
+        Persona persona = new PersonaBuilder().withNombre("Un nombre").build();
 
-        usuario.compruebaAccesoACentro(otroCentro);
+        persona.compruebaAccesoACentro(otroCentro);
 
     }
 
@@ -62,10 +62,10 @@ public class UsuarioModelTest
         Estudio otroEstudioDelUsuario = new EstudioBuilder().withId(new Long(2))
                 .withNombre("Otro estudio del usuario").build();
 
-        Usuario usuario = new UsuarioBuilder().withNombre("Un nombre").withEstudio(estudio)
-                .withEstudio(otroEstudioDelUsuario).build();
+        Persona persona = new PersonaBuilder().withNombre("Un nombre").withEstudioAutorizado(estudio)
+                .withEstudioAutorizado(otroEstudioDelUsuario).build();
 
-        assertThat(usuario.puedeAccederAEstudio(estudio), is(true));
+        assertThat(persona.puedeAccederAEstudio(estudio), is(true));
 
     }
 
@@ -80,10 +80,10 @@ public class UsuarioModelTest
         Estudio otroEstudio = new EstudioBuilder().withId(new Long(3)).withNombre("Otro estudio")
                 .build();
 
-        Usuario usuario = new UsuarioBuilder().withNombre("Un nombre").withEstudio(estudio)
-                .withEstudio(otroEstudioDelUsuario).build();
+        Persona persona = new PersonaBuilder().withNombre("Un nombre").withEstudioAutorizado(estudio)
+                .withEstudioAutorizado(otroEstudioDelUsuario).build();
 
-        usuario.compruebaAccesoAEstudio(otroEstudio);
+        persona.compruebaAccesoAEstudio(otroEstudio);
 
     }
 

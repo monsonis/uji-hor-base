@@ -50,5 +50,6 @@ Insert into HOR_DIAS_SEMANA   (ID, NOMBRE) Values   (4, 'Dijous');
 Insert into HOR_DIAS_SEMANA   (ID, NOMBRE) Values   (5, 'Divendres');
 
 
+Insert into APA_VW_PERSONAS_ITEMS (APLICACION_CODIGO, APLICACION_ID, ITEM_ID, ITEM_NOMBRE, JSCLASS, PERSONA_ID, ROLE, ORDEN) Values ('HOR', 46, 1, 'Form Horarios', 'horarios.js', 1, 'USUARIO', 2);
 
 

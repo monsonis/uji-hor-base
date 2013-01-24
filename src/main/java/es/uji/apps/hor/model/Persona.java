@@ -5,16 +5,20 @@ import java.util.List;
 
 import es.uji.commons.sso.exceptions.UnauthorizedUserException;
 
-public class Usuario
+
+
+public class Persona
 {
     private Long id;
     private String nombre;
-    private Centro centro = null;
-    private List<Estudio> estudios = new ArrayList<Estudio>();
+    private String email;
+    private String actividadId;
+    private Departamento departamento;
+    private Centro centroAutorizado;
+    private List<Estudio> estudiosAutorizados = new ArrayList<Estudio>();
 
-    public Usuario()
-    {
-
+    public Persona() {
+        
     }
 
     public Long getId()
@@ -37,14 +41,34 @@ public class Usuario
         this.nombre = nombre;
     }
 
-    public List<Estudio> getEstudios()
+    public String getActividadId()
     {
-        return estudios;
+        return actividadId;
     }
 
-    public void setEstudios(List<Estudio> estudios)
+    public void setActividadId(String actividadId)
     {
-        this.estudios = estudios;
+        this.actividadId = actividadId;
+    }
+
+    public Departamento getDepartamento()
+    {
+        return departamento;
+    }
+
+    public void setDepartamento(Departamento departamento)
+    {
+        this.departamento = departamento;
+    }
+    
+    public List<Estudio> getEstudiosAutorizados()
+    {
+        return estudiosAutorizados;
+    }
+
+    public void setEstudiosAutorizados(List<Estudio> estudios)
+    {
+        this.estudiosAutorizados = estudios;
     }
 
     public boolean puedeAccederACentro(Centro centro)
@@ -54,7 +78,7 @@ public class Usuario
 
     public boolean puedeAccederACentro(Long centroId)
     {
-        Centro centroUsuario = getCentro();
+        Centro centroUsuario = getCentroAutorizado();
         return centroUsuario != null && centroId.equals(centroUsuario.getId());
 
     }
@@ -66,7 +90,7 @@ public class Usuario
 
     public boolean puedeAccederAEstudio(Long estudioId)
     {
-        for (Estudio estudioUsuario : getEstudios())
+        for (Estudio estudioUsuario : getEstudiosAutorizados())
         {
             if (estudioId.equals(estudioUsuario.getId()))
             {
@@ -76,14 +100,14 @@ public class Usuario
         return false;
     }
 
-    public Centro getCentro()
+    public Centro getCentroAutorizado()
     {
-        return centro;
+        return centroAutorizado;
     }
 
-    public void setCentro(Centro centro)
+    public void setCentroAutorizado(Centro centro)
     {
-        this.centro = centro;
+        this.centroAutorizado = centro;
     }
 
     public void compruebaAccesoACentro(Centro centro) throws UnauthorizedUserException
@@ -135,4 +159,15 @@ public class Usuario
 
         return false;
     }
+
+    public String getEmail()
+    {
+        return email;
+    }
+
+    public void setEmail(String email)
+    {
+        this.email = email;
+    }
+
 }

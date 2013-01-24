@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.uji.apps.hor.dao.EstudiosDAO;
-import es.uji.apps.hor.dao.UsuarioDAO;
+import es.uji.apps.hor.dao.PersonaDAO;
 import es.uji.apps.hor.model.Estudio;
-import es.uji.apps.hor.model.Usuario;
+import es.uji.apps.hor.model.Persona;
 import es.uji.commons.rest.Role;
 import es.uji.commons.sso.exceptions.UnauthorizedUserException;
 
@@ -16,7 +16,7 @@ import es.uji.commons.sso.exceptions.UnauthorizedUserException;
 public class EstudiosService
 {
     @Autowired
-    private UsuarioDAO usuarioDAO;
+    private PersonaDAO personaDAO;
 
     private final EstudiosDAO estudiosDAO;
 
@@ -29,7 +29,7 @@ public class EstudiosService
     @Role({ "ADMIN", "USUARIO" })
     public List<Estudio> getEstudios(Long connectedUserId)
     {
-        if (usuarioDAO.elUsuarioEsAdmin(connectedUserId))
+        if (personaDAO.esAdmin(connectedUserId))
         {
             return estudiosDAO.getEstudios();
         }
@@ -43,10 +43,10 @@ public class EstudiosService
     public List<Estudio> getEstudiosByCentroId(Long centroId, Long connectedUserId)
             throws UnauthorizedUserException
     {
-        if (!usuarioDAO.elUsuarioEsAdmin(connectedUserId))
+        if (!personaDAO.esAdmin(connectedUserId))
         {
-            Usuario usuario = usuarioDAO.getUsuarioById(connectedUserId);
-            usuario.compruebaAccesoACentro(centroId);
+            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            persona.compruebaAccesoACentro(centroId);
             return estudiosDAO.getEstudiosByCentroIdVisiblesPorUsuario(centroId, connectedUserId);
         }
         else

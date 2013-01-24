@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import es.uji.apps.hor.dao.PersonaDAO;
 import es.uji.apps.hor.dao.SemestresDetalleDAO;
-import es.uji.apps.hor.dao.UsuarioDAO;
+import es.uji.apps.hor.model.Persona;
 import es.uji.apps.hor.model.SemestreDetalle;
-import es.uji.apps.hor.model.Usuario;
 import es.uji.commons.rest.Role;
 import es.uji.commons.sso.exceptions.UnauthorizedUserException;
 
@@ -19,7 +19,7 @@ public class SemestresDetalleService
     private final SemestresDetalleDAO semestresDetalleDAO;
 
     @Autowired
-    private UsuarioDAO usuarioDAO;
+    private PersonaDAO personaDAO;
 
     @Autowired
     public SemestresDetalleService(SemestresDetalleDAO semestresDetalleDAO)
@@ -37,8 +37,8 @@ public class SemestresDetalleService
     public List<SemestreDetalle> getSemestresDetallesPorEstudioIdYSemestreId(Long estudioId,
             Long semestreId, Long connectedUserId) throws UnauthorizedUserException
     {
-        Usuario usuario = usuarioDAO.getUsuarioById(connectedUserId);
-        usuario.compruebaAccesoAEstudio(estudioId);
+        Persona persona = personaDAO.getPersonaById(connectedUserId);
+        persona.compruebaAccesoAEstudio(estudioId);
 
         return semestresDetalleDAO.getSemestresDetallesPorEstudioIdYSemestreId(estudioId,
                 semestreId);

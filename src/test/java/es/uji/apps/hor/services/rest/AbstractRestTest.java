@@ -60,8 +60,8 @@ public abstract class AbstractRestTest extends JerseyTest
         Map<String, String> initAuthFilterConfig = new HashMap<String, String>();
         
         initAuthFilterConfig.put("domainCookie", "LSMSessionlocalhost");
-        initAuthFilterConfig.put("defaultUsername", "vrubert");
-        initAuthFilterConfig.put("defaultUserId", "831");
+        initAuthFilterConfig.put("defaultUsername", "testuser");
+        initAuthFilterConfig.put("defaultUserId", "1");
 
         return initAuthFilterConfig;
     }

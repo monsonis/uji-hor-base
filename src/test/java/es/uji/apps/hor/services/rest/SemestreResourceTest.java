@@ -22,16 +22,25 @@ import com.sun.jersey.core.util.StringKeyStringValueIgnoreCaseMultivaluedMap;
 
 import es.uji.apps.hor.builders.AsignaturaBuilder;
 import es.uji.apps.hor.builders.CalendarioBuilder;
+import es.uji.apps.hor.builders.CentroBuilder;
+import es.uji.apps.hor.builders.DepartamentoBuilder;
 import es.uji.apps.hor.builders.EstudioBuilder;
 import es.uji.apps.hor.builders.EventoBuilder;
+import es.uji.apps.hor.builders.PersonaBuilder;
 import es.uji.apps.hor.builders.SemestreBuilder;
 import es.uji.apps.hor.builders.TipoEstudioBuilder;
+import es.uji.apps.hor.dao.CentroDAO;
+import es.uji.apps.hor.dao.DepartamentoDAO;
 import es.uji.apps.hor.dao.EstudiosDAO;
 import es.uji.apps.hor.dao.EventosDAO;
+import es.uji.apps.hor.dao.PersonaDAO;
 import es.uji.apps.hor.model.Asignatura;
 import es.uji.apps.hor.model.Calendario;
+import es.uji.apps.hor.model.Centro;
+import es.uji.apps.hor.model.Departamento;
 import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.model.Evento;
+import es.uji.apps.hor.model.Persona;
 import es.uji.apps.hor.model.Semestre;
 import es.uji.apps.hor.model.TipoEstudio;
 import es.uji.apps.hor.model.TipoSubgrupo;
@@ -51,7 +60,30 @@ public class SemestreResourceTest extends AbstractRestTest
 
     @Autowired
     protected EstudiosDAO estudiosDao;
+
+    @Autowired
+    protected PersonaDAO personaDAO;
+
+    @Autowired
+    protected CentroDAO centroDAO;
+
+    @Autowired
+    protected DepartamentoDAO departamentoDAO;
+
     protected Asignatura asignaturaFicticia1;
+
+    // @Autowired
+    // private ApaDAO apaDAO;
+    //
+    // private void rellenaApa() {
+    // new ApaAplicacioneBuilder(apaDAO).withId(new Long(46)).withNombre("Horarios").build();
+    // ApaRole roleAdmin = new ApaRoleBuilder(apaDAO).withId(new
+    // Long(1)).withNombre("ADMINISTRADOR").build();
+    // ApaRole roleUsuario = new ApaRoleBuilder(apaDAO).withId(new
+    // Long(2)).withNombre("USUARIO").build();
+    // new ApaAplicacionesExtraBuilder(apaDAO).withPersonaId(new
+    // Long(831)).withRole(roleUsuario).build();
+    // }
 
     @Before
     @Transactional
@@ -59,9 +91,17 @@ public class SemestreResourceTest extends AbstractRestTest
     {
         TipoEstudio tipoEstudio = new TipoEstudioBuilder().withId("G").withNombre("Grau").build();
 
+        Centro centro = new CentroBuilder(centroDAO).withNombre("Centro 1").withId(new Long(1)).build();
+        Departamento departamento = new DepartamentoBuilder(departamentoDAO).withNombre("Departamento1")
+                .withCentro(centro).build();
+
         Estudio estudio = new EstudioBuilder(estudiosDao).withNombre("Grau en Psicologia")
                 .withTipoEstudio(tipoEstudio).build();
         estudioId = estudio.getId();
+
+        Persona persona = new PersonaBuilder(personaDAO).withId(new Long(1))
+                .withNombre("Persona 1").withEmail("persona@uji.es").withActividadId("HOLA")
+                .withDepartamento(departamento).withCentroAutorizado(centro).withEstudioAutorizado(estudio).build();
 
         Estudio otroEstudio = new EstudioBuilder(estudiosDao).withNombre("Grau en Informática")
                 .withTipoEstudio(tipoEstudio).build();

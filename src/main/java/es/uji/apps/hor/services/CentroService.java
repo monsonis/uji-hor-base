@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.uji.apps.hor.dao.CentroDAO;
-import es.uji.apps.hor.dao.UsuarioDAO;
+import es.uji.apps.hor.dao.PersonaDAO;
 import es.uji.apps.hor.model.Centro;
-import es.uji.apps.hor.model.Usuario;
+import es.uji.apps.hor.model.Persona;
 import es.uji.commons.rest.Role;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 import es.uji.commons.sso.exceptions.UnauthorizedUserException;
@@ -19,7 +19,7 @@ public class CentroService
     private final CentroDAO centroDAO;
 
     @Autowired
-    private UsuarioDAO usuarioDAO;
+    private PersonaDAO personaDAO;
 
     @Autowired
     public CentroService(CentroDAO centroDAO)
@@ -30,7 +30,7 @@ public class CentroService
     @Role({ "ADMIN", "USUARIO" })
     public List<Centro> getCentros(Long connectedUserId)
     {
-        if (!usuarioDAO.elUsuarioEsAdmin(connectedUserId))
+        if (!personaDAO.esAdmin(connectedUserId))
         {
             return centroDAO.getCentrosVisiblesPorUsuario(connectedUserId);
         }
@@ -44,8 +44,8 @@ public class CentroService
     public Centro getCentroById(Long centroId, Long connectedUserId)
             throws RegistroNoEncontradoException, UnauthorizedUserException
     {
-        Usuario usuario = usuarioDAO.getUsuarioById(connectedUserId);
-        usuario.compruebaAccesoACentro(centroId);
+        Persona persona = personaDAO.getPersonaById(connectedUserId);
+        persona.compruebaAccesoACentro(centroId);
 
         Centro centro = centroDAO.getCentroById(centroId);
 

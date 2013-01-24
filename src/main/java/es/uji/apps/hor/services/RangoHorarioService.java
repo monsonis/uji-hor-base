@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 
 import es.uji.apps.hor.RangoHorarioFueradeLimites;
 import es.uji.apps.hor.dao.EventosDAO;
+import es.uji.apps.hor.dao.PersonaDAO;
 import es.uji.apps.hor.dao.RangoHorarioDAO;
-import es.uji.apps.hor.dao.UsuarioDAO;
 import es.uji.apps.hor.model.Evento;
+import es.uji.apps.hor.model.Persona;
 import es.uji.apps.hor.model.RangoHorario;
-import es.uji.apps.hor.model.Usuario;
 import es.uji.commons.rest.Role;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 import es.uji.commons.sso.exceptions.UnauthorizedUserException;
@@ -24,7 +24,7 @@ public class RangoHorarioService
     private final EventosDAO eventosDAO;
 
     @Autowired
-    private UsuarioDAO usuarioDAO;
+    private PersonaDAO personaDAO;
 
     @Autowired
     public RangoHorarioService(RangoHorarioDAO rangoHorarioDAO, EventosDAO eventosDAO)
@@ -37,8 +37,8 @@ public class RangoHorarioService
     public RangoHorario getHorario(Long estudioId, Long cursoId, Long semestreId, String grupoId,
             Long connectedUserId) throws UnauthorizedUserException
     {
-        Usuario usuario = usuarioDAO.getUsuarioById(connectedUserId);
-        usuario.compruebaAccesoAEstudio(estudioId);
+        Persona persona = personaDAO.getPersonaById(connectedUserId);
+        persona.compruebaAccesoAEstudio(estudioId);
 
         try
         {
@@ -56,8 +56,8 @@ public class RangoHorarioService
             Long semestreId, String grupoId, Date horaInicio, Date horaFin, Long connectedUserId)
             throws RangoHorarioFueradeLimites, UnauthorizedUserException
     {
-        Usuario usuario = usuarioDAO.getUsuarioById(connectedUserId);
-        usuario.compruebaAccesoAEstudio(estudioId);
+        Persona persona = personaDAO.getPersonaById(connectedUserId);
+        persona.compruebaAccesoAEstudio(estudioId);
 
         RangoHorario rangoHorario;
 

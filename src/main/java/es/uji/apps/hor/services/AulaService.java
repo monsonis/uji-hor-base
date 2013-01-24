@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 
 import es.uji.apps.hor.AulaYaAsignadaAEstudioException;
 import es.uji.apps.hor.dao.AulaDAO;
-import es.uji.apps.hor.dao.UsuarioDAO;
+import es.uji.apps.hor.dao.PersonaDAO;
 import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.AulaPlanificacion;
+import es.uji.apps.hor.model.Persona;
 import es.uji.apps.hor.model.TipoAula;
-import es.uji.apps.hor.model.Usuario;
 import es.uji.commons.rest.Role;
 import es.uji.commons.rest.exceptions.RegistroConHijosException;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
@@ -21,7 +21,7 @@ import es.uji.commons.sso.exceptions.UnauthorizedUserException;
 public class AulaService
 {
     @Autowired
-    private UsuarioDAO usuarioDAO;
+    private PersonaDAO personaDAO;
 
     private final AulaDAO aulaDAO;
 
@@ -35,10 +35,10 @@ public class AulaService
     public List<AulaPlanificacion> getAulasAsignadasToEstudio(Long estudioId, Long semestreId,
             Long connectedUserId) throws UnauthorizedUserException
     {
-        if (!usuarioDAO.elUsuarioEsAdmin(connectedUserId))
+        if (!personaDAO.esAdmin(connectedUserId))
         {
-            Usuario usuario = usuarioDAO.getUsuarioById(connectedUserId);
-            usuario.compruebaAccesoAEstudio(estudioId);
+            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            persona.compruebaAccesoAEstudio(estudioId);
         }
 
         return aulaDAO.getAulasAsignadasToEstudio(estudioId, semestreId);
@@ -49,10 +49,10 @@ public class AulaService
             Long connectedUserId) throws RegistroNoEncontradoException,
             AulaYaAsignadaAEstudioException, UnauthorizedUserException
     {
-        if (!usuarioDAO.elUsuarioEsAdmin(connectedUserId))
+        if (!personaDAO.esAdmin(connectedUserId))
         {
-            Usuario usuario = usuarioDAO.getUsuarioById(connectedUserId);
-            usuario.compruebaAccesoAEstudio(estudioId);
+            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            persona.compruebaAccesoAEstudio(estudioId);
         }
 
         return aulaDAO.asignaAulaToEstudio(estudioId, aulaId, semestreId);
@@ -65,10 +65,10 @@ public class AulaService
     {
         AulaPlanificacion aula = aulaDAO.getAulaById(aulaPlanificacionId);
 
-        if (!usuarioDAO.elUsuarioEsAdmin(connectedUserId))
+        if (!personaDAO.esAdmin(connectedUserId))
         {
-            Usuario usuario = usuarioDAO.getUsuarioById(connectedUserId);
-            usuario.compruebaAccesoAEstudio(aula.getEstudioId());
+            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            persona.compruebaAccesoAEstudio(aula.getEstudioId());
         }
 
         aulaDAO.deleteAulaAsignadaToEstudio(aulaPlanificacionId);

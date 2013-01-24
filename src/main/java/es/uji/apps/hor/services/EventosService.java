@@ -13,13 +13,13 @@ import es.uji.apps.hor.EventoDetalleSinEventoException;
 import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.dao.AulaDAO;
 import es.uji.apps.hor.dao.EventosDAO;
-import es.uji.apps.hor.dao.UsuarioDAO;
+import es.uji.apps.hor.dao.PersonaDAO;
 import es.uji.apps.hor.model.Asignatura;
 import es.uji.apps.hor.model.AulaPlanificacion;
 import es.uji.apps.hor.model.Evento;
 import es.uji.apps.hor.model.EventoDetalle;
 import es.uji.apps.hor.model.EventoDocencia;
-import es.uji.apps.hor.model.Usuario;
+import es.uji.apps.hor.model.Persona;
 import es.uji.commons.rest.Role;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 import es.uji.commons.sso.exceptions.UnauthorizedUserException;
@@ -32,7 +32,7 @@ public class EventosService
     private final AulaDAO aulaDAO;
 
     @Autowired
-    private UsuarioDAO usuarioDAO;
+    private PersonaDAO personaDAO;
 
     @Autowired
     public EventosService(EventosDAO eventosDAO, AulaDAO aulaDAO)
@@ -46,8 +46,8 @@ public class EventosService
             Long semestreId, String grupoId, List<Long> calendariosIds, Long connectedUserId)
             throws UnauthorizedUserException
     {
-        Usuario usuario = usuarioDAO.getUsuarioById(connectedUserId);
-        usuario.compruebaAccesoAEstudio(estudioId);
+        Persona persona = personaDAO.getPersonaById(connectedUserId);
+        persona.compruebaAccesoAEstudio(estudioId);
 
         return eventosDAO.getEventosSemanaGenerica(estudioId, cursoId, semestreId, grupoId,
                 calendariosIds);
@@ -60,8 +60,8 @@ public class EventosService
     {
         Evento evento = eventosDAO.getEventoById(eventoId);
 
-        Usuario usuario = usuarioDAO.getUsuarioById(connectedUserId);
-        usuario.compruebaAccesoAEvento(evento);
+        Persona persona = personaDAO.getPersonaById(connectedUserId);
+        persona.compruebaAccesoAEvento(evento);
 
         evento.setFechaInicioYFin(inicio, fin);
         eventosDAO.updateHorasEventoYSusDetalles(evento);
@@ -74,8 +74,8 @@ public class EventosService
     {
         Evento evento = eventosDAO.getEventoById(eventoId);
 
-        Usuario usuario = usuarioDAO.getUsuarioById(connectedUserId);
-        usuario.compruebaAccesoAEvento(evento);
+        Persona persona = personaDAO.getPersonaById(connectedUserId);
+        persona.compruebaAccesoAEvento(evento);
 
         for (EventoDetalle detalle : evento.getEventosDetalle())
         {
@@ -165,8 +165,8 @@ public class EventosService
     {
         Evento evento = eventosDAO.getEventoById(eventoId);
 
-        Usuario usuario = usuarioDAO.getUsuarioById(connectedUserId);
-        usuario.compruebaAccesoAEvento(evento);
+        Persona persona = personaDAO.getPersonaById(connectedUserId);
+        persona.compruebaAccesoAEvento(evento);
 
         Evento nuevoEvento = evento.divide();
 
@@ -184,8 +184,8 @@ public class EventosService
 
         Evento evento = eventosDAO.getEventoById(eventoId);
 
-        Usuario usuario = usuarioDAO.getUsuarioById(connectedUserId);
-        usuario.compruebaAccesoAEvento(evento);
+        Persona persona = personaDAO.getPersonaById(connectedUserId);
+        persona.compruebaAccesoAEvento(evento);
 
         evento.setFechaInicioYFin(inicio, fin);
         evento.setDesdeElDia(desdeElDia);
@@ -204,8 +204,8 @@ public class EventosService
     {
         Evento evento = eventosDAO.getEventoById(eventoId);
 
-        Usuario usuario = usuarioDAO.getUsuarioById(connectedUserId);
-        usuario.compruebaAccesoAEvento(evento);
+        Persona persona = personaDAO.getPersonaById(connectedUserId);
+        persona.compruebaAccesoAEvento(evento);
 
         return eventosDAO.getDiasDocenciaDeUnEventoByEventoId(eventoId);
     }
@@ -218,8 +218,8 @@ public class EventosService
     {
         Evento evento = eventosDAO.getEventoById(eventoId);
 
-        Usuario usuario = usuarioDAO.getUsuarioById(connectedUserId);
-        usuario.compruebaAccesoAEvento(evento);
+        Persona persona = personaDAO.getPersonaById(connectedUserId);
+        persona.compruebaAccesoAEvento(evento);
 
         evento.setDetalleManual(true);
         evento.setFechaInicioYFin(inicio, fin);
@@ -242,8 +242,8 @@ public class EventosService
             Long semestreId, String grupoId, List<Long> calendariosIds, Date rangoFechaInicio,
             Date rangoFechaFin, Long connectedUserId) throws UnauthorizedUserException
     {
-        Usuario usuario = usuarioDAO.getUsuarioById(connectedUserId);
-        usuario.compruebaAccesoAEstudio(estudioId);
+        Persona persona = personaDAO.getPersonaById(connectedUserId);
+        persona.compruebaAccesoAEstudio(estudioId);
 
         return eventosDAO.getEventosDetalle(estudioId, cursoId, semestreId, grupoId,
                 calendariosIds, rangoFechaInicio, rangoFechaFin);
@@ -257,8 +257,8 @@ public class EventosService
 
         Evento evento = eventosDAO.getEventoById(eventoId);
 
-        Usuario usuario = usuarioDAO.getUsuarioById(connectedUserId);
-        usuario.compruebaAccesoAEvento(evento);
+        Persona persona = personaDAO.getPersonaById(connectedUserId);
+        persona.compruebaAccesoAEvento(evento);
 
         AulaPlanificacion aula = null;
 
