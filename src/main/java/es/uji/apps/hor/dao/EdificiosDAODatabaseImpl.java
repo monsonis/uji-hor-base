@@ -9,6 +9,7 @@ import com.mysema.query.jpa.impl.JPAQuery;
 
 import es.uji.apps.hor.db.QAulaDTO;
 import es.uji.apps.hor.model.Edificio;
+import es.uji.apps.hor.model.PlantaEdificio;
 import es.uji.commons.db.BaseDAODatabaseImpl;
 
 @Repository
@@ -38,5 +39,32 @@ public class EdificiosDAODatabaseImpl extends BaseDAODatabaseImpl implements Edi
         }
 
         return edificios;
+    }
+
+    @Override
+    public List<PlantaEdificio> getPlantasEdificioByCentroAndEdificio(Long centroId, String edificio)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        QAulaDTO qAula = QAulaDTO.aulaDTO;
+
+        List<String> plantasEdificio = query.from(qAula)
+                .where(qAula.centro.id.eq(centroId).and(qAula.edificio.eq(edificio)))
+                .orderBy(qAula.planta.asc()).distinct().list(qAula.planta);
+
+        return creaListaPlantasEdificioDesde(plantasEdificio);
+    }
+
+    private List<PlantaEdificio> creaListaPlantasEdificioDesde(List<String> plantasEdificioStr)
+    {
+        List<PlantaEdificio> plantasEdificio = new ArrayList<PlantaEdificio>();
+
+        for (String plantaEdificioStr : plantasEdificioStr)
+        {
+            PlantaEdificio plantaEdificio = new PlantaEdificio();
+            plantaEdificio.setNombre(plantaEdificioStr);
+            plantasEdificio.add(plantaEdificio);
+        }
+
+        return plantasEdificio;
     }
 }

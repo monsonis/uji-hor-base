@@ -35,6 +35,7 @@ import es.uji.commons.rest.UIEntity;
 public class EdificioResourceTest extends AbstractRestTest
 {
     private Long centroId;
+    private String edificio;
 
     @Autowired
     private AulaDAO aulaDAO;
@@ -51,6 +52,7 @@ public class EdificioResourceTest extends AbstractRestTest
 
         Edificio edificio1 = new EdificioBuilder().withNombre("Edificio 1").withCentro(centro)
                 .build();
+        edificio = edificio1.getNombre();
 
         Edificio edificio2 = new EdificioBuilder().withNombre("Edificio 2").withCentro(centro)
                 .build();
@@ -75,7 +77,7 @@ public class EdificioResourceTest extends AbstractRestTest
         new AulaBuilder(aulaDAO).withNombre("Aula 2").withArea(areaEdificio1).withTipo(tipoAula)
                 .withPlanta(plantaEdificio1).withEdificio(edificio1).build();
         new AulaBuilder(aulaDAO).withNombre("Aula 3").withArea(areaEdificio1).withTipo(tipoAula2)
-                .withPlanta(plantaEdificio1).withEdificio(edificio1).build();
+                .withPlanta(plantaEdificio2).withEdificio(edificio1).build();
         new AulaBuilder(aulaDAO).withNombre("Aula 4").withArea(areaEdificio2).withTipo(tipoAula)
                 .withPlanta(plantaEdificio2).withEdificio(edificio2).build();
         new AulaBuilder(aulaDAO).withNombre("Aula 5").withArea(areaEdificio2).withTipo(tipoAula)
@@ -100,5 +102,23 @@ public class EdificioResourceTest extends AbstractRestTest
         });
 
         assertThat(edificios, hasSize(2));
+    }
+
+    @Test
+    @Transactional
+    public void recuperaPlantasEdificioPorCentroYEdificio()
+    {
+        MultivaluedMap<String, String> params = new StringKeyStringValueIgnoreCaseMultivaluedMap();
+        params.putSingle("centroId", String.valueOf(centroId));
+        params.putSingle("edificio", edificio);
+
+        ClientResponse response = resource.path("edificio/planta").queryParams(params)
+                .accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+
+        List<UIEntity> plantasEdificio = response.getEntity(new GenericType<List<UIEntity>>()
+        {
+        });
+
+        assertThat(plantasEdificio, hasSize(2));
     }
 }

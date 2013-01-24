@@ -11,6 +11,7 @@ import javax.ws.rs.core.MediaType;
 import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.hor.model.Edificio;
+import es.uji.apps.hor.model.PlantaEdificio;
 import es.uji.apps.hor.services.EdificiosService;
 import es.uji.commons.rest.CoreBaseService;
 import es.uji.commons.rest.ParamUtils;
@@ -32,5 +33,19 @@ public class EdificioResource extends CoreBaseService
                 .parseLong(centroId));
 
         return UIEntity.toUI(edificios);
+    }
+
+    @GET
+    @Path("planta")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<UIEntity> getPlantasEdificio(@QueryParam("centroId") String centroId,
+            @QueryParam("edificio") String edificio)
+    {
+        ParamUtils.checkNotNull(centroId, edificio);
+
+        List<PlantaEdificio> plantasEdificio = edificiosService
+                .getPlantasEdificioByCentroAndEdificio(ParamUtils.parseLong(centroId), edificio);
+
+        return UIEntity.toUI(plantasEdificio);
     }
 }
