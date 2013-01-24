@@ -86,6 +86,24 @@ public class AulaResourceTest extends AbstractRestTest
         new AulaBuilder(aulaDAO).withNombre("Aula 6").withArea(areaEdificio2).withTipo(tipoAula2)
                 .withPlanta(plantaEdificio2).withEdificio(edificio).build();
     }
+    
+    @Test
+    @Transactional
+    public void recuperaTiposAulaSegunCentroYEdificio()
+    {
+        MultivaluedMap<String, String> params = new StringKeyStringValueIgnoreCaseMultivaluedMap();
+        params.putSingle("centroId", String.valueOf(centroId));
+        params.putSingle("edificio", edificio);
+
+        ClientResponse response = resource.path("aula/tipo").queryParams(params)
+                .accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+
+        List<UIEntity> tiposAula = response.getEntity(new GenericType<List<UIEntity>>()
+        {
+        });
+
+        assertThat(tiposAula, hasSize(2));
+    }
 
     @Test
     @Transactional

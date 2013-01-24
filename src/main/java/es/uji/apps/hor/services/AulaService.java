@@ -10,6 +10,7 @@ import es.uji.apps.hor.dao.AulaDAO;
 import es.uji.apps.hor.dao.UsuarioDAO;
 import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.AulaPlanificacion;
+import es.uji.apps.hor.model.TipoAula;
 import es.uji.apps.hor.model.Usuario;
 import es.uji.commons.rest.Role;
 import es.uji.commons.rest.exceptions.RegistroConHijosException;
@@ -73,6 +74,12 @@ public class AulaService
         aulaDAO.deleteAulaAsignadaToEstudio(aulaPlanificacionId);
     }
 
+    public List<TipoAula> getTiposAulaByCentroAndEdificio(Long centroId, String edificio)
+    {
+        // Falta control acceso
+        return aulaDAO.getTiposAulaByCentroAndEdificio(centroId, edificio);
+    }
+    
     public List<Aula> getAulasFiltradasPor(Long centroId, String edificio, String tipoAula,
             String planta)
     {

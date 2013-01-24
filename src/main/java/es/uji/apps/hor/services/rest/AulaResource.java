@@ -17,6 +17,7 @@ import com.sun.jersey.api.core.InjectParam;
 import es.uji.apps.hor.AulaYaAsignadaAEstudioException;
 import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.AulaPlanificacion;
+import es.uji.apps.hor.model.TipoAula;
 import es.uji.apps.hor.services.AulaService;
 import es.uji.commons.rest.CoreBaseService;
 import es.uji.commons.rest.ParamUtils;
@@ -78,6 +79,20 @@ public class AulaResource extends CoreBaseService
 
         consultaAulas.deleteAulaAsignadaToEstudio(Long.parseLong(aulaPlanificacionId),
                 connectedUserId);
+    }
+    
+    @GET
+    @Path("tipo")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<UIEntity> getTiposAulaByCentroAndEdificio(@QueryParam("centroId") String centroId,
+            @QueryParam("edificio") String edificio)
+    {
+        ParamUtils.checkNotNull(centroId, edificio);
+
+        List<TipoAula> tiposAula = consultaAulas.getTiposAulaByCentroAndEdificio(
+                ParamUtils.parseLong(centroId), edificio);
+
+        return UIEntity.toUI(tiposAula);
     }
 
     @GET

@@ -254,6 +254,33 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
     }
 
     @Override
+    public List<TipoAula> getTiposAulaByCentroAndEdificio(Long centroId, String edificio)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        QAulaDTO qAula = QAulaDTO.aulaDTO;
+
+        List<String> tiposAula = query.from(qAula)
+                .where(qAula.centro.id.eq(centroId).and(qAula.edificio.eq(edificio)))
+                .orderBy(qAula.tipo.asc()).distinct().list(qAula.tipo);
+
+        return creaListaTiposAulaDesde(tiposAula);
+    }
+
+    private List<TipoAula> creaListaTiposAulaDesde(List<String> tiposAulaStr)
+    {
+        List<TipoAula> tiposAula = new ArrayList<TipoAula>();
+
+        for (String tipoAulaStr : tiposAulaStr)
+        {
+            TipoAula tipoAula = new TipoAula();
+            tipoAula.setNombre(tipoAulaStr);
+            tiposAula.add(tipoAula);
+        }
+
+        return tiposAula;
+    }
+
+    @Override
     public List<Aula> getAulasFiltradasPor(Long centroId, String edificio, String tipoAula,
             String planta)
     {
