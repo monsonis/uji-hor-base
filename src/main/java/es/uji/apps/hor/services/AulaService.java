@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import es.uji.apps.hor.AulaYaAsignadaAEstudioException;
 import es.uji.apps.hor.dao.AulaDAO;
 import es.uji.apps.hor.dao.UsuarioDAO;
+import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.AulaPlanificacion;
 import es.uji.apps.hor.model.Usuario;
 import es.uji.commons.rest.Role;
@@ -70,6 +71,13 @@ public class AulaService
         }
 
         aulaDAO.deleteAulaAsignadaToEstudio(aulaPlanificacionId);
+    }
+
+    public List<Aula> getAulasFiltradasPor(Long centroId, String edificio, String tipoAula,
+            String planta)
+    {
+        // Falta control acceso
+        return aulaDAO.getAulasFiltradasPor(centroId, edificio, tipoAula, planta);
     }
 
 }

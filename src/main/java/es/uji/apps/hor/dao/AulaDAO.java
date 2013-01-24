@@ -31,4 +31,5 @@ public interface AulaDAO extends BaseDAO
 
     Aula creaAulaDesdeAulaDTO(AulaDTO aulaDTO);
 
+    List<Aula> getAulasFiltradasPor(Long centroId, String edificio, String tipoAula, String planta);
 }
