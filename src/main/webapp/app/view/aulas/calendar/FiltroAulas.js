@@ -21,7 +21,6 @@ Ext.define('HOR.view.aulas.calendar.FiltroAulas',
        {
            xtype : 'combobox',
            editable : false,
-           lastQuery : '',
            labelWidth : 75,
            labelAlign : 'left',
            margin : '0 20 0 0'
@@ -40,13 +39,12 @@ Ext.define('HOR.view.aulas.calendar.FiltroAulas',
            store : Ext.create('Ext.data.ArrayStore',
            {
                fields : [ 'index', 'name' ],
-               data : [ [ '1', '1' ], [ '2', '2' ] ]
            }),
            displayField : 'name',
            valueField : 'index',
            name : 'semestre',
-           alias : 'widget.comboSemestreCA',
-           width : 120
+           width : 120,
+           queryMode : 'local'
        }]   
    },
    {
@@ -71,23 +69,23 @@ Ext.define('HOR.view.aulas.calendar.FiltroAulas',
        items : [
        {
            fieldLabel : 'Edifici',
-           //store : 'StoreEdificios',
+           store : 'StoreEdificios',
            displayField : 'nombre',
-           valueField : 'id',
+           valueField : 'nombre',
            name : 'edificio',
        },
        {
            fieldLabel : 'Tipus aula',
-           //store : 'StoreTipoAulas',
-           displayField : 'tipo',
-           valueField : 'id',
+           store : 'StoreTiposAula',
+           displayField : 'nombre',
+           valueField : 'nombre',
            name : 'tipoAula',
        },
        {
            fieldLabel : 'Planta',
-           //store : 'StorePlantas',
-           displayField : 'planta',
-           valueField : 'id',
+           store : 'StorePlantasEdificio',
+           displayField : 'nombre',
+           valueField : 'nombre',
            name : 'planta',
            width : 120
        }]       
