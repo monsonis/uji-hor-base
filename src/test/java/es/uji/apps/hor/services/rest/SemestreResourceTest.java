@@ -56,10 +56,10 @@ public class SemestreResourceTest extends AbstractRestTest
     protected final String calendariosIds = "1;2;3;4;5;6";
 
     @Autowired
-    protected EventosDAO eventosDao;
+    protected EventosDAO eventosDAO;
 
     @Autowired
-    protected EstudiosDAO estudiosDao;
+    protected EstudiosDAO estudiosDAO;
 
     @Autowired
     protected PersonaDAO personaDAO;
@@ -95,15 +95,15 @@ public class SemestreResourceTest extends AbstractRestTest
         Departamento departamento = new DepartamentoBuilder(departamentoDAO).withNombre("Departamento1")
                 .withCentro(centro).build();
 
-        Estudio estudio = new EstudioBuilder(estudiosDao).withNombre("Grau en Psicologia")
+        Estudio estudio = new EstudioBuilder(estudiosDAO).withNombre("Grau en Psicologia")
                 .withTipoEstudio(tipoEstudio).build();
         estudioId = estudio.getId();
 
         Persona persona = new PersonaBuilder(personaDAO).withId(new Long(1))
-                .withNombre("Persona 1").withEmail("persona@uji.es").withActividadId("HOLA")
+                .withNombre("Persona 1").withEmail("persona@uji.es").withActividadId("Actividad 1")
                 .withDepartamento(departamento).withCentroAutorizado(centro).withEstudioAutorizado(estudio).build();
 
-        Estudio otroEstudio = new EstudioBuilder(estudiosDao).withNombre("Grau en Informática")
+        Estudio otroEstudio = new EstudioBuilder(estudiosDAO).withNombre("Grau en Informática")
                 .withTipoEstudio(tipoEstudio).build();
 
         asignaturaFicticia1 = new AsignaturaBuilder().withCaracter("Obligatoria")
@@ -131,21 +131,21 @@ public class SemestreResourceTest extends AbstractRestTest
         Calendario calendarioTE = new CalendarioBuilder().withId(calendarioTeoriaId)
                 .withNombre(TipoSubgrupo.getTipoSubgrupo(calendarioTeoriaId)).build();
 
-        Evento evento1DeAsignatura1 = new EventoBuilder(eventosDao)
+        Evento evento1DeAsignatura1 = new EventoBuilder(eventosDAO)
                 .withTitulo("Evento de prueba 1 de asignatura 1")
                 .withAsignatura(asignaturaFicticia1)
                 .withInicioYFinFechaString("10/10/2012 09:00", "10/10/2012 11:00")
                 .withGrupoId(grupoId).withSubgrupoId(new Long(1)).withSemestre(semestre1)
                 .withCalendario(calendarioPR).withDetalleManual(false).build();
 
-        Evento evento2DeAsignatura1 = new EventoBuilder(eventosDao)
+        Evento evento2DeAsignatura1 = new EventoBuilder(eventosDAO)
                 .withTitulo("Evento de prueba 2 de asignatura 1")
                 .withAsignatura(asignaturaFicticia1)
                 .withInicioYFinFechaString("10/10/2012 10:00", "10/10/2012 12:00")
                 .withGrupoId(grupoId).withSubgrupoId(new Long(1)).withSemestre(semestre1)
                 .withCalendario(calendarioTE).withDetalleManual(false).build();
 
-        Evento evento1DeAsignatura2 = new EventoBuilder(eventosDao)
+        Evento evento1DeAsignatura2 = new EventoBuilder(eventosDAO)
                 .withTitulo("Evento de prueba 1 de asignatura 2")
                 .withAsignatura(asignaturaFicticia2)
                 .withInicioYFinFechaString("11/10/2012 10:00", "11/10/2012 12:00")

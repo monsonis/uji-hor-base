@@ -21,15 +21,24 @@ import com.sun.jersey.core.util.StringKeyStringValueIgnoreCaseMultivaluedMap;
 
 import es.uji.apps.hor.builders.AsignaturaBuilder;
 import es.uji.apps.hor.builders.CalendarioBuilder;
+import es.uji.apps.hor.builders.CentroBuilder;
+import es.uji.apps.hor.builders.DepartamentoBuilder;
 import es.uji.apps.hor.builders.EstudioBuilder;
 import es.uji.apps.hor.builders.EventoBuilder;
+import es.uji.apps.hor.builders.PersonaBuilder;
 import es.uji.apps.hor.builders.SemestreBuilder;
 import es.uji.apps.hor.builders.TipoEstudioBuilder;
+import es.uji.apps.hor.dao.CentroDAO;
+import es.uji.apps.hor.dao.DepartamentoDAO;
 import es.uji.apps.hor.dao.EstudiosDAO;
 import es.uji.apps.hor.dao.EventosDAO;
+import es.uji.apps.hor.dao.PersonaDAO;
 import es.uji.apps.hor.model.Asignatura;
 import es.uji.apps.hor.model.Calendario;
+import es.uji.apps.hor.model.Centro;
+import es.uji.apps.hor.model.Departamento;
 import es.uji.apps.hor.model.Estudio;
+import es.uji.apps.hor.model.Persona;
 import es.uji.apps.hor.model.Semestre;
 import es.uji.apps.hor.model.TipoEstudio;
 import es.uji.apps.hor.model.TipoSubgrupo;
@@ -47,6 +56,16 @@ public class GrupoResourceTest extends AbstractRestTest
     @Autowired
     private EstudiosDAO estudiosDao;
 
+    @Autowired
+    protected PersonaDAO personaDAO;
+
+    @Autowired
+    protected CentroDAO centroDAO;
+
+    @Autowired
+    protected DepartamentoDAO departamentoDAO;
+
+
     @Before
     @Transactional
     public void creaEventosIniciales() throws Exception
@@ -56,6 +75,14 @@ public class GrupoResourceTest extends AbstractRestTest
         Estudio estudio = new EstudioBuilder(estudiosDao).withNombre("Grau en Psicologia")
                 .withTipoEstudio(tipoEstudio).build();
         estudioId = estudio.getId();
+
+        Centro centro = new CentroBuilder(centroDAO).withNombre("Centro 1").withId(new Long(1)).build();
+        Departamento departamento = new DepartamentoBuilder(departamentoDAO).withNombre("Departamento1")
+                .withCentro(centro).build();
+
+        Persona persona = new PersonaBuilder(personaDAO).withId(new Long(1))
+                .withNombre("Persona 1").withEmail("persona@uji.es").withActividadId("Actividad 1")
+                .withDepartamento(departamento).withCentroAutorizado(centro).withEstudioAutorizado(estudio).build();
 
         Estudio otroEstudio = new EstudioBuilder(estudiosDao).withNombre("Grau en Informática")
                 .withTipoEstudio(tipoEstudio).build();

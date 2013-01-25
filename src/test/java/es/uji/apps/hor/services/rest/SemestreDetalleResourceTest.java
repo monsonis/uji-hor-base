@@ -19,14 +19,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
 
+import es.uji.apps.hor.builders.CentroBuilder;
+import es.uji.apps.hor.builders.DepartamentoBuilder;
 import es.uji.apps.hor.builders.EstudioBuilder;
+import es.uji.apps.hor.builders.PersonaBuilder;
 import es.uji.apps.hor.builders.SemestreBuilder;
 import es.uji.apps.hor.builders.SemestreDetalleBuilder;
 import es.uji.apps.hor.builders.TipoEstudioBuilder;
+import es.uji.apps.hor.dao.CentroDAO;
+import es.uji.apps.hor.dao.DepartamentoDAO;
 import es.uji.apps.hor.dao.EstudiosDAO;
+import es.uji.apps.hor.dao.PersonaDAO;
 import es.uji.apps.hor.dao.SemestresDetalleDAO;
 import es.uji.apps.hor.dao.TipoEstudioDAO;
+import es.uji.apps.hor.model.Centro;
+import es.uji.apps.hor.model.Departamento;
 import es.uji.apps.hor.model.Estudio;
+import es.uji.apps.hor.model.Persona;
 import es.uji.apps.hor.model.Semestre;
 import es.uji.apps.hor.model.SemestreDetalle;
 import es.uji.apps.hor.model.TipoEstudio;
@@ -43,6 +52,15 @@ public class SemestreDetalleResourceTest extends AbstractRestTest
     @Autowired
     TipoEstudioDAO tipoEstudioDAO;
 
+    @Autowired
+    protected PersonaDAO personaDAO;
+
+    @Autowired
+    protected CentroDAO centroDAO;
+
+    @Autowired
+    protected DepartamentoDAO departamentoDAO;
+
     private Long estudioId;
     private Long semestreId;
 
@@ -55,6 +73,14 @@ public class SemestreDetalleResourceTest extends AbstractRestTest
         Estudio estudio = new EstudioBuilder(estudiosDAO).withNombre("Estudio 1")
                 .withTipoEstudio(tipoEstudio).build();
         estudioId = estudio.getId();
+
+        Centro centro = new CentroBuilder(centroDAO).withNombre("Centro 1").withId(new Long(1)).build();
+        Departamento departamento = new DepartamentoBuilder(departamentoDAO).withNombre("Departamento1")
+                .withCentro(centro).build();
+
+        Persona persona = new PersonaBuilder(personaDAO).withId(new Long(1))
+                .withNombre("Persona 1").withEmail("persona@uji.es").withActividadId("Actividad 1")
+                .withDepartamento(departamento).withCentroAutorizado(centro).withEstudioAutorizado(estudio).build();
 
         Semestre semestre1 = new SemestreBuilder().withNombre("Semestre 1").build();
         semestreId = semestre1.getSemestre();

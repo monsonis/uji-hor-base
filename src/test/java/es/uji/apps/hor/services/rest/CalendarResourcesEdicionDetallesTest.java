@@ -11,15 +11,64 @@ import java.util.Map;
 import javax.ws.rs.core.MediaType;
 
 import org.codehaus.jettison.json.JSONException;
+import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sun.jersey.api.client.ClientResponse;
 
+import es.uji.apps.hor.builders.CentroBuilder;
+import es.uji.apps.hor.builders.DepartamentoBuilder;
+import es.uji.apps.hor.builders.EstudioBuilder;
+import es.uji.apps.hor.builders.PersonaBuilder;
+import es.uji.apps.hor.builders.TipoEstudioBuilder;
+import es.uji.apps.hor.dao.CentroDAO;
+import es.uji.apps.hor.dao.DepartamentoDAO;
+import es.uji.apps.hor.dao.PersonaDAO;
+import es.uji.apps.hor.model.Centro;
+import es.uji.apps.hor.model.Departamento;
+import es.uji.apps.hor.model.Estudio;
+import es.uji.apps.hor.model.Persona;
+import es.uji.apps.hor.model.TipoEstudio;
 import es.uji.commons.rest.UIEntity;
 
 public class CalendarResourcesEdicionDetallesTest extends AbstractCalendarResourceTest
 {
+
+    @Autowired
+    protected PersonaDAO personaDAO;
+
+    @Autowired
+    protected CentroDAO centroDAO;
+
+    @Autowired
+    protected DepartamentoDAO departamentoDAO;
+
+    Long estudioId;
+    
+    @Before
+    @Transactional
+    public void creaDatosIniciales() throws Exception
+    {
+        TipoEstudio tipoEstudio = new TipoEstudioBuilder().withId("G").withNombre("Grau").build();
+
+        Centro centro = new CentroBuilder(centroDAO).withNombre("Centro 1").withId(new Long(1))
+                .build();
+        Departamento departamento = new DepartamentoBuilder(departamentoDAO)
+                .withNombre("Departamento1").withCentro(centro).build();
+
+        Estudio estudio = new EstudioBuilder(estudiosDao).withNombre("Grau en Psicologia")
+                .withTipoEstudio(tipoEstudio).build();
+        
+        estudioId = estudio.getId();
+
+        Persona persona = new PersonaBuilder(personaDAO).withId(new Long(1))
+                .withNombre("Persona 1").withEmail("persona@uji.es").withActividadId("HOLA")
+                .withDepartamento(departamento).withCentroAutorizado(centro)
+                .withEstudioAutorizado(estudio).build();
+    }
+
     @Test
     @Transactional
     public void cambiaFechasDetalleManualDeUnEvento() throws Exception
@@ -29,7 +78,7 @@ public class CalendarResourcesEdicionDetallesTest extends AbstractCalendarResour
         nuevosDatos.put("fecha_detalle_manual_int",
                 "[\"10/10/2012 09:00:00\", \"17/10/2012 09:00:00\"]");
 
-        llamaServicioModificacionEventoGenerico1(nuevosDatos);
+        llamaServicioModificacionEventoGenerico1(nuevosDatos, estudioId);
 
         String inicioPeriodo = "2012-10-01";
         String finPeriodo = "2012-10-28";
@@ -54,7 +103,7 @@ public class CalendarResourcesEdicionDetallesTest extends AbstractCalendarResour
         nuevosDatos.put("seleccionRadioFechaFin", tipoSeleccionFechaFinEsRepeticiones);
         nuevosDatos.put("end_rep_number_comp", numeroRepeticiones3);
 
-        llamaServicioModificacionEventoGenerico1(nuevosDatos);
+        llamaServicioModificacionEventoGenerico1(nuevosDatos, estudioId);
 
         UIEntity entityActualizada = getDatosEventoGenerico("1");
         assertThat(valorPropiedadTipoFechaDeUIEntity(entityActualizada, "start_date_rep"),
@@ -82,7 +131,7 @@ public class CalendarResourcesEdicionDetallesTest extends AbstractCalendarResour
         nuevosDatos.put("end_rep_number_comp", numeroRepeticiones3);
         nuevosDatos.put("end_date_rep_comp", nuevaEndDateRep);
 
-        llamaServicioModificacionEventoGenerico1(nuevosDatos);
+        llamaServicioModificacionEventoGenerico1(nuevosDatos, estudioId);
 
         UIEntity entityActualizada = getDatosEventoGenerico("1");
         assertThat(valorPropiedadTipoFechaDeUIEntity(entityActualizada, "start_date_rep"),
@@ -111,7 +160,7 @@ public class CalendarResourcesEdicionDetallesTest extends AbstractCalendarResour
         nuevosDatos.put("end_rep_number_comp", numeroRepeticiones3);
         nuevosDatos.put("end_date_rep_comp", nuevaEndDateRep);
 
-        llamaServicioModificacionEventoGenerico1(nuevosDatos);
+        llamaServicioModificacionEventoGenerico1(nuevosDatos, estudioId);
 
         UIEntity entityActualizada = getDatosEventoGenerico("1");
         assertThat(valorPropiedadTipoFechaDeUIEntity(entityActualizada, "start_date_rep"),
@@ -141,9 +190,9 @@ public class CalendarResourcesEdicionDetallesTest extends AbstractCalendarResour
             return "";
     }
 
-    private void llamaServicioModificacionEventoGenerico1(Map<String, String> nuevosDatos)
+    private void llamaServicioModificacionEventoGenerico1(Map<String, String> nuevosDatos, Long estudioId)
     {
-        resource.path("calendario/eventos/generica/1").type(MediaType.APPLICATION_JSON)
+        resource.path("calendario/eventos/generica/" + estudioId.toString()).type(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON).put(ClientResponse.class, nuevosDatos);
     }
 
@@ -157,7 +206,7 @@ public class CalendarResourcesEdicionDetallesTest extends AbstractCalendarResour
         entity.put("posteo_detalle", "1");
         entity.put("start", fechaInicio);
         entity.put("end", fechaFin);
-        
+
         return entity;
     }
 }

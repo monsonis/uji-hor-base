@@ -34,8 +34,8 @@ public abstract class AbstractRestTest extends JerseyTest
     static String packageName = "es.uji.apps.hor.services.rest";
 
     static final protected SimpleDateFormat UIEntityDateFormat = new SimpleDateFormat(
-            "\"yyyy-MM-dd'T'HH:mm:ss\"");
-
+            "\"yyyy-MM-dd'T'HH:mm:ss\""); 
+    
     public AbstractRestTest()
     {
         super(new WebAppDescriptor.Builder(packageName)

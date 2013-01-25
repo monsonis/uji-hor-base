@@ -13,6 +13,7 @@
   </properties>
 
   <dependencies>
+  
     <dependency>
       <groupId>es.uji.commons</groupId>
       <artifactId>uji-commons-testing</artifactId>

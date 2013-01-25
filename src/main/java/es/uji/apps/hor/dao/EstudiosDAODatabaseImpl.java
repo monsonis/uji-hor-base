@@ -127,7 +127,7 @@ public class EstudiosDAODatabaseImpl extends BaseDAODatabaseImpl implements Estu
     public Estudio insert(Estudio estudio)
     {
         EstudioDTO estudioDTO = convierteEstudioAEstudioDTO(estudio);
-        EstudioDTO nuevoEstudioDTO = this.insert(estudioDTO);
+        EstudioDTO nuevoEstudioDTO = insert(estudioDTO);
         return creaEstudioDesdeEstudioDTO(nuevoEstudioDTO);
     }
 }
