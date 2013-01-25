@@ -73,7 +73,8 @@ Ext.application(
 
     views : [ 'dashboard.PanelDashboard', 'horarios.PanelHorarios', 'horarios.FiltroGrupos', 'horarios.PanelCalendario', 'horarios.PanelCalendarioDetalle', 'horarios.SelectorIntervaloHorario', 'commons.MenuSuperior', 'semestres.PanelSemestres', 
             'ApplicationViewport', 'aulas.asignacion.FormAsignacionAulas' , 'aulas.calendar.PanelCalendarioAulas', 'aulas.calendar.FiltroAulas', 'aulas.calendar.SelectorAulas'],
-    controllers : [ 'ControllerDashboards', 'ControllerCalendario', 'ControllerGrupoAsignatura', 'ControllerFiltroCalendario', 'ControllerConfiguracion', 'ControllerPrincipal', 'ControllerSemestreDetalle', 'ControllerFiltroAsignacionAulas', 'ControllerAsignacionAulasForm', 'ControllerFiltroAulasCalendario' ],
+    controllers : [ 'ControllerDashboards', 'ControllerCalendario', 'ControllerGrupoAsignatura', 'ControllerFiltroCalendario', 'ControllerConfiguracion', 'ControllerPrincipal', 'ControllerSemestreDetalle', 
+                    'ControllerFiltroAsignacionAulas', 'ControllerAsignacionAulasForm', 'ControllerFiltroAulasCalendario', 'ControllerSelectorAulasCalendario' ],
 
     launch : function()
     {

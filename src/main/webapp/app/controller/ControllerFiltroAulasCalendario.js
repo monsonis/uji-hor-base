@@ -40,6 +40,10 @@ Ext.define('HOR.controller.ControllerFiltroAulasCalendario',
         this.getFiltroAulas().down('combobox[name=tipoAula]').clearValue();
         this.getFiltroAulas().down('combobox[name=planta]').clearValue();
         
+        this.getStoreEdificiosStore().removeAll();
+        this.getStoreTiposAulaStore().removeAll();
+        this.getStorePlantasEdificioStore().removeAll();
+        
         var store = semestre.getStore();
         
         if (store.count() == 0)
@@ -53,6 +57,9 @@ Ext.define('HOR.controller.ControllerFiltroAulasCalendario',
         this.getFiltroAulas().down('combobox[name=edificio]').clearValue();
         this.getFiltroAulas().down('combobox[name=tipoAula]').clearValue();
         this.getFiltroAulas().down('combobox[name=planta]').clearValue();
+        
+        this.getStoreTiposAulaStore().removeAll();
+        this.getStorePlantasEdificioStore().removeAll();
         
         var centro = this.getFiltroAulas().down('combobox[name=centro]').getValue();
         

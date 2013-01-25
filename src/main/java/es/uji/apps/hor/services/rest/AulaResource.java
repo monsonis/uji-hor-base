@@ -102,6 +102,9 @@ public class AulaResource extends CoreBaseService
             @QueryParam("planta") String planta)
     {
         ParamUtils.checkNotNull(centroId, edificio);
+        
+        tipoAula = (tipoAula == null || tipoAula.equals("")) ? null : tipoAula;
+        planta = (planta == null || planta.equals("")) ? null : planta;
 
         List<Aula> aulas = consultaAulas.getAulasFiltradasPor(ParamUtils.parseLong(centroId),
                 edificio, tipoAula, planta);
