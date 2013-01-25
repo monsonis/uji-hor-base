@@ -58,7 +58,9 @@ public class PersonaDAODatabaseImpl extends BaseDAODatabaseImpl implements Perso
                 persona.setCentroAutorizado(creaCentroDeCargoDTO(cargoDTO));
             }
 
-            persona.getEstudiosAutorizados().add(creaEstudioDeCargoDTO(cargoDTO));
+            if (cargoDTO.getEstudio() != null) {
+                persona.getEstudiosAutorizados().add(creaEstudioDeCargoDTO(cargoDTO));
+            }
         }
 
         return persona;
@@ -95,22 +97,32 @@ public class PersonaDAODatabaseImpl extends BaseDAODatabaseImpl implements Perso
     {
         PersonaDTO personaDTO = new PersonaDTO();
         personaDTO.setId(persona.getId());
-  
+
         CentroDTO centroDTO = new CentroDTO();
         centroDTO.setId(persona.getCentroAutorizado().getId());
-        
-        for (Estudio estudio : persona.getEstudiosAutorizados())
-        {
-            EstudioDTO estudioDTO = new EstudioDTO();
-            estudioDTO.setId(estudio.getId());
 
+        if (persona.getEstudiosAutorizados().size() > 0)
+        {
+            for (Estudio estudio : persona.getEstudiosAutorizados())
+            {
+                EstudioDTO estudioDTO = new EstudioDTO();
+                estudioDTO.setId(estudio.getId());
+
+                CargoPersonaDTO cargoPersonaDTO = new CargoPersonaDTO();
+                cargoPersonaDTO.setPersona(personaDTO);
+                cargoPersonaDTO.setEstudio(estudioDTO);
+                cargoPersonaDTO.setCentro(centroDTO);
+                insert(cargoPersonaDTO);
+            }
+        }
+        else
+        {
             CargoPersonaDTO cargoPersonaDTO = new CargoPersonaDTO();
             cargoPersonaDTO.setPersona(personaDTO);
-            cargoPersonaDTO.setEstudio(estudioDTO);
             cargoPersonaDTO.setCentro(centroDTO);
             insert(cargoPersonaDTO);
+
         }
-        
         return persona;
     }
 

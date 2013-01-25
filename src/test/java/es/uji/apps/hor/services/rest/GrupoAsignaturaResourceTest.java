@@ -23,16 +23,25 @@ import com.sun.jersey.core.util.StringKeyStringValueIgnoreCaseMultivaluedMap;
 
 import es.uji.apps.hor.builders.AsignaturaBuilder;
 import es.uji.apps.hor.builders.CalendarioBuilder;
+import es.uji.apps.hor.builders.CentroBuilder;
+import es.uji.apps.hor.builders.DepartamentoBuilder;
 import es.uji.apps.hor.builders.EstudioBuilder;
 import es.uji.apps.hor.builders.EventoBuilder;
+import es.uji.apps.hor.builders.PersonaBuilder;
 import es.uji.apps.hor.builders.SemestreBuilder;
 import es.uji.apps.hor.builders.TipoEstudioBuilder;
+import es.uji.apps.hor.dao.CentroDAO;
+import es.uji.apps.hor.dao.DepartamentoDAO;
 import es.uji.apps.hor.dao.EstudiosDAO;
 import es.uji.apps.hor.dao.EventosDAO;
+import es.uji.apps.hor.dao.PersonaDAO;
 import es.uji.apps.hor.model.Asignatura;
 import es.uji.apps.hor.model.Calendario;
+import es.uji.apps.hor.model.Centro;
+import es.uji.apps.hor.model.Departamento;
 import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.model.Evento;
+import es.uji.apps.hor.model.Persona;
 import es.uji.apps.hor.model.Semestre;
 import es.uji.apps.hor.model.TipoEstudio;
 import es.uji.apps.hor.model.TipoSubgrupo;
@@ -48,10 +57,19 @@ public class GrupoAsignaturaResourceTest extends AbstractRestTest
     private final String calendariosIds = "1;2;3;4;5;6";
 
     @Autowired
-    private EventosDAO eventosDao;
+    private EventosDAO eventosDAO;
 
     @Autowired
-    private EstudiosDAO estudiosDao;
+    private EstudiosDAO estudiosDAO;
+
+    @Autowired
+    protected PersonaDAO personaDAO;
+
+    @Autowired
+    protected CentroDAO centroDAO;
+
+    @Autowired
+    protected DepartamentoDAO departamentoDAO;
 
     @Before
     @Transactional
@@ -59,9 +77,17 @@ public class GrupoAsignaturaResourceTest extends AbstractRestTest
     {
         TipoEstudio tipoEstudio = new TipoEstudioBuilder().withId("G").withNombre("Grau").build();
 
-        Estudio estudio = new EstudioBuilder(estudiosDao).withNombre("Grau en Psicologia")
+        Estudio estudio = new EstudioBuilder(estudiosDAO).withNombre("Grau en Psicologia")
                 .withTipoEstudio(tipoEstudio).build();
         estudioId = estudio.getId();
+
+        Centro centro = new CentroBuilder(centroDAO).withNombre("Centro 1").withId(new Long(1)).build();
+        Departamento departamento = new DepartamentoBuilder(departamentoDAO).withNombre("Departamento1")
+                .withCentro(centro).build();
+
+        Persona persona = new PersonaBuilder(personaDAO).withId(new Long(1))
+                .withNombre("Persona 1").withEmail("persona@uji.es").withActividadId("Actividad 1")
+                .withDepartamento(departamento).withCentroAutorizado(centro).withEstudioAutorizado(estudio).build();
 
         Asignatura asignatura_ficticia1 = new AsignaturaBuilder().withCaracter("Obligatoria")
                 .withCaracterId("OB").withComun(false).withCursoId(cursoId).withId("PS1026")
@@ -191,7 +217,7 @@ public class GrupoAsignaturaResourceTest extends AbstractRestTest
             Asignatura asignatura, Semestre semestre, Calendario calendario) throws Exception
     {
 
-        return new EventoBuilder(eventosDao).withTitulo("Evento de prueba")
+        return new EventoBuilder(eventosDAO).withTitulo("Evento de prueba")
                 .withAsignatura(asignatura).withInicioYFinFechaString(fechaInicial, fechaFinal)
                 .withSemestre(semestre).withGrupoId(grupoId).withCalendario(calendario)
                 .withDetalleManual(false).build();
@@ -201,7 +227,7 @@ public class GrupoAsignaturaResourceTest extends AbstractRestTest
             Calendario calendario) throws Exception
     {
 
-        return new EventoBuilder(eventosDao).withTitulo("Evento de prueba")
+        return new EventoBuilder(eventosDAO).withTitulo("Evento de prueba")
                 .withAsignatura(asignatura).withSemestre(semestre).withCalendario(calendario)
                 .withGrupoId(grupoId).withDetalleManual(false).build();
     }

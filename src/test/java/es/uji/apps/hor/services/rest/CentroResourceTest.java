@@ -19,14 +19,20 @@ import com.sun.jersey.api.client.ClientResponse;
 import es.uji.apps.hor.builders.AreaEdificioBuilder;
 import es.uji.apps.hor.builders.AulaBuilder;
 import es.uji.apps.hor.builders.CentroBuilder;
+import es.uji.apps.hor.builders.DepartamentoBuilder;
 import es.uji.apps.hor.builders.EdificioBuilder;
+import es.uji.apps.hor.builders.PersonaBuilder;
 import es.uji.apps.hor.builders.PlantaEdificioBuilder;
 import es.uji.apps.hor.builders.TipoAulaBuilder;
 import es.uji.apps.hor.dao.AulaDAO;
 import es.uji.apps.hor.dao.CentroDAO;
+import es.uji.apps.hor.dao.DepartamentoDAO;
+import es.uji.apps.hor.dao.PersonaDAO;
 import es.uji.apps.hor.model.AreaEdificio;
 import es.uji.apps.hor.model.Centro;
+import es.uji.apps.hor.model.Departamento;
 import es.uji.apps.hor.model.Edificio;
+import es.uji.apps.hor.model.Persona;
 import es.uji.apps.hor.model.PlantaEdificio;
 import es.uji.apps.hor.model.TipoAula;
 import es.uji.commons.rest.model.tree.TreeRow;
@@ -42,12 +48,25 @@ public class CentroResourceTest extends AbstractRestTest
     @Autowired
     private AulaDAO aulaDAO;
 
+    @Autowired
+    protected PersonaDAO personaDAO;
+
+    @Autowired
+    protected DepartamentoDAO departamentoDAO;
+
     @Before
     @Transactional
     public void rellenaDatos()
     {
         Centro centro = new CentroBuilder(centroDAO).withNombre("Centro de prueba").build();
         centroId = centro.getId();
+
+        Departamento departamento = new DepartamentoBuilder(departamentoDAO).withNombre("Departamento1")
+                .withCentro(centro).build();
+
+        Persona persona = new PersonaBuilder(personaDAO).withId(new Long(1))
+                .withNombre("Persona 1").withEmail("persona@uji.es").withActividadId("Actividad 1")
+                .withDepartamento(departamento).withCentroAutorizado(centro).build();
 
         Edificio edificio = new EdificioBuilder().withNombre("Edificio 1").withCentro(centro)
                 .build();

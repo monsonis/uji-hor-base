@@ -16,6 +16,8 @@ import es.uji.apps.hor.services.EdificiosService;
 import es.uji.commons.rest.CoreBaseService;
 import es.uji.commons.rest.ParamUtils;
 import es.uji.commons.rest.UIEntity;
+import es.uji.commons.sso.AccessManager;
+import es.uji.commons.sso.exceptions.UnauthorizedUserException;
 
 @Path("edificio")
 public class EdificioResource extends CoreBaseService
@@ -25,12 +27,14 @@ public class EdificioResource extends CoreBaseService
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UIEntity> getEdificios(@QueryParam("centroId") String centroId)
+    public List<UIEntity> getEdificios(@QueryParam("centroId") String centroId) throws UnauthorizedUserException
     {
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+
         ParamUtils.checkNotNull(centroId);
 
         List<Edificio> edificios = edificiosService.getEdificiosByCentroId(ParamUtils
-                .parseLong(centroId));
+                .parseLong(centroId), connectedUserId);
 
         return UIEntity.toUI(edificios);
     }
@@ -39,12 +43,14 @@ public class EdificioResource extends CoreBaseService
     @Path("planta")
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> getPlantasEdificio(@QueryParam("centroId") String centroId,
-            @QueryParam("edificio") String edificio)
+            @QueryParam("edificio") String edificio) throws UnauthorizedUserException
     {
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+
         ParamUtils.checkNotNull(centroId, edificio);
 
         List<PlantaEdificio> plantasEdificio = edificiosService
-                .getPlantasEdificioByCentroAndEdificio(ParamUtils.parseLong(centroId), edificio);
+                .getPlantasEdificioByCentroAndEdificio(ParamUtils.parseLong(centroId), edificio, connectedUserId);
 
         return UIEntity.toUI(plantasEdificio);
     }
