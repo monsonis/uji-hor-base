@@ -19,6 +19,7 @@ import javax.ws.rs.core.MultivaluedMap;
 
 import org.codehaus.jettison.json.JSONException;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sun.jersey.api.client.ClientResponse;
@@ -26,14 +27,36 @@ import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.core.util.StringKeyStringValueIgnoreCaseMultivaluedMap;
 
+import es.uji.apps.hor.builders.AreaEdificioBuilder;
+import es.uji.apps.hor.builders.AulaBuilder;
+import es.uji.apps.hor.builders.AulaPlanificacionBuilder;
+import es.uji.apps.hor.builders.CentroBuilder;
+import es.uji.apps.hor.builders.EdificioBuilder;
 import es.uji.apps.hor.builders.EventoBuilder;
+import es.uji.apps.hor.builders.PlantaEdificioBuilder;
+import es.uji.apps.hor.builders.TipoAulaBuilder;
+import es.uji.apps.hor.dao.AulaDAO;
+import es.uji.apps.hor.dao.CentroDAO;
+import es.uji.apps.hor.model.AreaEdificio;
+import es.uji.apps.hor.model.Aula;
+import es.uji.apps.hor.model.AulaPlanificacion;
+import es.uji.apps.hor.model.Centro;
+import es.uji.apps.hor.model.Edificio;
 import es.uji.apps.hor.model.Evento;
+import es.uji.apps.hor.model.PlantaEdificio;
+import es.uji.apps.hor.model.TipoAula;
 import es.uji.commons.rest.UIEntity;
 
 public class CalendarResourceTest extends AbstractCalendarResourceTest
 {
 
     static final SimpleDateFormat shortDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+    @Autowired
+    private CentroDAO centroDao;
+
+    @Autowired
+    private AulaDAO aulaDao;
 
     @Test
     @Transactional
@@ -238,7 +261,7 @@ public class CalendarResourceTest extends AbstractCalendarResourceTest
 
         entity.put("start", fechaInicio);
         entity.put("end", fechaFin);
-        
+
         resource.path("calendario/eventos/generica/" + idEvento).type(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON).put(entity);
     }
@@ -308,6 +331,55 @@ public class CalendarResourceTest extends AbstractCalendarResourceTest
         params.putSingle("grupoId", grupoId);
         params.putSingle("calendariosIds", calendariosIds);
         return params;
+    }
+
+    @Test
+    @Transactional
+    public void devuelveEventosDetalleAsignadosAUnAula()
+    {
+        Long aulaId = creaAulaYAsignalaAEvento(String.valueOf(eventoId));
+
+        MultivaluedMap<String, String> params = new StringKeyStringValueIgnoreCaseMultivaluedMap();
+        params.putSingle("startDate", "2012-10-01");
+        params.putSingle("endDate", "2012-10-31");
+        params.putSingle("calendariosIds", calendariosIds);
+
+        ClientResponse response = resource.path("calendario/eventos/aula/" + aulaId)
+                .queryParams(params).accept(MediaType.APPLICATION_JSON_TYPE)
+                .get(ClientResponse.class);
+
+        List<UIEntity> listaEeventos = response.getEntity(new GenericType<List<UIEntity>>()
+        {
+        });
+
+        assertThat(listaEeventos, hasSize(4));
+    }
+
+    private Long creaAulaYAsignalaAEvento(String eventoId)
+    {
+        Centro centro = new CentroBuilder(centroDao).withNombre("Centro de Prueba").build();
+        AreaEdificio areaEdificio = new AreaEdificioBuilder().withNombre("Área 1").build();
+        PlantaEdificio plantaEdificio = new PlantaEdificioBuilder().withNombre("1").build();
+        TipoAula tipoAula = new TipoAulaBuilder().withNombre("1").build();
+        Edificio edificio = new EdificioBuilder().withNombre("Edificio 1").withCentro(centro)
+                .build();
+
+        Aula aula = new AulaBuilder(aulaDao).withArea(areaEdificio).withCodigo("AUL1")
+                .withEdificio(edificio).withNombre("Aula 1").withPlanta(plantaEdificio)
+                .withPlazas(new Long(100)).withTipo(tipoAula).build();
+
+        AulaPlanificacion aulaPlanificacion = new AulaPlanificacionBuilder(aulaDao)
+                .withAulaId(aula.getId()).withEstudioId(estudioId).withSemestreId(semestreId)
+                .build();
+
+        MultivaluedMap<String, String> params = new StringKeyStringValueIgnoreCaseMultivaluedMap();
+        params.putSingle("aulaId", String.valueOf(aulaPlanificacion.getId()));
+        params.putSingle("tipoAccion", "T");
+
+        resource.path("calendario/eventos/aula/evento/" + eventoId)
+                .accept(MediaType.APPLICATION_JSON).put(ClientResponse.class, params);
+
+        return aula.getId();
     }
 
 }

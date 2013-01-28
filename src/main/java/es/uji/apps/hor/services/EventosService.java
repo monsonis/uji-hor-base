@@ -297,4 +297,11 @@ public class EventosService
             eventosDAO.desasignaAulaPlanificacion(evento.getId());
         }
     }
+
+    public List<EventoDetalle> getEventosDetallePorAula(Long aulaId, List<Long> calendariosIds,
+            Date rangoFechaInicio, Date rangoFechaFin)
+    {
+        return eventosDAO.getEventosDetallePorAula(aulaId, calendariosIds, rangoFechaInicio,
+                rangoFechaFin);
+    }
 }

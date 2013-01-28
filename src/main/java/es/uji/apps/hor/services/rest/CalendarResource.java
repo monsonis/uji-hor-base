@@ -588,4 +588,67 @@ public class CalendarResource extends CoreBaseService
 
         return toUI(eventos, estudio);
     }
+
+    @GET
+    @Path("eventos/aula/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<UIEntity> getEventosDetalleByAula(@PathParam(ID_PATH_PARAM) String aulaId,
+            @QueryParam(CALENDARIOS_IDS_QUERY_PARAM) String calendariosIds,
+            @QueryParam(START_DATE_QUERY_PARAM) String startDate,
+            @QueryParam(END_DATE_QUERY_PARAM) String endDate) throws ParseException
+    {
+        ParamUtils.checkNotNull(startDate, endDate);
+
+        Date rangoFechaInicio = queryParamDateFormat.parse(startDate);
+        Date rangoFechaFin = queryParamDateFormat.parse(endDate);
+
+        // Todos los eventos hasta el final del día
+        Calendar c = Calendar.getInstance();
+        c.setTime(rangoFechaFin);
+        c.set(Calendar.HOUR_OF_DAY, ULTIMA_HORA_DIA);
+        c.set(Calendar.MINUTE, ULTIMO_MINUTO_HORA);
+        c.set(Calendar.SECOND, ULTIMO_SEGUNDO_MINUTO);
+        rangoFechaFin = c.getTime();
+
+        String[] calendarios = calendariosIds.split(";");
+        List<Long> calendariosList = new ArrayList<Long>();
+
+        for (String calendario : calendarios)
+        {
+            calendario = calendario.trim();
+            if (!calendario.equals(""))
+            {
+                calendariosList.add(ParamUtils.parseLong(calendario));
+            }
+        }
+
+        List<EventoDetalle> eventosDetalle = new ArrayList<EventoDetalle>();
+
+        if (calendariosList.size() != 0)
+        {
+            eventosDetalle = eventosService.getEventosDetallePorAula(ParamUtils.parseLong(aulaId),
+                    calendariosList, rangoFechaInicio, rangoFechaFin);
+        }
+
+        return eventosDetallePorAulaToUI(eventosDetalle);
+    }
+
+    private List<UIEntity> eventosDetallePorAulaToUI(List<EventoDetalle> eventosDetalle)
+    {
+        List<UIEntity> eventosUI = new ArrayList<UIEntity>();
+
+        for (EventoDetalle eventoDetalle : eventosDetalle)
+        {
+            UIEntity eventoUI = new UIEntity();
+            eventoUI.put("id", eventoDetalle.getId());
+            eventoUI.put("title", eventoDetalle.getEvento().getTitulo());
+            eventoUI.put("cid", eventoDetalle.getEvento().getCalendario().getId());
+            eventoUI.put("start", uIEntitydateFormat.format(eventoDetalle.getInicio()));
+            eventoUI.put("end", uIEntitydateFormat.format(eventoDetalle.getFin()));
+
+            eventosUI.add(eventoUI);
+        }
+
+        return eventosUI;
+    }
 }

@@ -114,7 +114,7 @@ public class ItemDTO implements Serializable
     @OneToMany(mappedBy = "item")
     private Set<ItemCircuitoDTO> itemsCircuitos;
 
-    // bi-directional many-to-one association to ItemCircuitoDTO
+    // bi-directional many-to-one association to ItemsAsignaturaDTO
     @OneToMany(mappedBy = "item", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<ItemsAsignaturaDTO> itemsAsignaturas = new HashSet<ItemsAsignaturaDTO>();
 

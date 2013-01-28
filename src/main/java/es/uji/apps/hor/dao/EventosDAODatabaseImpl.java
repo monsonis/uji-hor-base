@@ -21,6 +21,8 @@ import es.uji.apps.hor.db.ItemDTO;
 import es.uji.apps.hor.db.ItemDetalleCompletoDTO;
 import es.uji.apps.hor.db.ItemDetalleDTO;
 import es.uji.apps.hor.db.ItemsAsignaturaDTO;
+import es.uji.apps.hor.db.QAulaDTO;
+import es.uji.apps.hor.db.QAulaPlanificacionDTO;
 import es.uji.apps.hor.db.QDiaSemanaDTO;
 import es.uji.apps.hor.db.QItemCircuitoDTO;
 import es.uji.apps.hor.db.QItemDTO;
@@ -693,5 +695,47 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
                 .set(qItem.horaFin, evento.getFin()).set(qItem.diaSemana, diaSemanaDTO)
                 .set(qItem.aulaPlanificacion, aulaPlanificacionDTO)
                 .set(qItem.aulaPlanificacionNombre, "").execute();
+    }
+
+    @Override
+    public List<EventoDetalle> getEventosDetallePorAula(Long aulaId, List<Long> calendariosIds,
+            Date rangoFechaInicio, Date rangoFechaFin)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        List<String> tiposCalendarios = TipoSubgrupo.getTiposSubgrupos(calendariosIds);
+
+        QItemDTO item = QItemDTO.itemDTO;
+        QItemsAsignaturaDTO itemsAsignatura = QItemsAsignaturaDTO.itemsAsignaturaDTO;
+        QItemDetalleDTO itemsDetalle = QItemDetalleDTO.itemDetalleDTO;
+        QAulaPlanificacionDTO aulaPlanificacion = QAulaPlanificacionDTO.aulaPlanificacionDTO;
+        QAulaDTO aula = QAulaDTO.aulaDTO;
+
+        List<ItemDetalleDTO> listaItemsDetalleDTO = query
+                .from(item)
+                .join(item.itemsAsignaturas, itemsAsignatura)
+                .join(item.itemsDetalles, itemsDetalle)
+                .join(item.aulaPlanificacion, aulaPlanificacion)
+                .join(aulaPlanificacion.aula, aula)
+                .where(aula.id.eq(aulaId).and(itemsDetalle.inicio.goe(rangoFechaInicio))
+                        .and(itemsDetalle.fin.loe(rangoFechaFin)).and(item.diaSemana.isNotNull())
+                        .and(item.tipoSubgrupoId.in(tiposCalendarios))).list(itemsDetalle);
+
+        List<EventoDetalle> listaEventosDetalle = new ArrayList<EventoDetalle>();
+        for (ItemDetalleDTO itemDetalleDTO : listaItemsDetalleDTO)
+        {
+
+            EventoDetalle eventoDetalle = creaEventoDetalleDesdeItemDetalleDTO(itemDetalleDTO);
+            eventoDetalle.setEvento(creaEventoDesdeItemDTO(itemDetalleDTO.getItem()));
+
+            String tituloEvento = "";
+            for (ItemsAsignaturaDTO itemAsignaturaDTO : itemDetalleDTO.getItem().getAsignaturas())
+            {
+                tituloEvento = tituloEvento + " " + itemAsignaturaDTO.getAsignaturaId();
+            }
+            eventoDetalle.getEvento().setTitulo(tituloEvento.substring(1));
+
+            listaEventosDetalle.add(eventoDetalle);
+        }
+        return listaEventosDetalle;
     }
 }
