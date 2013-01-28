@@ -74,7 +74,7 @@ Ext.application(
             'commons.MenuSuperior', 'permisos.PanelPermisos', 'semestres.PanelSemestres', 'ApplicationViewport', 'aulas.asignacion.FormAsignacionAulas', 'aulas.calendar.PanelCalendarioAulas',
             'aulas.calendar.FiltroAulas', 'aulas.calendar.SelectorAulas' ],
     controllers : [ 'ControllerDashboards', 'ControllerCalendario', 'ControllerGrupoAsignatura', 'ControllerFiltroCalendario', 'ControllerConfiguracion', 'ControllerPrincipal', 'ControllerPermisos',
-            'ControllerSemestreDetalle', 'ControllerFiltroAsignacionAulas', 'ControllerAsignacionAulasForm', 'ControllerFiltroAulasCalendario', 'ControllerSelectorAulasCalendario' ],
+            'ControllerSemestreDetalle', 'ControllerFiltroAsignacionAulas', 'ControllerAsignacionAulasForm', 'ControllerFiltroAulasCalendario', 'ControllerSelectorAulasCalendario', 'ControllerCalendarioAulas' ],
 
     launch : function()
     {

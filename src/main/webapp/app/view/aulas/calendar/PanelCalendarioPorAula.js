@@ -26,11 +26,7 @@ Ext.define('HOR.view.aulas.calendar.PanelCalendarioPorAula',
         getStoreParams : function()
         {
             var params = this.getStoreDateParams();
-            params.centroId = this.store.getProxy().extraParams['centroId'];
-            params.semestreId = this.store.getProxy().extraParams['semestreId'];
-            params.edificioId = this.store.getProxy().extraParams['edificioId'];
-            params.tipoAulaId = this.store.getProxy().extraParams['tipoAulaId'];
-            params.plantaId = this.store.getProxy().extraParams['plantaId'];
+            params.aulaId = this.store.getProxy().extraParams['aulaId'];
             return params;
         }
     },

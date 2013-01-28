@@ -58,7 +58,7 @@ public class CalendarResource extends CoreBaseService
     private static final String SEMESTRE_ID_QUERY_PARAM = "semestreId";
     private static final String ESTUDIO_ID_QUERY_PARAM = "estudioId";
     private static final String TIPO_ACCION_FORM_PARAM = "tipoAccion";
-    private static final String AULA_ID_FORM_PARAM = "aulaId";
+    private static final String AULA_ID_PARAM = "aulaId";
     private static final String ID_PATH_PARAM = "id";
     private static final int ULTIMA_HORA_DIA = 23;
     private static final int ULTIMO_MINUTO_HORA = 59;
@@ -553,7 +553,7 @@ public class CalendarResource extends CoreBaseService
     @Path("eventos/aula/evento/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> actualizaAulaAsignadaAEvento(@PathParam(ID_PATH_PARAM) String eventoId,
-            @FormParam(AULA_ID_FORM_PARAM) String aulaId,
+            @FormParam(AULA_ID_PARAM) String aulaId,
             @FormParam(TIPO_ACCION_FORM_PARAM) String tipoAccion,
             @QueryParam(ESTUDIO_ID_QUERY_PARAM) String estudioId)
             throws RegistroNoEncontradoException, AulaNoAsignadaAEstudioDelEventoException,
@@ -590,9 +590,9 @@ public class CalendarResource extends CoreBaseService
     }
 
     @GET
-    @Path("eventos/aula/{id}")
+    @Path("eventos/aula")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UIEntity> getEventosDetalleByAula(@PathParam(ID_PATH_PARAM) String aulaId,
+    public List<UIEntity> getEventosDetalleByAula(@QueryParam(AULA_ID_PARAM) String aulaId,
             @QueryParam(CALENDARIOS_IDS_QUERY_PARAM) String calendariosIds,
             @QueryParam(START_DATE_QUERY_PARAM) String startDate,
             @QueryParam(END_DATE_QUERY_PARAM) String endDate) throws ParseException

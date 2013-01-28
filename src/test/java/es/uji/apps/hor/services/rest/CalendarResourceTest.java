@@ -340,11 +340,12 @@ public class CalendarResourceTest extends AbstractCalendarResourceTest
         Long aulaId = creaAulaYAsignalaAEvento(String.valueOf(eventoId));
 
         MultivaluedMap<String, String> params = new StringKeyStringValueIgnoreCaseMultivaluedMap();
+        params.putSingle("aulaId", String.valueOf(aulaId));
         params.putSingle("startDate", "2012-10-01");
         params.putSingle("endDate", "2012-10-31");
         params.putSingle("calendariosIds", calendariosIds);
 
-        ClientResponse response = resource.path("calendario/eventos/aula/" + aulaId)
+        ClientResponse response = resource.path("calendario/eventos/aula")
                 .queryParams(params).accept(MediaType.APPLICATION_JSON_TYPE)
                 .get(ClientResponse.class);
 
