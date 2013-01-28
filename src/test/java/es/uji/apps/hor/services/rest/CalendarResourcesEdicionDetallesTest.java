@@ -35,40 +35,6 @@ import es.uji.commons.rest.UIEntity;
 
 public class CalendarResourcesEdicionDetallesTest extends AbstractCalendarResourceTest
 {
-
-    @Autowired
-    protected PersonaDAO personaDAO;
-
-    @Autowired
-    protected CentroDAO centroDAO;
-
-    @Autowired
-    protected DepartamentoDAO departamentoDAO;
-
-    Long estudioId;
-    
-    @Before
-    @Transactional
-    public void creaDatosIniciales() throws Exception
-    {
-        TipoEstudio tipoEstudio = new TipoEstudioBuilder().withId("G").withNombre("Grau").build();
-
-        Centro centro = new CentroBuilder(centroDAO).withNombre("Centro 1").withId(new Long(1))
-                .build();
-        Departamento departamento = new DepartamentoBuilder(departamentoDAO)
-                .withNombre("Departamento1").withCentro(centro).build();
-
-        Estudio estudio = new EstudioBuilder(estudiosDao).withNombre("Grau en Psicologia")
-                .withTipoEstudio(tipoEstudio).build();
-        
-        estudioId = estudio.getId();
-
-        Persona persona = new PersonaBuilder(personaDAO).withId(new Long(1))
-                .withNombre("Persona 1").withEmail("persona@uji.es").withActividadId("HOLA")
-                .withDepartamento(departamento).withCentroAutorizado(centro)
-                .withEstudioAutorizado(estudio).build();
-    }
-
     @Test
     @Transactional
     public void cambiaFechasDetalleManualDeUnEvento() throws Exception
@@ -202,7 +168,7 @@ public class CalendarResourcesEdicionDetallesTest extends AbstractCalendarResour
         String fechaFin = "2012-10-10T11:00:00";
 
         Map<String, String> entity = new HashMap<String, String>();
-        entity.put("id", "1");
+        entity.put("id", eventoId.toString());
         entity.put("posteo_detalle", "1");
         entity.put("start", fechaInicio);
         entity.put("end", fechaFin);

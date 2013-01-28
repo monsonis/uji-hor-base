@@ -45,6 +45,7 @@ import es.uji.commons.rest.UIEntity;
 public abstract class AbstractCalendarResourceTest extends AbstractRestTest
 {
     protected Long estudioId;
+    protected Long eventoId;
     protected Long otroEstudioId;
     protected final Long cursoId = new Long(1);
     protected final Long semestreId = new Long(1);
@@ -129,7 +130,8 @@ public abstract class AbstractCalendarResourceTest extends AbstractRestTest
                 .withInicioYFinFechaString("10/10/2012 09:00", "10/10/2012 11:00")
                 .withGrupoId(grupoId).withSubgrupoId(new Long(1)).withSemestre(semestre)
                 .withCalendario(calendarioPR).withDetalleManual(false).build();
-
+        eventoId = evento1DeAsignatura1.getId();
+        
         Evento evento2DeAsignatura1 = new EventoBuilder(eventosDao)
                 .withTitulo("Evento de prueba 2 de asignatura 1")
                 .withAsignatura(asignaturaFicticia1)
@@ -206,6 +208,7 @@ public abstract class AbstractCalendarResourceTest extends AbstractRestTest
         MultivaluedMap<String, String> params = getDefaulQueryParams();
         params.putSingle("startDate", fecha_inicio);
         params.putSingle("endDate", fecha_fin);
+        params.putSingle("estudioId", estudioId.toString());
 
         ClientResponse response = resource.path("calendario/eventos/detalle").queryParams(params)
                 .accept(MediaType.APPLICATION_JSON_TYPE).get(ClientResponse.class);
