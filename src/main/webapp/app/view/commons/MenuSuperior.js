@@ -27,6 +27,10 @@ Ext.define('HOR.view.commons.MenuSuperior',
                 action : 'asignacion-aulas'
             },
             {
+                text : 'Gestió de permisos',
+                action : 'gestion-permisos'
+            },
+            {
                 text : 'Ocupació d\'aules',
                 action : 'ocupacion-aulas'
             }]

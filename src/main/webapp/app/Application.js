@@ -51,7 +51,6 @@ Ext.require('Ext.grid.Panel');
 Ext.require('Ext.Date');
 Ext.require('Event.form.PanelInfo');
 
-
 var login = 'borillo';
 
 function fixLoadMaskBug(store, combo)
@@ -71,10 +70,11 @@ Ext.application(
     appFolder : 'app',
     autoCreateViewport : false,
 
-    views : [ 'dashboard.PanelDashboard', 'horarios.PanelHorarios', 'horarios.FiltroGrupos', 'horarios.PanelCalendario', 'horarios.PanelCalendarioDetalle', 'horarios.SelectorIntervaloHorario', 'commons.MenuSuperior', 'semestres.PanelSemestres', 
-            'ApplicationViewport', 'aulas.asignacion.FormAsignacionAulas' , 'aulas.calendar.PanelCalendarioAulas', 'aulas.calendar.FiltroAulas', 'aulas.calendar.SelectorAulas'],
-    controllers : [ 'ControllerDashboards', 'ControllerCalendario', 'ControllerGrupoAsignatura', 'ControllerFiltroCalendario', 'ControllerConfiguracion', 'ControllerPrincipal', 'ControllerSemestreDetalle', 
-                    'ControllerFiltroAsignacionAulas', 'ControllerAsignacionAulasForm', 'ControllerFiltroAulasCalendario', 'ControllerSelectorAulasCalendario' ],
+    views : [ 'dashboard.PanelDashboard', 'horarios.PanelHorarios', 'horarios.FiltroGrupos', 'horarios.PanelCalendario', 'horarios.PanelCalendarioDetalle', 'horarios.SelectorIntervaloHorario',
+            'commons.MenuSuperior', 'permisos.PanelPermisos', 'semestres.PanelSemestres', 'ApplicationViewport', 'aulas.asignacion.FormAsignacionAulas', 'aulas.calendar.PanelCalendarioAulas',
+            'aulas.calendar.FiltroAulas', 'aulas.calendar.SelectorAulas' ],
+    controllers : [ 'ControllerDashboards', 'ControllerCalendario', 'ControllerGrupoAsignatura', 'ControllerFiltroCalendario', 'ControllerConfiguracion', 'ControllerPrincipal', 'ControllerPermisos',
+            'ControllerSemestreDetalle', 'ControllerFiltroAsignacionAulas', 'ControllerAsignacionAulasForm', 'ControllerFiltroAulasCalendario', 'ControllerSelectorAulasCalendario' ],
 
     launch : function()
     {

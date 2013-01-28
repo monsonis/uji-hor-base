@@ -27,6 +27,10 @@ Ext.define('HOR.controller.ControllerPrincipal',
             'menuSuperior menuitem[action=ocupacion-aulas]' :
             {
                 click : this.showOcupacionAulas
+            },
+            'menuSuperior menuitem[action=gestion-permisos]' :
+            {
+                click : this.showGestionPermisos
             }
         });
     },
@@ -35,19 +39,25 @@ Ext.define('HOR.controller.ControllerPrincipal',
     {
         this.getViewportHorarios().addNewTab('HOR.view.horarios.PanelHorarios');
     },
-    
-    showCursoAcademico: function()
+
+    showCursoAcademico : function()
     {
         this.getViewportHorarios().addNewTab('HOR.view.semestres.PanelSemestres');
     },
-    
-    showAsignacionAulas: function()
+
+    showAsignacionAulas : function()
     {
         this.getViewportHorarios().addNewTab('HOR.view.aulas.PanelAulas');
     },
-    
+
     showOcupacionAulas : function()
     {
         this.getViewportHorarios().addNewTab('HOR.view.aulas.calendar.PanelCalendarioAulas');
+    },
+
+    showGestionPermisos : function()
+    {
+        this.getViewportHorarios().addNewTab('HOR.view.permisos.PanelPermisos');
     }
+
 });
