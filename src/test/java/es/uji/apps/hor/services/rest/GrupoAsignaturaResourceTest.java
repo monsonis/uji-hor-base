@@ -81,13 +81,15 @@ public class GrupoAsignaturaResourceTest extends AbstractRestTest
                 .withTipoEstudio(tipoEstudio).build();
         estudioId = estudio.getId();
 
-        Centro centro = new CentroBuilder(centroDAO).withNombre("Centro 1").withId(new Long(1)).build();
-        Departamento departamento = new DepartamentoBuilder(departamentoDAO).withNombre("Departamento1")
-                .withCentro(centro).build();
+        Centro centro = new CentroBuilder(centroDAO).withNombre("Centro 1").withId(new Long(1))
+                .build();
+        Departamento departamento = new DepartamentoBuilder(departamentoDAO)
+                .withNombre("Departamento1").withCentro(centro).build();
 
         Persona persona = new PersonaBuilder(personaDAO).withId(new Long(1))
                 .withNombre("Persona 1").withEmail("persona@uji.es").withActividadId("Actividad 1")
-                .withDepartamento(departamento).withCentroAutorizado(centro).withEstudioAutorizado(estudio).build();
+                .withDepartamento(departamento).withCentroAutorizado(centro)
+                .withEstudioAutorizado(estudio).build();
 
         Asignatura asignatura_ficticia1 = new AsignaturaBuilder().withCaracter("Obligatoria")
                 .withCaracterId("OB").withComun(false).withCursoId(cursoId).withId("PS1026")
@@ -132,7 +134,7 @@ public class GrupoAsignaturaResourceTest extends AbstractRestTest
     {
         String grupoNoAsignadoId = "1";
 
-        planificaElGrupoNoAsignado(grupoNoAsignadoId);
+        planificaElGrupoNoAsignado(grupoNoAsignadoId, estudioId.toString());
 
         List<UIEntity> listaEventosSinAsignar = getDefaultListaEventosSinAsignarDelServicio();
         List<UIEntity> listaEventosAsignados = getDefaultListaEventosGenericos();
@@ -195,11 +197,12 @@ public class GrupoAsignaturaResourceTest extends AbstractRestTest
         });
     }
 
-    private void planificaElGrupoNoAsignado(String IdGrupoNoAsignado)
+    private void planificaElGrupoNoAsignado(String idGrupoNoAsignado, String idEstudio)
     {
 
-        resource.path("grupoAsignatura/sinAsignar/" + IdGrupoNoAsignado)
-                .accept(MediaType.APPLICATION_JSON_TYPE).put(ClientResponse.class);
+        resource.path("grupoAsignatura/sinAsignar/" + idGrupoNoAsignado)
+                .queryParam("estudioId", idEstudio).accept(MediaType.APPLICATION_JSON_TYPE)
+                .put(ClientResponse.class);
     }
 
     private MultivaluedMap<String, String> buildDefaulQueryParams()
