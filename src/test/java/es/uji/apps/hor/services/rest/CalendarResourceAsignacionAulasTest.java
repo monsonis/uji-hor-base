@@ -25,7 +25,6 @@ import es.uji.apps.hor.builders.AulaPlanificacionBuilder;
 import es.uji.apps.hor.builders.CentroBuilder;
 import es.uji.apps.hor.builders.EdificioBuilder;
 import es.uji.apps.hor.builders.EstudioBuilder;
-import es.uji.apps.hor.builders.EventoBuilder;
 import es.uji.apps.hor.builders.PlantaEdificioBuilder;
 import es.uji.apps.hor.builders.TipoAulaBuilder;
 import es.uji.apps.hor.builders.TipoEstudioBuilder;
@@ -38,7 +37,6 @@ import es.uji.apps.hor.model.AulaPlanificacion;
 import es.uji.apps.hor.model.Centro;
 import es.uji.apps.hor.model.Edificio;
 import es.uji.apps.hor.model.Estudio;
-import es.uji.apps.hor.model.Evento;
 import es.uji.apps.hor.model.PlantaEdificio;
 import es.uji.apps.hor.model.TipoAula;
 import es.uji.apps.hor.model.TipoEstudio;
@@ -70,7 +68,7 @@ public class CalendarResourceAsignacionAulasTest extends AbstractCalendarResourc
     {
         TipoEstudio tipoEstudio = new TipoEstudioBuilder().withId("G").withNombre("Grau").build();
 
-        Estudio otroEstudio = new EstudioBuilder(estudiosDao).withNombre("Estudio de Prueba")
+        Estudio otroEstudio = new EstudioBuilder(estudiosDAO).withNombre("Estudio de Prueba")
                 .withTipoEstudio(tipoEstudio).build();
         otroEstudioId = otroEstudio.getId();
 

@@ -24,18 +24,27 @@ import com.sun.jersey.api.client.GenericType;
 import es.uji.apps.hor.DuracionEventoIncorrectaException;
 import es.uji.apps.hor.builders.AsignaturaBuilder;
 import es.uji.apps.hor.builders.CalendarioBuilder;
+import es.uji.apps.hor.builders.CentroBuilder;
+import es.uji.apps.hor.builders.DepartamentoBuilder;
 import es.uji.apps.hor.builders.EstudioBuilder;
 import es.uji.apps.hor.builders.EventoBuilder;
+import es.uji.apps.hor.builders.PersonaBuilder;
 import es.uji.apps.hor.builders.RangoHorarioBuilder;
 import es.uji.apps.hor.builders.SemestreBuilder;
 import es.uji.apps.hor.builders.TipoEstudioBuilder;
+import es.uji.apps.hor.dao.CentroDAO;
+import es.uji.apps.hor.dao.DepartamentoDAO;
 import es.uji.apps.hor.dao.EstudiosDAO;
 import es.uji.apps.hor.dao.EventosDAO;
+import es.uji.apps.hor.dao.PersonaDAO;
 import es.uji.apps.hor.dao.RangoHorarioDAO;
 import es.uji.apps.hor.model.Asignatura;
 import es.uji.apps.hor.model.Calendario;
+import es.uji.apps.hor.model.Centro;
+import es.uji.apps.hor.model.Departamento;
 import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.model.Evento;
+import es.uji.apps.hor.model.Persona;
 import es.uji.apps.hor.model.RangoHorario;
 import es.uji.apps.hor.model.Semestre;
 import es.uji.apps.hor.model.TipoEstudio;
@@ -59,6 +68,15 @@ public class CalendarResourceRangoHorarioTest extends AbstractRestTest
     @Autowired
     private EstudiosDAO estudiosDAO;
 
+    @Autowired
+    protected PersonaDAO personaDAO;
+
+    @Autowired
+    protected CentroDAO centroDAO;
+
+    @Autowired
+    protected DepartamentoDAO departamentoDAO;
+
     public CalendarResourceRangoHorarioTest()
     {
         formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -69,9 +87,19 @@ public class CalendarResourceRangoHorarioTest extends AbstractRestTest
     public void creaDatosIniciales() throws ParseException, DuracionEventoIncorrectaException
     {
         TipoEstudio tipoEstudio = new TipoEstudioBuilder().withId("G").withNombre("Grau").build();
-        
+
         estudio = new EstudioBuilder(estudiosDAO).withNombre("Grau en Psicologia")
                 .withTipoEstudio(tipoEstudio).build();
+
+        Centro centro = new CentroBuilder(centroDAO).withNombre("Centro 1").withId(new Long(1))
+                .build();
+        Departamento departamento = new DepartamentoBuilder(departamentoDAO)
+                .withNombre("Departamento1").withCentro(centro).build();
+
+        Persona persona = new PersonaBuilder(personaDAO).withId(new Long(1))
+                .withNombre("Persona 1").withEmail("persona@uji.es").withActividadId("Actividad 1")
+                .withDepartamento(departamento).withCentroAutorizado(centro)
+                .withEstudioAutorizado(estudio).build();
 
         semestre = new SemestreBuilder().withSemestre(new Long(1)).withNombre("Primer semestre")
                 .build();
@@ -130,15 +158,15 @@ public class CalendarResourceRangoHorarioTest extends AbstractRestTest
         String horaInicio = entity.get("horaInicio").split(" ", 2)[1].substring(0, 5);
         assertThat(horaInicio, equalTo("10:00"));
     }
-    
+
     @Test
     @Transactional
-    public void  elServicioCreaUnNuevoRangoHorario() throws JSONException
+    public void elServicioCreaUnNuevoRangoHorario() throws JSONException
     {
         UIEntity entity = modificaRangoHorario(String.valueOf(estudio.getId()),
-                String.valueOf(new Long(1)), String.valueOf(semestre.getSemestre()), "B",
-                "10:00", "14:00");
-        
+                String.valueOf(new Long(1)), String.valueOf(semestre.getSemestre()), "B", "10:00",
+                "14:00");
+
         String horaInicio = entity.get("horaInicio").split(" ", 2)[1].substring(0, 5);
         assertThat(horaInicio, equalTo("10:00"));
     }
@@ -154,8 +182,9 @@ public class CalendarResourceRangoHorarioTest extends AbstractRestTest
         entity.put("horaInicio", horaInicio);
         entity.put("horaFin", horaFin);
 
-        ClientResponse response = resource.path("calendario/config").type(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, entity);
+        ClientResponse response = resource.path("calendario/config")
+                .type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
+                .post(ClientResponse.class, entity);
 
         return response.getEntity(new GenericType<List<UIEntity>>()
         {

@@ -67,8 +67,6 @@ public abstract class AbstractCalendarResourceTest extends AbstractRestTest
     @Autowired
     protected EstudiosDAO estudiosDAO;
 
-    @Autowired
-    protected EstudiosDAO estudiosDao;
     protected Asignatura asignaturaFicticia1;
     protected Semestre semestre;
     protected Calendario calendarioPR;
@@ -83,8 +81,8 @@ public abstract class AbstractCalendarResourceTest extends AbstractRestTest
     protected void creaEventosIniciales() throws Exception
     {
         TipoEstudio tipoEstudio = new TipoEstudioBuilder().withNombre("Grau").withId("G").build();
-        
-        Estudio estudio = new EstudioBuilder(estudiosDao).withNombre("Grau en Psicologia")
+
+        Estudio estudio = new EstudioBuilder(estudiosDAO).withNombre("Grau en Psicologia")
                 .withTipoEstudio(tipoEstudio).build();
         estudioId = estudio.getId();
 
@@ -98,7 +96,7 @@ public abstract class AbstractCalendarResourceTest extends AbstractRestTest
                 .withDepartamento(departamento).withCentroAutorizado(centro)
                 .withEstudioAutorizado(estudio).build();
 
-        Estudio otroEstudio = new EstudioBuilder(estudiosDao).withNombre("Grau en Informática")
+        Estudio otroEstudio = new EstudioBuilder(estudiosDAO).withNombre("Grau en Informática")
                 .withTipoEstudio(tipoEstudio).build();
 
         asignaturaFicticia1 = new AsignaturaBuilder().withCaracter("Obligatoria")
@@ -131,7 +129,7 @@ public abstract class AbstractCalendarResourceTest extends AbstractRestTest
                 .withGrupoId(grupoId).withSubgrupoId(new Long(1)).withSemestre(semestre)
                 .withCalendario(calendarioPR).withDetalleManual(false).build();
         eventoId = evento1DeAsignatura1.getId();
-        
+
         Evento evento2DeAsignatura1 = new EventoBuilder(eventosDao)
                 .withTitulo("Evento de prueba 2 de asignatura 1")
                 .withAsignatura(asignaturaFicticia1)

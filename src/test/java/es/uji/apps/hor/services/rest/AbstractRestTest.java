@@ -34,8 +34,8 @@ public abstract class AbstractRestTest extends JerseyTest
     static String packageName = "es.uji.apps.hor.services.rest";
 
     static final protected SimpleDateFormat UIEntityDateFormat = new SimpleDateFormat(
-            "\"yyyy-MM-dd'T'HH:mm:ss\""); 
-    
+            "\"yyyy-MM-dd'T'HH:mm:ss\"");
+
     public AbstractRestTest()
     {
         super(new WebAppDescriptor.Builder(packageName)
@@ -56,11 +56,12 @@ public abstract class AbstractRestTest extends JerseyTest
         this.client().addFilter(new LoggingFilter());
     }
 
-    private static Map<String, String> getAuthFilterConfig() {
+    private static Map<String, String> getAuthFilterConfig()
+    {
         Map<String, String> initAuthFilterConfig = new HashMap<String, String>();
-        
+
         initAuthFilterConfig.put("domainCookie", "LSMSessionlocalhost");
-        initAuthFilterConfig.put("defaultUsername", "testuser");
+        initAuthFilterConfig.put("defaultUserName", "testuser");
         initAuthFilterConfig.put("defaultUserId", "1");
 
         return initAuthFilterConfig;
