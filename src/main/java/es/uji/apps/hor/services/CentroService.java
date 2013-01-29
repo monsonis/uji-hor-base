@@ -44,8 +44,11 @@ public class CentroService
     public Centro getCentroById(Long centroId, Long connectedUserId)
             throws RegistroNoEncontradoException, UnauthorizedUserException
     {
-        Persona persona = personaDAO.getPersonaById(connectedUserId);
-        persona.compruebaAccesoACentro(centroId);
+        if (!personaDAO.esAdmin(connectedUserId))
+        {
+            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            persona.compruebaAccesoACentro(centroId);
+        }
 
         Centro centro = centroDAO.getCentroById(centroId);
 
