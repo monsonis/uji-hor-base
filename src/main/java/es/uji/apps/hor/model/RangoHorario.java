@@ -113,11 +113,17 @@ public class RangoHorario
     {
         for (Evento evento : eventos)
         {
-            if (!estaDentroDelRangoHorario(evento))
-            {
-                throw new RangoHorarioFueradeLimites();
-            }
+            compruebaEventoDentroDeRango(evento);
         }
+    }
+
+    public void compruebaEventoDentroDeRango(Evento evento) throws RangoHorarioFueradeLimites
+    {
+        if (!estaDentroDelRangoHorario(evento))
+        {
+            throw new RangoHorarioFueradeLimites();
+        }
+
     }
 
     private boolean estaDentroDelRangoHorario(Evento evento)
@@ -192,4 +198,5 @@ public class RangoHorario
 
         return rangoPorDefecto;
     }
+
 }

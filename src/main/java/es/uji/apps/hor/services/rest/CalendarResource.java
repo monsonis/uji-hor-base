@@ -30,6 +30,7 @@ import com.sun.jersey.api.core.InjectParam;
 import es.uji.apps.hor.AulaNoAsignadaAEstudioDelEventoException;
 import es.uji.apps.hor.DuracionEventoIncorrectaException;
 import es.uji.apps.hor.EventoDetalleSinEventoException;
+import es.uji.apps.hor.EventoFueraDeRangoException;
 import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.RangoHorarioFueradeLimites;
 import es.uji.apps.hor.model.Calendario;
@@ -269,7 +270,7 @@ public class CalendarResource extends CoreBaseService
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> updateEventoSemanaGenerica(UIEntity entity) throws ParseException,
             DuracionEventoIncorrectaException, JSONException, RegistroNoEncontradoException,
-            EventoDetalleSinEventoException, UnauthorizedUserException
+            EventoDetalleSinEventoException, UnauthorizedUserException, EventoFueraDeRangoException
     {
 
         Long connectedUserId = AccessManager.getConnectedUserId(request);

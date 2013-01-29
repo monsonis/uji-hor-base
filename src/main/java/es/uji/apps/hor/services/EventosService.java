@@ -10,16 +10,20 @@ import org.springframework.stereotype.Service;
 import es.uji.apps.hor.AulaNoAsignadaAEstudioDelEventoException;
 import es.uji.apps.hor.DuracionEventoIncorrectaException;
 import es.uji.apps.hor.EventoDetalleSinEventoException;
+import es.uji.apps.hor.EventoFueraDeRangoException;
 import es.uji.apps.hor.EventoNoDivisibleException;
+import es.uji.apps.hor.RangoHorarioFueradeLimites;
 import es.uji.apps.hor.dao.AulaDAO;
 import es.uji.apps.hor.dao.EventosDAO;
 import es.uji.apps.hor.dao.PersonaDAO;
+import es.uji.apps.hor.dao.RangoHorarioDAO;
 import es.uji.apps.hor.model.Asignatura;
 import es.uji.apps.hor.model.AulaPlanificacion;
 import es.uji.apps.hor.model.Evento;
 import es.uji.apps.hor.model.EventoDetalle;
 import es.uji.apps.hor.model.EventoDocencia;
 import es.uji.apps.hor.model.Persona;
+import es.uji.apps.hor.model.RangoHorario;
 import es.uji.commons.rest.Role;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 import es.uji.commons.sso.exceptions.UnauthorizedUserException;
@@ -33,6 +37,9 @@ public class EventosService
 
     @Autowired
     private PersonaDAO personaDAO;
+
+    @Autowired
+    private RangoHorarioDAO rangoHorarioDAO;
 
     @Autowired
     public EventosService(EventosDAO eventosDAO, AulaDAO aulaDAO)
@@ -56,7 +63,7 @@ public class EventosService
     @Role({ "ADMIN", "USUARIO" })
     public Evento modificaDiaYHoraEvento(Long eventoId, Date inicio, Date fin, Long connectedUserId)
             throws DuracionEventoIncorrectaException, RegistroNoEncontradoException,
-            UnauthorizedUserException
+            UnauthorizedUserException, EventoFueraDeRangoException
     {
         Evento evento = eventosDAO.getEventoById(eventoId);
 
@@ -64,6 +71,20 @@ public class EventosService
         persona.compruebaAccesoAEvento(evento);
 
         evento.setFechaInicioYFin(inicio, fin);
+
+        List<RangoHorario> rangosHorarios = rangoHorarioDAO.getRangosHorariosDelEvento(evento);
+        for (RangoHorario rangoHorario : rangosHorarios)
+        {
+            try
+            {
+                rangoHorario.compruebaEventoDentroDeRango(evento);
+            }
+            catch (RangoHorarioFueradeLimites e)
+            {
+                throw new EventoFueraDeRangoException();
+            }
+        }
+
         eventosDAO.updateHorasEventoYSusDetalles(evento);
         return evento;
     }

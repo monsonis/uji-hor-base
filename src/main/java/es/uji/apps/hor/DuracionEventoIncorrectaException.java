@@ -1,6 +1,5 @@
 package es.uji.apps.hor;
 
-
 @SuppressWarnings("serial")
 public class DuracionEventoIncorrectaException extends GeneralHORException
 {
@@ -11,6 +10,6 @@ public class DuracionEventoIncorrectaException extends GeneralHORException
 
     public DuracionEventoIncorrectaException()
     {
-        super();
+        super("Les hores de la clase no són correctes");
     }
 }

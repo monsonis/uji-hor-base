@@ -1,5 +1,6 @@
 package es.uji.apps.hor.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -8,6 +9,8 @@ import com.mysema.query.jpa.impl.JPAQuery;
 
 import es.uji.apps.hor.db.QRangoHorarioDTO;
 import es.uji.apps.hor.db.RangoHorarioDTO;
+import es.uji.apps.hor.model.Asignatura;
+import es.uji.apps.hor.model.Evento;
 import es.uji.apps.hor.model.RangoHorario;
 import es.uji.commons.db.BaseDAODatabaseImpl;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
@@ -56,6 +59,34 @@ public class RangoHorarioDAODatabaseImpl extends BaseDAODatabaseImpl implements 
         rangoHorarioDTO = insert(rangoHorarioDTO);
 
         return creaRangoHorario(rangoHorarioDTO);
+    }
+
+    @Override
+    public List<RangoHorario> getRangosHorariosDelEvento(Evento evento)
+    {
+        List<RangoHorario> rangosHorarios = new ArrayList<RangoHorario>();
+        RangoHorario rango;
+        String grupoId = evento.getGrupoId();
+        for (Asignatura asignatura : evento.getAsignaturas())
+        {
+            Long estudioId = asignatura.getEstudio().getId();
+            Long cursoId = asignatura.getCursoId();
+            Long semestreId = evento.getSemestre().getSemestre();
+
+            try
+            {
+                rango = getRangoHorario(estudioId, cursoId, semestreId, grupoId);
+            }
+            catch (RegistroNoEncontradoException e)
+            {
+                rango = RangoHorario.getRangoHorarioPorDefecto(estudioId, cursoId, semestreId,
+                        grupoId);
+            }
+
+            rangosHorarios.add(rango);
+        }
+
+        return rangosHorarios;
     }
 
     private RangoHorario creaRangoHorario(RangoHorarioDTO rangoHorarioDTO)

@@ -221,7 +221,7 @@ Extensible.calendar.form.EventDetails.override(
              *            rec The new {@link Extensible.calendar.data.EventModel record} that was
              *            canceled
              */
-            eventcancel : true
+            eventcancel : true            
         });
 
         this.trackResetOnLoad = true;
@@ -627,6 +627,15 @@ Extensible.calendar.form.EventDetails.override(
 
         record.set(obj);
         return record.dirty;
-    },
+    }
+    
 
 });
+
+Extensible.calendar.view.AbstractCalendar.override({
+		notifyOnException: function(response, operation) {
+	    	var myResponseJSON = JSON.parse(response.responseText);
+	        Ext.Msg.alert('Error', myResponseJSON['msg']);
+	    }		
+}
+);
