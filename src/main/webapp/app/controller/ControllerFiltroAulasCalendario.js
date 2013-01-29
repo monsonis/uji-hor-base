@@ -10,7 +10,11 @@ Ext.define('HOR.controller.ControllerFiltroAulasCalendario',
     {
         selector : 'selectorAulas',
         ref : 'selectorAulas'
-    } ],
+    },
+    {
+        selector : 'panelCalendarioPorAula',
+        ref : 'panelCalendarioPorAula'
+    }],
     
     init : function()
     {
@@ -44,6 +48,9 @@ Ext.define('HOR.controller.ControllerFiltroAulasCalendario',
         this.getStoreTiposAulaStore().removeAll();
         this.getStorePlantasEdificioStore().removeAll();
         
+        this.getSelectorAulas().removeAll();
+        this.getPanelCalendarioPorAula().limpiaCalendario();
+        
         var store = semestre.getStore();
         
         if (store.count() == 0)
@@ -60,6 +67,9 @@ Ext.define('HOR.controller.ControllerFiltroAulasCalendario',
         
         this.getStoreTiposAulaStore().removeAll();
         this.getStorePlantasEdificioStore().removeAll();
+        
+        this.getSelectorAulas().removeAll();
+        this.getPanelCalendarioPorAula().limpiaCalendario();
         
         var centro = this.getFiltroAulas().down('combobox[name=centro]').getValue();
         
@@ -84,6 +94,8 @@ Ext.define('HOR.controller.ControllerFiltroAulasCalendario',
         
         var centro = this.getFiltroAulas().down('combobox[name=centro]').getValue();
         var edificio = this.getFiltroAulas().down('combobox[name=edificio]').getValue();
+        
+        this.getPanelCalendarioPorAula().limpiaCalendario();
         
         var storeTipos = this.getStoreTiposAulaStore();
         var storePlantas = this.getStorePlantasEdificioStore();

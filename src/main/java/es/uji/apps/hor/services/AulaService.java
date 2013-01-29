@@ -74,12 +74,16 @@ public class AulaService
         aulaDAO.deleteAulaAsignadaToEstudio(aulaPlanificacionId);
     }
 
-    public List<TipoAula> getTiposAulaByCentroAndEdificio(Long centroId, String edificio)
+    @Role({ "ADMIN", "USUARIO" })
+    public List<TipoAula> getTiposAulaByCentroAndEdificio(Long centroId, String edificio,
+            Long connectedUserId) throws RegistroNoEncontradoException, UnauthorizedUserException
     {
-        // Falta control acceso
+        Persona persona = personaDAO.getPersonaById(connectedUserId);
+        persona.compruebaAccesoACentro(centroId);
+
         return aulaDAO.getTiposAulaByCentroAndEdificio(centroId, edificio);
     }
-    
+
     public List<Aula> getAulasFiltradasPor(Long centroId, String edificio, String tipoAula,
             String planta)
     {

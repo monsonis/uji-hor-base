@@ -52,6 +52,10 @@ Ext.define('HOR.controller.ControllerCalendarioAulas',
         Extensible.calendar.data.EventModel.reconfigure();
 
         var inicio = this.getInicioSemestre();
+        if (!inicio)
+        {
+            inicio = new Date();
+        }
         var fin = new Date();
         fin.setDate(inicio.getDate() + 7);
 

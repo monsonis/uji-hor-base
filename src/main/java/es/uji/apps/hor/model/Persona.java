@@ -3,11 +3,7 @@ package es.uji.apps.hor.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javassist.expr.NewArray;
-
 import es.uji.commons.sso.exceptions.UnauthorizedUserException;
-
-
 
 public class Persona
 {
@@ -20,8 +16,9 @@ public class Persona
     private List<Estudio> estudiosAutorizados = new ArrayList<Estudio>();
     private List<Cargo> cargos = new ArrayList<Cargo>();
 
-    public Persona() {
-        
+    public Persona()
+    {
+
     }
 
     public Long getId()
@@ -63,7 +60,7 @@ public class Persona
     {
         this.departamento = departamento;
     }
-    
+
     public List<Estudio> getEstudiosAutorizados()
     {
         return estudiosAutorizados;

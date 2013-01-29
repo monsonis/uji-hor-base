@@ -80,17 +80,20 @@ public class AulaResource extends CoreBaseService
         consultaAulas.deleteAulaAsignadaToEstudio(Long.parseLong(aulaPlanificacionId),
                 connectedUserId);
     }
-    
+
     @GET
     @Path("tipo")
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> getTiposAulaByCentroAndEdificio(@QueryParam("centroId") String centroId,
-            @QueryParam("edificio") String edificio)
+            @QueryParam("edificio") String edificio) throws RegistroNoEncontradoException,
+            UnauthorizedUserException
     {
         ParamUtils.checkNotNull(centroId, edificio);
 
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+
         List<TipoAula> tiposAula = consultaAulas.getTiposAulaByCentroAndEdificio(
-                ParamUtils.parseLong(centroId), edificio);
+                ParamUtils.parseLong(centroId), edificio, connectedUserId);
 
         return UIEntity.toUI(tiposAula);
     }
@@ -102,7 +105,7 @@ public class AulaResource extends CoreBaseService
             @QueryParam("planta") String planta)
     {
         ParamUtils.checkNotNull(centroId, edificio);
-        
+
         tipoAula = (tipoAula == null || tipoAula.equals("")) ? null : tipoAula;
         planta = (planta == null || planta.equals("")) ? null : planta;
 

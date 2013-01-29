@@ -29,7 +29,8 @@ public class EdificiosService
     }
 
     @Role({ "ADMIN", "USUARIO" })
-    public List<Edificio> getEdificiosByCentroId(Long centroId, Long connectedUserId) throws UnauthorizedUserException, RegistroNoEncontradoException
+    public List<Edificio> getEdificiosByCentroId(Long centroId, Long connectedUserId)
+            throws UnauthorizedUserException, RegistroNoEncontradoException
     {
         if (!personaDAO.esAdmin(connectedUserId))
         {
@@ -41,7 +42,9 @@ public class EdificiosService
     }
 
     @Role({ "ADMIN", "USUARIO" })
-    public List<PlantaEdificio> getPlantasEdificioByCentroAndEdificio(Long centroId, String edificio, Long connectedUserId) throws UnauthorizedUserException, RegistroNoEncontradoException
+    public List<PlantaEdificio> getPlantasEdificioByCentroAndEdificio(Long centroId,
+            String edificio, Long connectedUserId) throws UnauthorizedUserException,
+            RegistroNoEncontradoException
     {
         if (!personaDAO.esAdmin(connectedUserId))
         {
