@@ -109,7 +109,7 @@ public class CalendarResource extends CoreBaseService
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public List<UIEntity> guardaConfiguracion(UIEntity entity) throws ParseException,
-            RangoHorarioFueradeLimites, UnauthorizedUserException
+            RangoHorarioFueradeLimites, UnauthorizedUserException, RegistroNoEncontradoException
     {
 
         Long connectedUserId = AccessManager.getConnectedUserId(request);
@@ -146,7 +146,7 @@ public class CalendarResource extends CoreBaseService
             @QueryParam(SEMESTRE_ID_QUERY_PARAM) String semestreId,
             @QueryParam(GRUPO_ID_QUERY_PARAM) String grupoId,
             @QueryParam(CALENDARIOS_IDS_QUERY_PARAM) String calendariosIds) throws ParseException,
-            UnauthorizedUserException
+            UnauthorizedUserException, RegistroNoEncontradoException
     {
 
         Long connectedUserId = AccessManager.getConnectedUserId(request);
@@ -188,7 +188,7 @@ public class CalendarResource extends CoreBaseService
             @QueryParam(CALENDARIOS_IDS_QUERY_PARAM) String calendariosIds,
             @QueryParam(START_DATE_QUERY_PARAM) String startDate,
             @QueryParam(END_DATE_QUERY_PARAM) String endDate) throws ParseException,
-            UnauthorizedUserException
+            UnauthorizedUserException, RegistroNoEncontradoException
     {
 
         Long connectedUserId = AccessManager.getConnectedUserId(request);

@@ -44,7 +44,7 @@ public class EventosService
     @Role({ "ADMIN", "USUARIO" })
     public List<Evento> eventosSemanaGenericaDeUnEstudio(Long estudioId, Long cursoId,
             Long semestreId, String grupoId, List<Long> calendariosIds, Long connectedUserId)
-            throws UnauthorizedUserException
+            throws UnauthorizedUserException, RegistroNoEncontradoException
     {
         Persona persona = personaDAO.getPersonaById(connectedUserId);
         persona.compruebaAccesoAEstudio(estudioId);
@@ -240,7 +240,8 @@ public class EventosService
     @Role({ "ADMIN", "USUARIO" })
     public List<EventoDetalle> eventosDetalleDeUnEstudio(Long estudioId, Long cursoId,
             Long semestreId, String grupoId, List<Long> calendariosIds, Date rangoFechaInicio,
-            Date rangoFechaFin, Long connectedUserId) throws UnauthorizedUserException
+            Date rangoFechaFin, Long connectedUserId) throws UnauthorizedUserException,
+            RegistroNoEncontradoException
     {
         Persona persona = personaDAO.getPersonaById(connectedUserId);
         persona.compruebaAccesoAEstudio(estudioId);
