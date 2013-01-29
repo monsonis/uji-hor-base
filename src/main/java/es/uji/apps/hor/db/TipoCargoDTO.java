@@ -31,7 +31,7 @@ public class TipoCargoDTO implements Serializable
     private Set<CargoPersonaDTO> cargosPersona;
 
     // bi-directional many-to-one association to PermisoExtraDTO
-    @OneToMany(mappedBy = "tiposCargo")
+    @OneToMany(mappedBy = "tipoCargo")
     private Set<PermisoExtraDTO> permisosExtras;
 
     public TipoCargoDTO()

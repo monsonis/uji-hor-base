@@ -1,22 +1,17 @@
 package es.uji.apps.hor.model;
 
-import java.util.List;
 
 
 public class PermisoExtra
 {
     private Long id;
-    private String nombre;
-    private List<Edificio> edificios;
+    private Persona persona;
+    private Estudio estudio;
+    private Departamento departamento;
+    private Cargo cargo;
 
     public PermisoExtra() {
         
-    }
-    
-    public PermisoExtra(Long id, String nombre)
-    {
-        this.id = id;
-        this.nombre = nombre;
     }
     
     public Long getId()
@@ -29,23 +24,43 @@ public class PermisoExtra
         this.id = id;
     }
 
-    public String getNombre()
+    public Cargo getCargo()
     {
-        return nombre;
+        return cargo;
     }
 
-    public void setNombre(String nombre)
+    public void setCargo(Cargo cargo)
     {
-        this.nombre = nombre;
+        this.cargo = cargo;
     }
 
-    public List<Edificio> getEdificios()
+    public Persona getPersona()
     {
-        return edificios;
+        return persona;
     }
 
-    public void setEdificios(List<Edificio> edificios)
+    public void setPersona(Persona persona)
     {
-        this.edificios = edificios;
+        this.persona = persona;
+    }
+
+    public Estudio getEstudio()
+    {
+        return estudio;
+    }
+
+    public void setEstudio(Estudio estudio)
+    {
+        this.estudio = estudio;
+    }
+
+    public Departamento getDepartamento()
+    {
+        return departamento;
+    }
+
+    public void setDepartamento(Departamento departamento)
+    {
+        this.departamento = departamento;
     }
 }

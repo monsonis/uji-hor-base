@@ -35,7 +35,7 @@ public class PermisoExtraDTO implements Serializable {
 	//bi-directional many-to-one association to TipoCargoDTO
     @ManyToOne
 	@JoinColumn(name="TIPO_CARGO_ID")
-	private TipoCargoDTO tiposCargo;
+	private TipoCargoDTO tipoCargo;
 
     public PermisoExtraDTO() {
     }
@@ -72,12 +72,12 @@ public class PermisoExtraDTO implements Serializable {
 		this.persona = persona;
 	}
 	
-	public TipoCargoDTO getTiposCargo() {
-		return this.tiposCargo;
+	public TipoCargoDTO getTipoCargo() {
+		return this.tipoCargo;
 	}
 
-	public void setTiposCargo(TipoCargoDTO tiposCargo) {
-		this.tiposCargo = tiposCargo;
+	public void setTipoCargo(TipoCargoDTO tipoCargo) {
+		this.tipoCargo = tipoCargo;
 	}
 	
 }
