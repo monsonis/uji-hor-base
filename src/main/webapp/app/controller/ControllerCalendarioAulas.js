@@ -1,7 +1,7 @@
 Ext.define('HOR.controller.ControllerCalendarioAulas',
 {
     extend : 'Ext.app.Controller',
-    stores : [ 'StoreCalendarios', 'StoreAulasDetalle' ],
+    stores : [ 'StoreCalendarios', 'StoreAulasDetalle', 'StoreSemestreDetalles' ],
     refs : [
     {
         selector : 'selectorAulas',
@@ -14,6 +14,10 @@ Ext.define('HOR.controller.ControllerCalendarioAulas',
     {
         selector : 'panelCalendarioAulas selectorCalendarios',
         ref : 'selectorCalendarios'
+    },
+    {
+        selector : 'filtroAulas',
+        ref : 'filtroAulas'
     } ],
 
     init : function()
@@ -47,6 +51,12 @@ Ext.define('HOR.controller.ControllerCalendarioAulas',
         };
         store.getProxy().extraParams = params;
         
+        var fechaInicio = this.getInicioSemestre();
+        if (fechaInicio)
+        {
+            this.getPanelCalendarioPorAula().setStartDate(fechaInicio);
+        }
+        
         var ref = this;
         
         store.load(
@@ -54,8 +64,24 @@ Ext.define('HOR.controller.ControllerCalendarioAulas',
             scope : this,
             callback : function()
             {
-                //ref.getPanelCalendarioPorAula().getActiveView().refresh(true);
+                ref.getPanelCalendarioPorAula().getActiveView().refresh();
             }
         });
+    },
+    
+    getInicioSemestre : function()
+    {
+        var semestre = this.getFiltroAulas().down('combobox[name=semestre]').getValue();
+        var store = this.getStoreSemestreDetallesStore();
+        
+        for (var i=0; i < store.getCount(); i++)
+        {
+            var record = store.getAt(i);
+            if (record.get('id') == semestre)
+            {
+                return record.get('fechaInicio');
+            }
+            console.log(record);
+        }
     }
 });
