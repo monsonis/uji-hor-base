@@ -30,58 +30,74 @@ Ext.define('HOR.controller.ControllerCalendarioAulas',
             },
         });
     },
-    
+
     refreshEventsCalendar : function(button)
     {
         var aulaId = button.aulaId;
         var calendarios = this.getSelectorCalendarios().getCalendarsSelected();
-        
-        var store = this.getStoreAulasDetalleStore();
-        
-        var inicio = new Date();
+
+        var panelCalendario = this.getPanelCalendarioPorAula();
+        if (!panelCalendario)
+        {
+            panelCalendario = this.getPanelCalendarioDetalle();
+        }
+        var panelPadre = panelCalendario.up('panel');
+
+        Ext.Array.each(Ext.ComponentQuery.query('panelCalendarioPorAula'), function(panel)
+        {
+            panel.destroy();
+        });
+
+        var eventos = Ext.create('HOR.store.StoreAulasDetalle');
+        Extensible.calendar.data.EventModel.reconfigure();
+
+        var inicio = this.getInicioSemestre();
         var fin = new Date();
         fin.setDate(inicio.getDate() + 7);
-        
-        var params = 
+
+        var params =
         {
-                aulaId : aulaId,
-                calendariosIds : calendarios,
-                startDate : inicio,
-                endDate : fin
+            aulaId : aulaId,
+            calendariosIds : calendarios,
+            startDate : inicio,
+            endDate : fin
         };
-        store.getProxy().extraParams = params;
-        
-        var fechaInicio = this.getInicioSemestre();
-        if (fechaInicio)
-        {
-            this.getPanelCalendarioPorAula().setStartDate(fechaInicio);
-        }
-        
+        eventos.getProxy().extraParams = params;
+
         var ref = this;
-        
-        store.load(
+        panelPadre.add(
         {
-            scope : this,
-            callback : function()
+            xtype : 'panelCalendarioPorAula',
+            eventStore : eventos,
+            showMultiDayView : true,
+            viewConfig :
             {
-                ref.getPanelCalendarioPorAula().getActiveView().refresh();
+                viewStartHour : 8,
+                viewEndHour : 22
+            },
+            listeners :
+            {
+                afterrender : function()
+                {
+                    ref.getPanelCalendarioPorAula().setStartDate(inicio);
+                    eventos.load();
+                }
             }
         });
     },
-    
+
     getInicioSemestre : function()
     {
         var semestre = this.getFiltroAulas().down('combobox[name=semestre]').getValue();
         var store = this.getStoreSemestreDetallesStore();
-        
-        for (var i=0; i < store.getCount(); i++)
+
+        for ( var i = 0; i < store.getCount(); i++)
         {
             var record = store.getAt(i);
             if (record.get('id') == semestre)
             {
                 return record.get('fechaInicio');
             }
-            console.log(record);
         }
     }
 });

@@ -6,7 +6,7 @@ Ext.define('HOR.store.StorePermisos',
     proxy :
     {
         type : 'rest',
-        url : '/hor/rest/permiso',
+        url : '/hor/rest/permisoExtra',
 
         reader :
         {

@@ -31,8 +31,11 @@ public class EdificiosService
     @Role({ "ADMIN", "USUARIO" })
     public List<Edificio> getEdificiosByCentroId(Long centroId, Long connectedUserId) throws UnauthorizedUserException, RegistroNoEncontradoException
     {
-        Persona persona = personaDAO.getPersonaById(connectedUserId);
-        persona.compruebaAccesoACentro(centroId);
+        if (!personaDAO.esAdmin(connectedUserId))
+        {
+            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            persona.compruebaAccesoACentro(centroId);
+        }
 
         return edificiosDAO.getEdificiosByCentroId(centroId);
     }
@@ -40,8 +43,11 @@ public class EdificiosService
     @Role({ "ADMIN", "USUARIO" })
     public List<PlantaEdificio> getPlantasEdificioByCentroAndEdificio(Long centroId, String edificio, Long connectedUserId) throws UnauthorizedUserException, RegistroNoEncontradoException
     {
-        Persona persona = personaDAO.getPersonaById(connectedUserId);
-        persona.compruebaAccesoACentro(centroId);
+        if (!personaDAO.esAdmin(connectedUserId))
+        {
+            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            persona.compruebaAccesoACentro(centroId);
+        }
 
         return edificiosDAO.getPlantasEdificioByCentroAndEdificio(centroId, edificio);
     }
