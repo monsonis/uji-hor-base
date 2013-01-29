@@ -51,7 +51,7 @@ Ext.require('Ext.grid.Panel');
 Ext.require('Ext.Date');
 Ext.require('Event.form.PanelInfo');
 
-var login = 'borillo';
+//var login = 'borillo';
 
 function fixLoadMaskBug(store, combo)
 {

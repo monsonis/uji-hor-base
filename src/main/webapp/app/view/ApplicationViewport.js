@@ -1,4 +1,5 @@
-Ext.require('HOR.view.commons.MenuSuperior');
+Ext.require('Ext.tree.TreePanel');
+
 
 Ext.define('HOR.view.ApplicationViewport',
 {
@@ -11,7 +12,7 @@ Ext.define('HOR.view.ApplicationViewport',
         {
             region : 'north',
             layout : 'border',
-            height : 100,
+            height : 70,
             items : [
                     {
                         region : 'center',
@@ -21,15 +22,45 @@ Ext.define('HOR.view.ApplicationViewport',
                                 + '<div style="float:left; margin-top:11px;">'
                                 + '<span style="color: rgb(255,255, 255); font-family: Helvetica,Arial,sans-serif;font-size:1.2em;">E-UJIER@</span><br/>'
                                 + '<span style="color: #CDCCE5; font-family: Helvetica,Arial,sans-serif;">' + this.tituloAplicacion + '</span></div></div>'
-                    },
-                    {
-                        region : 'south',
-                        xtype : 'menuSuperior'
-                    } ]
+                    }]
         });
     },
 
     buildNavigationTree : function()
-    {
+    {         
+         var navigationTree = new Ext.tree.TreePanel(
+         {
+             title : 'Conectat com ' + login + '@',
+             region : 'west',
+             alias : 'widget.navigationtree',
+             lines : false,
+             width : this.treeWidth,
+             split : true,
+             collapsible : true,
+             autoScroll : true,
+             rootVisible : false,
+             bodyStyle : 'padding-bottom:20px;',
+           
+             store : Ext.create('Ext.data.TreeStore', {            	   
+            	        expanded: true,
+            	        autoLoad : true,
+            	        proxy :
+            	        {
+            	            type : 'ajax',
+            	            url : '/hor/rest/navigation/json/class?codigoAplicacion=HOR',
+            	            noCache : true,
+
+            	            reader :
+            	            {
+            	                type : 'json',
+            	                root : 'row'
+            	            }
+            	        }            	                  	  
+            	}),
+
+         });
+         
+         navigationTree.getRootNode().expand();
+         this.add(navigationTree);
     }
 });

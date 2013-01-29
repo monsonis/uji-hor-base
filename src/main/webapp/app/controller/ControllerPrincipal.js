@@ -11,53 +11,17 @@ Ext.define('HOR.controller.ControllerPrincipal',
     init : function()
     {
         this.control(
-        {
-            'menuSuperior menuitem[action=gestion-horarios]' :
+        {           
+            'viewport > treepanel' :
             {
-                click : this.showGestionHorarios
-            },
-            'menuSuperior menuitem[action=curso-academico]' :
-            {
-                click : this.showCursoAcademico
-            },
-            'menuSuperior menuitem[action=asignacion-aulas]' :
-            {
-                click : this.showAsignacionAulas
-            },
-            'menuSuperior menuitem[action=ocupacion-aulas]' :
-            {
-                click : this.showOcupacionAulas
-            },
-            'menuSuperior menuitem[action=gestion-permisos]' :
-            {
-                click : this.showGestionPermisos
+                itemclick : this.navigationTreeItemClick
             }
         });
     },
-
-    showGestionHorarios : function()
-    {
-        this.getViewportHorarios().addNewTab('HOR.view.horarios.PanelHorarios');
+    
+    navigationTreeItemClick : function (view, node, item, index, e) {
+    	view.up("viewport").addNewTab(node.data.id);
     },
-
-    showCursoAcademico : function()
-    {
-        this.getViewportHorarios().addNewTab('HOR.view.semestres.PanelSemestres');
-    },
-
-    showAsignacionAulas : function()
-    {
-        this.getViewportHorarios().addNewTab('HOR.view.aulas.PanelAulas');
-    },
-
-    showOcupacionAulas : function()
-    {
-        this.getViewportHorarios().addNewTab('HOR.view.aulas.calendar.PanelCalendarioAulas');
-    },
-
-    showGestionPermisos : function()
-    {
-        this.getViewportHorarios().addNewTab('HOR.view.permisos.PanelPermisos');
-    }
+  
 
 });
