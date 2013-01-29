@@ -15,6 +15,7 @@ import es.uji.apps.hor.services.SemestresService;
 import es.uji.commons.rest.CoreBaseService;
 import es.uji.commons.rest.ParamUtils;
 import es.uji.commons.rest.UIEntity;
+import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 import es.uji.commons.sso.AccessManager;
 import es.uji.commons.sso.exceptions.UnauthorizedUserException;
 
@@ -27,7 +28,7 @@ public class SemestreResource extends CoreBaseService
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> getSemestres(@QueryParam("cursoId") String cursoId,
-            @QueryParam("estudioId") String estudioId) throws UnauthorizedUserException
+            @QueryParam("estudioId") String estudioId) throws UnauthorizedUserException, RegistroNoEncontradoException
     {
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 

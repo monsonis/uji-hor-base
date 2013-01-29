@@ -38,7 +38,7 @@ public class AulaResource extends CoreBaseService
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> getAulasAsignadasToEstudio(@PathParam("id") String estudioId,
             @QueryParam("semestreId") String semestreId) throws NumberFormatException,
-            UnauthorizedUserException
+            UnauthorizedUserException, RegistroNoEncontradoException
     {
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 

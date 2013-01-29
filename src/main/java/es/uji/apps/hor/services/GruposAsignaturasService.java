@@ -30,7 +30,7 @@ public class GruposAsignaturasService
     @Role({ "ADMIN", "USUARIO" })
     public List<GrupoAsignatura> getGruposAsignaturasSinAsignar(Long estudioId, Long cursoId,
             Long semestreId, String grupoId, List<Long> calendariosIds, Long connectedUserId)
-            throws UnauthorizedUserException
+            throws UnauthorizedUserException, RegistroNoEncontradoException
     {
         Persona persona = personaDAO.getPersonaById(connectedUserId);
         persona.compruebaAccesoAEstudio(estudioId);

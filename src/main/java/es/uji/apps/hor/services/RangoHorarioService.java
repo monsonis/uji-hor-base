@@ -35,7 +35,7 @@ public class RangoHorarioService
 
     @Role({ "ADMIN", "USUARIO" })
     public RangoHorario getHorario(Long estudioId, Long cursoId, Long semestreId, String grupoId,
-            Long connectedUserId) throws UnauthorizedUserException
+            Long connectedUserId) throws UnauthorizedUserException, RegistroNoEncontradoException
     {
         Persona persona = personaDAO.getPersonaById(connectedUserId);
         persona.compruebaAccesoAEstudio(estudioId);
@@ -54,7 +54,7 @@ public class RangoHorarioService
     @Role({ "ADMIN", "USUARIO" })
     public RangoHorario guardaConfiguracionRangoHorario(Long estudioId, Long cursoId,
             Long semestreId, String grupoId, Date horaInicio, Date horaFin, Long connectedUserId)
-            throws RangoHorarioFueradeLimites, UnauthorizedUserException
+            throws RangoHorarioFueradeLimites, UnauthorizedUserException, RegistroNoEncontradoException
     {
         Persona persona = personaDAO.getPersonaById(connectedUserId);
         persona.compruebaAccesoAEstudio(estudioId);

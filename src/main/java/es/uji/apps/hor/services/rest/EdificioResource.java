@@ -16,6 +16,7 @@ import es.uji.apps.hor.services.EdificiosService;
 import es.uji.commons.rest.CoreBaseService;
 import es.uji.commons.rest.ParamUtils;
 import es.uji.commons.rest.UIEntity;
+import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 import es.uji.commons.sso.AccessManager;
 import es.uji.commons.sso.exceptions.UnauthorizedUserException;
 
@@ -27,7 +28,7 @@ public class EdificioResource extends CoreBaseService
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UIEntity> getEdificios(@QueryParam("centroId") String centroId) throws UnauthorizedUserException
+    public List<UIEntity> getEdificios(@QueryParam("centroId") String centroId) throws UnauthorizedUserException, RegistroNoEncontradoException
     {
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
@@ -43,7 +44,7 @@ public class EdificioResource extends CoreBaseService
     @Path("planta")
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> getPlantasEdificio(@QueryParam("centroId") String centroId,
-            @QueryParam("edificio") String edificio) throws UnauthorizedUserException
+            @QueryParam("edificio") String edificio) throws UnauthorizedUserException, RegistroNoEncontradoException
     {
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 

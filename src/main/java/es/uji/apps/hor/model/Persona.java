@@ -3,6 +3,8 @@ package es.uji.apps.hor.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javassist.expr.NewArray;
+
 import es.uji.commons.sso.exceptions.UnauthorizedUserException;
 
 
@@ -16,6 +18,7 @@ public class Persona
     private Departamento departamento;
     private Centro centroAutorizado;
     private List<Estudio> estudiosAutorizados = new ArrayList<Estudio>();
+    private List<Cargo> cargos = new ArrayList<Cargo>();
 
     public Persona() {
         
@@ -168,6 +171,16 @@ public class Persona
     public void setEmail(String email)
     {
         this.email = email;
+    }
+
+    public List<Cargo> getCargos()
+    {
+        return cargos;
+    }
+
+    public void setCargos(List<Cargo> cargos)
+    {
+        this.cargos = cargos;
     }
 
 }

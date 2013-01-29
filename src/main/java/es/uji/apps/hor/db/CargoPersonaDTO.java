@@ -2,6 +2,7 @@ package es.uji.apps.hor.db;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,16 +17,24 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "HOR_EXT_CARGOS_PER")
+@SuppressWarnings("serial")
 public class CargoPersonaDTO implements Serializable
 {
-    private static final long serialVersionUID = 1L;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String nombre;
-
+    
+    @Column(name = "CENTRO")
+    private String nombreCentro;
+    
+    @Column(name = "CARGO")
+    private String nombreCargo;
+    
+    @Column(name = "ESTUDIO")
+    private String nombreEstudio;
+    
     // bi-directional many-to-one association to EstudioDTO
     @ManyToOne
     @JoinColumn(name = "ESTUDIO_ID")
@@ -108,6 +117,36 @@ public class CargoPersonaDTO implements Serializable
     public void setCargo(TipoCargoDTO cargo)
     {
         this.cargo = cargo;
+    }
+
+    public String getNombreCentro()
+    {
+        return nombreCentro;
+    }
+
+    public void setNombreCentro(String nombreCentro)
+    {
+        this.nombreCentro = nombreCentro;
+    }
+
+    public String getNombreCargo()
+    {
+        return nombreCargo;
+    }
+
+    public void setNombreCargo(String nombreCargo)
+    {
+        this.nombreCargo = nombreCargo;
+    }
+
+    public String getNombreEstudio()
+    {
+        return nombreEstudio;
+    }
+
+    public void setNombreEstudio(String nombreEstudio)
+    {
+        this.nombreEstudio = nombreEstudio;
     }
 
 }

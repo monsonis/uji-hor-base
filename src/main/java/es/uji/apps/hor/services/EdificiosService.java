@@ -11,6 +11,7 @@ import es.uji.apps.hor.model.Edificio;
 import es.uji.apps.hor.model.Persona;
 import es.uji.apps.hor.model.PlantaEdificio;
 import es.uji.commons.rest.Role;
+import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 import es.uji.commons.sso.exceptions.UnauthorizedUserException;
 
 @Service
@@ -28,7 +29,7 @@ public class EdificiosService
     }
 
     @Role({ "ADMIN", "USUARIO" })
-    public List<Edificio> getEdificiosByCentroId(Long centroId, Long connectedUserId) throws UnauthorizedUserException
+    public List<Edificio> getEdificiosByCentroId(Long centroId, Long connectedUserId) throws UnauthorizedUserException, RegistroNoEncontradoException
     {
         Persona persona = personaDAO.getPersonaById(connectedUserId);
         persona.compruebaAccesoACentro(centroId);
@@ -37,7 +38,7 @@ public class EdificiosService
     }
 
     @Role({ "ADMIN", "USUARIO" })
-    public List<PlantaEdificio> getPlantasEdificioByCentroAndEdificio(Long centroId, String edificio, Long connectedUserId) throws UnauthorizedUserException
+    public List<PlantaEdificio> getPlantasEdificioByCentroAndEdificio(Long centroId, String edificio, Long connectedUserId) throws UnauthorizedUserException, RegistroNoEncontradoException
     {
         Persona persona = personaDAO.getPersonaById(connectedUserId);
         persona.compruebaAccesoACentro(centroId);

@@ -33,7 +33,7 @@ public class AulaService
 
     @Role({ "ADMIN", "USUARIO" })
     public List<AulaPlanificacion> getAulasAsignadasToEstudio(Long estudioId, Long semestreId,
-            Long connectedUserId) throws UnauthorizedUserException
+            Long connectedUserId) throws UnauthorizedUserException, RegistroNoEncontradoException
     {
         if (!personaDAO.esAdmin(connectedUserId))
         {

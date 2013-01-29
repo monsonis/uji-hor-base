@@ -1,5 +1,9 @@
 package es.uji.apps.hor.dao;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,10 +16,13 @@ import es.uji.apps.hor.db.DepartamentoDTO;
 import es.uji.apps.hor.db.EstudioDTO;
 import es.uji.apps.hor.db.PersonaDTO;
 import es.uji.apps.hor.db.QCargoPersonaDTO;
+import es.uji.apps.hor.db.QPersonaDTO;
+import es.uji.apps.hor.model.Cargo;
 import es.uji.apps.hor.model.Centro;
 import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.model.Persona;
 import es.uji.commons.db.BaseDAODatabaseImpl;
+import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 import es.uji.commons.sso.dao.ApaDAO;
 
 @Repository
@@ -42,25 +49,58 @@ public class PersonaDAODatabaseImpl extends BaseDAODatabaseImpl implements Perso
     }
 
     @Override
-    public Persona getPersonaById(Long personaId)
+    public Persona getPersonaById(Long personaId) throws RegistroNoEncontradoException
     {
-        JPAQuery query = new JPAQuery(entityManager);
         Persona persona = new Persona();
 
-        QCargoPersonaDTO qCargo = QCargoPersonaDTO.cargoPersonaDTO;
+        JPAQuery query = new JPAQuery(entityManager);
 
-        query.from(qCargo).where(qCargo.persona.id.eq(personaId));
+        QCargoPersonaDTO qCargoPersona = QCargoPersonaDTO.cargoPersonaDTO;
+        QPersonaDTO qPersona = QPersonaDTO.personaDTO;
 
-        for (CargoPersonaDTO cargoDTO : query.list(qCargo))
+        query.from(qPersona, qCargoPersona).join(qPersona.cargosPersona, qCargoPersona).fetch().where(qPersona.id.eq(personaId));
+
+        if (query.list(qPersona).size() > 0)
         {
-            if (persona.getCentroAutorizado() == null)
+            PersonaDTO personaDTO = query.list(qPersona).get(0);
+
+            persona.setNombre(personaDTO.getNombre());
+            persona.setEmail(personaDTO.getEmail());
+            persona.setActividadId(persona.getActividadId());
+
+            Map<Long, String> tiposCargo = new HashMap<Long, String>();
+           
+            for (CargoPersonaDTO cargoPersonaDTO : personaDTO.getCargosPersona())
             {
-                persona.setCentroAutorizado(creaCentroDeCargoDTO(cargoDTO));
+                if (persona.getCentroAutorizado() == null)
+                {
+                    persona.setCentroAutorizado(creaCentroDeCargoDTO(cargoPersonaDTO));
+                }
+
+                if (cargoPersonaDTO.getEstudio() != null)
+                {
+                    persona.getEstudiosAutorizados().add(creaEstudioDeCargoDTO(cargoPersonaDTO));
+                }
+                if (!tiposCargo.values().contains(cargoPersonaDTO.getNombreCargo()))
+                {
+                    tiposCargo.put(cargoPersonaDTO.getCargo().getId(),
+                            cargoPersonaDTO.getNombreCargo());
+                }
+
             }
 
-            if (cargoDTO.getEstudio() != null) {
-                persona.getEstudiosAutorizados().add(creaEstudioDeCargoDTO(cargoDTO));
+            for (Map.Entry<Long, String> entry : tiposCargo.entrySet())
+            {
+                Cargo cargo = new Cargo();
+                cargo.setNombre(entry.getValue());
+                cargo.setId(entry.getKey());
+
+                persona.getCargos().add(cargo);
             }
+        }
+        else
+        {
+            throw new RegistroNoEncontradoException();
         }
 
         return persona;

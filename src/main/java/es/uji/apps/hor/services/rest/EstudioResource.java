@@ -15,6 +15,7 @@ import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.services.EstudiosService;
 import es.uji.commons.rest.CoreBaseService;
 import es.uji.commons.rest.UIEntity;
+import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 import es.uji.commons.sso.AccessManager;
 import es.uji.commons.sso.exceptions.UnauthorizedUserException;
 
@@ -27,7 +28,7 @@ public class EstudioResource extends CoreBaseService
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> getEstudiosPorCentro(@QueryParam("centroId") String centroId)
-            throws NumberFormatException, UnauthorizedUserException
+            throws NumberFormatException, UnauthorizedUserException, RegistroNoEncontradoException
     {
         List<Estudio> estudios = new ArrayList<Estudio>();
 

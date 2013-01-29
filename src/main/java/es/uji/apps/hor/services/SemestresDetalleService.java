@@ -10,6 +10,7 @@ import es.uji.apps.hor.dao.SemestresDetalleDAO;
 import es.uji.apps.hor.model.Persona;
 import es.uji.apps.hor.model.SemestreDetalle;
 import es.uji.commons.rest.Role;
+import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 import es.uji.commons.sso.exceptions.UnauthorizedUserException;
 
 @Service
@@ -35,7 +36,7 @@ public class SemestresDetalleService
 
     @Role({ "ADMIN", "USUARIO" })
     public List<SemestreDetalle> getSemestresDetallesPorEstudioIdYSemestreId(Long estudioId,
-            Long semestreId, Long connectedUserId) throws UnauthorizedUserException
+            Long semestreId, Long connectedUserId) throws UnauthorizedUserException, RegistroNoEncontradoException
     {
         Persona persona = personaDAO.getPersonaById(connectedUserId);
         persona.compruebaAccesoAEstudio(estudioId);

@@ -35,7 +35,7 @@ public class GrupoAsignaturaResource extends CoreBaseService
     public List<UIEntity> getGruposAsignaturasSinAsignar(@QueryParam("estudioId") String estudioId,
             @QueryParam("cursoId") String cursoId, @QueryParam("semestreId") String semestreId,
             @QueryParam("grupoId") String grupoId,
-            @QueryParam("calendariosIds") String calendariosIds) throws UnauthorizedUserException
+            @QueryParam("calendariosIds") String calendariosIds) throws UnauthorizedUserException, RegistroNoEncontradoException
     {
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
