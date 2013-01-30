@@ -46,7 +46,7 @@ public class CentroService
     {
         if (!personaDAO.esAdmin(connectedUserId))
         {
-            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
             persona.compruebaAccesoACentro(centroId);
         }
 

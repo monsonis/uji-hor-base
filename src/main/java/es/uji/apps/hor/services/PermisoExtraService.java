@@ -41,10 +41,10 @@ public class PermisoExtraService
     {
         if (!personaDAO.esAdmin(connectedUserId))
         {
-            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
             persona.compruebaAsignacionPermisoEstudioId(estudioId, tipoCargoId);
         }
-        
+
         return permisoExtraDAO.addPermisoExtra(estudioId, personaId, tipoCargoId, connectedUserId);
     }
 }

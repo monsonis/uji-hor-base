@@ -37,7 +37,7 @@ public class AulaService
     {
         if (!personaDAO.esAdmin(connectedUserId))
         {
-            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
             persona.compruebaAccesoAEstudio(estudioId);
         }
 
@@ -51,7 +51,7 @@ public class AulaService
     {
         if (!personaDAO.esAdmin(connectedUserId))
         {
-            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
             persona.compruebaAccesoAEstudio(estudioId);
         }
 
@@ -67,7 +67,7 @@ public class AulaService
 
         if (!personaDAO.esAdmin(connectedUserId))
         {
-            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
             persona.compruebaAccesoAEstudio(aula.getEstudioId());
         }
 
@@ -80,7 +80,7 @@ public class AulaService
     {
         if (!personaDAO.esAdmin(connectedUserId))
         {
-            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
             persona.compruebaAccesoACentro(centroId);
         }
 
@@ -94,7 +94,7 @@ public class AulaService
     {
         if (!personaDAO.esAdmin(connectedUserId))
         {
-            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
             persona.compruebaAccesoACentro(centroId);
         }
 

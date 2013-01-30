@@ -2,7 +2,6 @@ package es.uji.apps.hor.dao;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -49,27 +48,29 @@ public class PersonaDAODatabaseImpl extends BaseDAODatabaseImpl implements Perso
     }
 
     @Override
-    public Persona getPersonaById(Long personaId) throws RegistroNoEncontradoException
+    public Persona getPersonaConTitulacionesYCentrosById(Long personaId)
+            throws RegistroNoEncontradoException
     {
-        Persona persona = new Persona();
+        Persona persona = null;
 
         JPAQuery query = new JPAQuery(entityManager);
 
         QCargoPersonaDTO qCargoPersona = QCargoPersonaDTO.cargoPersonaDTO;
         QPersonaDTO qPersona = QPersonaDTO.personaDTO;
 
-        query.from(qPersona, qCargoPersona).join(qPersona.cargosPersona, qCargoPersona).fetch().where(qPersona.id.eq(personaId));
+        query.from(qPersona, qCargoPersona).join(qPersona.cargosPersona, qCargoPersona).fetch()
+                .where(qPersona.id.eq(personaId));
 
-        if (query.list(qPersona).size() > 0)
+        for (PersonaDTO personaDTO : query.list(qPersona))
         {
-            PersonaDTO personaDTO = query.list(qPersona).get(0);
+            persona = new Persona();
 
             persona.setNombre(personaDTO.getNombre());
             persona.setEmail(personaDTO.getEmail());
             persona.setActividadId(persona.getActividadId());
 
             Map<Long, String> tiposCargo = new HashMap<Long, String>();
-           
+
             for (CargoPersonaDTO cargoPersonaDTO : personaDTO.getCargosPersona())
             {
                 if (persona.getCentroAutorizado() == null)
@@ -97,8 +98,11 @@ public class PersonaDAODatabaseImpl extends BaseDAODatabaseImpl implements Perso
 
                 persona.getCargos().add(cargo);
             }
+            break;
+
         }
-        else
+
+        if (persona == null)
         {
             throw new RegistroNoEncontradoException();
         }

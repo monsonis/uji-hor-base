@@ -59,7 +59,7 @@ public class EventosService
     {
         if (!personaDAO.esAdmin(connectedUserId))
         {
-            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
             persona.compruebaAccesoAEstudio(estudioId);
         }
 
@@ -76,7 +76,7 @@ public class EventosService
 
         if (!personaDAO.esAdmin(connectedUserId))
         {
-            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
             persona.compruebaAccesoAEvento(evento);
         }
 
@@ -97,7 +97,7 @@ public class EventosService
 
         if (!personaDAO.esAdmin(connectedUserId))
         {
-            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
             persona.compruebaAccesoAEvento(evento);
         }
 
@@ -191,7 +191,7 @@ public class EventosService
 
         if (!personaDAO.esAdmin(connectedUserId))
         {
-            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
             persona.compruebaAccesoAEvento(evento);
         }
 
@@ -213,7 +213,7 @@ public class EventosService
 
         if (!personaDAO.esAdmin(connectedUserId))
         {
-            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
             persona.compruebaAccesoAEvento(evento);
         }
 
@@ -236,7 +236,7 @@ public class EventosService
 
         if (!personaDAO.esAdmin(connectedUserId))
         {
-            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
             persona.compruebaAccesoAEvento(evento);
         }
 
@@ -253,7 +253,7 @@ public class EventosService
 
         if (!personaDAO.esAdmin(connectedUserId))
         {
-            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
             persona.compruebaAccesoAEvento(evento);
         }
 
@@ -281,7 +281,7 @@ public class EventosService
     {
         if (!personaDAO.esAdmin(connectedUserId))
         {
-            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
             persona.compruebaAccesoAEstudio(estudioId);
         }
 
@@ -299,7 +299,7 @@ public class EventosService
 
         if (!personaDAO.esAdmin(connectedUserId))
         {
-            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
             persona.compruebaAccesoAEvento(evento);
         }
 
@@ -348,7 +348,7 @@ public class EventosService
     {
         if (!personaDAO.esAdmin(connectedUserId))
         {
-            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
             Centro centro = centroDAO.getCentroByAulaId(aulaId);
             persona.compruebaAccesoACentro(centro.getId());
         }

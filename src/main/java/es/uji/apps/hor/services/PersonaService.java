@@ -17,7 +17,7 @@ public class PersonaService
     @Role({ "ADMIN", "USUARIO" })
     public Persona getPersonaById(Long connectedUserId) throws RegistroNoEncontradoException
     {
-        return personaDAO.getPersonaById(connectedUserId);
+        return personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
     }
 
 }

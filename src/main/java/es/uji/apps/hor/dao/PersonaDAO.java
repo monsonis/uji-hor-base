@@ -7,10 +7,11 @@ import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 public interface PersonaDAO extends BaseDAO
 {
     Persona insertPersona(Persona persona);
-    
-    Persona getPersonaById(Long personaId) throws RegistroNoEncontradoException;
+
+    Persona getPersonaConTitulacionesYCentrosById(Long personaId)
+            throws RegistroNoEncontradoException;
 
     boolean esAdmin(Long personaId);
-    
+
     Persona insertaCargos(Persona persona);
 }

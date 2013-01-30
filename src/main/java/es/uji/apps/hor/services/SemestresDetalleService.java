@@ -41,7 +41,7 @@ public class SemestresDetalleService
     {
         if (!personaDAO.esAdmin(connectedUserId))
         {
-            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
             persona.compruebaAccesoAEstudio(estudioId);
         }
 
