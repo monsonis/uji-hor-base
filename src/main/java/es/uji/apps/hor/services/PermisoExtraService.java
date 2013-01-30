@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import es.uji.apps.hor.dao.PermisoExtraDAO;
 import es.uji.apps.hor.dao.PersonaDAO;
 import es.uji.apps.hor.db.PermisoExtraDTO;
-import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.model.PermisoExtra;
 import es.uji.apps.hor.model.Persona;
 import es.uji.commons.rest.Role;
@@ -51,17 +50,19 @@ public class PermisoExtraService
     }
 
     @Role({ "ADMIN", "USUARIO" })
-    public PermisoExtra getPermisoExtraById(Long permisoExtraId, Long connectedUserId) throws RegistroNoEncontradoException, UnauthorizedUserException
+    public PermisoExtra getPermisoExtraById(Long permisoExtraId, Long connectedUserId)
+            throws RegistroNoEncontradoException, UnauthorizedUserException
     {
         return permisoExtraDAO.getPermisoExtraById(permisoExtraId);
     }
 
     @Role({ "ADMIN", "USUARIO" })
-    public void deletePermiso(PermisoExtra permisoExtra, Long estudioId, Long connectedUserId) throws RegistroNoEncontradoException, UnauthorizedUserException
+    public void deletePermiso(PermisoExtra permisoExtra, Long estudioId, Long connectedUserId)
+            throws RegistroNoEncontradoException, UnauthorizedUserException
     {
         if (!personaDAO.esAdmin(connectedUserId))
         {
-            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
             persona.compruebaAccesoAEstudio(estudioId);
         }
         permisoExtraDAO.delete(PermisoExtraDTO.class, permisoExtra.getId());
