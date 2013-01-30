@@ -16,4 +16,5 @@ public interface CentroDAO extends BaseDAO
 
     Centro insertCentro(Centro centro);
 
+    Centro getCentroByAulaId(Long aulaId) throws RegistroNoEncontradoException;
 }

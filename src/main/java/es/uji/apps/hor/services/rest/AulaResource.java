@@ -102,15 +102,18 @@ public class AulaResource extends CoreBaseService
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> getAulasFiltradasPor(@QueryParam("centroId") String centroId,
             @QueryParam("edificio") String edificio, @QueryParam("tipoAula") String tipoAula,
-            @QueryParam("planta") String planta)
+            @QueryParam("planta") String planta) throws RegistroNoEncontradoException,
+            UnauthorizedUserException
     {
         ParamUtils.checkNotNull(centroId, edificio);
+
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
 
         tipoAula = (tipoAula == null || tipoAula.equals("")) ? null : tipoAula;
         planta = (planta == null || planta.equals("")) ? null : planta;
 
         List<Aula> aulas = consultaAulas.getAulasFiltradasPor(ParamUtils.parseLong(centroId),
-                edificio, tipoAula, planta);
+                edificio, tipoAula, planta, connectedUserId);
 
         return UIEntity.toUI(aulas);
     }

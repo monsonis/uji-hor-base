@@ -78,16 +78,26 @@ public class AulaService
     public List<TipoAula> getTiposAulaByCentroAndEdificio(Long centroId, String edificio,
             Long connectedUserId) throws RegistroNoEncontradoException, UnauthorizedUserException
     {
-        Persona persona = personaDAO.getPersonaById(connectedUserId);
-        persona.compruebaAccesoACentro(centroId);
+        if (!personaDAO.esAdmin(connectedUserId))
+        {
+            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            persona.compruebaAccesoACentro(centroId);
+        }
 
         return aulaDAO.getTiposAulaByCentroAndEdificio(centroId, edificio);
     }
 
+    @Role({ "ADMIN", "USUARIO" })
     public List<Aula> getAulasFiltradasPor(Long centroId, String edificio, String tipoAula,
-            String planta)
+            String planta, Long connectedUserId) throws RegistroNoEncontradoException,
+            UnauthorizedUserException
     {
-        // Falta control acceso
+        if (!personaDAO.esAdmin(connectedUserId))
+        {
+            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            persona.compruebaAccesoACentro(centroId);
+        }
+
         return aulaDAO.getAulasFiltradasPor(centroId, edificio, tipoAula, planta);
     }
 

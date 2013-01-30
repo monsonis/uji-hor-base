@@ -596,9 +596,12 @@ public class CalendarResource extends CoreBaseService
     public List<UIEntity> getEventosDetalleByAula(@QueryParam(AULA_ID_PARAM) String aulaId,
             @QueryParam(CALENDARIOS_IDS_QUERY_PARAM) String calendariosIds,
             @QueryParam(START_DATE_QUERY_PARAM) String startDate,
-            @QueryParam(END_DATE_QUERY_PARAM) String endDate) throws ParseException
+            @QueryParam(END_DATE_QUERY_PARAM) String endDate) throws ParseException,
+            RegistroNoEncontradoException, UnauthorizedUserException
     {
         ParamUtils.checkNotNull(startDate, endDate);
+
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
 
         Date rangoFechaInicio = queryParamDateFormat.parse(startDate);
         Date rangoFechaFin = queryParamDateFormat.parse(endDate);
@@ -628,7 +631,7 @@ public class CalendarResource extends CoreBaseService
         if (calendariosList.size() != 0)
         {
             eventosDetalle = eventosService.getEventosDetallePorAula(ParamUtils.parseLong(aulaId),
-                    calendariosList, rangoFechaInicio, rangoFechaFin);
+                    calendariosList, rangoFechaInicio, rangoFechaFin, connectedUserId);
         }
 
         return eventosDetallePorAulaToUI(eventosDetalle);

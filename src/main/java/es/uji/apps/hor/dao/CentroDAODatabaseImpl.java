@@ -15,6 +15,7 @@ import com.mysema.query.jpa.impl.JPAQuery;
 import es.uji.apps.hor.db.AulaDTO;
 import es.uji.apps.hor.db.CentroDTO;
 import es.uji.apps.hor.db.QAulaDTO;
+import es.uji.apps.hor.db.QAulaPlanificacionDTO;
 import es.uji.apps.hor.db.QCargoPersonaDTO;
 import es.uji.apps.hor.db.QCentroDTO;
 import es.uji.apps.hor.model.AreaEdificio;
@@ -296,6 +297,26 @@ public class CentroDAODatabaseImpl extends BaseDAODatabaseImpl implements Centro
         centroDTO = insert(centroDTO);
 
         return this.creaCentroDesdeCentroDTO(centroDTO);
+    }
+
+    @Override
+    public Centro getCentroByAulaId(Long aulaId) throws RegistroNoEncontradoException
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        QCentroDTO qCentro = QCentroDTO.centroDTO;
+        QAulaDTO qAula = QAulaDTO.aulaDTO;
+        QAulaPlanificacionDTO qAulaPlanificacion = QAulaPlanificacionDTO.aulaPlanificacionDTO;
+
+        List<CentroDTO> listaCentros = query.from(qCentro).join(qCentro.aulas, qAula)
+                .join(qAula.aulasPlanificacions, qAulaPlanificacion).where(qAula.id.eq(aulaId))
+                .distinct().list(qCentro);
+
+        if (listaCentros.size() == 0)
+        {
+            throw new RegistroNoEncontradoException();
+        }
+
+        return creaCentroDesdeCentroDTO(listaCentros.get(0));
     }
 
 }

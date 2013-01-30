@@ -13,11 +13,13 @@ import es.uji.apps.hor.EventoDetalleSinEventoException;
 import es.uji.apps.hor.EventoFueraDeRangoException;
 import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.dao.AulaDAO;
+import es.uji.apps.hor.dao.CentroDAO;
 import es.uji.apps.hor.dao.EventosDAO;
 import es.uji.apps.hor.dao.PersonaDAO;
 import es.uji.apps.hor.dao.RangoHorarioDAO;
 import es.uji.apps.hor.model.Asignatura;
 import es.uji.apps.hor.model.AulaPlanificacion;
+import es.uji.apps.hor.model.Centro;
 import es.uji.apps.hor.model.Evento;
 import es.uji.apps.hor.model.EventoDetalle;
 import es.uji.apps.hor.model.EventoDocencia;
@@ -39,6 +41,9 @@ public class EventosService
 
     @Autowired
     private RangoHorarioDAO rangoHorarioDAO;
+
+    @Autowired
+    private CentroDAO centroDAO;
 
     @Autowired
     public EventosService(EventosDAO eventosDAO, AulaDAO aulaDAO)
@@ -309,9 +314,18 @@ public class EventosService
         }
     }
 
+    @Role({ "ADMIN", "USUARIO" })
     public List<EventoDetalle> getEventosDetallePorAula(Long aulaId, List<Long> calendariosIds,
-            Date rangoFechaInicio, Date rangoFechaFin)
+            Date rangoFechaInicio, Date rangoFechaFin, Long connectedUserId)
+            throws RegistroNoEncontradoException, UnauthorizedUserException
     {
+        if (!personaDAO.esAdmin(connectedUserId))
+        {
+            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            Centro centro = centroDAO.getCentroByAulaId(aulaId);
+            persona.compruebaAccesoACentro(centro.getId());
+        }
+
         return eventosDAO.getEventosDetallePorAula(aulaId, calendariosIds, rangoFechaInicio,
                 rangoFechaFin);
     }
