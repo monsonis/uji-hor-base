@@ -5,13 +5,15 @@ import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import com.sun.jersey.api.core.InjectParam;
 
-import es.uji.apps.hor.model.Persona;
+import es.uji.apps.hor.model.Cargo;
 import es.uji.apps.hor.services.PersonaService;
 import es.uji.commons.rest.CoreBaseService;
+import es.uji.commons.rest.ParamUtils;
 import es.uji.commons.rest.UIEntity;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 import es.uji.commons.sso.AccessManager;
@@ -37,12 +39,14 @@ public class PersonaResource extends CoreBaseService
     @GET
     @Path("cargos")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UIEntity> getCargos() throws UnauthorizedUserException, RegistroNoEncontradoException
+    public List<UIEntity> getCargos(@QueryParam("estudioId") String estudioId) throws UnauthorizedUserException, RegistroNoEncontradoException
     {
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
-        Persona persona = personaService.getPersonaById(connectedUserId);
+        ParamUtils.checkNotNull(estudioId);
+        
+        List<Cargo> cargos = personaService.getCargoByPersonaIdAndEstudioId(connectedUserId, Long.parseLong(estudioId));
 
-        return UIEntity.toUI(persona.getCargos());
+        return UIEntity.toUI(cargos);
     }
 }

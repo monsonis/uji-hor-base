@@ -3,6 +3,7 @@ Ext.define('HOR.store.StoreCargos',
            
  	extend : 'Ext.data.Store',
     model : 'HOR.model.Cargo',
+    autoLoad: false,
     proxy :
     {
         type : 'rest',
@@ -15,6 +16,9 @@ Ext.define('HOR.store.StoreCargos',
             root : 'data'
         },
 
+        extraParams: {
+            estudioId: null
+        },
         writer :
         {
             type : 'json'

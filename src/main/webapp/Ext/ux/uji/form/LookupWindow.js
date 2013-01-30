@@ -230,7 +230,7 @@ Ext.define('Ext.ux.uji.form.LookupWindow',
             },
             listeners :
             {
-                dblclick : function(event)
+                celldblclick : function(grid, td, cellindex, record)
                 {
                     ref.botonSeleccionar.handler.call(ref.botonSeleccionar.scope);
                 }

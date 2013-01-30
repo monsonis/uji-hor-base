@@ -39,6 +39,7 @@ Ext.define('HOR.controller.ControllerPermisos',
 
     init : function()
     {
+        var ref = this;
         this.control(
         {
             'panelPermisos button[action=add-permiso]' :
@@ -72,7 +73,13 @@ Ext.define('HOR.controller.ControllerPermisos',
                     this.guardarPermiso();
                 }
             },
-
+            
+            'ventanaNewPermiso combo[name=comboTitulacion]': {
+                select: function(combo, rec) {
+                    ref.getComboCargo().getStore().getProxy().extraParams['estudioId'] = rec[0].get("id");
+                }
+            }
+ 
         });
     },
 

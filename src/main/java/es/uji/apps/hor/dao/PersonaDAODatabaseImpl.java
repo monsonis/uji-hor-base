@@ -61,7 +61,7 @@ public class PersonaDAODatabaseImpl extends BaseDAODatabaseImpl implements Perso
         QCargoPersonaDTO qCargoPersona = QCargoPersonaDTO.cargoPersonaDTO;
         QPersonaDTO qPersona = QPersonaDTO.personaDTO;
 
-        query.from(qPersona, qCargoPersona).join(qPersona.cargosPersona, qCargoPersona).fetch()
+        query.from(qPersona).innerJoin(qPersona.cargosPersona, qCargoPersona).fetch()
                 .where(qPersona.id.eq(personaId));
 
         for (PersonaDTO personaDTO : query.list(qPersona))
