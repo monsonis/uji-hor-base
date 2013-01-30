@@ -1,12 +1,12 @@
-Ext.define('HOR.store.StorePermisos',
-{
-    extend : 'Ext.data.Store',
-    model : 'HOR.model.Permiso',
-    autoLoad: true,
+Ext.define('HOR.store.StoreCargos',
+{   
+           
+ 	extend : 'Ext.data.Store',
+    model : 'HOR.model.Cargo',
     proxy :
     {
         type : 'rest',
-        url : '/hor/rest/permisoExtra',
+        url : '/hor/rest/persona/cargos',
 
         reader :
         {
@@ -19,6 +19,7 @@ Ext.define('HOR.store.StorePermisos',
         {
             type : 'json'
         }
-    }
+    }	 
+	    
 
 });

@@ -4,15 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mysema.query.jpa.impl.JPAQuery;
 
+import es.uji.apps.hor.db.EstudioDTO;
 import es.uji.apps.hor.db.PermisoExtraDTO;
+import es.uji.apps.hor.db.PersonaDTO;
 import es.uji.apps.hor.db.QCargoPersonaDTO;
 import es.uji.apps.hor.db.QEstudioDTO;
 import es.uji.apps.hor.db.QPermisoExtraDTO;
 import es.uji.apps.hor.db.QPersonaDTO;
 import es.uji.apps.hor.db.QTipoCargoDTO;
+import es.uji.apps.hor.db.TipoCargoDTO;
 import es.uji.apps.hor.model.Cargo;
 import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.model.PermisoExtra;
@@ -70,7 +74,7 @@ public class PermisoExtraDAODatabaseImpl extends BaseDAODatabaseImpl implements 
     }
 
     @Override
-    public List<PermisoExtra> getPermisosExtraByPersonaId(Long userId)
+    public List<PermisoExtra> getPermisosExtraByPersonaId(Long connectedUserId)
     {
         JPAQuery query = new JPAQuery(entityManager);
 
@@ -80,11 +84,10 @@ public class PermisoExtraDAODatabaseImpl extends BaseDAODatabaseImpl implements 
         QTipoCargoDTO qTipoCargo = QTipoCargoDTO.tipoCargoDTO;
         QCargoPersonaDTO qCargoPersona = QCargoPersonaDTO.cargoPersonaDTO;
 
-        query.from(qPermisoExtra, qEstudio, qPersona, qTipoCargo, qCargoPersona)
-                .join(qPermisoExtra.estudio, qEstudio).fetch()
-                .join(qPermisoExtra.persona, qPersona).fetch()
-                .join(qPermisoExtra.tipoCargo, qTipoCargo).fetch()
-                .where(qCargoPersona.persona.id.eq(userId));
+        query.from(qPermisoExtra, qCargoPersona).innerJoin(qPermisoExtra.estudio, qEstudio).fetch()
+                .innerJoin(qPermisoExtra.persona, qPersona).fetch()
+                .innerJoin(qPermisoExtra.tipoCargo, qTipoCargo).fetch()
+                .where(qPermisoExtra.tipoCargo.id.eq(qCargoPersona.cargo.id).and(qPermisoExtra.estudio.id.eq(qCargoPersona.estudio.id).and(qCargoPersona.persona.id.eq(connectedUserId))));
 
         List<PermisoExtra> listaPermisosExtra = new ArrayList<PermisoExtra>();
         for (PermisoExtraDTO permisoExtraDTO : query.list(qPermisoExtra))
@@ -94,5 +97,27 @@ public class PermisoExtraDAODatabaseImpl extends BaseDAODatabaseImpl implements 
 
         return listaPermisosExtra;
 
+    }
+
+    @Override
+    @Transactional
+    public PermisoExtra addPermisoExtra(Long estudioId, Long personaId, Long tipoCargoId,
+            Long connectedUserId)
+    {
+        PermisoExtraDTO permisoExtraDTO = new PermisoExtraDTO();
+        PersonaDTO personaDTO = new PersonaDTO();
+        EstudioDTO estudioDTO = new EstudioDTO();
+        TipoCargoDTO tipoCargoDTO = new TipoCargoDTO();
+
+        personaDTO.setId(personaId);
+        estudioDTO.setId(estudioId);
+        tipoCargoDTO.setId(tipoCargoId);
+
+        permisoExtraDTO.setPersona(personaDTO);
+        permisoExtraDTO.setEstudio(estudioDTO);
+        permisoExtraDTO.setTipoCargo(tipoCargoDTO);
+
+        permisoExtraDTO = insert(permisoExtraDTO);
+        return conviertePermisoExtraDTOAPermisoExtra(permisoExtraDTO);
     }
 }

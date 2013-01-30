@@ -9,4 +9,6 @@ public interface PermisoExtraDAO extends BaseDAO
 {
     List<PermisoExtra> getPermisosExtra();
     List<PermisoExtra> getPermisosExtraByPersonaId(Long userId);
+    PermisoExtra addPermisoExtra(Long estudioId, Long personaId, Long tipoCargoId,
+            Long connectedUserId);
 }

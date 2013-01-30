@@ -1,11 +1,10 @@
 Ext.define('HOR.view.permisos.GridPermisos',
 {
     extend : 'Ext.grid.Panel',
-    requires : [],
+    selType: 'checkboxmodel',
     store : 'StorePermisos',
     alias : 'widget.gridPermisos',
 
-    disableSelection : true,
     sortableColumns : false,
 
     columns : [

@@ -1,7 +1,7 @@
 Ext.define('HOR.view.permisos.PanelPermisos', {
 	extend : 'Ext.panel.Panel',
 	title : 'Gestió de Permisos',
-	requires : [ 'HOR.view.permisos.GridPermisos' ],
+	requires : [ 'HOR.view.permisos.GridPermisos', 'HOR.view.permisos.VentanaNewPermiso' ],
 	alias : 'widget.panelPermisos',
 	closable : true,
 	layout : {
@@ -11,8 +11,8 @@ Ext.define('HOR.view.permisos.PanelPermisos', {
 	},
 
 	tbar: [
-	       { xtype: 'button', text: 'Afegir', name: 'anyadir-permiso' },
-	       { xtype: 'button', text: 'Esborrar', name: 'borrar-permiso' }
+	       { xtype: 'button', text: 'Afegir', action: 'add-permiso' },
+	       { xtype: 'button', text: 'Esborrar', action: 'borrar-permiso' }
 	     ],
 
 	items : [ {

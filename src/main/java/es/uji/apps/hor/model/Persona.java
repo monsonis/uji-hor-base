@@ -180,4 +180,23 @@ public class Persona
         this.cargos = cargos;
     }
 
+    public void compruebaAsignacionPermisoEstudioId(Long estudioId, Long tipoCargoId) throws UnauthorizedUserException
+    {
+        List<Estudio>  listaEstudios = getEstudiosAutorizadosConTipoCargo(tipoCargoId);
+        
+        for (Estudio estudio: listaEstudios) {
+            if (estudio.getId() == estudioId) {
+                return;
+            }
+        }
+        
+        throw new UnauthorizedUserException();
+    }
+
+    private List<Estudio> getEstudiosAutorizadosConTipoCargo(Long tipoCargoId)
+    {
+        // TODO: Comprobar los cargos de los estudios
+        return estudiosAutorizados;
+    }
+
 }
