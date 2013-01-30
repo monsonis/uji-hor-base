@@ -31,8 +31,11 @@ public class GruposService
     public List<Grupo> getGrupos(Long semestreId, Long cursoId, Long estudioId, Long connectedUserId)
             throws UnauthorizedUserException, RegistroNoEncontradoException
     {
-        Persona persona = personaDAO.getPersonaById(connectedUserId);
-        persona.compruebaAccesoAEstudio(estudioId);
+        if (!personaDAO.esAdmin(connectedUserId))
+        {
+            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            persona.compruebaAccesoAEstudio(estudioId);
+        }
 
         return gruposDAO.getGrupos(semestreId, cursoId, estudioId);
     }

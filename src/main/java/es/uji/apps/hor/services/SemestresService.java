@@ -31,8 +31,11 @@ public class SemestresService
     public List<Semestre> getSemestres(Long cursoId, Long estudioId, Long connectedUserId)
             throws UnauthorizedUserException, RegistroNoEncontradoException
     {
-        Persona persona = personaDAO.getPersonaById(connectedUserId);
-        persona.compruebaAccesoAEstudio(estudioId);
+        if (!personaDAO.esAdmin(connectedUserId))
+        {
+            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            persona.compruebaAccesoAEstudio(estudioId);
+        }
 
         return semestresDAO.getSemestres(cursoId, estudioId);
     }

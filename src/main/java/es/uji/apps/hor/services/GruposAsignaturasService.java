@@ -32,8 +32,11 @@ public class GruposAsignaturasService
             Long semestreId, String grupoId, List<Long> calendariosIds, Long connectedUserId)
             throws UnauthorizedUserException, RegistroNoEncontradoException
     {
-        Persona persona = personaDAO.getPersonaById(connectedUserId);
-        persona.compruebaAccesoAEstudio(estudioId);
+        if (!personaDAO.esAdmin(connectedUserId))
+        {
+            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            persona.compruebaAccesoAEstudio(estudioId);
+        }
 
         return grupoAsignaturaDAO.getGruposAsignaturasSinAsignar(estudioId, cursoId, semestreId,
                 grupoId, calendariosIds);
@@ -44,8 +47,11 @@ public class GruposAsignaturasService
             Long estudioId, Long connectedUserId) throws RegistroNoEncontradoException,
             UnauthorizedUserException
     {
-        Persona persona = personaDAO.getPersonaById(connectedUserId);
-        persona.compruebaAccesoAEstudio(estudioId);
+        if (!personaDAO.esAdmin(connectedUserId))
+        {
+            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            persona.compruebaAccesoAEstudio(estudioId);
+        }
 
         GrupoAsignatura grupoAsignatura = grupoAsignaturaDAO.getGrupoAsignaturaById(
                 grupoAsignaturaId, estudioId);

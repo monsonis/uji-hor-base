@@ -31,8 +31,11 @@ public class CursosService
     public List<Curso> getCursos(Long estudioId, Long connectedUserId)
             throws UnauthorizedUserException, RegistroNoEncontradoException
     {
-        Persona persona = personaDAO.getPersonaById(connectedUserId);
-        persona.compruebaAccesoAEstudio(estudioId);
+        if (!personaDAO.esAdmin(connectedUserId))
+        {
+            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            persona.compruebaAccesoAEstudio(estudioId);
+        }
 
         return cursosDAO.getCursos(estudioId);
     }

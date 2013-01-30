@@ -36,10 +36,14 @@ public class SemestresDetalleService
 
     @Role({ "ADMIN", "USUARIO" })
     public List<SemestreDetalle> getSemestresDetallesPorEstudioIdYSemestreId(Long estudioId,
-            Long semestreId, Long connectedUserId) throws UnauthorizedUserException, RegistroNoEncontradoException
+            Long semestreId, Long connectedUserId) throws UnauthorizedUserException,
+            RegistroNoEncontradoException
     {
-        Persona persona = personaDAO.getPersonaById(connectedUserId);
-        persona.compruebaAccesoAEstudio(estudioId);
+        if (!personaDAO.esAdmin(connectedUserId))
+        {
+            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            persona.compruebaAccesoAEstudio(estudioId);
+        }
 
         return semestresDetalleDAO.getSemestresDetallesPorEstudioIdYSemestreId(estudioId,
                 semestreId);
