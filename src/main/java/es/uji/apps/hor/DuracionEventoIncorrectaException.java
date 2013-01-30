@@ -10,6 +10,6 @@ public class DuracionEventoIncorrectaException extends GeneralHORException
 
     public DuracionEventoIncorrectaException()
     {
-        super("Les hores de la clase no són correctes");
+        super("Les hores de la classe no són correctes");
     }
 }
