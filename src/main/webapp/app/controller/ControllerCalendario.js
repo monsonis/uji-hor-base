@@ -21,7 +21,7 @@ Ext.define('HOR.controller.ControllerCalendario',
         ref : 'panelCalendarioDetalle'
     },
     {
-        selector : 'selectorCalendarios',
+        selector : 'panelHorarios selectorCalendarios',
         ref : 'selectorCalendarios'
     },
     {
@@ -58,7 +58,7 @@ Ext.define('HOR.controller.ControllerCalendario',
                 refreshCalendar : this.refreshCalendar,
                 render : this.onPanelCalendarioRendered
             },
-            'selectorCalendarios checkbox' :
+            'panelHorarios selectorCalendarios checkbox' :
             {
                 change : this.refreshCalendar
             },

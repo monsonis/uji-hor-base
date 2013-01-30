@@ -26,18 +26,32 @@ Ext.define('HOR.controller.ControllerCalendarioAulas',
         {
             'selectorAulas button' :
             {
-                click : this.refreshEventsCalendar
+                click : this.refreshEventsCalendarFromSelectorAulas
             },
+            'panelCalendarioAulas selectorCalendarios checkbox' :
+            {
+                change : this.refreshEventsCalendarFromSelectorCalendarios
+            }
         });
     },
 
-    refreshEventsCalendar : function(button)
+    refreshEventsCalendar : function(aulaId, aulaText)
     {
-        var aulaId = button.aulaId;
+        //var aulaId = button.aulaId;
         var semestre = this.getFiltroAulas().down('combobox[name=semestre]').getValue();
         var calendarios = this.getSelectorCalendarios().getCalendarsSelected();     
 
         var panelCalendario = this.getPanelCalendarioPorAula();
+        
+        if (aulaText)
+        {
+            panelTitulo = 'Ocupació Aula ' +  aulaText + " Semestre " +  semestre;
+        }
+        else
+        {
+            panelTitulo = panelCalendario.title;
+        } 
+          
         var panelPadre = panelCalendario.up('panel');
 
         Ext.Array.each(Ext.ComponentQuery.query('panelCalendarioPorAula'), function(panel)
@@ -70,7 +84,7 @@ Ext.define('HOR.controller.ControllerCalendarioAulas',
         panelPadre.add(
         {
             xtype : 'panelCalendarioPorAula',
-            title : 'Ocupació Aula ' +  button.text + " Semestre " +  semestre,
+            title : panelTitulo,
             eventStore : eventos,
             showMultiDayView : true,
             viewConfig :
@@ -87,6 +101,21 @@ Ext.define('HOR.controller.ControllerCalendarioAulas',
                 }
             }
         });
+    },
+    
+    refreshEventsCalendarFromSelectorAulas : function(button)
+    {
+        this.refreshEventsCalendar(button.aulaId, button.text);
+    },
+    
+    refreshEventsCalendarFromSelectorCalendarios : function()
+    {
+        var store = this.getPanelCalendarioPorAula().store;
+        if (store.getProxy().extraParams['aulaId'] != null)
+        {
+            var aulaId = store.getProxy().extraParams['aulaId'];
+            this.refreshEventsCalendar(aulaId);
+        }
     },
 
     getInicioSemestre : function()

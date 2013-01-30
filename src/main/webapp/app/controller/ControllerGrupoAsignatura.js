@@ -13,7 +13,7 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
         ref : 'filtroGrupos'
     },
     {
-        selector : 'selectorCalendarios',
+        selector : 'panelHorarios selectorCalendarios',
         ref : 'selectorCalendarios'
     },
     {
@@ -39,7 +39,7 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
             {
                 select : this.updateAsignaturasSinAsignar
             },
-            'selectorCalendarios checkbox' :
+            'panelHorarios selectorCalendarios checkbox' :
             {
                 change : this.updateAsignaturasSinAsignar
             },
