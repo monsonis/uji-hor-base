@@ -728,13 +728,6 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             EventoDetalle eventoDetalle = creaEventoDetalleDesdeItemDetalleDTO(itemDetalleDTO);
             eventoDetalle.setEvento(creaEventoDesdeItemDTO(itemDetalleDTO.getItem()));
 
-            String tituloEvento = "";
-            for (ItemsAsignaturaDTO itemAsignaturaDTO : itemDetalleDTO.getItem().getAsignaturas())
-            {
-                tituloEvento = tituloEvento + " " + itemAsignaturaDTO.getAsignaturaId();
-            }
-            eventoDetalle.getEvento().setTitulo(tituloEvento.substring(1));
-
             listaEventosDetalle.add(eventoDetalle);
         }
         return listaEventosDetalle;

@@ -91,6 +91,19 @@ public class EventoDetalle
         }
     }
 
+    public String getDescripcionConGrupoYComunes()
+    {
+        Evento evento = getEvento();
+        String tituloEvento = "";
+        for (Asignatura asignatura : evento.getAsignaturas())
+        {
+            tituloEvento = tituloEvento + " " + asignatura.getId();
+        }
+        tituloEvento += " " + evento.getGrupoId() + " " + evento.getCalendario().getLetraId()
+                + evento.getSubgrupoId();
+        return tituloEvento;
+    }
+
     public void setDescripcion(String descripcion)
     {
         this.descripcion = descripcion;

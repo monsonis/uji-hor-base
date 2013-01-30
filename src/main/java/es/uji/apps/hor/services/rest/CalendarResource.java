@@ -647,7 +647,7 @@ public class CalendarResource extends CoreBaseService
         {
             UIEntity eventoUI = new UIEntity();
             eventoUI.put("id", eventoDetalle.getId());
-            eventoUI.put("title", eventoDetalle.getEvento().getTitulo());
+            eventoUI.put("title", eventoDetalle.getDescripcionConGrupoYComunes());
             eventoUI.put("cid", eventoDetalle.getEvento().getCalendario().getId());
             eventoUI.put("start", uIEntitydateFormat.format(eventoDetalle.getInicio()));
             eventoUI.put("end", uIEntitydateFormat.format(eventoDetalle.getFin()));
