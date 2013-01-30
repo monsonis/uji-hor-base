@@ -34,6 +34,7 @@ Ext.define('HOR.controller.ControllerCalendarioAulas',
     refreshEventsCalendar : function(button)
     {
         var aulaId = button.aulaId;
+        var semestre = this.getFiltroAulas().down('combobox[name=semestre]').getValue();
         var calendarios = this.getSelectorCalendarios().getCalendarsSelected();
 
         var panelCalendario = this.getPanelCalendarioPorAula();
@@ -62,6 +63,7 @@ Ext.define('HOR.controller.ControllerCalendarioAulas',
         var params =
         {
             aulaId : aulaId,
+            semestreId : semestre,
             calendariosIds : calendarios,
             startDate : inicio,
             endDate : fin

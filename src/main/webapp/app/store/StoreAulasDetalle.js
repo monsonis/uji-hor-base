@@ -17,6 +17,7 @@ Ext.define('HOR.store.StoreAulasDetalle',
         extraParams :
         {
             aulaId : null,
+            semestreId : null,
             calendariosIds : null
         },
 

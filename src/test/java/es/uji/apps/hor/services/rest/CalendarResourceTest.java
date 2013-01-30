@@ -341,6 +341,7 @@ public class CalendarResourceTest extends AbstractCalendarResourceTest
 
         MultivaluedMap<String, String> params = new StringKeyStringValueIgnoreCaseMultivaluedMap();
         params.putSingle("aulaId", String.valueOf(aulaId));
+        params.putSingle("semestreId", String.valueOf(semestreId));
         params.putSingle("startDate", "2012-10-01");
         params.putSingle("endDate", "2012-10-31");
         params.putSingle("calendariosIds", calendariosIds);

@@ -57,8 +57,11 @@ public class EventosService
             Long semestreId, String grupoId, List<Long> calendariosIds, Long connectedUserId)
             throws UnauthorizedUserException, RegistroNoEncontradoException
     {
-        Persona persona = personaDAO.getPersonaById(connectedUserId);
-        persona.compruebaAccesoAEstudio(estudioId);
+        if (!personaDAO.esAdmin(connectedUserId))
+        {
+            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            persona.compruebaAccesoAEstudio(estudioId);
+        }
 
         return eventosDAO.getEventosSemanaGenerica(estudioId, cursoId, semestreId, grupoId,
                 calendariosIds);
@@ -71,8 +74,11 @@ public class EventosService
     {
         Evento evento = eventosDAO.getEventoById(eventoId);
 
-        Persona persona = personaDAO.getPersonaById(connectedUserId);
-        persona.compruebaAccesoAEvento(evento);
+        if (!personaDAO.esAdmin(connectedUserId))
+        {
+            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            persona.compruebaAccesoAEvento(evento);
+        }
 
         evento.setFechaInicioYFin(inicio, fin);
 
@@ -89,8 +95,11 @@ public class EventosService
     {
         Evento evento = eventosDAO.getEventoById(eventoId);
 
-        Persona persona = personaDAO.getPersonaById(connectedUserId);
-        persona.compruebaAccesoAEvento(evento);
+        if (!personaDAO.esAdmin(connectedUserId))
+        {
+            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            persona.compruebaAccesoAEvento(evento);
+        }
 
         for (EventoDetalle detalle : evento.getEventosDetalle())
         {
@@ -180,8 +189,11 @@ public class EventosService
     {
         Evento evento = eventosDAO.getEventoById(eventoId);
 
-        Persona persona = personaDAO.getPersonaById(connectedUserId);
-        persona.compruebaAccesoAEvento(evento);
+        if (!personaDAO.esAdmin(connectedUserId))
+        {
+            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            persona.compruebaAccesoAEvento(evento);
+        }
 
         Evento nuevoEvento = evento.divide();
 
@@ -199,8 +211,11 @@ public class EventosService
 
         Evento evento = eventosDAO.getEventoById(eventoId);
 
-        Persona persona = personaDAO.getPersonaById(connectedUserId);
-        persona.compruebaAccesoAEvento(evento);
+        if (!personaDAO.esAdmin(connectedUserId))
+        {
+            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            persona.compruebaAccesoAEvento(evento);
+        }
 
         evento.setFechaInicioYFin(inicio, fin);
         evento.setDesdeElDia(desdeElDia);
@@ -219,8 +234,11 @@ public class EventosService
     {
         Evento evento = eventosDAO.getEventoById(eventoId);
 
-        Persona persona = personaDAO.getPersonaById(connectedUserId);
-        persona.compruebaAccesoAEvento(evento);
+        if (!personaDAO.esAdmin(connectedUserId))
+        {
+            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            persona.compruebaAccesoAEvento(evento);
+        }
 
         return eventosDAO.getDiasDocenciaDeUnEventoByEventoId(eventoId);
     }
@@ -233,8 +251,11 @@ public class EventosService
     {
         Evento evento = eventosDAO.getEventoById(eventoId);
 
-        Persona persona = personaDAO.getPersonaById(connectedUserId);
-        persona.compruebaAccesoAEvento(evento);
+        if (!personaDAO.esAdmin(connectedUserId))
+        {
+            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            persona.compruebaAccesoAEvento(evento);
+        }
 
         evento.setDetalleManual(true);
         evento.setFechaInicioYFin(inicio, fin);
@@ -258,8 +279,11 @@ public class EventosService
             Date rangoFechaFin, Long connectedUserId) throws UnauthorizedUserException,
             RegistroNoEncontradoException
     {
-        Persona persona = personaDAO.getPersonaById(connectedUserId);
-        persona.compruebaAccesoAEstudio(estudioId);
+        if (!personaDAO.esAdmin(connectedUserId))
+        {
+            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            persona.compruebaAccesoAEstudio(estudioId);
+        }
 
         return eventosDAO.getEventosDetalle(estudioId, cursoId, semestreId, grupoId,
                 calendariosIds, rangoFechaInicio, rangoFechaFin);
@@ -273,8 +297,11 @@ public class EventosService
 
         Evento evento = eventosDAO.getEventoById(eventoId);
 
-        Persona persona = personaDAO.getPersonaById(connectedUserId);
-        persona.compruebaAccesoAEvento(evento);
+        if (!personaDAO.esAdmin(connectedUserId))
+        {
+            Persona persona = personaDAO.getPersonaById(connectedUserId);
+            persona.compruebaAccesoAEvento(evento);
+        }
 
         AulaPlanificacion aula = null;
 
@@ -315,9 +342,9 @@ public class EventosService
     }
 
     @Role({ "ADMIN", "USUARIO" })
-    public List<EventoDetalle> getEventosDetallePorAula(Long aulaId, List<Long> calendariosIds,
-            Date rangoFechaInicio, Date rangoFechaFin, Long connectedUserId)
-            throws RegistroNoEncontradoException, UnauthorizedUserException
+    public List<EventoDetalle> getEventosDetallePorAula(Long aulaId, Long semestreId,
+            List<Long> calendariosIds, Date rangoFechaInicio, Date rangoFechaFin,
+            Long connectedUserId) throws RegistroNoEncontradoException, UnauthorizedUserException
     {
         if (!personaDAO.esAdmin(connectedUserId))
         {
@@ -326,7 +353,7 @@ public class EventosService
             persona.compruebaAccesoACentro(centro.getId());
         }
 
-        return eventosDAO.getEventosDetallePorAula(aulaId, calendariosIds, rangoFechaInicio,
-                rangoFechaFin);
+        return eventosDAO.getEventosDetallePorAula(aulaId, semestreId, calendariosIds,
+                rangoFechaInicio, rangoFechaFin);
     }
 }

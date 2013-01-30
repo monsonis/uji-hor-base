@@ -698,8 +698,8 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
     }
 
     @Override
-    public List<EventoDetalle> getEventosDetallePorAula(Long aulaId, List<Long> calendariosIds,
-            Date rangoFechaInicio, Date rangoFechaFin)
+    public List<EventoDetalle> getEventosDetallePorAula(Long aulaId, Long semestreId,
+            List<Long> calendariosIds, Date rangoFechaInicio, Date rangoFechaFin)
     {
         JPAQuery query = new JPAQuery(entityManager);
         List<String> tiposCalendarios = TipoSubgrupo.getTiposSubgrupos(calendariosIds);
@@ -716,7 +716,8 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
                 .join(item.itemsDetalles, itemsDetalle)
                 .join(item.aulaPlanificacion, aulaPlanificacion)
                 .join(aulaPlanificacion.aula, aula)
-                .where(aula.id.eq(aulaId).and(itemsDetalle.inicio.goe(rangoFechaInicio))
+                .where(aula.id.eq(aulaId).and(aulaPlanificacion.semestreId.eq(semestreId))
+                        .and(itemsDetalle.inicio.goe(rangoFechaInicio))
                         .and(itemsDetalle.fin.loe(rangoFechaFin)).and(item.diaSemana.isNotNull())
                         .and(item.tipoSubgrupoId.in(tiposCalendarios))).list(itemsDetalle);
 

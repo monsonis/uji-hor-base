@@ -55,6 +55,6 @@ public interface EventosDAO extends BaseDAO
 
     void desplanificaEvento(Evento evento);
 
-    List<EventoDetalle> getEventosDetallePorAula(Long aulaId, List<Long> calendariosIds,
-            Date rangoFechaInicio, Date rangoFechaFin);
+    List<EventoDetalle> getEventosDetallePorAula(Long aulaId, Long semestreId,
+            List<Long> calendariosIds, Date rangoFechaInicio, Date rangoFechaFin);
 }
