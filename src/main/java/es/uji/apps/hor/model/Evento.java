@@ -11,7 +11,9 @@ import org.springframework.stereotype.Component;
 
 import es.uji.apps.hor.AulaNoAsignadaAEstudioDelEventoException;
 import es.uji.apps.hor.DuracionEventoIncorrectaException;
+import es.uji.apps.hor.EventoFueraDeRangoException;
 import es.uji.apps.hor.EventoNoDivisibleException;
+import es.uji.apps.hor.RangoHorarioFueradeLimites;
 
 @Component
 public class Evento
@@ -519,6 +521,23 @@ public class Evento
 
         comunes = comunes.substring(2);
         return comunes;
+    }
+
+    public void compruebaDentroDeLosRangosHorarios(List<RangoHorario> rangosHorarios)
+            throws EventoFueraDeRangoException
+    {
+        for (RangoHorario rangoHorario : rangosHorarios)
+        {
+            try
+            {
+                rangoHorario.compruebaEventoDentroDeRango(this);
+            }
+            catch (RangoHorarioFueradeLimites e)
+            {
+                throw new EventoFueraDeRangoException();
+            }
+        }
+
     }
 
 }

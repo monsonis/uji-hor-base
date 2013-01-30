@@ -12,7 +12,6 @@ import es.uji.apps.hor.DuracionEventoIncorrectaException;
 import es.uji.apps.hor.EventoDetalleSinEventoException;
 import es.uji.apps.hor.EventoFueraDeRangoException;
 import es.uji.apps.hor.EventoNoDivisibleException;
-import es.uji.apps.hor.RangoHorarioFueradeLimites;
 import es.uji.apps.hor.dao.AulaDAO;
 import es.uji.apps.hor.dao.EventosDAO;
 import es.uji.apps.hor.dao.PersonaDAO;
@@ -73,17 +72,7 @@ public class EventosService
         evento.setFechaInicioYFin(inicio, fin);
 
         List<RangoHorario> rangosHorarios = rangoHorarioDAO.getRangosHorariosDelEvento(evento);
-        for (RangoHorario rangoHorario : rangosHorarios)
-        {
-            try
-            {
-                rangoHorario.compruebaEventoDentroDeRango(evento);
-            }
-            catch (RangoHorarioFueradeLimites e)
-            {
-                throw new EventoFueraDeRangoException();
-            }
-        }
+        evento.compruebaDentroDeLosRangosHorarios(rangosHorarios);
 
         eventosDAO.updateHorasEventoYSusDetalles(evento);
         return evento;
