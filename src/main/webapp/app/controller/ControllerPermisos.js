@@ -106,7 +106,7 @@ Ext.define('HOR.controller.ControllerPermisos',
                 personaId : personaId,
                 persona : comboPersona.getRawValue(),
                 estudioId : estudioId,
-                cargo : comboTitulacion.getRawValue(),
+                estudio : comboTitulacion.getRawValue(),
                 tipoCargo : comboCargo.getRawValue(),
                 tipoCargoId : tipoCargoId
             }, "HOR.model.Permiso");

@@ -46,7 +46,7 @@ Ext.define('HOR.view.permisos.VentanaNewPermiso',
                     nombre : 'Maria Gomez'
                 },
                 {
-                    id : 19272,
+                    id : "17292",
                     nombre : 'Javier Muñoz'
                 },
                 {
