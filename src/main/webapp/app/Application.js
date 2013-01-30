@@ -24,6 +24,7 @@ Ext.require('Ext.ux.TabCloseMenu');
 Ext.require('Ext.ux.uji.TabPanel');
 Ext.require('Ext.ux.uji.form.LookupComboBox');
 Ext.require('Ext.ux.uji.form.LookupWindow');
+Ext.require('Ext.ux.uji.form.model.Lookup');
 Ext.require('Ext.ux.uji.ApplicationViewport');
 Ext.require('Ext.form.field.Trigger');
 Ext.require('Ext.form.FieldSet');

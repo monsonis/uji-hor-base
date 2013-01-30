@@ -1,6 +1,8 @@
 package es.uji.apps.hor.dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import es.uji.apps.hor.model.Centro;
 import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.model.Persona;
 import es.uji.commons.db.BaseDAODatabaseImpl;
+import es.uji.commons.model.lookup.LookupItem;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 import es.uji.commons.sso.dao.ApaDAO;
 
@@ -170,4 +173,26 @@ public class PersonaDAODatabaseImpl extends BaseDAODatabaseImpl implements Perso
         return persona;
     }
 
+    @Override
+    public List<LookupItem> search(String cadena)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        QPersonaDTO qPersona = QPersonaDTO.personaDTO;
+
+        List<LookupItem> result = new ArrayList<LookupItem>();
+        if (cadena != null && !cadena.isEmpty())
+        {
+            query.from(qPersona).where(
+                    qPersona.nombre.lower().like("%" + cadena.toLowerCase() + "%"));
+            List<PersonaDTO> listaPersonas = query.list(qPersona);
+            for (PersonaDTO personaDTO : listaPersonas)
+            {
+                LookupItem lookupItem = new LookupItem();
+                lookupItem.setId(String.valueOf(personaDTO.getId()));
+                lookupItem.setNombre(personaDTO.getNombre());
+                result.add(lookupItem);
+            }
+        }
+        return result;
+    }
 }

@@ -204,19 +204,18 @@ Ext.define('Ext.ux.uji.form.LookupWindow',
                 proxy :
                 {
                     type : 'ajax',
-                    url : '/' + ref.appPrefix + '/rest/lookup',
+                    url : '/' + ref.appPrefix + '/rest/lookup/json',
 
                     reader :
                     {
                         type : 'json',
                         root : 'data'
-                    }                },
+                    }
+                },
                 listeners :
                 {
                     load : function()
                     {
-                        console.debug(ref.gridBusqueda.store.data.length);
-                        
                         if (ref.gridBusqueda.store.data.length === 0)
                         {
                             Ext.Msg.alert("Aviso", "La búsqueda realitzada no ha produït cap resultat");

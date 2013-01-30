@@ -26,13 +26,15 @@ Ext.define('HOR.view.permisos.VentanaNewPermiso',
     items : [
     {
         xtype : 'form',
-        name: 'formNewPermiso',
+        name : 'formNewPermiso',
         padding : 10,
         items : [
         {
             fieldLabel : 'Sel·lecciona la persona',
-            xtype : 'combo',
-            name: 'comboPersona',
+            xtype : 'lookupCombobox',
+            appPrefix : 'hor',
+            bean: 'persona',
+            name : 'comboPersona',
             padding : 20,
             fieldLabel : 'Persona',
             labelWidth : 75,
@@ -52,17 +54,17 @@ Ext.define('HOR.view.permisos.VentanaNewPermiso',
                 {
                     id : "831",
                     nombre : 'David Rubert'
-                }]
+                } ]
             },
             editable : false,
-            allowBlank: false,
+            allowBlank : false,
             displayField : 'nombre',
             valueField : 'id',
             anchor : '100%'
         },
         {
             xtype : 'combo',
-            name: 'comboTitulacion',
+            name : 'comboTitulacion',
             fieldLabel : 'Sel·lecciona la titulació',
             padding : '0 20 20 20',
             fieldLabel : 'Titulació',
@@ -71,13 +73,13 @@ Ext.define('HOR.view.permisos.VentanaNewPermiso',
             editable : false,
             displayField : 'nombre',
             valueField : 'id',
-            allowBlank: false,
+            allowBlank : false,
             anchor : '100%'
         },
 
         {
             xtype : 'combo',
-            name: 'comboCargo',
+            name : 'comboCargo',
             fieldLabel : 'Sel·lecciona el càrrec',
             padding : '0 20 20 20',
             fieldLabel : 'Càrrec',
@@ -86,7 +88,7 @@ Ext.define('HOR.view.permisos.VentanaNewPermiso',
             editable : false,
             displayField : 'nombre',
             valueField : 'id',
-            allowBlank: false,
+            allowBlank : false,
             anchor : '100%'
         } ]
     } ]
