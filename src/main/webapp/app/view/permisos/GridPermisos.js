@@ -1,7 +1,9 @@
 Ext.define('HOR.view.permisos.GridPermisos',
 {
     extend : 'Ext.grid.Panel',
-    selType: 'checkboxmodel',
+    selType : 'checkboxmodel',
+    multiSelect: true,
+    
     store : 'StorePermisos',
     alias : 'widget.gridPermisos',
 
@@ -10,7 +12,7 @@ Ext.define('HOR.view.permisos.GridPermisos',
     columns : [
     {
         text : 'id',
-        hidden: true,
+        hidden : true,
         dataIndex : 'id',
         menuDisabled : true,
         flex : 1
@@ -31,7 +33,7 @@ Ext.define('HOR.view.permisos.GridPermisos',
         text : 'Tipos càrrec',
         dataIndex : 'tipoCargo',
         menuDisabled : true,
-        flex: 1
+        flex : 1
     } ]
 
 });

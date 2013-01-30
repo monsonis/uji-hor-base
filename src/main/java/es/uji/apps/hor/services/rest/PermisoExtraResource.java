@@ -9,6 +9,7 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -27,7 +28,7 @@ import es.uji.commons.sso.exceptions.UnauthorizedUserException;
 public class PermisoExtraResource extends CoreBaseService
 {
     @InjectParam
-    private PermisoExtraService permisoExtrsaService;
+    private PermisoExtraService permisoExtraService;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -35,7 +36,7 @@ public class PermisoExtraResource extends CoreBaseService
     {
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
-        List<PermisoExtra> listaPermisosExtra = permisoExtrsaService
+        List<PermisoExtra> listaPermisosExtra = permisoExtraService
                 .getPermisosExtra(connectedUserId);
 
         List<UIEntity> listaUIEntity = new ArrayList<UIEntity>();
@@ -65,29 +66,27 @@ public class PermisoExtraResource extends CoreBaseService
         Long personaId = ParamUtils.parseLong(entity.get("personaId"));
         Long tipoCargoId = ParamUtils.parseLong(entity.get("tipoCargoId"));
 
-        PermisoExtra nuevoPermiso = permisoExtrsaService.addPermisosExtra(estudioId, personaId,
+        PermisoExtra nuevoPermiso = permisoExtraService.addPermisosExtra(estudioId, personaId,
                 tipoCargoId, connectedUserId);
 
         return Collections.singletonList(UIEntity.toUI(nuevoPermiso));
     }
     
     @DELETE
+    @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public List<UIEntity> deletePermisosExtra(UIEntity entity) throws RegistroNoEncontradoException, UnauthorizedUserException
+    public void deletePermisosExtra(@PathParam("id") String id, UIEntity entity) throws RegistroNoEncontradoException, UnauthorizedUserException
     {
         Long connectedUserId = AccessManager.getConnectedUserId(request);
-        ParamUtils.checkNotNull(entity.get("estudioId"), entity.get("personaId"),
-                entity.get("tipoCargoId"));
+        ParamUtils.checkNotNull(id);
 
-        Long estudioId = ParamUtils.parseLong(entity.get("estudioId"));
-        Long personaId = ParamUtils.parseLong(entity.get("personaId"));
-        Long tipoCargoId = ParamUtils.parseLong(entity.get("tipoCargoId"));
-
-        PermisoExtra nuevoPermiso = permisoExtrsaService.addPermisosExtra(estudioId, personaId,
-                tipoCargoId, connectedUserId);
-
-        return Collections.singletonList(UIEntity.toUI(nuevoPermiso));
+        Long permisoExtraId = ParamUtils.parseLong(id);
+        
+        PermisoExtra permisoExtra = permisoExtraService.getPermisoExtraById(permisoExtraId, connectedUserId);
+        permisoExtraService.deletePermiso(permisoExtra, permisoExtra.getEstudio().getId(), connectedUserId);
+        
+        return;
     }
 
 

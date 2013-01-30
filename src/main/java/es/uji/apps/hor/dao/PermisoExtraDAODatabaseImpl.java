@@ -22,6 +22,7 @@ import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.model.PermisoExtra;
 import es.uji.apps.hor.model.Persona;
 import es.uji.commons.db.BaseDAODatabaseImpl;
+import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
 @Repository
 public class PermisoExtraDAODatabaseImpl extends BaseDAODatabaseImpl implements PermisoExtraDAO
@@ -54,7 +55,8 @@ public class PermisoExtraDAODatabaseImpl extends BaseDAODatabaseImpl implements 
     private PermisoExtra conviertePermisoExtraDTOAPermisoExtra(PermisoExtraDTO permisoExtraDTO)
     {
         PermisoExtra permisoExtra = new PermisoExtra();
-
+        permisoExtra.setId(permisoExtraDTO.getId());
+        
         Estudio estudio = new Estudio();
         estudio.setNombre(permisoExtraDTO.getEstudio().getNombre());
         estudio.setId(permisoExtraDTO.getEstudio().getId());
@@ -119,5 +121,21 @@ public class PermisoExtraDAODatabaseImpl extends BaseDAODatabaseImpl implements 
 
         permisoExtraDTO = insert(permisoExtraDTO);
         return conviertePermisoExtraDTOAPermisoExtra(permisoExtraDTO);
+    }
+
+    @Override
+    public PermisoExtra getPermisoExtraById(Long permisoExtraId) throws RegistroNoEncontradoException
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+
+        QPermisoExtraDTO qPermisoExtra = QPermisoExtraDTO.permisoExtraDTO;
+
+        query.from(qPermisoExtra).where(qPermisoExtra.id.eq(permisoExtraId));
+
+        if (query.list(qPermisoExtra).size() > 0) {
+            return conviertePermisoExtraDTOAPermisoExtra(query.list(qPermisoExtra).get(0));
+        } else {
+            throw new RegistroNoEncontradoException();
+        }
     }
 }
