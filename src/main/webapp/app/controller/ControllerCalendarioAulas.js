@@ -35,13 +35,9 @@ Ext.define('HOR.controller.ControllerCalendarioAulas',
     {
         var aulaId = button.aulaId;
         var semestre = this.getFiltroAulas().down('combobox[name=semestre]').getValue();
-        var calendarios = this.getSelectorCalendarios().getCalendarsSelected();
+        var calendarios = this.getSelectorCalendarios().getCalendarsSelected();     
 
         var panelCalendario = this.getPanelCalendarioPorAula();
-        if (!panelCalendario)
-        {
-            panelCalendario = this.getPanelCalendarioDetalle();
-        }
         var panelPadre = panelCalendario.up('panel');
 
         Ext.Array.each(Ext.ComponentQuery.query('panelCalendarioPorAula'), function(panel)
@@ -74,6 +70,7 @@ Ext.define('HOR.controller.ControllerCalendarioAulas',
         panelPadre.add(
         {
             xtype : 'panelCalendarioPorAula',
+            title : 'Ocupació Aula ' +  button.text + " Semestre " +  semestre,
             eventStore : eventos,
             showMultiDayView : true,
             viewConfig :

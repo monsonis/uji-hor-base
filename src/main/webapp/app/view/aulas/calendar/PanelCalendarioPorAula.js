@@ -46,6 +46,7 @@ Ext.define('HOR.view.aulas.calendar.PanelCalendarioPorAula',
     limpiaCalendario : function()
     {
         this.store.removeAll(false);
+        this.setTitle('Ocupació Aula');
     },
     initComponent : function()
     {
