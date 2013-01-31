@@ -9,6 +9,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +23,6 @@ import es.uji.apps.hor.builders.AulaBuilder;
 import es.uji.apps.hor.builders.CentroBuilder;
 import es.uji.apps.hor.builders.DepartamentoBuilder;
 import es.uji.apps.hor.builders.EdificioBuilder;
-import es.uji.apps.hor.builders.EstudioBuilder;
 import es.uji.apps.hor.builders.PersonaBuilder;
 import es.uji.apps.hor.builders.PlantaEdificioBuilder;
 import es.uji.apps.hor.builders.TipoAulaBuilder;
@@ -34,12 +34,12 @@ import es.uji.apps.hor.model.AreaEdificio;
 import es.uji.apps.hor.model.Centro;
 import es.uji.apps.hor.model.Departamento;
 import es.uji.apps.hor.model.Edificio;
-import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.model.Persona;
 import es.uji.apps.hor.model.PlantaEdificio;
 import es.uji.apps.hor.model.TipoAula;
 import es.uji.commons.rest.UIEntity;
 
+@Ignore
 public class EdificioResourceTest extends AbstractRestTest
 {
     private Long centroId;

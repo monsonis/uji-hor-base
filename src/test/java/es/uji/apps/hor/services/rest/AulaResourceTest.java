@@ -9,6 +9,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +33,7 @@ import es.uji.apps.hor.model.PlantaEdificio;
 import es.uji.apps.hor.model.TipoAula;
 import es.uji.commons.rest.UIEntity;
 
+@Ignore
 public class AulaResourceTest extends AbstractRestTest
 {
     private Long centroId;

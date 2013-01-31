@@ -10,6 +10,7 @@ import java.util.List;
 import javax.ws.rs.core.MediaType;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +39,7 @@ import es.uji.apps.hor.model.TipoAula;
 import es.uji.commons.rest.model.tree.TreeRow;
 import es.uji.commons.rest.model.tree.TreeRowset;
 
+@Ignore
 public class CentroResourceTest extends AbstractRestTest
 {
     private Long centroId;

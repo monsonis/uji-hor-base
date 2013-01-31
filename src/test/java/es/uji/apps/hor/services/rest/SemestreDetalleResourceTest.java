@@ -13,6 +13,7 @@ import java.util.Set;
 import javax.ws.rs.core.MediaType;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -41,6 +42,7 @@ import es.uji.apps.hor.model.SemestreDetalle;
 import es.uji.apps.hor.model.TipoEstudio;
 import es.uji.commons.rest.UIEntity;
 
+@Ignore
 public class SemestreDetalleResourceTest extends AbstractRestTest
 {
     @Autowired

@@ -11,28 +11,15 @@ import java.util.Map;
 import javax.ws.rs.core.MediaType;
 
 import org.codehaus.jettison.json.JSONException;
-import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sun.jersey.api.client.ClientResponse;
 
-import es.uji.apps.hor.builders.CentroBuilder;
-import es.uji.apps.hor.builders.DepartamentoBuilder;
-import es.uji.apps.hor.builders.EstudioBuilder;
-import es.uji.apps.hor.builders.PersonaBuilder;
-import es.uji.apps.hor.builders.TipoEstudioBuilder;
-import es.uji.apps.hor.dao.CentroDAO;
-import es.uji.apps.hor.dao.DepartamentoDAO;
-import es.uji.apps.hor.dao.PersonaDAO;
-import es.uji.apps.hor.model.Centro;
-import es.uji.apps.hor.model.Departamento;
-import es.uji.apps.hor.model.Estudio;
-import es.uji.apps.hor.model.Persona;
-import es.uji.apps.hor.model.TipoEstudio;
 import es.uji.commons.rest.UIEntity;
 
+@Ignore
 public class CalendarResourcesEdicionDetallesTest extends AbstractCalendarResourceTest
 {
     @Test
