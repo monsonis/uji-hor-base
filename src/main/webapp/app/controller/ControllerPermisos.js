@@ -73,13 +73,15 @@ Ext.define('HOR.controller.ControllerPermisos',
                     this.guardarPermiso();
                 }
             },
-            
-            'ventanaNewPermiso combo[name=comboTitulacion]': {
-                select: function(combo, rec) {
+
+            'ventanaNewPermiso combo[name=comboTitulacion]' :
+            {
+                select : function(combo, rec)
+                {
                     ref.getComboCargo().getStore().getProxy().extraParams['estudioId'] = rec[0].get("id");
                 }
             }
- 
+
         });
     },
 
@@ -129,10 +131,23 @@ Ext.define('HOR.controller.ControllerPermisos',
             });
         }
     },
-    borraPermisos: function() {
+
+    borraPermisos : function()
+    {
         var gridPermisos = this.getGridPermisos();
         var registros = gridPermisos.getSelectionModel().getSelection();
-        gridPermisos.getStore().remove(registros);
-        gridPermisos.getStore().sync();
+
+        if (registros.length > 0)
+        {
+            Ext.Msg.confirm('Eliminació de permisos', '<b>Esteu segur/a de voler esborrar els permisos sel·leccionats?</b>', function(btn, text)
+            {
+                if (btn == 'yes')
+                {
+                    gridPermisos.getStore().remove(registros);
+                    gridPermisos.getStore().sync();
+                }
+            });
+        }
     }
+
 });
