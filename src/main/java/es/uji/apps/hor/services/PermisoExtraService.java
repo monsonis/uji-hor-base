@@ -26,7 +26,7 @@ public class PermisoExtraService
     @Role({ "ADMIN", "USUARIO" })
     public List<PermisoExtra> getPermisosExtra(Long connectedUserId)
     {
-        if (!personaDAO.esAdmin(connectedUserId))
+        if (personaDAO.esAdmin(connectedUserId))
         {
             return permisoExtraDAO.getPermisosExtra();
         }

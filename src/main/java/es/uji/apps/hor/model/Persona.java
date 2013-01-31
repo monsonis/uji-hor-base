@@ -185,7 +185,7 @@ public class Persona
         List<Estudio>  listaEstudios = getEstudiosAutorizadosConTipoCargo(tipoCargoId);
         
         for (Estudio estudio: listaEstudios) {
-            if (estudio.getId() == estudioId) {
+            if (estudio.getId().equals(estudioId)) {
                 return;
             }
         }

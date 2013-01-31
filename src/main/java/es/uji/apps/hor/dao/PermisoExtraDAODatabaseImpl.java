@@ -38,8 +38,7 @@ public class PermisoExtraDAODatabaseImpl extends BaseDAODatabaseImpl implements 
         QPersonaDTO qPersona = QPersonaDTO.personaDTO;
         QTipoCargoDTO qTipoCargo = QTipoCargoDTO.tipoCargoDTO;
 
-        query.from(qPermisoExtra, qEstudio, qPersona, qTipoCargo)
-                .join(qPermisoExtra.estudio, qEstudio).fetch()
+        query.from(qPermisoExtra).join(qPermisoExtra.estudio, qEstudio).fetch()
                 .join(qPermisoExtra.persona, qPersona).fetch()
                 .join(qPermisoExtra.tipoCargo, qTipoCargo).fetch();
 
@@ -56,7 +55,7 @@ public class PermisoExtraDAODatabaseImpl extends BaseDAODatabaseImpl implements 
     {
         PermisoExtra permisoExtra = new PermisoExtra();
         permisoExtra.setId(permisoExtraDTO.getId());
-        
+
         Estudio estudio = new Estudio();
         estudio.setNombre(permisoExtraDTO.getEstudio().getNombre());
         estudio.setId(permisoExtraDTO.getEstudio().getId());
@@ -89,7 +88,10 @@ public class PermisoExtraDAODatabaseImpl extends BaseDAODatabaseImpl implements 
         query.from(qPermisoExtra, qCargoPersona).innerJoin(qPermisoExtra.estudio, qEstudio).fetch()
                 .innerJoin(qPermisoExtra.persona, qPersona).fetch()
                 .innerJoin(qPermisoExtra.tipoCargo, qTipoCargo).fetch()
-                .where(qPermisoExtra.tipoCargo.id.eq(qCargoPersona.cargo.id).and(qPermisoExtra.estudio.id.eq(qCargoPersona.estudio.id).and(qCargoPersona.persona.id.eq(connectedUserId))));
+                .innerJoin(qCargoPersona.cargo, qTipoCargo)
+                .innerJoin(qCargoPersona.persona, qPersona)
+                .innerJoin(qCargoPersona.estudio, qEstudio)
+                .where(qCargoPersona.persona.id.eq(connectedUserId).and(qCargoPersona.estudio.id.eq(qPermisoExtra.estudio.id)));
 
         List<PermisoExtra> listaPermisosExtra = new ArrayList<PermisoExtra>();
         for (PermisoExtraDTO permisoExtraDTO : query.list(qPermisoExtra))
@@ -124,7 +126,8 @@ public class PermisoExtraDAODatabaseImpl extends BaseDAODatabaseImpl implements 
     }
 
     @Override
-    public PermisoExtra getPermisoExtraById(Long permisoExtraId) throws RegistroNoEncontradoException
+    public PermisoExtra getPermisoExtraById(Long permisoExtraId)
+            throws RegistroNoEncontradoException
     {
         JPAQuery query = new JPAQuery(entityManager);
 
@@ -132,9 +135,12 @@ public class PermisoExtraDAODatabaseImpl extends BaseDAODatabaseImpl implements 
 
         query.from(qPermisoExtra).where(qPermisoExtra.id.eq(permisoExtraId));
 
-        if (query.list(qPermisoExtra).size() > 0) {
+        if (query.list(qPermisoExtra).size() > 0)
+        {
             return conviertePermisoExtraDTOAPermisoExtra(query.list(qPermisoExtra).get(0));
-        } else {
+        }
+        else
+        {
             throw new RegistroNoEncontradoException();
         }
     }
