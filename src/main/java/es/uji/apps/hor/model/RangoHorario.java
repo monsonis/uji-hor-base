@@ -131,8 +131,10 @@ public class RangoHorario
         int minutosInicioEvento = calculaMinutosDeUnDate(evento.getInicio());
         int minutosFinEvento = calculaMinutosDeUnDate(evento.getFin());
 
-        return minutosInicioEvento >= getHoraInicialDelGrupoEnMinutos()
-                && minutosFinEvento <= getHoraFinalDelGrupoEnMinutos();
+        int minutosInicioRango = getHoraInicialDelGrupoEnMinutos();
+        int minutosFinRango = getHoraFinalDelGrupoEnMinutos();
+
+        return minutosInicioEvento >= minutosInicioRango && minutosFinEvento <= minutosFinRango;
     }
 
     private Integer getHoraFinalDelGrupoEnMinutos()

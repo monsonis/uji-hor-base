@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 import org.junit.Test;
 
 import es.uji.apps.hor.DuracionEventoIncorrectaException;
+import es.uji.apps.hor.EventoFueraDeRangoException;
 import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.builders.AsignaturaBuilder;
 import es.uji.apps.hor.builders.AulaPlanificacionBuilder;
@@ -19,6 +21,7 @@ import es.uji.apps.hor.builders.CalendarioBuilder;
 import es.uji.apps.hor.builders.EstudioBuilder;
 import es.uji.apps.hor.builders.EventoBuilder;
 import es.uji.apps.hor.builders.EventoDetalleBuilder;
+import es.uji.apps.hor.builders.RangoHorarioBuilder;
 import es.uji.apps.hor.builders.SemestreBuilder;
 import es.uji.apps.hor.builders.TipoEstudioBuilder;
 
@@ -158,7 +161,7 @@ public class EventoModelTest
     }
 
     @Test
-    public void progragaModificionesDeHorarioDeUnEventoASusDetalles() throws Exception
+    public void propagaModificionesDeHorarioDeUnEventoASusDetalles() throws Exception
     {
         String fechaInicioInicial = "30/07/2012 09:00";
         String fechaFinInicial = "30/07/2012 10:00";
@@ -177,6 +180,56 @@ public class EventoModelTest
                 formatter.parse(fechaFinActualizada));
 
         assertThat(detallesTienenHoraActualizada(evento.getEventosDetalle()), is(true));
+
+    }
+
+    @Test
+    public void compruebaEventoDentroRangoSiEstaDentro() throws Exception
+    {
+        String fechaInicioInicial = "30/07/2012 12:00";
+        String fechaFinInicial = "30/07/2012 15:00";
+
+        Evento evento = buildEvento(fechaInicioInicial, fechaFinInicial);
+
+        RangoHorario rangoOK = new RangoHorarioBuilder()
+                .withHoraInicioFechaString("30/07/2012 08:00")
+                .withHoraFinFechaString("30/07/2012 20:00").build();
+
+        RangoHorario rangoOK2 = new RangoHorarioBuilder()
+                .withHoraInicioFechaString("30/07/2012 12:00")
+                .withHoraFinFechaString("30/07/2012 20:00").build();
+
+        List<RangoHorario> listaRangosHorariosOK = new ArrayList<RangoHorario>();
+
+        listaRangosHorariosOK.add(rangoOK);
+        listaRangosHorariosOK.add(rangoOK2);
+
+        evento.compruebaDentroDeLosRangosHorarios(listaRangosHorariosOK);
+
+    }
+
+    @Test(expected = EventoFueraDeRangoException.class)
+    public void compruebaEventoDentroRangoSiEstaFuera() throws Exception
+    {
+        String fechaInicioInicial = "30/07/2012 12:00";
+        String fechaFinInicial = "30/07/2012 15:00";
+
+        Evento evento = buildEvento(fechaInicioInicial, fechaFinInicial);
+
+        RangoHorario rangoOK = new RangoHorarioBuilder()
+                .withHoraInicioFechaString("30/07/2012 08:00")
+                .withHoraFinFechaString("30/07/2012 20:00").build();
+
+        RangoHorario rangoFuera = new RangoHorarioBuilder()
+                .withHoraInicioFechaString("30/07/2012 08:00")
+                .withHoraFinFechaString("30/07/2012 14:00").build();
+
+        List<RangoHorario> listaRangosHorariosOK = new ArrayList<RangoHorario>();
+
+        listaRangosHorariosOK.add(rangoOK);
+        listaRangosHorariosOK.add(rangoFuera);
+
+        evento.compruebaDentroDeLosRangosHorarios(listaRangosHorariosOK);
 
     }
 

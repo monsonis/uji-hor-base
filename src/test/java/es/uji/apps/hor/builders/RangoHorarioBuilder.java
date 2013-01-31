@@ -1,5 +1,7 @@
 package es.uji.apps.hor.builders;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import es.uji.apps.hor.dao.RangoHorarioDAO;
@@ -9,6 +11,7 @@ public class RangoHorarioBuilder
 {
     private RangoHorario rangoHorario;
     private RangoHorarioDAO rangoHorarioDAO;
+    private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");;
 
     public RangoHorarioBuilder(RangoHorarioDAO rangoHorarioDAO)
     {
@@ -51,9 +54,21 @@ public class RangoHorarioBuilder
         return this;
     }
 
+    public RangoHorarioBuilder withHoraInicioFechaString(String horaInicio) throws ParseException
+    {
+        rangoHorario.setHoraInicio(formatter.parse(horaInicio));
+        return this;
+    }
+
     public RangoHorarioBuilder withHoraFin(Date horaFin)
     {
         rangoHorario.setHoraFin(horaFin);
+        return this;
+    }
+
+    public RangoHorarioBuilder withHoraFinFechaString(String horaFin) throws ParseException
+    {
+        rangoHorario.setHoraFin(formatter.parse(horaFin));
         return this;
     }
 
