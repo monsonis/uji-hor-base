@@ -113,6 +113,8 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
         var view = this.getSelectorGrupos();
 
         view.removeAll();
+        
+        var botones = new Array();
 
         for ( var i = 0, len = gruposAsignaturas.length; i < len; i++)
         {
@@ -127,8 +129,11 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
                 grupoAsignaturaId : gruposAsignaturas[i].data.id,
             };
 
-            view.add(button);
+            botones.push(button);
+            
         }
+        
+        view.add(botones);
     }
 
 });
