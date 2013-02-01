@@ -1,0 +1,13 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" id="957AF0D7-B2C8-E9C0-D84F-6BFE545A6CA0" directorySegmentName="seg_0" name="hor_items_cir_items_FK">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-06-01 08:34:34 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<containerWithKeyObject>E5F140A6-63CE-D20F-0640-4DAD03930FC5</containerWithKeyObject>
+<deleteRule>NO ACTION</deleteRule>
+<localFKIndex>29ABC315-0E49-FC89-C420-FE1036797A18</localFKIndex>
+<keyObject>B71CEF7C-BD9E-D760-7E34-F6F2E04C7EA8</keyObject>
+<mandatory>true</mandatory>
+<transferable>true</transferable>
+</FKIndexAssociation>

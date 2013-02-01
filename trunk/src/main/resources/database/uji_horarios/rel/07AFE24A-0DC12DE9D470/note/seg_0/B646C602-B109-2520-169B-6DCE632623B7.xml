@@ -1,0 +1,17 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Note class="oracle.dbtools.crest.model.design.Note" name="Note_3" id="B646C602-B109-2520-169B-6DCE632623B7" directorySegmentName="seg_0">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-04-26 11:38:02 UTC</createdTime>
+<comment>Horaris v1&lt;br/&gt;22-05-2012</comment>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<fonts>
+<FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
+<foType>Título</foType>
+<fontName>Times New Roman</fontName>
+<fontSize>36</fontSize>
+<fontStyle>1</fontStyle>
+<colorRGB>-1</colorRGB>
+</FontObject>
+</fonts>
+</Note>

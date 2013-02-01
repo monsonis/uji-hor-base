@@ -1,0 +1,31 @@
+package es.uji.apps.hor.builders;
+
+import es.uji.apps.hor.model.Centro;
+import es.uji.apps.hor.model.Edificio;
+
+public class EdificioBuilder
+{
+    private Edificio edificio;
+
+    public EdificioBuilder()
+    {
+        edificio = new Edificio();
+    }
+
+    public EdificioBuilder withNombre(String nombre)
+    {
+        edificio.setNombre(nombre);
+        return this;
+    }
+
+    public EdificioBuilder withCentro(Centro centro)
+    {
+        edificio.setCentro(centro);
+        return this;
+    }
+
+    public Edificio build()
+    {
+        return edificio;
+    }
+}

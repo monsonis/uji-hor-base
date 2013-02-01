@@ -1,0 +1,9 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<relationalModel class="oracle.dbtools.crest.model.design.relational.RelationalDesign" name="uji_horarios_v1" id="07AFE24A-FE86-D9A8-5514-0DC12DE9D470" mainViewID="BE2DC465-B7AD-A774-1F21-B1DC737F6BC6">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-04-26 10:42:41 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>gestió de horaris</ownerDesignName>
+<shouldBeOpen>true</shouldBeOpen>
+<selectedRDBMSSite>32076570-2523-435C-2E92-BF29817DFF70</selectedRDBMSSite>
+</relationalModel>

@@ -1,0 +1,735 @@
+package es.uji.apps.hor.dao;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import org.hsqldb.lib.HashMap;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.mysema.query.jpa.impl.JPAQuery;
+import com.mysema.query.jpa.impl.JPAUpdateClause;
+
+import es.uji.apps.hor.DuracionEventoIncorrectaException;
+import es.uji.apps.hor.EventoDetalleSinEventoException;
+import es.uji.apps.hor.db.AulaPlanificacionDTO;
+import es.uji.apps.hor.db.DiaSemanaDTO;
+import es.uji.apps.hor.db.ItemCircuitoDTO;
+import es.uji.apps.hor.db.ItemDTO;
+import es.uji.apps.hor.db.ItemDetalleCompletoDTO;
+import es.uji.apps.hor.db.ItemDetalleDTO;
+import es.uji.apps.hor.db.ItemsAsignaturaDTO;
+import es.uji.apps.hor.db.QAulaDTO;
+import es.uji.apps.hor.db.QAulaPlanificacionDTO;
+import es.uji.apps.hor.db.QDiaSemanaDTO;
+import es.uji.apps.hor.db.QItemCircuitoDTO;
+import es.uji.apps.hor.db.QItemDTO;
+import es.uji.apps.hor.db.QItemDetalleCompletoDTO;
+import es.uji.apps.hor.db.QItemDetalleDTO;
+import es.uji.apps.hor.db.QItemsAsignaturaDTO;
+import es.uji.apps.hor.db.SemestreDTO;
+import es.uji.apps.hor.model.Asignatura;
+import es.uji.apps.hor.model.AulaPlanificacion;
+import es.uji.apps.hor.model.Calendario;
+import es.uji.apps.hor.model.Estudio;
+import es.uji.apps.hor.model.Evento;
+import es.uji.apps.hor.model.EventoDetalle;
+import es.uji.apps.hor.model.EventoDocencia;
+import es.uji.apps.hor.model.Semestre;
+import es.uji.apps.hor.model.TipoEstudio;
+import es.uji.apps.hor.model.TipoSubgrupo;
+import es.uji.commons.db.BaseDAODatabaseImpl;
+import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
+
+@Repository
+public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements EventosDAO
+{
+
+    private Calendario obtenerCalendarioAsociadoPorTipoSubgrupo(ItemDTO itemDTO)
+    {
+        String tipoSubgrupoId = itemDTO.getTipoSubgrupoId();
+        TipoSubgrupo tipoSubgrupo = TipoSubgrupo.valueOf(tipoSubgrupoId);
+
+        return new Calendario(tipoSubgrupo.getCalendarioAsociado(), tipoSubgrupo.getNombre());
+    }
+
+    @Override
+    public List<Evento> getEventosSemanaGenerica(Long estudioId, Long cursoId, Long semestreId,
+            String grupoId, List<Long> calendariosIds)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+
+        QItemDTO item = QItemDTO.itemDTO;
+        QItemsAsignaturaDTO asignatura = QItemsAsignaturaDTO.itemsAsignaturaDTO;
+
+        List<String> tiposCalendarios = TipoSubgrupo.getTiposSubgrupos(calendariosIds);
+
+        List<ItemDTO> listaItemsDTO = query
+                .from(asignatura)
+                .join(asignatura.item, item)
+                .where(asignatura.estudioId.eq(estudioId).and(
+                        item.cursoId.eq(cursoId).and(item.semestre.id.eq(semestreId))
+                                .and(item.grupoId.eq(grupoId)).and(item.diaSemana.isNotNull())
+                                .and(item.tipoSubgrupoId.in(tiposCalendarios)))).list(item);
+
+        List<Evento> eventos = new ArrayList<Evento>();
+
+        for (ItemDTO itemDTO : listaItemsDTO)
+        {
+            eventos.add(creaEventoDesdeItemDTO(itemDTO));
+        }
+
+        return eventos;
+    }
+
+    private EventoDetalle creaEventoDetalleDesdeItemDetalleDTO(ItemDetalleDTO itemDetalleDTO)
+    {
+        EventoDetalle eventoDetalle = new EventoDetalle();
+
+        eventoDetalle.setId(itemDetalleDTO.getId());
+        eventoDetalle.setDescripcion(itemDetalleDTO.getDescripcion());
+        eventoDetalle.setInicio(itemDetalleDTO.getInicio());
+
+        eventoDetalle.setFin(itemDetalleDTO.getFin());
+
+        return eventoDetalle;
+    }
+
+    public Asignatura creaAsignaturasDesdeItemAsignaturaDTO(ItemsAsignaturaDTO asig, ItemDTO itemDTO)
+    {
+
+        Estudio estudio = new Estudio();
+        TipoEstudio tipoEstudio = new TipoEstudio();
+        tipoEstudio.setNombre(itemDTO.getTipoEstudio());
+        tipoEstudio.setId(itemDTO.getTipoEstudioId());
+
+        estudio.setId(asig.getEstudioId());
+        estudio.setNombre(asig.getEstudio());
+        estudio.setTipoEstudio(tipoEstudio);
+
+        Asignatura asignatura = new Asignatura();
+
+        asignatura.setComun(itemDTO.getComun() == 1);
+        if (itemDTO.getComun() > 0)
+        {
+            asignatura.setComunes(itemDTO.getComunes());
+        }
+
+        asignatura.setNombre(asig.getNombreAsignatura());
+        asignatura.setId(asig.getAsignaturaId());
+        asignatura.setCursoId(itemDTO.getCursoId());
+        asignatura.setCaracter(itemDTO.getCaracter());
+        asignatura.setCaracterId(itemDTO.getCaracterId());
+        asignatura.setEstudio(estudio);
+        asignatura.setPorcentajeComun(itemDTO.getPorcentajeComun());
+        asignatura.setTipoAsignatura(itemDTO.getTipoAsignatura());
+        asignatura.setTipoAsignaturaId(itemDTO.getTipoAsignaturaId());
+        return asignatura;
+    }
+
+    private Evento creaEventoDesdeItemDTO(ItemDTO itemDTO)
+    {
+        Calendario calendario = obtenerCalendarioAsociadoPorTipoSubgrupo(itemDTO);
+
+        Evento evento = new Evento();
+        evento.setCalendario(calendario);
+
+        if (itemDTO.getHoraInicio() != null && itemDTO.getHoraFin() != null)
+        {
+            Calendar inicio = generaItemCalendarioSemanaGenerica(itemDTO.getDiaSemana().getId()
+                    .intValue(), itemDTO.getHoraInicio());
+
+            Calendar fin = generaItemCalendarioSemanaGenerica(itemDTO.getDiaSemana().getId()
+                    .intValue(), itemDTO.getHoraFin());
+
+            try
+            {
+                evento.setFechaInicioYFin(inicio.getTime(), fin.getTime());
+            }
+            catch (DuracionEventoIncorrectaException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+        }
+
+        evento.setDetalleManual(itemDTO.getDetalleManual());
+        evento.setNumeroIteraciones(itemDTO.getNumeroIteraciones());
+        evento.setRepetirCadaSemanas(itemDTO.getRepetirCadaSemanas());
+        evento.setDesdeElDia(itemDTO.getDesdeElDia());
+        evento.setHastaElDia(itemDTO.getHastaElDia());
+        evento.setGrupoId(itemDTO.getGrupoId());
+        evento.setSubgrupoId(itemDTO.getSubgrupoId());
+        evento.setPlazas(itemDTO.getPlazas());
+        evento.setId(itemDTO.getId());
+
+        Semestre semestre = new Semestre();
+        semestre.setSemestre(itemDTO.getSemestre().getId());
+        semestre.setNombre(itemDTO.getSemestre().getNombre());
+        evento.setSemestre(semestre);
+
+        if (itemDTO.getAulaPlanificacion() != null)
+        {
+            AulaPlanificacion aulaPlanificacion = new AulaPlanificacion();
+            aulaPlanificacion.setId(itemDTO.getAulaPlanificacion().getId());
+            aulaPlanificacion.setNombre(itemDTO.getAulaPlanificacion().getNombre());
+            if (itemDTO.getAulaPlanificacion().getAula() != null)
+            {
+                aulaPlanificacion.setCodigo(itemDTO.getAulaPlanificacion().getAula().getCodigo());
+            }
+            evento.setAulaPlanificacion(aulaPlanificacion);
+        }
+
+        if (!itemDTO.getAsignaturas().isEmpty())
+        {
+            List<Asignatura> listaAsignaturas = new ArrayList<Asignatura>();
+            for (ItemsAsignaturaDTO itemAsignatura : itemDTO.getAsignaturas())
+            {
+                listaAsignaturas
+                        .add(creaAsignaturasDesdeItemAsignaturaDTO(itemAsignatura, itemDTO));
+            }
+            evento.setAsignaturas(listaAsignaturas);
+        }
+
+        return evento;
+    }
+
+    private Calendar generaItemCalendarioSemanaGenerica(Integer dia, Date fecha)
+    {
+        Calendar base = Calendar.getInstance();
+        Calendar actual = Calendar.getInstance();
+        actual.setTime(fecha);
+
+        base.setFirstDayOfWeek(Calendar.MONDAY);
+        Integer dayOfWeek = base.get(Calendar.DAY_OF_WEEK);
+        base.add(Calendar.DAY_OF_WEEK, Calendar.MONDAY - dayOfWeek);
+        actual.set(Calendar.YEAR, base.get(Calendar.YEAR));
+        actual.set(Calendar.MONTH, base.get(Calendar.MONTH));
+        actual.set(Calendar.DAY_OF_MONTH, base.get(Calendar.DAY_OF_MONTH));
+        actual.add(Calendar.DAY_OF_WEEK, dia - 1);
+
+        return actual;
+    }
+
+    private String getNombreDiaSemana(Integer diaSemana)
+    {
+        HashMap semana = new HashMap();
+        semana.put(Calendar.SUNDAY, "Diumenge");
+        semana.put(Calendar.MONDAY, "Dilluns");
+        semana.put(Calendar.TUESDAY, "Dimarts");
+        semana.put(Calendar.WEDNESDAY, "Dimecres");
+        semana.put(Calendar.THURSDAY, "Dijous");
+        semana.put(Calendar.FRIDAY, "Divendres");
+        semana.put(Calendar.SATURDAY, "Dissabte");
+
+        return (String) semana.get(diaSemana);
+
+    }
+
+    @Override
+    public List<Evento> getEventosDeUnCurso(Long estudioId, Long cursoId, Long semestreId,
+            String grupoId)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        QItemDTO item = QItemDTO.itemDTO;
+        QItemsAsignaturaDTO asignatura = QItemsAsignaturaDTO.itemsAsignaturaDTO;
+
+        List<ItemDTO> listaItemsDTO = query
+                .from(asignatura)
+                .join(asignatura.item, item)
+                .where(asignatura.estudioId.eq(estudioId).and(
+                        item.cursoId.eq(cursoId).and(item.semestre.id.eq(semestreId))
+                                .and(item.grupoId.eq(grupoId)).and(item.diaSemana.isNotNull())))
+                .list(item);
+
+        List<Evento> eventos = new ArrayList<Evento>();
+
+        for (ItemDTO itemDTO : listaItemsDTO)
+        {
+            eventos.add(creaEventoDesdeItemDTO(itemDTO));
+        }
+
+        return eventos;
+    }
+
+    @Override
+    public void deleteEventoDetalle(EventoDetalle detalle)
+    {
+        delete(ItemDetalleDTO.class, detalle.getId());
+    }
+
+    @Override
+    public void deleteDetallesDeEvento(Evento evento)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        QItemDetalleDTO qItemDetalle = QItemDetalleDTO.itemDetalleDTO;
+
+        List<ItemDetalleDTO> itemsDetalle = query.from(qItemDetalle)
+                .where(qItemDetalle.item.id.eq(evento.getId())).list(qItemDetalle);
+
+        for (ItemDetalleDTO itemDetalle : itemsDetalle)
+        {
+            delete(ItemDetalleDTO.class, itemDetalle.getId());
+        }
+    }
+
+    @Override
+    public void deleteEventoSemanaGenerica(Long eventoId) throws RegistroNoEncontradoException
+    {
+        // Los comunes no hará falta tratarlos
+        deleteCircuitosDeItem(eventoId);
+
+        try
+        {
+            delete(ItemDTO.class, eventoId);
+        }
+        catch (Exception e)
+        {
+            throw new RegistroNoEncontradoException();
+        }
+
+    }
+
+    private void deleteCircuitosDeItem(Long itemId)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        QItemCircuitoDTO itemCircuito = QItemCircuitoDTO.itemCircuitoDTO;
+
+        List<ItemCircuitoDTO> listaItemsCircuitosDTO = query.from(itemCircuito)
+                .where(itemCircuito.item.id.eq(itemId)).list(itemCircuito);
+
+        for (ItemCircuitoDTO itemCircuitoDTO : listaItemsCircuitosDTO)
+        {
+            delete(ItemCircuitoDTO.class, itemCircuitoDTO.getId());
+        }
+    }
+
+    @Override
+    public Evento modificaDetallesGrupoAsignatura(Evento evento)
+    {
+        ItemDTO item = creaItemDTODesde(evento);
+
+        DiaSemanaDTO diaSemanaDTO = getDiaSemanaDTOParaFecha(evento.getInicio());
+
+        item.setHoraInicio(evento.getInicio());
+        item.setHoraFin(evento.getFin());
+        item.setDiaSemana(diaSemanaDTO);
+        item.setDesdeElDia(evento.getDesdeElDia());
+        item.setNumeroIteraciones(evento.getNumeroIteraciones());
+        item.setRepetirCadaSemanas(evento.getRepetirCadaSemanas());
+        item.setHastaElDia(evento.getHastaElDia());
+        item.setDetalleManual(evento.hasDetalleManual());
+        update(item);
+
+        return creaEventoDesdeItemDTO(item);
+    }
+
+    DiaSemanaDTO getDiaSemanaDTOParaFecha(Date fecha)
+    {
+        if (fecha == null)
+        {
+            return null;
+        }
+
+        Calendar calInicio = Calendar.getInstance();
+        calInicio.setTime(fecha);
+        String diaSemana = getNombreDiaSemana(calInicio.get(Calendar.DAY_OF_WEEK));
+
+        QDiaSemanaDTO qDiaSemana = QDiaSemanaDTO.diaSemanaDTO;
+        JPAQuery query = new JPAQuery(entityManager);
+        query.from(qDiaSemana).where(qDiaSemana.nombre.eq(diaSemana));
+        return query.list(qDiaSemana).get(0);
+    }
+
+    @Override
+    public List<EventoDocencia> getDiasDocenciaDeUnEventoByEventoId(Long eventoId)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+
+        QItemDetalleCompletoDTO item = QItemDetalleCompletoDTO.itemDetalleCompletoDTO;
+
+        List<ItemDetalleCompletoDTO> listaItemsDetalleCompletoDTO = query.from(item)
+                .where(item.id.eq(eventoId)).orderBy(item.fecha.asc()).list(item);
+
+        List<EventoDocencia> eventosDocencia = new ArrayList<EventoDocencia>();
+
+        for (ItemDetalleCompletoDTO itemDetalleCompletoDTO : listaItemsDetalleCompletoDTO)
+        {
+            eventosDocencia.add(creaEventoDocenciaDesde(itemDetalleCompletoDTO));
+        }
+
+        return eventosDocencia;
+    }
+
+    private EventoDocencia creaEventoDocenciaDesde(ItemDetalleCompletoDTO itemDetalleCompletoDTO)
+    {
+        EventoDocencia eventoDocencia = new EventoDocencia();
+
+        eventoDocencia.setEventoId(itemDetalleCompletoDTO.getId());
+        eventoDocencia.setFecha(itemDetalleCompletoDTO.getFecha());
+        eventoDocencia.setDocencia(itemDetalleCompletoDTO.getDocencia());
+        eventoDocencia.setTipoDia(itemDetalleCompletoDTO.getTipoDia());
+
+        return eventoDocencia;
+    }
+
+    @Override
+    public List<EventoDetalle> getEventosDetalle(Long estudioId, Long cursoId, Long semestreId,
+            String grupoId, List<Long> calendariosIds, Date rangoFechaInicio, Date rangoFechaFin)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        List<String> tiposCalendarios = TipoSubgrupo.getTiposSubgrupos(calendariosIds);
+
+        QItemDTO item = QItemDTO.itemDTO;
+        QItemsAsignaturaDTO itemsAsignatura = QItemsAsignaturaDTO.itemsAsignaturaDTO;
+        QItemDetalleDTO itemsDetalle = QItemDetalleDTO.itemDetalleDTO;
+
+        List<ItemDetalleDTO> listaItemsDetalleDTO = query
+                .from(item)
+                .join(item.itemsAsignaturas, itemsAsignatura)
+                .join(item.itemsDetalles, itemsDetalle)
+                .where(itemsAsignatura.estudioId.eq(estudioId).and(
+                        item.cursoId.eq(cursoId).and(item.semestre.id.eq(semestreId))
+                                .and(itemsDetalle.inicio.goe(rangoFechaInicio))
+                                .and(itemsDetalle.fin.loe(rangoFechaFin))
+                                .and(item.grupoId.eq(grupoId)).and(item.diaSemana.isNotNull())
+                                .and(item.tipoSubgrupoId.in(tiposCalendarios)))).list(itemsDetalle);
+
+        List<EventoDetalle> listaEventosDetalle = new ArrayList<EventoDetalle>();
+        for (ItemDetalleDTO itemDetalleDTO : listaItemsDetalleDTO)
+        {
+
+            EventoDetalle eventoDetalle = creaEventoDetalleDesdeItemDetalleDTO(itemDetalleDTO);
+            eventoDetalle.setEvento(creaEventoDesdeItemDTO(itemDetalleDTO.getItem()));
+            listaEventosDetalle.add(eventoDetalle);
+        }
+        return listaEventosDetalle;
+    }
+
+    @Override
+    @Transactional
+    public void actualizaAulaAsignadaAEvento(Long eventoId, Long aulaId)
+            throws RegistroNoEncontradoException
+    {
+        ItemDTO item;
+        AulaPlanificacionDTO aulaPlanificacion;
+        try
+        {
+            item = get(ItemDTO.class, eventoId).get(0);
+            aulaPlanificacion = get(AulaPlanificacionDTO.class, aulaId).get(0);
+        }
+        catch (Exception e)
+        {
+            throw new RegistroNoEncontradoException();
+        }
+
+        item.setAulaPlanificacion(aulaPlanificacion);
+        item.setAulaPlanificacionNombre(aulaPlanificacion.getNombre());
+
+        update(item);
+    }
+
+    @Override
+    public Evento getEventoById(Long eventoId) throws RegistroNoEncontradoException
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+
+        QItemDTO item = QItemDTO.itemDTO;
+
+        List<ItemDTO> listaItemsDTO = query.from(item).where(item.id.eq(eventoId)).list(item);
+
+        if (listaItemsDTO.size() == 1)
+        {
+            return creaEventoDesdeItemDTO(listaItemsDTO.get(0));
+        }
+        else
+        {
+            throw new RegistroNoEncontradoException();
+        }
+    }
+
+    // public Evento getEventoConEventosDetalleById(Long eventoId)
+    // throws RegistroNoEncontradoException
+    // {
+    // }
+
+    @Override
+    public Evento updateEvento(Evento evento)
+    {
+        ItemDTO itemDTO = creaItemDTODesde(evento);
+        itemDTO = update(itemDTO);
+
+        return creaEventoDesdeItemDTO(itemDTO);
+    }
+
+    @Override
+    public Evento insertEvento(Evento evento)
+    {
+        ItemDTO itemDTO = creaItemDTODesde(evento);
+        itemDTO = insert(itemDTO);
+
+        if (!evento.getAsignaturas().isEmpty())
+        {
+            for (Asignatura asignatura : evento.getAsignaturas())
+            {
+                asignaLaAsignaturaSiEsNecesario(itemDTO, asignatura);
+            }
+        }
+
+        if (evento.hasDetalleManual())
+        {
+            for (EventoDetalle eventoDetalle : evento.getEventosDetalle())
+            {
+                ItemDetalleDTO itemDetalleDTO = new ItemDetalleDTO();
+                itemDetalleDTO.setDescripcion(eventoDetalle.getDescripcion());
+                itemDetalleDTO.setInicio(eventoDetalle.getInicio());
+                itemDetalleDTO.setFin(eventoDetalle.getFin());
+                itemDetalleDTO.setItem(itemDTO);
+                insert(itemDetalleDTO);
+            }
+        }
+
+        return creaEventoDesdeItemDTO(itemDTO);
+
+    }
+
+    private ItemDTO asignaLaAsignaturaSiEsNecesario(ItemDTO itemDTO, Asignatura asignatura)
+    {
+        if (!tieneAsignadaLaAsignatura(itemDTO, asignatura))
+        {
+            ItemsAsignaturaDTO asignaturaDTO = creaItemAsignaturaDeAsignatura(itemDTO, asignatura);
+            insert(asignaturaDTO);
+        }
+
+        return itemDTO;
+
+    }
+
+    private ItemsAsignaturaDTO creaItemAsignaturaDeAsignatura(ItemDTO itemDTO, Asignatura asignatura)
+    {
+        ItemsAsignaturaDTO asignaturaDTO = new ItemsAsignaturaDTO();
+        asignaturaDTO.setAsignaturaId(asignatura.getId());
+        asignaturaDTO.setNombreAsignatura(asignatura.getNombre());
+        asignaturaDTO.setItem(itemDTO);
+        asignaturaDTO.setEstudioId(asignatura.getEstudio().getId());
+        asignaturaDTO.setEstudio(asignatura.getEstudio().getNombre());
+
+        return asignaturaDTO;
+    }
+
+    private boolean tieneAsignadaLaAsignatura(ItemDTO itemDTO, Asignatura asignatura)
+    {
+        String asignaturaId = asignatura.getId();
+        for (ItemsAsignaturaDTO asig : itemDTO.getAsignaturas())
+        {
+            if (asig.getId().equals(asignaturaId))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private ItemDTO creaItemDTODesde(Evento evento)
+    {
+        // Creamos el nuevo evento
+        ItemDTO itemDTO = new ItemDTO();
+        itemDTO.setId(evento.getId());
+
+        SemestreDTO semestreDTO = new SemestreDTO();
+        semestreDTO.setId(evento.getSemestre().getSemestre());
+        semestreDTO.setNombre(evento.getSemestre().getNombre());
+
+        itemDTO.setPlazas(evento.getPlazas());
+        itemDTO.setComun(evento.tieneComunes() ? new Long(1) : new Long(0));
+        if (!evento.getAsignaturas().isEmpty())
+        {
+            Asignatura unaAsignatura = evento.getAsignaturas().get(0);
+            itemDTO.setPorcentajeComun(unaAsignatura.getPorcentajeComun());
+            itemDTO.setTipoAsignaturaId(unaAsignatura.getTipoAsignaturaId());
+            itemDTO.setTipoAsignatura(unaAsignatura.getTipoAsignatura());
+
+            itemDTO.setTipoEstudioId(unaAsignatura.getEstudio().getTipoEstudio().getId());
+            itemDTO.setTipoEstudio(unaAsignatura.getEstudio().getTipoEstudio().getNombre());
+            itemDTO.setCursoId(unaAsignatura.getCursoId());
+            itemDTO.setCaracter(unaAsignatura.getCaracter());
+            itemDTO.setCaracterId(unaAsignatura.getCaracterId());
+        }
+
+        if (evento.getDia() != null)
+        {
+            DiaSemanaDTO diaSemanaDTO = new DiaSemanaDTO();
+            diaSemanaDTO.setId(new Long(evento.getDia()));
+            itemDTO.setDiaSemana(diaSemanaDTO);
+        }
+
+        itemDTO.setSemestre(semestreDTO);
+        itemDTO.setGrupoId(evento.getGrupoId());
+        itemDTO.setSubgrupoId(evento.getSubgrupoId());
+
+        if (evento.getAulaPlanificacion() != null)
+        {
+            AulaPlanificacionDTO aulaPlanificacionDTO = new AulaPlanificacionDTO();
+            aulaPlanificacionDTO.setId(evento.getAulaPlanificacion().getId());
+            itemDTO.setAulaPlanificacion(aulaPlanificacionDTO);
+        }
+        itemDTO.setHastaElDia(evento.getHastaElDia());
+        itemDTO.setHoraFin(evento.getFin());
+        itemDTO.setHoraInicio(evento.getInicio());
+        itemDTO.setDesdeElDia(evento.getDesdeElDia());
+        itemDTO.setHastaElDia(evento.getHastaElDia());
+        itemDTO.setRepetirCadaSemanas(evento.getRepetirCadaSemanas());
+        itemDTO.setNumeroIteraciones(evento.getNumeroIteraciones());
+        itemDTO.setTipoSubgrupoId(TipoSubgrupo.getTipoSubgrupo(evento.getCalendario().getId()));
+        itemDTO.setTipoSubgrupo(evento.getCalendario().getNombre());
+        itemDTO.setDetalleManual(evento.hasDetalleManual());
+        return itemDTO;
+    }
+
+    @Override
+    @Transactional
+    public void updateHorasEventoYSusDetalles(Evento evento)
+    {
+
+        DiaSemanaDTO diaSemanaDTO = getDiaSemanaDTOParaFecha(evento.getInicio());
+
+        QItemDTO qItem = QItemDTO.itemDTO;
+        JPAUpdateClause updateClause = new JPAUpdateClause(entityManager, qItem);
+        updateClause.where(qItem.id.eq(evento.getId())).set(qItem.horaInicio, evento.getInicio())
+                .set(qItem.horaFin, evento.getFin()).set(qItem.diaSemana, diaSemanaDTO).execute();
+
+        if (evento.hasDetalleManual())
+        {
+            for (EventoDetalle eventoDetalle : evento.getEventosDetalle())
+            {
+                updateHorasEventoDetalle(eventoDetalle);
+            }
+        }
+    }
+
+    @Override
+    @Transactional
+    public void updateHorasEventoDetalle(EventoDetalle eventoDetalle)
+    {
+        QItemDetalleDTO qItemDetalle = QItemDetalleDTO.itemDetalleDTO;
+
+        JPAUpdateClause updateClause = new JPAUpdateClause(entityManager, qItemDetalle);
+        updateClause.where(qItemDetalle.id.eq(eventoDetalle.getId()))
+                .set(qItemDetalle.inicio, eventoDetalle.getInicio())
+                .set(qItemDetalle.fin, eventoDetalle.getFin()).execute();
+
+    }
+
+    @Override
+    public EventoDetalle insertEventoDetalle(EventoDetalle eventoDetalle)
+            throws EventoDetalleSinEventoException
+    {
+        ItemDetalleDTO itemDetalle = new ItemDetalleDTO();
+        itemDetalle.setDescripcion(eventoDetalle.getDescripcion());
+        itemDetalle.setInicio(eventoDetalle.getInicio());
+        itemDetalle.setFin(eventoDetalle.getFin());
+
+        ItemDTO item = new ItemDTO();
+        item.setId(eventoDetalle.getEvento().getId());
+        itemDetalle.setItem(item);
+
+        itemDetalle = this.insert(itemDetalle);
+
+        return creaItemDetalleEnEventoDetalle(itemDetalle);
+    }
+
+    private EventoDetalle creaItemDetalleEnEventoDetalle(ItemDetalleDTO itemDetalle)
+            throws EventoDetalleSinEventoException
+    {
+        EventoDetalle eventoDetalle = new EventoDetalle();
+
+        eventoDetalle.setDescripcion(itemDetalle.getDescripcion());
+        eventoDetalle.setId(itemDetalle.getId());
+        eventoDetalle.setFin(itemDetalle.getFin());
+        eventoDetalle.setInicio(itemDetalle.getInicio());
+        try
+        {
+            eventoDetalle.setEvento(getEventoById(itemDetalle.getItem().getId()));
+        }
+        catch (RegistroNoEncontradoException e)
+        {
+            throw new EventoDetalleSinEventoException();
+        }
+
+        return eventoDetalle;
+    }
+
+    @Override
+    public void desasignaAulaPlanificacion(Long eventoId) throws RegistroNoEncontradoException
+    {
+        ItemDTO item;
+
+        try
+        {
+            item = get(ItemDTO.class, eventoId).get(0);
+        }
+        catch (Exception e)
+        {
+            throw new RegistroNoEncontradoException();
+        }
+
+        item.setAulaPlanificacion(null);
+        item.setAulaPlanificacionNombre("");
+
+        update(item);
+    }
+
+    @Override
+    @Transactional
+    public void desplanificaEvento(Evento evento)
+    {
+        DiaSemanaDTO diaSemanaDTO = getDiaSemanaDTOParaFecha(evento.getInicio());
+        AulaPlanificacionDTO aulaPlanificacionDTO = null;
+
+        QItemDTO qItem = QItemDTO.itemDTO;
+        JPAUpdateClause updateClause = new JPAUpdateClause(entityManager, qItem);
+        updateClause.where(qItem.id.eq(evento.getId())).set(qItem.horaInicio, evento.getInicio())
+                .set(qItem.horaFin, evento.getFin()).set(qItem.diaSemana, diaSemanaDTO)
+                .set(qItem.aulaPlanificacion, aulaPlanificacionDTO)
+                .set(qItem.aulaPlanificacionNombre, "").execute();
+    }
+
+    @Override
+    public List<EventoDetalle> getEventosDetallePorAula(Long aulaId, Long semestreId,
+            List<Long> calendariosIds, Date rangoFechaInicio, Date rangoFechaFin)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        List<String> tiposCalendarios = TipoSubgrupo.getTiposSubgrupos(calendariosIds);
+
+        QItemDTO item = QItemDTO.itemDTO;
+        QItemsAsignaturaDTO itemsAsignatura = QItemsAsignaturaDTO.itemsAsignaturaDTO;
+        QItemDetalleDTO itemsDetalle = QItemDetalleDTO.itemDetalleDTO;
+        QAulaPlanificacionDTO aulaPlanificacion = QAulaPlanificacionDTO.aulaPlanificacionDTO;
+        QAulaDTO aula = QAulaDTO.aulaDTO;
+
+        List<ItemDetalleDTO> listaItemsDetalleDTO = query
+                .from(item)
+                .join(item.itemsAsignaturas, itemsAsignatura)
+                .join(item.itemsDetalles, itemsDetalle)
+                .join(item.aulaPlanificacion, aulaPlanificacion)
+                .join(aulaPlanificacion.aula, aula)
+                .where(aula.id.eq(aulaId).and(aulaPlanificacion.semestreId.eq(semestreId))
+                        .and(itemsDetalle.inicio.goe(rangoFechaInicio))
+                        .and(itemsDetalle.fin.loe(rangoFechaFin)).and(item.diaSemana.isNotNull())
+                        .and(item.tipoSubgrupoId.in(tiposCalendarios))).list(itemsDetalle);
+
+        List<EventoDetalle> listaEventosDetalle = new ArrayList<EventoDetalle>();
+        for (ItemDetalleDTO itemDetalleDTO : listaItemsDetalleDTO)
+        {
+
+            EventoDetalle eventoDetalle = creaEventoDetalleDesdeItemDetalleDTO(itemDetalleDTO);
+            eventoDetalle.setEvento(creaEventoDesdeItemDTO(itemDetalleDTO.getItem()));
+
+            listaEventosDetalle.add(eventoDetalle);
+        }
+        return listaEventosDetalle;
+    }
+}

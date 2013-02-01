@@ -1,0 +1,13 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" id="C76FE11C-CB4A-2F1E-F605-0FBF81EAF78B" directorySegmentName="seg_0" name="hor_ext_car_per_dep_FK">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-05-28 14:28:56 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<containerWithKeyObject>67914D25-F962-F455-FC93-F3EDCBADE52D</containerWithKeyObject>
+<deleteRule>NO ACTION</deleteRule>
+<localFKIndex>CF8EA307-B018-D00E-8E26-C1F8B3735DE7</localFKIndex>
+<keyObject>2F2E1060-11BA-C1BE-E10E-498C1592810F</keyObject>
+<mandatory>false</mandatory>
+<transferable>true</transferable>
+</FKIndexAssociation>

@@ -1,0 +1,26 @@
+.form-disabled-label {
+	opacity: .3;
+}
+
+.form-label-date {
+	
+}
+
+.form-label-exams-date {
+	color: grey;
+}
+
+.form-label-exam-date-manual {
+	color: grey;
+}
+
+.form-label-date-manual {
+	
+}
+
+.form-legend-exams {
+	color: grey;
+	font-style: italic;
+}
+
+.time { background-image: url(http://static.uji.es/js/extjs/uji-commons-extjs/img/time.png) !important; background-repeat: no-repeat; }
