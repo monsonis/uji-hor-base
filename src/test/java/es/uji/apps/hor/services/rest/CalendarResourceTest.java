@@ -348,7 +348,7 @@ public class CalendarResourceTest extends AbstractCalendarResourceTest
         params.putSingle("endDate", "2012-10-31");
         params.putSingle("calendariosIds", calendariosIds);
 
-        ClientResponse response = resource.path("calendario/eventos/aula")
+        ClientResponse response = resource.path("calendario/eventos/aula/detalle")
                 .queryParams(params).accept(MediaType.APPLICATION_JSON_TYPE)
                 .get(ClientResponse.class);
 
@@ -357,6 +357,28 @@ public class CalendarResourceTest extends AbstractCalendarResourceTest
         });
 
         assertThat(listaEeventos, hasSize(4));
+    }
+
+    @Test
+    @Transactional
+    public void devuelveEventosSemanaGenericaAsignadosAUnAula()
+    {
+        Long aulaId = creaAulaYAsignalaAEvento(String.valueOf(eventoId));
+
+        MultivaluedMap<String, String> params = new StringKeyStringValueIgnoreCaseMultivaluedMap();
+        params.putSingle("aulaId", String.valueOf(aulaId));
+        params.putSingle("semestreId", String.valueOf(semestreId));
+        params.putSingle("calendariosIds", calendariosIds);
+
+        ClientResponse response = resource.path("calendario/eventos/aula/generica")
+                .queryParams(params).accept(MediaType.APPLICATION_JSON_TYPE)
+                .get(ClientResponse.class);
+
+        List<UIEntity> listaEeventos = response.getEntity(new GenericType<List<UIEntity>>()
+        {
+        });
+
+        assertThat(listaEeventos, hasSize(1));
     }
 
     private Long creaAulaYAsignalaAEvento(String eventoId)

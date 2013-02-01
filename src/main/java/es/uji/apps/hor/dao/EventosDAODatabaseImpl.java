@@ -716,7 +716,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
                 .join(item.itemsDetalles, itemsDetalle)
                 .join(item.aulaPlanificacion, aulaPlanificacion)
                 .join(aulaPlanificacion.aula, aula)
-                .where(aula.id.eq(aulaId).and(aulaPlanificacion.semestreId.eq(semestreId))
+                .where(aula.id.eq(aulaId).and(item.semestre.id.eq(semestreId))
                         .and(itemsDetalle.inicio.goe(rangoFechaInicio))
                         .and(itemsDetalle.fin.loe(rangoFechaFin)).and(item.diaSemana.isNotNull())
                         .and(item.tipoSubgrupoId.in(tiposCalendarios))).list(itemsDetalle);
@@ -731,5 +731,37 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             listaEventosDetalle.add(eventoDetalle);
         }
         return listaEventosDetalle;
+    }
+
+    @Override
+    public List<Evento> getEventosSemanaGenericaPorAula(Long aulaId, Long semestreId,
+            List<Long> calendariosIds)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+
+        QItemDTO item = QItemDTO.itemDTO;
+        QItemsAsignaturaDTO asignatura = QItemsAsignaturaDTO.itemsAsignaturaDTO;
+        QAulaPlanificacionDTO aulaPlanificacion = QAulaPlanificacionDTO.aulaPlanificacionDTO;
+        QAulaDTO aula = QAulaDTO.aulaDTO;
+
+        List<String> tiposCalendarios = TipoSubgrupo.getTiposSubgrupos(calendariosIds);
+
+        List<ItemDTO> listaItemsDTO = query
+                .from(item)
+                .join(item.itemsAsignaturas, asignatura)
+                .join(item.aulaPlanificacion, aulaPlanificacion)
+                .join(aulaPlanificacion.aula, aula)
+                .where(aula.id.eq(aulaId).and(item.semestre.id.eq(semestreId))
+                        .and(item.diaSemana.isNotNull())
+                        .and(item.tipoSubgrupoId.in(tiposCalendarios))).list(item);
+
+        List<Evento> eventos = new ArrayList<Evento>();
+
+        for (ItemDTO itemDTO : listaItemsDTO)
+        {
+            eventos.add(creaEventoDesdeItemDTO(itemDTO));
+        }
+
+        return eventos;
     }
 }

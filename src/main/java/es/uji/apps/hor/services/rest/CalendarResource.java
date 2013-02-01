@@ -591,7 +591,7 @@ public class CalendarResource extends CoreBaseService
     }
 
     @GET
-    @Path("eventos/aula")
+    @Path("eventos/aula/detalle")
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> getEventosDetalleByAula(@QueryParam(AULA_ID_PARAM) String aulaId,
             @QueryParam(SEMESTRE_ID_QUERY_PARAM) String semestreId,
@@ -651,6 +651,60 @@ public class CalendarResource extends CoreBaseService
             eventoUI.put("cid", eventoDetalle.getEvento().getCalendario().getId());
             eventoUI.put("start", uIEntitydateFormat.format(eventoDetalle.getInicio()));
             eventoUI.put("end", uIEntitydateFormat.format(eventoDetalle.getFin()));
+
+            eventosUI.add(eventoUI);
+        }
+
+        return eventosUI;
+    }
+
+    @GET
+    @Path("eventos/aula/generica")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<UIEntity> getEventosSemanaGenericaByAula(@QueryParam(AULA_ID_PARAM) String aulaId,
+            @QueryParam(SEMESTRE_ID_QUERY_PARAM) String semestreId,
+            @QueryParam(CALENDARIOS_IDS_QUERY_PARAM) String calendariosIds) throws ParseException,
+            RegistroNoEncontradoException, UnauthorizedUserException
+    {
+        ParamUtils.checkNotNull(aulaId, semestreId);
+
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+
+        String[] calendarios = calendariosIds.split(";");
+        List<Long> calendariosList = new ArrayList<Long>();
+
+        for (String calendario : calendarios)
+        {
+            calendario = calendario.trim();
+            if (!calendario.equals(""))
+            {
+                calendariosList.add(ParamUtils.parseLong(calendario));
+            }
+        }
+
+        List<Evento> eventos = new ArrayList<Evento>();
+
+        if (calendariosList.size() != 0)
+        {
+            eventos = eventosService.getEventosSemanaGenericaPorAula(ParamUtils.parseLong(aulaId),
+                    ParamUtils.parseLong(semestreId), calendariosList, connectedUserId);
+        }
+
+        return eventosSemanaGenericaPorAulaToUI(eventos);
+    }
+
+    private List<UIEntity> eventosSemanaGenericaPorAulaToUI(List<Evento> eventos)
+    {
+        List<UIEntity> eventosUI = new ArrayList<UIEntity>();
+
+        for (Evento evento : eventos)
+        {
+            UIEntity eventoUI = new UIEntity();
+            eventoUI.put("id", evento.getId());
+            eventoUI.put("title", evento.getDescripcionConGrupoYComunes());
+            eventoUI.put("cid", evento.getCalendario().getId());
+            eventoUI.put("start", uIEntitydateFormat.format(evento.getInicio()));
+            eventoUI.put("end", uIEntitydateFormat.format(evento.getFin()));
 
             eventosUI.add(eventoUI);
         }

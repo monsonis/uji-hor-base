@@ -57,4 +57,7 @@ public interface EventosDAO extends BaseDAO
 
     List<EventoDetalle> getEventosDetallePorAula(Long aulaId, Long semestreId,
             List<Long> calendariosIds, Date rangoFechaInicio, Date rangoFechaFin);
+
+    List<Evento> getEventosSemanaGenericaPorAula(Long aulaId, Long semestreId,
+            List<Long> calendariosIds);
 }

@@ -540,4 +540,17 @@ public class Evento
 
     }
 
+    public String getDescripcionConGrupoYComunes()
+    {
+        String tituloEvento = "";
+
+        for (Asignatura asignatura : this.asignaturas)
+        {
+            tituloEvento = tituloEvento + " " + asignatura.getId();
+        }
+
+        tituloEvento += " " + this.grupoId + " " + this.calendario.getLetraId() + this.subgrupoId;
+
+        return tituloEvento;
+    }
 }
