@@ -1,5 +1,8 @@
 package es.uji.apps.hor.dao;
 
+import java.util.List;
+
+import es.uji.apps.hor.model.Cargo;
 import es.uji.apps.hor.model.Persona;
 import es.uji.commons.db.BaseDAO;
 import es.uji.commons.db.LookupDAO;
@@ -15,4 +18,6 @@ public interface PersonaDAO extends BaseDAO, LookupDAO
     boolean esAdmin(Long personaId);
 
     Persona insertaCargos(Persona persona);
+
+    List<Cargo> getTodosLosCargos();
 }

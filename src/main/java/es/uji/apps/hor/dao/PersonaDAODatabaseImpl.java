@@ -18,6 +18,8 @@ import es.uji.apps.hor.db.EstudioDTO;
 import es.uji.apps.hor.db.PersonaDTO;
 import es.uji.apps.hor.db.QCargoPersonaDTO;
 import es.uji.apps.hor.db.QPersonaDTO;
+import es.uji.apps.hor.db.QTipoCargoDTO;
+import es.uji.apps.hor.db.TipoCargoDTO;
 import es.uji.apps.hor.model.Cargo;
 import es.uji.apps.hor.model.Centro;
 import es.uji.apps.hor.model.Estudio;
@@ -194,5 +196,30 @@ public class PersonaDAODatabaseImpl extends BaseDAODatabaseImpl implements Perso
             }
         }
         return result;
+    }
+
+    @Override
+    public List<Cargo> getTodosLosCargos()
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        QTipoCargoDTO qTipoCargo = QTipoCargoDTO.tipoCargoDTO;
+        
+        query.from(qTipoCargo);
+        
+        return convierteCargoDTOaCargo(query.list(qTipoCargo));
+    }
+
+    private List<Cargo> convierteCargoDTOaCargo(List<TipoCargoDTO> listaCargosDTO)
+    {
+        List<Cargo> listaCargos = new ArrayList<Cargo>();
+        
+        for (TipoCargoDTO cargoDTO: listaCargosDTO) {
+            Cargo cargo = new Cargo();
+            cargo.setId(cargoDTO.getId());
+            cargo.setNombre(cargoDTO.getNombre());
+            listaCargos.add(cargo);
+        }
+        
+        return listaCargos;
     }
 }

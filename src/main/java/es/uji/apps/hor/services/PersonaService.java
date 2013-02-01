@@ -32,8 +32,10 @@ public class PersonaService
         if (!personaDAO.esAdmin(connectedUserId))
         {
             persona.compruebaAccesoAEstudio(estudioId);
+            return persona.getCargos();
+        } else {
+            return personaDAO.getTodosLosCargos();
         }
-        return persona.getCargos();
     }
 
 }
