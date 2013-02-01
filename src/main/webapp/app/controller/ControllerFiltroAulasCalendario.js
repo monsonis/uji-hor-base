@@ -100,6 +100,8 @@ Ext.define('HOR.controller.ControllerFiltroAulasCalendario',
         var storeTipos = this.getStoreTiposAulaStore();
         var storePlantas = this.getStorePlantasEdificioStore();
         
+        var tiposAulas = this.getFiltroAulas().down('combobox[name=tipoAula]');
+        
         storeTipos.load(
         {
            params : 
@@ -107,10 +109,16 @@ Ext.define('HOR.controller.ControllerFiltroAulasCalendario',
                centroId : centro,
                edificio : edificio
            },
-           scope : this
+           callback: function(records, operation, success)
+           {
+               this.insert( 0, { nombre : 'Tots els tipus', valor : '' });
+               tiposAulas.setValue('');
+           }
         });
         
-        fixLoadMaskBug(storeTipos, this.getFiltroAulas().down('combobox[name=tipoAula]'));
+        fixLoadMaskBug(storeTipos, tiposAulas);
+        
+        var plantas = this.getFiltroAulas().down('combobox[name=planta]');
         
         storePlantas.load(
         {
@@ -119,10 +127,14 @@ Ext.define('HOR.controller.ControllerFiltroAulasCalendario',
                 centroId : centro,
                 edificio : edificio
             },
-            scope : this
+            callback: function(records, operation, success)
+            {
+                this.insert( 0, { nombre : 'Totes les plantes', valor : '' });
+                plantas.setValue('');
+            }           
         });
                 
-        fixLoadMaskBug(storePlantas, this.getFiltroAulas().down('combobox[name=planta]'));
+        fixLoadMaskBug(storePlantas, plantas);
     }
     
 });

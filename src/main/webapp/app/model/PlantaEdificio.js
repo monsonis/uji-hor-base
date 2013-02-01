@@ -2,5 +2,5 @@ Ext.define('HOR.model.PlantaEdificio',
 {
     extend : 'Ext.data.Model',
 
-    fields : [ 'nombre' ]
+    fields : [ 'nombre', 'valor' ]
 });

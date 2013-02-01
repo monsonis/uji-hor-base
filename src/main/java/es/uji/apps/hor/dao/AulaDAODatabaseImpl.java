@@ -274,6 +274,7 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         {
             TipoAula tipoAula = new TipoAula();
             tipoAula.setNombre(tipoAulaStr);
+            tipoAula.setValor(tipoAulaStr);
             tiposAula.add(tipoAula);
         }
 

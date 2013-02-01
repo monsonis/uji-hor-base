@@ -78,16 +78,15 @@ Ext.define('HOR.view.aulas.calendar.FiltroAulas',
            fieldLabel : 'Tipus aula',
            store : 'StoreTiposAula',
            displayField : 'nombre',
-           valueField : 'nombre',
+           valueField : 'valor',
            name : 'tipoAula',
        },
        {
            fieldLabel : 'Planta',
            store : 'StorePlantasEdificio',
            displayField : 'nombre',
-           valueField : 'nombre',
-           name : 'planta',
-           width : 120
+           valueField : 'valor',
+           name : 'planta'
        }]       
    }]
 });

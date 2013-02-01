@@ -62,6 +62,7 @@ public class EdificiosDAODatabaseImpl extends BaseDAODatabaseImpl implements Edi
         {
             PlantaEdificio plantaEdificio = new PlantaEdificio();
             plantaEdificio.setNombre(plantaEdificioStr);
+            plantaEdificio.setValor(plantaEdificioStr);
             plantasEdificio.add(plantaEdificio);
         }
 
