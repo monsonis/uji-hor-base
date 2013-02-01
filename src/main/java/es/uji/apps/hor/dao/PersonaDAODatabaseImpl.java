@@ -42,7 +42,7 @@ public class PersonaDAODatabaseImpl extends BaseDAODatabaseImpl implements Perso
 
         DepartamentoDTO departamentoDTO = new DepartamentoDTO();
         departamentoDTO.setId(persona.getDepartamento().getId());
-        personaDTO.setDepartamento(departamentoDTO);
+//        personaDTO.setDepartamento(departamentoDTO);
 
         personaDTO.setNombre(persona.getNombre());
         personaDTO.setEmail(persona.getEmail());

@@ -30,9 +30,10 @@ public class PersonaDTO implements Serializable {
 	private Set<CargoPersonaDTO> cargosPersona;
 
 	//bi-directional many-to-one association to DepartamentoDTO
-    @ManyToOne
-	@JoinColumn(name="DEPARTAMENTO_ID")
-	private DepartamentoDTO departamento;
+	// Lo comentamos temporalmente
+//    @ManyToOne
+//	@JoinColumn(name="DEPARTAMENTO_ID")
+//	private DepartamentoDTO departamento;
 
 	//bi-directional many-to-one association to PermisoExtraDTO
 	@OneToMany(mappedBy="persona")
@@ -81,13 +82,13 @@ public class PersonaDTO implements Serializable {
 		this.cargosPersona = cargosPersona;
 	}
 	
-	public DepartamentoDTO getDepartamento() {
-		return this.departamento;
-	}
-
-	public void setDepartamento(DepartamentoDTO departamento) {
-		this.departamento = departamento;
-	}
+//	public DepartamentoDTO getDepartamento() {
+//		return this.departamento;
+//	}
+//
+//	public void setDepartamento(DepartamentoDTO departamento) {
+//		this.departamento = departamento;
+//	}
 	
 	public Set<PermisoExtraDTO> getPermisosExtras() {
 		return this.permisosExtras;
