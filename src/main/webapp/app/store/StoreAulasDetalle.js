@@ -5,7 +5,7 @@ Ext.define('HOR.store.StoreAulasDetalle',
     proxy :
     {
         type : 'rest',
-        url : '/hor/rest/calendario/eventos/aula',
+        url : '/hor/rest/calendario/eventos/aula/detalle',
         noCache : false,
 
         reader :
