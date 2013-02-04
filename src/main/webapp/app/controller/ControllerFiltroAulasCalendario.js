@@ -111,7 +111,7 @@ Ext.define('HOR.controller.ControllerFiltroAulasCalendario',
            },
            callback: function(records, operation, success)
            {
-               this.insert( 0, { nombre : 'Tots els tipus', valor : '' });
+               this.insert( 0, { nombre : 'Totes', valor : '' });
                tiposAulas.setValue('');
            }
         });
@@ -129,7 +129,7 @@ Ext.define('HOR.controller.ControllerFiltroAulasCalendario',
             },
             callback: function(records, operation, success)
             {
-                this.insert( 0, { nombre : 'Totes les plantes', valor : '' });
+                this.insert( 0, { nombre : 'Totes', valor : '' });
                 plantas.setValue('');
             }           
         });

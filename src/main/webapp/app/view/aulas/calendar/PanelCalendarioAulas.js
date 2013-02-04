@@ -15,7 +15,7 @@ Ext.define('HOR.view.aulas.calendar.PanelCalendarioAulas',
     items : [
     {
         xtype : 'filtroAulas',
-        height : 60,
+        height : 60
     },
     {
         xtype : 'panel',
