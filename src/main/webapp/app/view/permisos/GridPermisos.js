@@ -6,7 +6,7 @@ Ext.define('HOR.view.permisos.GridPermisos',
     
     store : 'StorePermisos',
     alias : 'widget.gridPermisos',
-
+    
     sortableColumns : false,
 
     columns : [

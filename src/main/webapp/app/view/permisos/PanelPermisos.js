@@ -4,6 +4,8 @@ Ext.define('HOR.view.permisos.PanelPermisos', {
 	requires : [ 'HOR.view.permisos.GridPermisos', 'HOR.view.permisos.VentanaNewPermiso' ],
 	alias : 'widget.panelPermisos',
 	closable : true,
+    autoScroll: true,
+
 	layout : {
 		type : 'vbox',
 		align : 'stretch',
