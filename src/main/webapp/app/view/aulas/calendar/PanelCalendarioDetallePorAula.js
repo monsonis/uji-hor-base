@@ -1,30 +1,26 @@
-Ext.define('HOR.view.horarios.PanelCalendarioPorAula',
+Ext.define('HOR.view.aulas.calendar.PanelCalendarioDetallePorAula',
 {
     extend : 'Extensible.calendar.CalendarPanel',
-    alias : 'widget.panelCalendarioPorAula',
+    alias : 'widget.panelCalendarioDetallePorAula',    
     region : 'center',
     title : 'Ocupació Aula',
-    depends : [ 'HOR.store.StoreCalendarios', 'HOR.store.StoreAulasGenerica' ],
+    depends : [ 'HOR.store.StoreCalendarios', 'HOR.store.StoreAulasDetalle' ],
     calendarStore : Ext.create('HOR.store.StoreCalendarios'),
-    eventStore : Ext.create('HOR.store.StoreAulasGenerica'),
+    eventStore : Ext.create('HOR.store.StoreAulasDetalle'),
     editModal : true,
+    readOnly : true,
     flex : 1,
     padding : 5,
-    showTodayText : false,
-    showNavToday : false,
-    showDayView : false,
-    showWeekView : false,
-    showMonthView : false,
-    weekViewCfg :
-    {
-        dayCount : 5,
-        startDay : 1,
-        startDayIsStatic : true,
-    },
     showMultiDayView : true,
-    showMultiWeekView : false,
-    showNavJump : false,
-    showNavNextPrev : false,
+    showMultiWeekView : true,
+    showMonthView : false,
+    showWeekView : false,
+    activeItem : 1,
+    viewConfig :
+    {
+        viewStartHour : 8,
+        viewEndHour : 22
+    },
     multiDayViewCfg :
     {
         dayCount : 5,
@@ -40,33 +36,39 @@ Ext.define('HOR.view.horarios.PanelCalendarioPorAula',
             return params;
         }
     },
-    getMultiDayText : function()
+    multiWeekViewCfg :
     {
-        return 'Setmana genèrica';
+        weekCount : 4,       
+        showTime : false,
+        showMonth : true
+       
     },
-
     limpiaCalendario : function()
     {
         this.store.removeAll(false);
         this.setTitle('Ocupació Aula');
     },
-
     initComponent : function()
     {
         Extensible.calendar.template.BoxLayout.override(
         {
-            firstWeekDateFormat : 'l',
-            multiDayFirstDayFormat : 'l',
-            multiDayMonthStartFormat : 'l'
+            firstWeekDateFormat : 'D j',
+            multiDayFirstDayFormat : 'M j, Y',
+            multiDayMonthStartFormat : 'M j'
         });
 
         this.callParent(arguments);
     },
-    onStoreUpdate : function()
+    getMultiDayText : function()
     {
+        return 'Setmana';
     },
     
-    getEventStore : function() {
-        return this.store;
+    getMultiWeekText : function()
+    {
+        return 'Mes';
+    },
+
+    onStoreUpdate: function() {
     }
 });

@@ -51,6 +51,17 @@ Ext.define('HOR.view.aulas.calendar.FiltroAulas',
        xtype : 'panel',
        border : 0,
        anchor : '100%',
+       layout :
+       {
+           type : 'hbox',
+           align : 'fit',
+       },
+
+       items : [
+   {
+       xtype : 'panel',
+       border : 0,
+       anchor : '70%',
        layout : 
        {
            type : 'hbox',
@@ -103,35 +114,63 @@ Ext.define('HOR.view.aulas.calendar.FiltroAulas',
            displayField : 'nombre',
            valueField : 'valor',
            name : 'planta'
-       },{
-			xtype : 'panel',
-			border : 0,
-			anchor : '50%',
-			flex : 1,
-			layout : {
-				type : 'hbox',
-				align : 'fit',
-				pack : 'end'
-			},
-			defaults : {
-				width : 120,
-				labelWidth : 75,
-				labelAlign : 'left',
-				margin : '0 20 0 0'
-			},
-			items : [ {
-				margin : '0 0 0 0',
-				name : 'imprimir',
-				xtype : 'button',
-				hidden : true,
-				margin : '0 0 0 5',
-				width : '40',
-				flex : 0,
-				text : 'Imprimir',
-				iconCls : 'printer'
-			}]  
-       }
-       ]
-   }
-   ]
+       } ]
+   },
+       {
+           xtype : 'panel',
+           border : 0,
+           anchor : '50%',
+           flex : 1,
+           layout :
+           {
+               type : 'hbox',
+               align : 'fit',
+               pack : 'end'
+           },
+           defaults :
+           {
+               width : 120,
+               labelWidth : 75,
+               labelAlign : 'left',
+               margin : '0 20 0 0'
+           },
+           items : [
+           {
+               margin : '0 0 0 0',
+               name : 'imprimir',
+               xtype : 'button',
+               hidden : true,
+               margin : '0 0 0 5',
+               width : '40',
+               flex : 0,
+               text : 'Imprimir',
+               iconCls : 'printer'
+           },
+           {
+               margin : '0 0 0 10',
+               name : 'calendarioAulasDetalle',
+               xtype : 'button',
+               enableToggle : true,
+               hidden : true,
+               width : '40',
+               flex : 0,
+               text : 'Set. detallada',
+               iconCls : 'calendar-week'
+           },
+           {
+               margin : '0 0 0 10',
+               name : 'calendarioAulasGenerica',
+               xtype : 'button',
+               enableToggle : true,
+               pressed : true,
+               hidden : true,
+               margin : '0 0 0 5',
+               width : '40',
+               flex : 0,
+               text : 'Set. genèrica',
+               iconCls : 'calendar-edit'
+           } ]  
+       }]
+   }]
+
 });

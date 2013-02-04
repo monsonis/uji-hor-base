@@ -16,6 +16,18 @@ Ext.define('HOR.controller.ControllerFiltroAulasCalendario',
         ref : 'panelCalendarioPorAula'
     },
     {
+        selector : 'panelCalendarioDetallePorAula',
+        ref : 'panelCalendarioDetallePorAula'
+    },
+    {
+        selector : 'filtroAulas button[name=calendarioAulasDetalle]',
+        ref : 'botonCalendarioDetalle'
+    },
+    {
+        selector : 'filtroAulas button[name=calendarioAulasGenerica]',
+        ref : 'botonCalendarioGenerica'
+    },
+    {
         selector : 'panelCalendarioAulas button[name=imprimir]',
         ref : 'botonImprimir'
     }],
@@ -54,7 +66,7 @@ Ext.define('HOR.controller.ControllerFiltroAulasCalendario',
         this.getStorePlantasEdificioStore().removeAll();
         
         this.getSelectorAulas().removeAll();
-        this.getPanelCalendarioPorAula().limpiaCalendario();
+        this.limpiaCalendario();
         
         var store = semestre.getStore();
         
@@ -76,7 +88,7 @@ Ext.define('HOR.controller.ControllerFiltroAulasCalendario',
         this.getStorePlantasEdificioStore().removeAll();
         
         this.getSelectorAulas().removeAll();
-        this.getPanelCalendarioPorAula().limpiaCalendario();
+        this.limpiaCalendario();
         
         var centro = this.getFiltroAulas().down('combobox[name=centro]').getValue();
         
@@ -104,7 +116,7 @@ Ext.define('HOR.controller.ControllerFiltroAulasCalendario',
         this.getBotonImprimir().hide();
 
         
-        this.getPanelCalendarioPorAula().limpiaCalendario();
+        this.limpiaCalendario();
         
         var storeTipos = this.getStoreTiposAulaStore();
         var storePlantas = this.getStorePlantasEdificioStore();
@@ -144,6 +156,23 @@ Ext.define('HOR.controller.ControllerFiltroAulasCalendario',
         });
                 
         fixLoadMaskBug(storePlantas, plantas);
+    },
+    
+    limpiaCalendario : function()
+    {
+        if (this.getPanelCalendarioPorAula()) 
+        {
+            this.getPanelCalendarioPorAula().limpiaCalendario();
+        }
+        
+        if (this.getPanelCalendarioDetallePorAula()) 
+        {
+            this.getPanelCalendarioDetallePorAula().limpiaCalendario();
+        }
+        
+        this.getBotonCalendarioDetalle().hide();
+        this.getBotonCalendarioGenerica().hide();
+        this.getBotonImprimir().hide();
     }
     
 });
