@@ -50,7 +50,7 @@ Ext.define('HOR.view.aulas.calendar.FiltroAulas',
    {
        xtype : 'panel',
        border : 0,
-       anchor : '70%',
+       anchor : '100%',
        layout : 
        {
            type : 'hbox',
