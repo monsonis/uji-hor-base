@@ -223,20 +223,30 @@ Ext.define('HOR.controller.ControllerCalendarioAulas',
 
     refreshEventsCalendarFromSelectorCalendariosOrBotones : function()
     {
-        if (this.getPanelCalendarioPorAula())
-        {
-            var store = this.getPanelCalendarioPorAula().store;
-        }
-        else if (this.getPanelCalendarioDetallePorAula())
-        {
-            var store = this.getPanelCalendarioDetallePorAula().store;
-        }
-
-        if (store && store.getProxy().extraParams['aulaId'] != null)
-        {
-            var aulaId = store.getProxy().extraParams['aulaId'];
+         var aulaId = this.getSelectedAulaId();
+         if (aulaId){
             this.refreshEventsCalendar(aulaId);
-        }
+         }
+
+    },
+    
+    getSelectedAulaId : function()
+    {
+    	 if (this.getPanelCalendarioPorAula())
+         {
+             var store = this.getPanelCalendarioPorAula().store;
+         }
+         else if (this.getPanelCalendarioDetallePorAula())
+         {
+             var store = this.getPanelCalendarioDetallePorAula().store;
+         }
+
+         if (store && store.getProxy().extraParams['aulaId'] != null)
+         {
+             return store.getProxy().extraParams['aulaId'];
+         } else {
+        	 return null;
+         }
     },
 
     getInicioSemestre : function()
@@ -258,10 +268,15 @@ Ext.define('HOR.controller.ControllerCalendarioAulas',
     
     imprimirCalendario : function()
     {    	
-        var aula = this.getPanelCalendarioPorAula().store.getProxy().extraParams['aulaId'];        
+        var aula = this.getSelectedAulaId();      
         var semestre = this.getComboSemestre().getValue();
         
+        if (this.getBotonCalendarioGenerica().pressed){
+        	window.open("http://www.uji.es/cocoon/xxxx/" + aula + "/" + semestre +  "/ocupacion-aula-generica.pdf");
+        } else {
+        	window.open("http://www.uji.es/cocoon/xxxx/" + aula + "/" + semestre +  "/ocupacion-aula-detalle.pdf");
+        }
 
-       window.open("http://www.uji.es/cocoon/xxxx/" + aula + "/" + semestre +  "/ocupacion-aula-detalle.pdf");
+       
     }
 });
