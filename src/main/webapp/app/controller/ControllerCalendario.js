@@ -55,6 +55,7 @@ Ext.define('HOR.controller.ControllerCalendario',
             'panelHorarios' :
             {
                 refreshCalendar : this.refreshCalendar,
+                refreshCalendarDetalle : this.refreshCalendarDetalle,
                 render : this.onPanelCalendarioRendered
             },
             'panelHorarios selectorCalendarios checkbox' :

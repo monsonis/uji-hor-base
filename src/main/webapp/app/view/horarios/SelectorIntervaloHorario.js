@@ -19,7 +19,6 @@ Ext.define('HOR.view.horarios.SelectorIntervaloHorario',
         title : 'Sel·lecciona l\'interval horari',
         layout : 'hbox',
         items : [
-
         {
             xtype : 'combobox',
             fieldLabel : 'Hora inici',

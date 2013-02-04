@@ -8,7 +8,6 @@ Ext.define('HOR.controller.ControllerConfiguracion',
         selector : 'panelHorarios',
         ref : 'panelHorarios'
     },
-
     {
         selector : 'panelHorarios filtroGrupos',
         ref : 'filtroGrupos'
@@ -78,7 +77,13 @@ Ext.define('HOR.controller.ControllerConfiguracion',
             },
             success : function()
             {
-                this.getPanelHorarios().fireEvent("refreshCalendar");
+                if (this.getFiltroGrupos().down('button[name=calendarioDetalle]').pressed)
+                {
+                    this.getPanelHorarios().fireEvent("refreshCalendarDetalle");
+                } else {
+                    this.getPanelHorarios().fireEvent("refreshCalendar");
+                }
+
                 this.getSelectorIntervaloHorario().destroy();
             },
             scope : this
