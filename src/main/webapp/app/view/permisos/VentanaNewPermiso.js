@@ -2,7 +2,7 @@ Ext.define('HOR.view.permisos.VentanaNewPermiso',
 {
     extend : 'Ext.Window',
     title : 'Afegir un nou permís',
-    width : 600,
+    width : 800,
     alias : 'widget.ventanaNewPermiso',
     layout : 'fit',
     modal : true,
