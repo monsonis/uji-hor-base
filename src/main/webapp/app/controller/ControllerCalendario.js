@@ -45,11 +45,10 @@ Ext.define('HOR.controller.ControllerCalendario',
                 {
                     if (ref.getFiltroGrupos().down('button[name=calendarioDetalle]').pressed)
                     {
-                        ref.getFiltroGrupos().down('button[name=calendarioDetalle]').toggle();
-                        ref.getFiltroGrupos().down('button[name=calendarioGenerica]').toggle();
+                        ref.refreshCalendarDetalle();
+                    } else {
+                        ref.refreshCalendar();
                     }
-                    ref.getSelectorGrupos().show();
-                    ref.refreshCalendar();
                 }
             },
 
