@@ -14,6 +14,10 @@ Ext.define('HOR.controller.ControllerFiltroAulasCalendario',
     {
         selector : 'panelCalendarioPorAula',
         ref : 'panelCalendarioPorAula'
+    },
+    {
+        selector : 'panelCalendarioAulas button[name=imprimir]',
+        ref : 'botonImprimir'
     }],
     
     init : function()
@@ -43,6 +47,7 @@ Ext.define('HOR.controller.ControllerFiltroAulasCalendario',
         this.getFiltroAulas().down('combobox[name=edificio]').clearValue();
         this.getFiltroAulas().down('combobox[name=tipoAula]').clearValue();
         this.getFiltroAulas().down('combobox[name=planta]').clearValue();
+        this.getBotonImprimir().hide();
         
         this.getStoreEdificiosStore().removeAll();
         this.getStoreTiposAulaStore().removeAll();
@@ -64,6 +69,8 @@ Ext.define('HOR.controller.ControllerFiltroAulasCalendario',
         this.getFiltroAulas().down('combobox[name=edificio]').clearValue();
         this.getFiltroAulas().down('combobox[name=tipoAula]').clearValue();
         this.getFiltroAulas().down('combobox[name=planta]').clearValue();
+        this.getBotonImprimir().hide();
+
         
         this.getStoreTiposAulaStore().removeAll();
         this.getStorePlantasEdificioStore().removeAll();
@@ -94,6 +101,8 @@ Ext.define('HOR.controller.ControllerFiltroAulasCalendario',
         
         var centro = this.getFiltroAulas().down('combobox[name=centro]').getValue();
         var edificio = this.getFiltroAulas().down('combobox[name=edificio]').getValue();
+        this.getBotonImprimir().hide();
+
         
         this.getPanelCalendarioPorAula().limpiaCalendario();
         

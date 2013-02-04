@@ -18,7 +18,15 @@ Ext.define('HOR.controller.ControllerCalendarioAulas',
     {
         selector : 'filtroAulas',
         ref : 'filtroAulas'
-    } ],
+    }, 
+    {
+        selector : 'filtroAulas combobox[name=semestre]',
+        ref : 'comboSemestre'
+    },
+    {
+        selector : 'panelCalendarioAulas button[name=imprimir]',
+        ref : 'botonImprimir'
+    }],
 
     init : function()
     {
@@ -31,15 +39,22 @@ Ext.define('HOR.controller.ControllerCalendarioAulas',
             'panelCalendarioAulas selectorCalendarios checkbox' :
             {
                 change : this.refreshEventsCalendarFromSelectorCalendarios
+            },
+            'panelCalendarioAulas button[name=imprimir]' :
+            {
+                click : this.imprimirCalendario
             }
         });
     },
 
     refreshEventsCalendar : function(aulaId, aulaText)
     {
-        //var aulaId = button.aulaId;
+        // var aulaId = button.aulaId;
         var semestre = this.getFiltroAulas().down('combobox[name=semestre]').getValue();
-        var calendarios = this.getSelectorCalendarios().getCalendarsSelected();     
+        var calendarios = this.getSelectorCalendarios().getCalendarsSelected();    
+        
+        this.getBotonImprimir().show();
+
 
         var panelCalendario = this.getPanelCalendarioPorAula();
         
@@ -131,5 +146,15 @@ Ext.define('HOR.controller.ControllerCalendarioAulas',
                 return record.get('fechaInicio');
             }
         }
+    },
+    
+    imprimirCalendario : function()
+    {    	
+        var aula = this.getPanelCalendarioPorAula().store.getProxy().extraParams['aulaId'];        
+        var semestre = this.getComboSemestre().getValue();
+        
+
+       window.open("http://www.uji.es/cocoon/xxxx/" + aula + "/" + semestre +  "/ocupacion-aula-detalle.pdf");
+
     }
 });

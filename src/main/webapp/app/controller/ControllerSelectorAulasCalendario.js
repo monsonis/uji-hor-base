@@ -14,7 +14,11 @@ Ext.define('HOR.controller.ControllerSelectorAulasCalendario',
     {
         selector : 'panelCalendarioAulas selectorCalendarios',
         ref : 'selectorCalendarios'
-    } ],
+    },
+    {
+    	 selector : 'panelCalendarioAulas button[name=imprimir]',
+         ref : 'botonImprimir'
+    }],
     
     init : function()
     {

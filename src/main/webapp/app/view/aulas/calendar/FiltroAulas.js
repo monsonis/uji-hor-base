@@ -103,6 +103,35 @@ Ext.define('HOR.view.aulas.calendar.FiltroAulas',
            displayField : 'nombre',
            valueField : 'valor',
            name : 'planta'
-       }]       
-   }]
+       },{
+			xtype : 'panel',
+			border : 0,
+			anchor : '50%',
+			flex : 1,
+			layout : {
+				type : 'hbox',
+				align : 'fit',
+				pack : 'end'
+			},
+			defaults : {
+				width : 120,
+				labelWidth : 75,
+				labelAlign : 'left',
+				margin : '0 20 0 0'
+			},
+			items : [ {
+				margin : '0 0 0 0',
+				name : 'imprimir',
+				xtype : 'button',
+				hidden : true,
+				margin : '0 0 0 5',
+				width : '40',
+				flex : 0,
+				text : 'Imprimir',
+				iconCls : 'printer'
+			}]  
+       }
+       ]
+   }
+   ]
 });
