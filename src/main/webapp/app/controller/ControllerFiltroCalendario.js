@@ -85,6 +85,7 @@ Ext.define('HOR.controller.ControllerFiltroCalendario',
     {
         this.getFiltroGrupos().down('combobox[name=semestre]').clearValue();
         this.limpiaCamposComunes();
+        this.getStoreSemestresStore().removeAll();
         this.getStoreGruposStore().removeAll();
 
         var estudio = this.getFiltroGrupos().down('combobox[name=estudio]').getValue();
@@ -107,8 +108,6 @@ Ext.define('HOR.controller.ControllerFiltroCalendario',
     onSemestreSelected : function(combo, records)
     {
         this.limpiaCamposComunes();
-        
-        this.getStoreSemestresStore().removeAll();
         this.getStoreGruposStore().removeAll();
 
         var estudio = this.getFiltroGrupos().down('combobox[name=estudio]').getValue();
