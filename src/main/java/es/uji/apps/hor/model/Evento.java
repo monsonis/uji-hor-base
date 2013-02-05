@@ -3,12 +3,14 @@ package es.uji.apps.hor.model;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import org.springframework.stereotype.Component;
 
+import es.uji.apps.hor.AsignaturasComparator;
 import es.uji.apps.hor.AulaNoAsignadaAEstudioDelEventoException;
 import es.uji.apps.hor.DuracionEventoIncorrectaException;
 import es.uji.apps.hor.EventoFueraDeRangoException;
@@ -356,6 +358,7 @@ public class Evento
 
     public void setAsignaturas(List<Asignatura> asignaturas)
     {
+        Collections.sort(asignaturas, new AsignaturasComparator());
         this.asignaturas = asignaturas;
     }
 

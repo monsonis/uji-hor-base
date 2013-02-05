@@ -15,6 +15,11 @@ Ext.define('HOR.view.horarios.PanelCalendarioPorAula',
     showDayView : false,
     showWeekView : false,
     showMonthView : false,
+    viewConfig :
+    {
+        viewStartHour : 8,
+        viewEndHour : 22
+    },
     weekViewCfg :
     {
         dayCount : 5,
