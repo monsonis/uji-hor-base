@@ -451,10 +451,48 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         }
     }
 
-    // public Evento getEventoConEventosDetalleById(Long eventoId)
-    // throws RegistroNoEncontradoException
-    // {
-    // }
+    @Override
+    public Evento getEventoByEventoDetalleId(Long eventoDetalleId)
+            throws RegistroNoEncontradoException
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+
+        QItemDTO item = QItemDTO.itemDTO;
+        QItemDetalleDTO itemDetalle = QItemDetalleDTO.itemDetalleDTO;
+
+        List<ItemDTO> listaItemsDTO = query.from(itemDetalle).join(itemDetalle.item, item)
+                .where(itemDetalle.id.eq(eventoDetalleId)).list(item);
+
+        if (listaItemsDTO.size() == 1)
+        {
+            Evento evento = creaEventoDesdeItemDTO(listaItemsDTO.get(0));
+            evento.setEventosDetalle(getEventosDetalleDeEvento(evento));
+
+            return evento;
+        }
+        else
+        {
+            throw new RegistroNoEncontradoException();
+        }
+    }
+
+    private List<EventoDetalle> getEventosDetalleDeEvento(Evento evento)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        QItemDetalleDTO itemDetalle = QItemDetalleDTO.itemDetalleDTO;
+
+        List<ItemDetalleDTO> listaItemsDTO = query.from(itemDetalle)
+                .where(itemDetalle.item.id.eq(evento.getId())).list(itemDetalle);
+
+        List<EventoDetalle> listaDetalles = new ArrayList<EventoDetalle>();
+
+        for (ItemDetalleDTO detalleDTO : listaItemsDTO)
+        {
+            listaDetalles.add(creaEventoDetalleDesdeItemDetalleDTO(detalleDTO));
+        }
+
+        return listaDetalles;
+    }
 
     @Override
     public Evento updateEvento(Evento evento)

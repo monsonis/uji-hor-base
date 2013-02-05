@@ -207,10 +207,16 @@ Ext.define('HOR.controller.ControllerCalendario',
                                     eventStore : eventos,
                                     showMultiDayView : true,
                                     startDate : inicio,
+                                    enableEditDetails: false,
                                     viewConfig :
                                     {
                                         viewStartHour : horaInicio,
                                         viewEndHour : horaFin
+                                    },
+                                    initComponent : function()
+                                    {
+                                        this.superclass.initComponent.call(this);
+                                        ref.desactivaMenuContextualYEdicionDetalle();
                                     },
                                     listeners :
                                     {
@@ -315,6 +321,11 @@ Ext.define('HOR.controller.ControllerCalendario',
                             {
                                 viewStartHour : horaInicio,
                                 viewEndHour : horaFin
+                            },
+                            initComponent : function()
+                            {
+                                this.superclass.initComponent.call(this);
+                                ref.activaMenuContextualYEdicionDetalle();
                             },
                             listeners :
                             {
@@ -434,7 +445,174 @@ Ext.define('HOR.controller.ControllerCalendario',
     {
         Ext.ComponentQuery.query('panelCalendario')[0].showAsignarAulaView();
     },
+    
+    desactivaMenuContextualYEdicionDetalle : function() {
+    	Extensible.calendar.menu.Event.override(
+    			{
+    			    buildMenu : function()
+    			    {
+    			        var me = this;
 
+    			        if (me.rendered)
+    			        {
+    			            return;
+    			        }
+    			        Ext.apply(me,
+    			        {
+    			            items : [ ]
+    			        });
+    			    },
+
+    			    showForEvent : function(rec, el, xy)
+    			    {
+    			       
+    			    }
+    			});
+    	
+    	Extensible.calendar.form.EventWindow.override(
+    			{
+    				getFooterBarConfig : function()
+    			    {
+    					var cfg = ['->', {
+    		                text: this.saveButtonText,
+    		                itemId: this.id + '-save-btn',
+    		                disabled: false,
+    		                handler: this.onSave,
+    		                scope: this
+    		            },{
+    		                text: this.deleteButtonText,
+    		                itemId: this.id + '-delete-btn',
+    		                disabled: true,
+    		                handler: this.onDelete,
+    		                scope: this,
+    		                hideMode: 'offsets' // IE requires this
+    		            },{
+    		                text: this.cancelButtonText,
+    		                itemId: this.id + '-cancel-btn',
+    		                disabled: false,
+    		                handler: this.onCancel,
+    		                scope: this
+    		            }];
+    		        
+    		        if(this.enableEditDetails !== false){
+    		            cfg.unshift({
+    		                xtype: 'tbtext',
+    		                itemId: this.id + '-details-btn',
+    		                text: '<a href="#" class="' + this.editDetailsLinkClass + '">' + this.detailsLinkText + '</a>'
+    		            });
+    		        }
+    		        return cfg;
+    			    	
+    			    }
+    			} 
+         );
+    },
+    activaMenuContextualYEdicionDetalle : function() {
+    	Extensible.calendar.menu.Event.override(
+    			{
+    			    buildMenu : function()
+    			    {
+    			        var me = this;
+
+    			        if (me.rendered)
+    			        {
+    			            return;
+    			        }
+    			        Ext.apply(me,
+    			        {
+    			            items : [
+    			            {
+    			                text : me.editDetailsText,
+    			                iconCls : 'extensible-cal-icon-evt-edit',
+    			                scope : me,
+    			                handler : function()
+    			                {
+    			                    me.fireEvent('editdetails', me, me.rec, me.ctxEl);
+    			                }
+    			            },
+    			            {
+    			                text : 'Assignar aula',
+    			                iconCls : 'extensible-cal-icon-evt-edit',
+    			                scope : me,
+    			                handler : function()
+    			                {
+    			                    Ext.ComponentQuery.query("panelCalendario")[0].fireEvent('eventasignaaula', me, me.rec);
+    			                }
+    			            },
+    			            {
+    			                text : 'Assignar a circuit',
+    			                iconCls : 'extensible-cal-icon-evt-edit',
+    			                menu : me.copyMenu
+
+    			            }, '-',
+    			            {
+    			                text : 'Dividir',
+    			                iconCls : 'extensible-cal-icon-evt-copy',
+    			                scope : me,
+    			                handler : function()
+    			                {
+    			                    Ext.ComponentQuery.query("panelCalendario")[0].fireEvent('eventdivide', me, me.rec);
+    			                }
+    			            },
+    			            {
+    			                text : me.deleteText,
+    			                iconCls : 'extensible-cal-icon-evt-del',
+    			                scope : me,
+    			                handler : function()
+    			                {
+    			                    me.fireEvent('eventdelete', me, me.rec, me.ctxEl);
+    			                }
+    			            } ]
+    			        });
+    			    },
+
+    			    showForEvent : function(rec, el, xy)
+    			    {
+    			        var me = this;
+    			        me.rec = rec;
+    			        me.ctxEl = el;
+    			        me.showAt(xy);
+    			    }
+    			});
+    	
+    	Extensible.calendar.form.EventWindow.override(
+    			{
+    				getFooterBarConfig : function()
+    			    {
+    			    	var cfg = ['->', {
+    		                text: this.saveButtonText,
+    		                itemId: this.id + '-save-btn',
+    		                disabled: false,
+    		                handler: this.onSave,
+    		                scope: this
+    		            },{
+    		                text: this.deleteButtonText,
+    		                itemId: this.id + '-delete-btn',
+    		                disabled: false,
+    		                handler: this.onDelete,
+    		                scope: this,
+    		                hideMode: 'offsets' // IE requires this
+    		            },{
+    		                text: this.cancelButtonText,
+    		                itemId: this.id + '-cancel-btn',
+    		                disabled: false,
+    		                handler: this.onCancel,
+    		                scope: this
+    		            }];
+    		        
+    		        if(this.enableEditDetails !== false){
+    		            cfg.unshift({
+    		                xtype: 'tbtext',
+    		                itemId: this.id + '-details-btn',
+    		                text: '<a href="#" class="' + this.editDetailsLinkClass + '">' + this.detailsLinkText + '</a>'
+    		            });
+    		        }
+    		        return cfg;
+    			    	
+    			    }
+    			} 
+         );
+    },
     imprimirCalendario : function()
     {
         var titulacion = this.getFiltroGrupos().down('combobox[name=estudio]').getValue();

@@ -31,6 +31,7 @@ import es.uji.apps.hor.AulaNoAsignadaAEstudioDelEventoException;
 import es.uji.apps.hor.DuracionEventoIncorrectaException;
 import es.uji.apps.hor.EventoDetalleSinEventoException;
 import es.uji.apps.hor.EventoFueraDeRangoException;
+import es.uji.apps.hor.EventoMasDeUnaRepeticionException;
 import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.RangoHorarioFueradeLimites;
 import es.uji.apps.hor.model.Calendario;
@@ -230,6 +231,29 @@ public class CalendarResource extends CoreBaseService
         }
 
         return eventosDetalletoUI(eventosDetalle);
+    }
+
+    @PUT
+    @Path("eventos/detalle/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<UIEntity> updateEventoSemanaDetalle(UIEntity entity) throws ParseException,
+            DuracionEventoIncorrectaException, JSONException, RegistroNoEncontradoException,
+            EventoDetalleSinEventoException, UnauthorizedUserException,
+            EventoFueraDeRangoException, EventoMasDeUnaRepeticionException
+    {
+
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+
+        DateFormat uIEntityDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date inicio = uIEntityDateFormat.parse(entity.get("start"));
+        Date fin = uIEntityDateFormat.parse(entity.get("end"));
+        Long idEventoDetalle = (Long.parseLong(entity.get("id")));
+
+        Evento evento = eventosService.modificaDiaYHoraEventoEnVistaDetalle(idEventoDetalle,
+                inicio, fin, connectedUserId);
+        return toUI(Collections.singletonList(evento));
+
     }
 
     private List<UIEntity> eventosDetalletoUI(List<EventoDetalle> eventosDetalle)

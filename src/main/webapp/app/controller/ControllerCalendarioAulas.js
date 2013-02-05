@@ -116,7 +116,8 @@ Ext.define('HOR.controller.ControllerCalendarioAulas',
             xtype : 'panelCalendarioPorAula',
             title : panelTitulo,
             eventStore : eventos,
-            showMultiDayView : true,
+            showMultiDayView : true,      
+            readOnly : true,            
             viewConfig :
             {
                 viewStartHour : 8,
@@ -147,7 +148,8 @@ Ext.define('HOR.controller.ControllerCalendarioAulas',
             semestreId : semestre,
             calendariosIds : calendarios,
             startDate : inicio,
-            endDate : fin
+            endDate : fin,
+
         };
         eventos.getProxy().extraParams = params;
 
@@ -158,6 +160,7 @@ Ext.define('HOR.controller.ControllerCalendarioAulas',
             title : panelTitulo,
             eventStore : eventos,
             showMultiDayView : true,
+            readOnly : true,            
             viewConfig :
             {
                 viewStartHour : 8,

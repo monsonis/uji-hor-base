@@ -11,6 +11,7 @@ import es.uji.apps.hor.AulaNoAsignadaAEstudioDelEventoException;
 import es.uji.apps.hor.DuracionEventoIncorrectaException;
 import es.uji.apps.hor.EventoDetalleSinEventoException;
 import es.uji.apps.hor.EventoFueraDeRangoException;
+import es.uji.apps.hor.EventoMasDeUnaRepeticionException;
 import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.dao.AulaDAO;
 import es.uji.apps.hor.dao.CentroDAO;
@@ -87,6 +88,39 @@ public class EventosService
 
         eventosDAO.updateHorasEventoYSusDetalles(evento);
         return evento;
+    }
+
+    @Role({ "ADMIN", "USUARIO" })
+    public Evento modificaDiaYHoraEventoEnVistaDetalle(Long eventoDetalleId, Date inicio,
+            Date fin, Long connectedUserId) throws DuracionEventoIncorrectaException,
+            RegistroNoEncontradoException, UnauthorizedUserException, EventoFueraDeRangoException,
+            EventoMasDeUnaRepeticionException
+    {
+        Evento evento = eventosDAO.getEventoByEventoDetalleId(eventoDetalleId);
+
+        if (!personaDAO.esAdmin(connectedUserId))
+        {
+            Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
+            persona.compruebaAccesoAEvento(evento);
+        }
+
+        if (elEventoTieneMasDeUnaRepeticion(evento))
+        {
+            throw new EventoMasDeUnaRepeticionException();
+        }
+
+        evento.setFechaInicioYFin(inicio, fin);
+
+        List<RangoHorario> rangosHorarios = rangoHorarioDAO.getRangosHorariosDelEvento(evento);
+        evento.compruebaDentroDeLosRangosHorarios(rangosHorarios);
+
+        eventosDAO.updateHorasEventoYSusDetalles(evento);
+        return evento;
+    }
+
+    private boolean elEventoTieneMasDeUnaRepeticion(Evento evento)
+    {
+        return evento.getEventosDetalle().size() > 1;
     }
 
     @Role({ "ADMIN", "USUARIO" })
