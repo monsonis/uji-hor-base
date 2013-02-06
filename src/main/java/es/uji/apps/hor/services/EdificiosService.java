@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import es.uji.apps.hor.dao.EdificiosDAO;
 import es.uji.apps.hor.dao.PersonaDAO;
 import es.uji.apps.hor.model.Edificio;
-import es.uji.apps.hor.model.Persona;
 import es.uji.apps.hor.model.PlantaEdificio;
 import es.uji.commons.rest.Role;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
@@ -34,7 +33,7 @@ public class EdificiosService
     {
         if (!personaDAO.esAdmin(connectedUserId))
         {
-            edificiosDAO.getEdificiosVisiblesPorUsuarioByCentroId(centroId, connectedUserId);
+            return edificiosDAO.getEdificiosVisiblesPorUsuarioByCentroId(centroId, connectedUserId);
         }
 
         return edificiosDAO.getEdificiosByCentroId(centroId);
@@ -47,8 +46,8 @@ public class EdificiosService
     {
         if (!personaDAO.esAdmin(connectedUserId))
         {
-            Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
-            persona.compruebaAccesoACentro(centroId);
+            return edificiosDAO.getPlantasEdificioVisiblesPorUsuarioByCentroAndEdificio(centroId,
+                    edificio, connectedUserId);
         }
 
         return edificiosDAO.getPlantasEdificioByCentroAndEdificio(centroId, edificio);

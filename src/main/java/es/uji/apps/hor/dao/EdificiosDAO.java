@@ -9,8 +9,12 @@ import es.uji.commons.db.BaseDAO;
 public interface EdificiosDAO extends BaseDAO
 {
     public List<Edificio> getEdificiosByCentroId(Long centroId);
-    
-    public List<Edificio> getEdificiosVisiblesPorUsuarioByCentroId(Long centroId, Long connectedUserId);
+
+    public List<Edificio> getEdificiosVisiblesPorUsuarioByCentroId(Long centroId,
+            Long connectedUserId);
 
     public List<PlantaEdificio> getPlantasEdificioByCentroAndEdificio(Long centroId, String edificio);
+
+    public List<PlantaEdificio> getPlantasEdificioVisiblesPorUsuarioByCentroAndEdificio(
+            Long centroId, String edificio, Long connectedUserId);
 }

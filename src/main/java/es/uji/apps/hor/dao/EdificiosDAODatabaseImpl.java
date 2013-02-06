@@ -87,4 +87,21 @@ public class EdificiosDAODatabaseImpl extends BaseDAODatabaseImpl implements Edi
 
         return creaListaEdificiosDesde(edificios);
     }
+
+    @Override
+    public List<PlantaEdificio> getPlantasEdificioVisiblesPorUsuarioByCentroAndEdificio(
+            Long centroId, String edificio, Long connectedUserId)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        QAulaDTO qAula = QAulaDTO.aulaDTO;
+        QAulaPersonaDTO qAulaPersona = QAulaPersonaDTO.aulaPersonaDTO;
+
+        List<String> plantasEdificio = query
+                .from(qAula, qAulaPersona)
+                .where(qAulaPersona.personaId.eq(connectedUserId).and(qAula.centro.id.eq(centroId))
+                        .and(qAula.centro.id.eq(centroId).and(qAula.edificio.eq(edificio))))
+                .orderBy(qAula.planta.asc()).distinct().list(qAula.planta);
+
+        return creaListaPlantasEdificioDesde(plantasEdificio);
+    }
 }
