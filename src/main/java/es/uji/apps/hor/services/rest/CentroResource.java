@@ -42,6 +42,19 @@ public class CentroResource extends CoreBaseService
 
         return UIEntity.toUI(centros);
     }
+    
+    @GET
+    @Path("gestion")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<UIEntity> getCentrosGestion() throws RegistroNoEncontradoException
+    {
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+
+        List<Centro> centros = consultaCentros.getCentrosGestionables(connectedUserId);
+
+        return UIEntity.toUI(centros);
+    }
+
 
     @GET
     @Path("tree")

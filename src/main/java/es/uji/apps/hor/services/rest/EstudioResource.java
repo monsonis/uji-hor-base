@@ -40,10 +40,34 @@ public class EstudioResource extends CoreBaseService
         }
         else
         {
+            estudios = consultaEstudios.getEstudiosByCentroIdVisiblesPorUsuario(Long.parseLong(centroId),
+                    connectedUserId);
+        }
+
+        return UIEntity.toUI(estudios);
+    }
+    
+    @GET
+    @Path("gestion")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<UIEntity> getEstudiosGestionPorCentro(@QueryParam("centroId") String centroId)
+            throws NumberFormatException, UnauthorizedUserException, RegistroNoEncontradoException
+    {
+        List<Estudio> estudios = new ArrayList<Estudio>();
+
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+
+        if (centroId == null || centroId.isEmpty())
+        {
+            estudios = consultaEstudios.getEstudios(connectedUserId);
+        }
+        else
+        {
             estudios = consultaEstudios.getEstudiosByCentroId(Long.parseLong(centroId),
                     connectedUserId);
         }
 
         return UIEntity.toUI(estudios);
     }
+
 }

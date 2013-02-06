@@ -10,6 +10,8 @@ import es.uji.apps.hor.dao.AulaDAO;
 import es.uji.apps.hor.dao.PersonaDAO;
 import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.AulaPlanificacion;
+import es.uji.apps.hor.model.Centro;
+import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.model.Persona;
 import es.uji.apps.hor.model.TipoAula;
 import es.uji.commons.rest.Role;
@@ -38,7 +40,11 @@ public class AulaService
         if (!personaDAO.esAdmin(connectedUserId))
         {
             Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
-            persona.compruebaAccesoAEstudio(estudioId);
+            if (persona.getCentroAutorizado() != null) {
+                persona.compruebaAccesoAEstudioDesdeCentro(estudioId);
+            } else {
+                persona.compruebaAccesoAEstudio(estudioId);
+            }
         }
 
         return aulaDAO.getAulasAsignadasToEstudio(estudioId, semestreId);

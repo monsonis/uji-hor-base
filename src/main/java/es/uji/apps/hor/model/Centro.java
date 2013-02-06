@@ -8,6 +8,7 @@ public class Centro
     private Long id;
     private String nombre;
     private List<Edificio> edificios;
+    private List<Estudio> estudios;
 
     public Centro() {
         
@@ -47,5 +48,15 @@ public class Centro
     public void setEdificios(List<Edificio> edificios)
     {
         this.edificios = edificios;
+    }
+
+    public List<Estudio> getEstudios()
+    {
+        return estudios;
+    }
+
+    public void setEstudios(List<Estudio> estudios)
+    {
+        this.estudios = estudios;
     }
 }

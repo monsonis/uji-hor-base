@@ -155,7 +155,6 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         }
 
         AulaPlanificacionDTO aulaPlan = new AulaPlanificacionDTO();
-        aulaPlan.setNombre(aula.getNombre());
         aulaPlan.setAula(aula);
         aulaPlan.setEstudio(estudio);
         aulaPlan.setSemestreId(semestreId);
@@ -169,7 +168,6 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
     {
         AulaPlanificacion aulaPlanificacion = new AulaPlanificacion();
         aulaPlanificacion.setId(aulaPlanificacionDTO.getId());
-        aulaPlanificacion.setNombre(aulaPlanificacionDTO.getNombre());
         aulaPlanificacion.setEstudioId(aulaPlanificacionDTO.getEstudio().getId());
         aulaPlanificacion.setSemestreId(aulaPlanificacionDTO.getSemestreId());
         aulaPlanificacion.setEdificio(aulaPlanificacionDTO.getAula().getEdificio());
@@ -247,7 +245,6 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
 
         aulaPlanificacionDTO.setAula(aulaDTO);
         aulaPlanificacionDTO.setEstudio(estudioDTO);
-        aulaPlanificacionDTO.setNombre(aulaPlanificacion.getNombre());
         aulaPlanificacionDTO = insert(aulaPlanificacionDTO);
 
         return this.creaAulaPlanificacionDesde(aulaPlanificacionDTO);

@@ -1,7 +1,6 @@
 package es.uji.apps.hor.db;
 
 import java.io.Serializable;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -27,14 +25,9 @@ public class AulaPlanificacionDTO implements Serializable
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "CURSO_ID")
-    private Long cursoId;
-
     @ManyToOne
     @JoinColumn(name = "ESTUDIO_ID")
     private EstudioDTO estudio;
-
-    private String nombre;
 
     @Column(name = "SEMESTRE_ID")
     private Long semestreId;
@@ -43,10 +36,6 @@ public class AulaPlanificacionDTO implements Serializable
     @ManyToOne
     @JoinColumn(name = "AULA_ID")
     private AulaDTO aula;
-
-    // bi-directional many-to-one association to ItemDTO
-    @OneToMany(mappedBy = "aulaPlanificacion")
-    private Set<ItemDTO> items;
 
     public AulaPlanificacionDTO()
     {
@@ -60,26 +49,6 @@ public class AulaPlanificacionDTO implements Serializable
     public void setId(Long id)
     {
         this.id = id;
-    }
-
-    public Long getCursoId()
-    {
-        return this.cursoId;
-    }
-
-    public void setCursoId(Long cursoId)
-    {
-        this.cursoId = cursoId;
-    }
-
-    public String getNombre()
-    {
-        return this.nombre;
-    }
-
-    public void setNombre(String nombre)
-    {
-        this.nombre = nombre;
     }
 
     public Long getSemestreId()
@@ -100,16 +69,6 @@ public class AulaPlanificacionDTO implements Serializable
     public void setAula(AulaDTO aula)
     {
         this.aula = aula;
-    }
-
-    public Set<ItemDTO> getItems()
-    {
-        return this.items;
-    }
-
-    public void setItems(Set<ItemDTO> items)
-    {
-        this.items = items;
     }
 
     public EstudioDTO getEstudio()

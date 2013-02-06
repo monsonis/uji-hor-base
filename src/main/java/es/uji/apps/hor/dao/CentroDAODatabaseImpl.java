@@ -13,11 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mysema.query.jpa.impl.JPAQuery;
 
 import es.uji.apps.hor.db.AulaDTO;
+import es.uji.apps.hor.db.CargoPersonaDTO;
 import es.uji.apps.hor.db.CentroDTO;
 import es.uji.apps.hor.db.QAulaDTO;
 import es.uji.apps.hor.db.QAulaPlanificacionDTO;
 import es.uji.apps.hor.db.QCargoPersonaDTO;
 import es.uji.apps.hor.db.QCentroDTO;
+import es.uji.apps.hor.db.QTipoCargoDTO;
 import es.uji.apps.hor.model.AreaEdificio;
 import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.Centro;
@@ -64,15 +66,17 @@ public class CentroDAODatabaseImpl extends BaseDAODatabaseImpl implements Centro
 
         QCentroDTO qCentro = QCentroDTO.centroDTO;
         QCargoPersonaDTO qCargo = QCargoPersonaDTO.cargoPersonaDTO;
+        QTipoCargoDTO qTipoCargo = QTipoCargoDTO.tipoCargoDTO;
 
-        query.from(qCentro, qCargo).join(qCargo.centro, qCentro)
+        query.from(qCargo).innerJoin(qCargo.centro, qCentro)
+                .innerJoin(qCargo.cargo, qTipoCargo)
                 .where(qCargo.persona.id.eq(connectedUserId));
 
         List<Centro> listaCentros = new ArrayList<Centro>();
 
-        for (CentroDTO centroDTO : query.list(qCentro))
+        for (CargoPersonaDTO cargo : query.list(qCargo))
         {
-            listaCentros.add(creaCentroDesdeCentroDTO(centroDTO));
+            listaCentros.add(creaCentroDesdeCentroDTO(cargo.getCentro()));
         }
 
         return listaCentros;

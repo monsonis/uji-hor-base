@@ -41,7 +41,7 @@ public class EstudiosService
     }
 
     @Role({ "ADMIN", "USUARIO" })
-    public List<Estudio> getEstudiosByCentroId(Long centroId, Long connectedUserId)
+    public List<Estudio> getEstudiosByCentroIdVisiblesPorUsuario(Long centroId, Long connectedUserId)
             throws UnauthorizedUserException, RegistroNoEncontradoException
     {
         if (!personaDAO.esAdmin(connectedUserId))
@@ -54,6 +54,18 @@ public class EstudiosService
         {
             return estudiosDAO.getEstudiosByCentroId(centroId);
         }
+    }
+
+    @Role({ "ADMIN", "USUARIO" })
+    public List<Estudio> getEstudiosByCentroId(Long centroId, Long connectedUserId)
+            throws UnauthorizedUserException, RegistroNoEncontradoException
+    {
+        if (!personaDAO.esAdmin(connectedUserId))
+        {
+            Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
+            persona.compruebaAccesoACentro(centroId);
+        }
+        return estudiosDAO.getEstudiosByCentroId(centroId);
     }
 
 }

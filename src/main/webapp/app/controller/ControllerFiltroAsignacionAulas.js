@@ -1,7 +1,7 @@
 Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
 {
     extend : 'Ext.app.Controller',
-    stores : [ 'StoreCentros', 'StoreEstudios', 'StoreCursos', 'TreeStoreAulas', 'StoreAulasAsignadas' ],
+    stores : [ 'StoreCentrosGestion', 'StoreEstudiosGestion', 'StoreCursos', 'TreeStoreAulas', 'StoreAulasAsignadas' ],
     model : [ 'Centro', 'Estudio', 'Semestre', 'Curso', 'AulaPlafinicacion' ],
     refs : [
     {
@@ -30,14 +30,19 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
                 select : this.onCentroSelected,
             },
 
+            'panelAulas filtroAsignacionAulas combobox[name=filtroEstudio]' :
+            {
+                select : this.onFiltroEstudioChanged,
+            },
+
             'panelAulas filtroAsignacionAulas combobox[name=estudio]' :
             {
                 select : this.onEstudioSelected,
             },
-            
+
             'treePanelAulas' :
             {
-            	itemdblclick : this.anyadirAula,
+                itemdblclick : this.anyadirAula,
             },
 
             'panelAulas filtroAsignacionAulas combobox[name=semestre]' :
@@ -62,17 +67,19 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
             },
 
         });
-    },    
-    
-   
+    },
+
     onCentroSelected : function(combo, records)
     {
+        var combo_filtro_estudios = this.getFiltroAsignacionAulas().down('combobox[name=filtroEstudio]');
+        combo_filtro_estudios.setDisabled(false);
+        combo_filtro_estudios.setValue("solo");
 
         var combo_estudios = this.getFiltroAsignacionAulas().down('combobox[name=estudio]');
         combo_estudios.setDisabled(false);
         combo_estudios.clearValue();
 
-        var estudios_store = this.getStoreEstudiosStore();
+        var estudios_store = this.getStoreEstudiosGestionStore();
         estudios_store.load(
         {
             params :
@@ -149,7 +156,7 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
         var listaSeleccion = this.getGridAulas().getSelectionModel().getSelection();
         if (listaSeleccion.length > 0)
         {
-        	 
+
             var gridStore = this.getGridAulas().getStore();
 
             var ref = this;
@@ -158,7 +165,7 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
             {
                 failure : function()
                 {
-                	ref.actualizarDatosGridAsignaciones();
+                    ref.actualizarDatosGridAsignaciones();
                 }
             });
         }
@@ -175,33 +182,70 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
             var gridStore = this.getGridAulas().getStore();
 
             var itemsParaAnyadir = new Array();
-            for (index in listaSeleccion){
-            	var item = listaSeleccion[index];
-            	if (item.get("leaf") === true){
-	            	 var aulaAsignada = Ext.ModelManager.create(
-	            	            {
-	            	                estudioId : estudioId,
-	            	                nombre : item.get("text"),
-	            	                estudioId : estudioId,
-	            	                aulaId : item.get("id"),
-	            	                semestreId : semestreId
-	            	            }, "HOR.model.AulaPlanificacion");
-	
-	            	 itemsParaAnyadir.push(aulaAsignada);  
-            	}
+            for (index in listaSeleccion)
+            {
+                var item = listaSeleccion[index];
+                if (item.get("leaf") === true)
+                {
+                    var aulaAsignada = Ext.ModelManager.create(
+                    {
+                        estudioId : estudioId,
+                        nombre : item.get("text"),
+                        estudioId : estudioId,
+                        aulaId : item.get("id"),
+                        semestreId : semestreId
+                    }, "HOR.model.AulaPlanificacion");
+
+                    itemsParaAnyadir.push(aulaAsignada);
+                }
             }
-            
+
             var ref = this;
-            if (itemsParaAnyadir.length > 0 ){
-	            gridStore.add(itemsParaAnyadir);
-	            gridStore.sync(
-	            {
-	                failure : function()
-	                {
-	                	ref.actualizarDatosGridAsignaciones();
-	                }
-	            });
+            if (itemsParaAnyadir.length > 0)
+            {
+                gridStore.add(itemsParaAnyadir);
+                gridStore.sync(
+                {
+                    failure : function()
+                    {
+                        ref.actualizarDatosGridAsignaciones();
+                    }
+                });
             }
+        }
+    },
+
+    onFiltroEstudioChanged : function(combo, records)
+    {
+        var filtro = records[0].get('id');
+        var combo_estudios = this.getFiltroAsignacionAulas().down('combobox[name=estudio]');
+        combo_estudios.clearValue();
+
+        var estudios_store = this.getStoreEstudiosGestionStore();
+
+        if (filtro == "solo")
+        {
+            var combo_centros = this.getFiltroAsignacionAulas().down('combobox[name=centro]');
+            var centroId = combo_centros.getValue();
+
+            estudios_store.load(
+            {
+                params :
+                {
+                    centroId : centroId
+                },
+                scope : this
+            });
+
+        }
+        else
+        {
+            estudios_store.load(
+            {
+                params :{},
+                scope : this
+            });
+
         }
     },
 
@@ -210,13 +254,15 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
         var grid = this.getGridAulas();
         grid.getStore().removeAll();
     },
-   
-    expandirArbol : function(){
-   	 this.getTreePanelAulas().expandAll();
-   },
-   
-   colapsarArbol : function(){
-  	 this.getTreePanelAulas().collapseAll();
-   }
-   
+
+    expandirArbol : function()
+    {
+        this.getTreePanelAulas().expandAll();
+    },
+
+    colapsarArbol : function()
+    {
+        this.getTreePanelAulas().collapseAll();
+    }
+
 });

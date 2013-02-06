@@ -62,26 +62,22 @@ public class AulasDAOTest
         aula.setCentro(centro);
 
         AulaPlanificacionDTO aulaPlan = new AulaPlanificacionDTO();
-        aulaPlan.setNombre("Aula1000-1");
         aulaPlan.setAula(aula);
 
         aulas.add(aulaPlan);
 
         aulaPlan = new AulaPlanificacionDTO();
-        aulaPlan.setNombre("Aula1000-2");
         aulaPlan.setAula(aula);
         aulaPlan.setSemestreId(new Long(1));
 
         aulas.add(aulaPlan);
 
         aulaPlan = new AulaPlanificacionDTO();
-        aulaPlan.setNombre("Aula1000-3");
         aulaPlan.setAula(aula);
 
         aulas.add(aulaPlan);
 
         aulaPlan = new AulaPlanificacionDTO();
-        aulaPlan.setNombre("Aula1000-3");
         aulaPlan.setAula(aula);
         aulaPlan.setSemestreId(new Long(2));
 
@@ -133,7 +129,6 @@ public class AulasDAOTest
         AulaPlanificacionDTO aux = aulasDAO.get(AulaPlanificacionDTO.class, aulaPlan.getId())
                 .get(0);
 
-        Assert.assertEquals(aulaPlan.getNombre(), aux.getNombre());
         Assert.assertEquals(aula.getEdificio(), aux.getAula().getEdificio());
     }
 
@@ -205,6 +200,5 @@ public class AulasDAOTest
 
         AulaPlanificacionDTO aux = aulasDAO.get(AulaPlanificacionDTO.class, aula.getId()).get(0);
 
-        System.out.println(aux.getNombre());
     }
 }

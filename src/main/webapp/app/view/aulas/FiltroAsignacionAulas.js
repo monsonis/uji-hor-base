@@ -14,7 +14,7 @@ Ext.define('HOR.view.aulas.FiltroAsignacionAulas',
         xtype : 'combobox',
         fieldLabel : 'Centres',
         labelWidth : 65,
-        store : 'StoreCentros',
+        store : 'StoreCentrosGestion',
         editable : false,
         displayField : 'nombre',
         valueField : 'id',
@@ -25,10 +25,41 @@ Ext.define('HOR.view.aulas.FiltroAsignacionAulas',
     {
         xtype : 'combobox',
         lastQuery : '',
+        fieldLabel : '&nbsp;',
+        labelSeparator : ' ',
+        queryMode : 'local',
+        fields : [ 'id', 'nombre' ],
+        value: 'all',
+        store :
+        {
+            fields : [ 'id', 'nombre' ],
+
+            data : [
+            {
+                id : 'solo',
+                nombre : 'Titulaciones sólo de este centro'
+            },
+            {
+                id : 'todos',
+                nombre : 'Todas las titulaciones'
+            } ]
+        },
+        forceSelection:true,
+        labelWidth : 65,
+        editable : false,
+        displayField : 'nombre',
+        valueField : 'id',
+        name : 'filtroEstudio',
+        anchor : '40%',
+        disabled : true,
+        alias : 'widget.comboFiltroEstudios'
+    },
+    {
+        xtype : 'combobox',
+        lastQuery : '',
         fieldLabel : 'Estudis',
         labelWidth : 65,
-        store : 'StoreEstudios',
-        lastQuery : '',
+        store : 'StoreEstudiosGestion',
         editable : false,
         displayField : 'nombre',
         valueField : 'id',

@@ -38,24 +38,6 @@ Ext.define('HOR.view.permisos.VentanaNewPermiso',
             padding : 20,
             fieldLabel : 'Persona',
             labelWidth : 75,
-            queryMode : 'local',
-            store :
-            {
-                fields : [ 'id', 'nombre' ],
-                data : [
-                {
-                    id : "160900",
-                    nombre : 'Maria Gomez'
-                },
-                {
-                    id : "17292",
-                    nombre : 'Javier Muñoz'
-                },
-                {
-                    id : "831",
-                    nombre : 'David Rubert'
-                } ]
-            },
             editable : false,
             allowBlank : false,
             displayField : 'nombre',

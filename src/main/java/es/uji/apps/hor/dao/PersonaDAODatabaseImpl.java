@@ -17,6 +17,8 @@ import es.uji.apps.hor.db.DepartamentoDTO;
 import es.uji.apps.hor.db.EstudioDTO;
 import es.uji.apps.hor.db.PersonaDTO;
 import es.uji.apps.hor.db.QCargoPersonaDTO;
+import es.uji.apps.hor.db.QCentroDTO;
+import es.uji.apps.hor.db.QEstudioDTO;
 import es.uji.apps.hor.db.QPersonaDTO;
 import es.uji.apps.hor.db.QTipoCargoDTO;
 import es.uji.apps.hor.db.TipoCargoDTO;
@@ -42,7 +44,7 @@ public class PersonaDAODatabaseImpl extends BaseDAODatabaseImpl implements Perso
 
         DepartamentoDTO departamentoDTO = new DepartamentoDTO();
         departamentoDTO.setId(persona.getDepartamento().getId());
-//        personaDTO.setDepartamento(departamentoDTO);
+        // personaDTO.setDepartamento(departamentoDTO);
 
         personaDTO.setNombre(persona.getNombre());
         personaDTO.setEmail(persona.getEmail());
@@ -62,9 +64,12 @@ public class PersonaDAODatabaseImpl extends BaseDAODatabaseImpl implements Perso
 
         QCargoPersonaDTO qCargoPersona = QCargoPersonaDTO.cargoPersonaDTO;
         QPersonaDTO qPersona = QPersonaDTO.personaDTO;
+        QCentroDTO qCentro = QCentroDTO.centroDTO;
+        QEstudioDTO qEstudio = QEstudioDTO.estudioDTO;
 
         query.from(qPersona).innerJoin(qPersona.cargosPersona, qCargoPersona).fetch()
-                .where(qPersona.id.eq(personaId));
+                .innerJoin(qCargoPersona.centro, qCentro).fetch()
+                .innerJoin(qCentro.estudios, qEstudio).fetch().where(qPersona.id.eq(personaId));
 
         for (PersonaDTO personaDTO : query.list(qPersona))
         {
@@ -80,7 +85,7 @@ public class PersonaDAODatabaseImpl extends BaseDAODatabaseImpl implements Perso
             {
                 if (persona.getCentroAutorizado() == null)
                 {
-                    persona.setCentroAutorizado(creaCentroDeCargoDTO(cargoPersonaDTO));
+                    persona.setCentroAutorizado(creaCentroConEstudiosDeCargoDTO(cargoPersonaDTO));
                 }
 
                 if (cargoPersonaDTO.getEstudio() != null)
@@ -123,11 +128,24 @@ public class PersonaDAODatabaseImpl extends BaseDAODatabaseImpl implements Perso
         return estudioNuevo;
     }
 
-    private Centro creaCentroDeCargoDTO(CargoPersonaDTO cargoDTO)
+    private Centro creaCentroConEstudiosDeCargoDTO(CargoPersonaDTO cargoDTO)
     {
         Centro centroNuevo = new Centro();
         centroNuevo.setId(cargoDTO.getCentro().getId());
         centroNuevo.setNombre(cargoDTO.getCentro().getNombre());
+
+        List<Estudio> listaEstudios = new ArrayList<Estudio>();
+
+        for (EstudioDTO estudioDTO : cargoDTO.getCentro().getEstudios())
+        {
+            Estudio estudio = new Estudio();
+            estudio.setId(estudioDTO.getId());
+            estudio.setNombre(estudioDTO.getNombre());
+
+            listaEstudios.add(estudio);
+        }
+
+        centroNuevo.setEstudios(listaEstudios);
         return centroNuevo;
     }
 
@@ -203,23 +221,24 @@ public class PersonaDAODatabaseImpl extends BaseDAODatabaseImpl implements Perso
     {
         JPAQuery query = new JPAQuery(entityManager);
         QTipoCargoDTO qTipoCargo = QTipoCargoDTO.tipoCargoDTO;
-        
+
         query.from(qTipoCargo);
-        
+
         return convierteCargoDTOaCargo(query.list(qTipoCargo));
     }
 
     private List<Cargo> convierteCargoDTOaCargo(List<TipoCargoDTO> listaCargosDTO)
     {
         List<Cargo> listaCargos = new ArrayList<Cargo>();
-        
-        for (TipoCargoDTO cargoDTO: listaCargosDTO) {
+
+        for (TipoCargoDTO cargoDTO : listaCargosDTO)
+        {
             Cargo cargo = new Cargo();
             cargo.setId(cargoDTO.getId());
             cargo.setNombre(cargoDTO.getNombre());
             listaCargos.add(cargo);
         }
-        
+
         return listaCargos;
     }
 }

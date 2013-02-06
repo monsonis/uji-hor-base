@@ -180,16 +180,19 @@ public class Persona
         this.cargos = cargos;
     }
 
-    public void compruebaAsignacionPermisoEstudioId(Long estudioId, Long tipoCargoId) throws UnauthorizedUserException
+    public void compruebaAsignacionPermisoEstudioId(Long estudioId, Long tipoCargoId)
+            throws UnauthorizedUserException
     {
-        List<Estudio>  listaEstudios = getEstudiosAutorizadosConTipoCargo(tipoCargoId);
-        
-        for (Estudio estudio: listaEstudios) {
-            if (estudio.getId().equals(estudioId)) {
+        List<Estudio> listaEstudios = getEstudiosAutorizadosConTipoCargo(tipoCargoId);
+
+        for (Estudio estudio : listaEstudios)
+        {
+            if (estudio.getId().equals(estudioId))
+            {
                 return;
             }
         }
-        
+
         throw new UnauthorizedUserException();
     }
 
@@ -199,4 +202,22 @@ public class Persona
         return estudiosAutorizados;
     }
 
+    public void compruebaAccesoAEstudioDesdeCentro(Long estudioId) throws UnauthorizedUserException
+    {
+        Boolean tieneAcceso = false;
+        Centro centro = this.getCentroAutorizado();
+
+        for (Estudio estudio : centro.getEstudios())
+        {
+            if (estudio.getId().equals(estudioId))
+            {
+                tieneAcceso = true;
+            }
+        }
+
+        if (tieneAcceso == false)
+        {
+            throw new UnauthorizedUserException();
+        }
+    }
 }

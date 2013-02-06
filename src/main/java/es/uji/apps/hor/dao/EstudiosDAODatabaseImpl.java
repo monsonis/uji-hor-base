@@ -84,8 +84,8 @@ public class EstudiosDAODatabaseImpl extends BaseDAODatabaseImpl implements Estu
         QEstudioDTO qEstudio = QEstudioDTO.estudioDTO;
         QCargoPersonaDTO qCargo = QCargoPersonaDTO.cargoPersonaDTO;
 
-        List<EstudioDTO> listaEstudios = query.from(qEstudio, qCargo)
-                .join(qCargo.estudio, qEstudio)
+        List<EstudioDTO> listaEstudios = query.from(qEstudio)
+                .innerJoin(qEstudio.cargosPersona, qCargo)
                 .where(qCargo.persona.id.eq(userId).and(qEstudio.centro.id.eq(centroId)))
                 .orderBy(qEstudio.nombre.asc()).list(qEstudio);
 

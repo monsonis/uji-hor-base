@@ -1,5 +1,6 @@
 package es.uji.apps.hor.services;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,4 +56,16 @@ public class CentroService
         return centro;
     }
 
+    public List<Centro> getCentrosGestionables(Long connectedUserId) throws RegistroNoEncontradoException
+    {
+        if (!personaDAO.esAdmin(connectedUserId))
+        {
+            Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
+            return Collections.singletonList(persona.getCentroAutorizado());
+        }
+        else
+        {
+            return centroDAO.getCentros();
+        }
+    }
 }
