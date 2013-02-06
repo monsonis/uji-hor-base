@@ -40,9 +40,12 @@ public class AulaService
         if (!personaDAO.esAdmin(connectedUserId))
         {
             Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
-            if (persona.getCentroAutorizado() != null) {
+            if (persona.getCentroAutorizado() != null)
+            {
                 persona.compruebaAccesoAEstudioDesdeCentro(estudioId);
-            } else {
+            }
+            else
+            {
                 persona.compruebaAccesoAEstudio(estudioId);
             }
         }
@@ -100,8 +103,8 @@ public class AulaService
     {
         if (!personaDAO.esAdmin(connectedUserId))
         {
-            Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
-            persona.compruebaAccesoACentro(centroId);
+            return aulaDAO.getAulasVisiblesPorUsuarioFiltradasPor(centroId, edificio, tipoAula,
+                    planta, connectedUserId);
         }
 
         return aulaDAO.getAulasFiltradasPor(centroId, edificio, tipoAula, planta);

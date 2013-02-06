@@ -15,6 +15,7 @@ import es.uji.apps.hor.db.AulaPlanificacionDTO;
 import es.uji.apps.hor.db.CentroDTO;
 import es.uji.apps.hor.db.EstudioDTO;
 import es.uji.apps.hor.db.QAulaDTO;
+import es.uji.apps.hor.db.QAulaPersonaDTO;
 import es.uji.apps.hor.db.QAulaPlanificacionDTO;
 import es.uji.apps.hor.model.AreaEdificio;
 import es.uji.apps.hor.model.Aula;
@@ -316,6 +317,33 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         }
 
         return listaAulas;
+    }
+
+    @Override
+    public List<Aula> getAulasVisiblesPorUsuarioFiltradasPor(Long centroId, String edificio,
+            String tipoAula, String planta, Long connectedUserId)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        QAulaDTO qAula = QAulaDTO.aulaDTO;
+        QAulaPersonaDTO qAulaPersona = QAulaPersonaDTO.aulaPersonaDTO;
+
+        query.from(qAula, qAulaPersona).where(
+                qAulaPersona.personaId.eq(connectedUserId).and(qAula.id.eq(qAulaPersona.aulaId))
+                        .and(qAula.centro.id.eq(centroId)).and(qAula.edificio.eq(edificio)));
+
+        if (tipoAula != null)
+        {
+            query.where(qAula.tipo.eq(tipoAula));
+        }
+
+        if (planta != null)
+        {
+            query.where(qAula.planta.eq(planta));
+        }
+
+        List<AulaDTO> listaAulasDTO = query.distinct().orderBy(qAula.codigo.asc()).list(qAula);
+
+        return creaListaAulasFiltradaDesde(listaAulasDTO);
     }
 
 }
