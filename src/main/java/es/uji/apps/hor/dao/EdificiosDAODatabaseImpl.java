@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.mysema.query.jpa.impl.JPAQuery;
 
 import es.uji.apps.hor.db.QAulaDTO;
+import es.uji.apps.hor.db.QAulaPersonaDTO;
 import es.uji.apps.hor.model.Edificio;
 import es.uji.apps.hor.model.PlantaEdificio;
 import es.uji.commons.db.BaseDAODatabaseImpl;
@@ -67,5 +68,23 @@ public class EdificiosDAODatabaseImpl extends BaseDAODatabaseImpl implements Edi
         }
 
         return plantasEdificio;
+    }
+
+    @Override
+    public List<Edificio> getEdificiosVisiblesPorUsuarioByCentroId(Long centroId,
+            Long connectedUserId)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        QAulaDTO qAula = QAulaDTO.aulaDTO;
+        QAulaPersonaDTO qAulaPersona = QAulaPersonaDTO.aulaPersonaDTO;
+
+        List<String> edificios = query
+                .from(qAula, qAulaPersona)
+                .where(qAulaPersona.personaId.eq(connectedUserId)
+                        .and(qAula.centro.id.eq(qAulaPersona.centroId))
+                        .and(qAula.centro.id.eq(centroId))).orderBy(qAula.edificio.asc())
+                .distinct().list(qAula.edificio);
+
+        return creaListaEdificiosDesde(edificios);
     }
 }

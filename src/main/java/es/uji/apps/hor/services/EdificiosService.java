@@ -34,8 +34,7 @@ public class EdificiosService
     {
         if (!personaDAO.esAdmin(connectedUserId))
         {
-            Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
-            persona.compruebaAccesoACentro(centroId);
+            edificiosDAO.getEdificiosVisiblesPorUsuarioByCentroId(centroId, connectedUserId);
         }
 
         return edificiosDAO.getEdificiosByCentroId(centroId);
