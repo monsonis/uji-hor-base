@@ -1,0 +1,15 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TriggerOraclev10g class="oracle.dbtools.crest.model.design.storage.oracle.v10g.TriggerOraclev10g" name="mutante_2_por_fila" id="32D45C99-7F48-BC82-6498-F9E0309B1FA1" directorySegmentName="seg_0">
+<createdBy>ferrerq</createdBy>
+<createdTime>2013-01-08 09:57:20 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<actions>INSERT, UPDATE</actions>
+<body>begin&lt;br/&gt;   mutante_items.v_num := mutante_items.v_num + 1;&lt;br/&gt;   mutante_items.v_var_tabla (mutante_items.v_num) := :new.rowid;&lt;br/&gt;end;</body>
+<triggerTime>AFTER</triggerTime>
+<owner>09CD6EB1-DC11-EE73-0B0D-14C82C25B460</owner>
+<ref_NEW_AS>new</ref_NEW_AS>
+<ref_OLD_AS>old</ref_OLD_AS>
+<state>ENABLE</state>
+<table>7185EE22-E0F3-C3F6-15A8-A27E06438805</table>
+</TriggerOraclev10g>

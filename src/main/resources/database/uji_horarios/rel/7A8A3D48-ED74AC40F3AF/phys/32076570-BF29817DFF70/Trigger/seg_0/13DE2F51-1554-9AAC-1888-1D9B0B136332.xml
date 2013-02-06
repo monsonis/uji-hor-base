@@ -1,0 +1,15 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TriggerOraclev10g class="oracle.dbtools.crest.model.design.storage.oracle.v10g.TriggerOraclev10g" name="hor_items_delete" id="13DE2F51-1554-9AAC-1888-1D9B0B136332" directorySegmentName="seg_0">
+<createdBy>ferrerq</createdBy>
+<createdTime>2013-01-08 09:49:29 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<actions>DELETE</actions>
+<body>begin&lt;br/&gt;   delete      uji_horarios.hor_items_detalle&lt;br/&gt;   where       item_id = :old.id;&lt;br/&gt;end hor_items_delete;</body>
+<triggerTime>BEFORE</triggerTime>
+<owner>09CD6EB1-DC11-EE73-0B0D-14C82C25B460</owner>
+<ref_NEW_AS>new</ref_NEW_AS>
+<ref_OLD_AS>old</ref_OLD_AS>
+<state>ENABLE</state>
+<table>7185EE22-E0F3-C3F6-15A8-A27E06438805</table>
+</TriggerOraclev10g>

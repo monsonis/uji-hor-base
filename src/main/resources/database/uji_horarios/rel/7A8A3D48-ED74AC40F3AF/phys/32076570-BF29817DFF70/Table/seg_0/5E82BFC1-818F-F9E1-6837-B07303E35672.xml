@@ -1,0 +1,80 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TableProxyOraclev11g class="oracle.dbtools.crest.model.design.storage.oracle.v11g.TableProxyOraclev11g" name="hor_ext_circuitos" id="5E82BFC1-818F-F9E1-6837-B07303E35672" directorySegmentName="seg_0">
+<createdBy>ferrerq</createdBy>
+<createdTime>2013-01-08 09:04:17 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<logging>YES</logging>
+<user>09CD6EB1-DC11-EE73-0B0D-14C82C25B460</user>
+<columnProxies>
+<ColumnProxy class="oracle.dbtools.crest.model.design.storage.oracle.v11g.ColumnProxyOraclev11g" name="curso_aca" id="020920AC-E4DB-F713-0D0A-B137631FC13B">
+<createdBy>ferrerq</createdBy>
+<createdTime>2013-01-08 09:04:17 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy class="oracle.dbtools.crest.model.design.storage.oracle.v11g.ColumnProxyOraclev11g" name="asignatura_id" id="04A183D0-EE31-AE56-6FC0-E756C4885CA2">
+<createdBy>ferrerq</createdBy>
+<createdTime>2013-01-08 09:04:17 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy class="oracle.dbtools.crest.model.design.storage.oracle.v11g.ColumnProxyOraclev11g" name="id" id="297CF750-76E7-3D17-6301-11934CD65121">
+<createdBy>ferrerq</createdBy>
+<createdTime>2013-01-08 09:04:17 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy class="oracle.dbtools.crest.model.design.storage.oracle.v11g.ColumnProxyOraclev11g" name="grupo_id" id="355EF1BB-315E-2DDF-A3DA-42DA6CF12EDB">
+<createdBy>ferrerq</createdBy>
+<createdTime>2013-01-08 09:04:17 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy class="oracle.dbtools.crest.model.design.storage.oracle.v11g.ColumnProxyOraclev11g" name="circuito_id" id="401ABD14-6994-5A87-897C-E5B5D99AD436">
+<createdBy>ferrerq</createdBy>
+<createdTime>2013-01-08 09:04:17 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy class="oracle.dbtools.crest.model.design.storage.oracle.v11g.ColumnProxyOraclev11g" name="plazas" id="414A4E01-E8F5-D04F-A672-90CBA199A8D5">
+<createdBy>ferrerq</createdBy>
+<createdTime>2013-01-08 09:04:17 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy class="oracle.dbtools.crest.model.design.storage.oracle.v11g.ColumnProxyOraclev11g" name="tipo" id="44EB1E79-0163-7539-FF9E-CA7285BBC643">
+<createdBy>ferrerq</createdBy>
+<createdTime>2013-01-08 09:04:17 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy class="oracle.dbtools.crest.model.design.storage.oracle.v11g.ColumnProxyOraclev11g" name="subgrupo_id" id="4D8AFE23-F7C4-BAE8-1B89-E375500E638B">
+<createdBy>ferrerq</createdBy>
+<createdTime>2013-01-08 09:04:17 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy class="oracle.dbtools.crest.model.design.storage.oracle.v11g.ColumnProxyOraclev11g" name="estudio_id" id="D9C30323-137E-538C-1745-52220CD90744">
+<createdBy>ferrerq</createdBy>
+<createdTime>2013-01-08 09:04:17 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy class="oracle.dbtools.crest.model.design.storage.oracle.v11g.ColumnProxyOraclev11g" name="detalle_id" id="E8A2DE5B-88E7-364A-186E-C95C4BEBE9BE">
+<createdBy>ferrerq</createdBy>
+<createdTime>2013-01-08 09:04:17 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+</ColumnProxy>
+</columnProxies>
+<primaryKeys>
+<PrimaryKey class="oracle.dbtools.crest.model.design.storage.oracle.v10g.PKProxyOraclev10g" name="hor_ext_circuitos_PK" id="8B2E23A3-9255-79B6-451B-7F362226E5EC">
+<createdBy>ferrerq</createdBy>
+<createdTime>2013-01-08 09:04:17 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<indexSort>SORTED</indexSort>
+</PrimaryKey>
+</primaryKeys>
+</TableProxyOraclev11g>

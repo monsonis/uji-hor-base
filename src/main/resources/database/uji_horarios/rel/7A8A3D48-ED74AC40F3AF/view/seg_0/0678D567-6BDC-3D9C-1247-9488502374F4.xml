@@ -1,0 +1,382 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TableView class="oracle.dbtools.crest.model.design.relational.TableView" id="0678D567-6BDC-3D9C-1247-9488502374F4" directorySegmentName="seg_0" name="hor_v_items_detalle">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-11-07 13:54:07 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<schemaObject>1DCAA4CA-B6D6-9F25-1764-48B2C86ECE47</schemaObject>
+<userDefined>true</userDefined>
+<userDefinedSQL>SELECT i.id,&lt;br/&gt;  d.fecha,&lt;br/&gt;  d.docencia docencia_paso_1,&lt;br/&gt;  DECODE(NVL(d.repetir_cada_semanas, 1), 1, d.docencia, DECODE(MOD(d.orden_id, d.repetir_cada_semanas), 1, d.docencia, &apos;N&apos;)) docencia_paso_2,&lt;br/&gt;  DECODE(d.tipo_dia, &apos;F&apos;, &apos;N&apos;, DECODE(d.numero_iteraciones, NULL, DECODE(NVL(d.repetir_cada_semanas, 1), 1, d.docencia, DECODE(MOD(d.orden_id, d.repetir_cada_semanas), 1, d.docencia, &apos;N&apos;)), DECODE(SIGN(((d.orden_id - d.festivos) / d.repetir_cada_semanas) - (d.numero_iteraciones)), 1, &apos;N&apos;, DECODE(NVL(d.repetir_cada_semanas, 1), 1, d.docencia, DECODE(MOD(d.orden_id, d.repetir_cada_semanas), 1, d.docencia, &apos;N&apos;))))) docencia,&lt;br/&gt;  d.orden_id,&lt;br/&gt;  d.numero_iteraciones,&lt;br/&gt;  d.repetir_cada_semanas,&lt;br/&gt;  d.fecha_inicio,&lt;br/&gt;  d.fecha_fin,&lt;br/&gt;  d.estudio_id,&lt;br/&gt;  d.semestre_id,&lt;br/&gt;  d.curso_id,&lt;br/&gt;  d.asignatura_id,&lt;br/&gt;  d.grupo_id,&lt;br/&gt;  d.tipo_subgrupo_id,&lt;br/&gt;  d.subgrupo_id,&lt;br/&gt;  d.dia_semana_id,&lt;br/&gt;  d.tipo_dia,&lt;br/&gt;  d.festivos&lt;br/&gt;FROM&lt;br/&gt;  (SELECT x.id,&lt;br/&gt;    x.fecha,&lt;br/&gt;    hor_contar_festivos(NVL(x.desde_el_dia, x.fecha_inicio), x.fecha, x.dia_semana_id, x.repetir_cada_semanas) festivos,&lt;br/&gt;    ROW_NUMBER() OVER (PARTITION BY DECODE(DECODE(SIGN(x.fecha - x.fecha_inicio), -1, &apos;N&apos;, DECODE(SIGN(x.fecha_fin - x.fecha), -1, &apos;N&apos;, &apos;S&apos;)), &apos;S&apos;, DECODE(DECODE(SIGN(x.fecha - NVL(x.desde_el_dia, x.fecha_inicio)), -1, &apos;N&apos;, DECODE(SIGN(NVL(x.hasta_el_dia, x.fecha_fin) - x.fecha), -1, &apos;N&apos;, &apos;S&apos;)), &apos;S&apos;, &apos;S&apos;, &apos;N&apos;), &apos;N&apos;), x.id, x.estudio_id, x.semestre_id, x.curso_id, x.asignatura_id, x.grupo_id, x.tipo_subgrupo_id, x.subgrupo_id, x.dia_semana_id ORDER BY x.fecha) orden_id,&lt;br/&gt;    DECODE(hor_f_fecha_entre(x.fecha, x.fecha_inicio, x.fecha_fin), &apos;S&apos;, DECODE(hor_f_fecha_entre(x.fecha, NVL(x.desde_el_dia, x.fecha_inicio), NVL(x.hasta_el_dia, x.fecha_fin)), &apos;S&apos;, &apos;S&apos;, &apos;N&apos;), &apos;N&apos;) docencia,&lt;br/&gt;    x.estudio_id,&lt;br/&gt;    x.curso_id,&lt;br/&gt;    x.semestre_id,&lt;br/&gt;    x.grupo_id,&lt;br/&gt;    x.tipo_subgrupo_id,&lt;br/&gt;    x.subgrupo_id,&lt;br/&gt;    x.dia_semana_id,&lt;br/&gt;    x.asignatura_id,&lt;br/&gt;    x.fecha_inicio,&lt;br/&gt;    x.fecha_fin,&lt;br/&gt;    x.fecha_examenes_inicio,&lt;br/&gt;    x.fecha_examenes_fin,&lt;br/&gt;    x.desde_el_dia,&lt;br/&gt;    x.hasta_el_dia,&lt;br/&gt;    x.repetir_cada_semanas,&lt;br/&gt;    x.numero_iteraciones,&lt;br/&gt;    x.detalle_manual,&lt;br/&gt;    x.tipo_dia,&lt;br/&gt;    x.dia_semana&lt;br/&gt;  FROM&lt;br/&gt;    (SELECT i.id,&lt;br/&gt;      NULL estudio_id,&lt;br/&gt;      i.curso_id,&lt;br/&gt;      i.semestre_id,&lt;br/&gt;      i.grupo_id,&lt;br/&gt;      i.tipo_subgrupo_id,&lt;br/&gt;      i.subgrupo_id,&lt;br/&gt;      i.dia_semana_id,&lt;br/&gt;      NULL asignatura_id,&lt;br/&gt;      s.fecha_inicio,&lt;br/&gt;      s.fecha_fin,&lt;br/&gt;      s.fecha_examenes_inicio,&lt;br/&gt;      s.fecha_examenes_fin,&lt;br/&gt;      i.desde_el_dia,&lt;br/&gt;      i.hasta_el_dia,&lt;br/&gt;      i.repetir_cada_semanas,&lt;br/&gt;      i.numero_iteraciones,&lt;br/&gt;      i.detalle_manual,&lt;br/&gt;      c.fecha,&lt;br/&gt;      c.tipo_dia,&lt;br/&gt;      c.dia_semana&lt;br/&gt;    FROM hor_semestres_detalle s,&lt;br/&gt;      hor_items i,&lt;br/&gt;      hor_ext_calendario c&lt;br/&gt;    WHERE i.semestre_id   = s.semestre_id&lt;br/&gt;    AND c.dia_semana_id   = i.dia_semana_id&lt;br/&gt;    AND (i.detalle_manual = 0&lt;br/&gt;    AND c.tipo_dia       IN (&apos;L&apos;, &apos;E&apos;, &apos;F&apos;)&lt;br/&gt;    AND TRUNC(c.fecha) BETWEEN s.fecha_inicio AND NVL(s.fecha_examenes_fin, s.fecha_fin)&lt;br/&gt;    AND c.vacaciones = 0)&lt;br/&gt;    ) x&lt;br/&gt;  ) d,&lt;br/&gt;  hor_items i&lt;br/&gt;WHERE i.curso_id       = d.curso_id&lt;br/&gt;AND i.semestre_id      = d.semestre_id&lt;br/&gt;AND i.grupo_id         = d.grupo_id&lt;br/&gt;AND i.tipo_subgrupo_id = d.tipo_subgrupo_id&lt;br/&gt;AND i.subgrupo_id      = d.subgrupo_id&lt;br/&gt;AND i.dia_semana_id    = d.dia_semana_id&lt;br/&gt;AND i.id               = d.id&lt;br/&gt;AND (i.detalle_manual  = 0)&lt;br/&gt;UNION ALL&lt;br/&gt;SELECT c.id,&lt;br/&gt;  c.fecha,&lt;br/&gt;  &apos;N&apos; docencia_paso_1,&lt;br/&gt;  &apos;N&apos; docencia_paso_2,&lt;br/&gt;  DECODE(d.id, NULL, &apos;N&apos;, &apos;S&apos;) docencia,&lt;br/&gt;  1 orden_id,&lt;br/&gt;  c.numero_iteraciones,&lt;br/&gt;  c.repetir_cada_semanas,&lt;br/&gt;  c.fecha_inicio,&lt;br/&gt;  c.fecha_fin,&lt;br/&gt;  c.estudio_id,&lt;br/&gt;  c.semestre_id,&lt;br/&gt;  c.curso_id,&lt;br/&gt;  c.asignatura_id,&lt;br/&gt;  c.grupo_id,&lt;br/&gt;  c.tipo_subgrupo_id,&lt;br/&gt;  c.subgrupo_id,&lt;br/&gt;  c.dia_semana_id,&lt;br/&gt;  c.tipo_dia,&lt;br/&gt;  DECODE(c.tipo_dia, &apos;F&apos;, 1, 0) festivos&lt;br/&gt;FROM&lt;br/&gt;  (SELECT i.id,&lt;br/&gt;    c.fecha,&lt;br/&gt;    i.numero_iteraciones,&lt;br/&gt;    i.repetir_cada_semanas,&lt;br/&gt;    s.fecha_inicio,&lt;br/&gt;    s.fecha_fin,&lt;br/&gt;    NULL estudio_id,&lt;br/&gt;    i.semestre_id,&lt;br/&gt;    i.curso_id,&lt;br/&gt;    NULL asignatura_id,&lt;br/&gt;    i.grupo_id,&lt;br/&gt;    i.tipo_subgrupo_id,&lt;br/&gt;    i.subgrupo_id,&lt;br/&gt;    i.dia_semana_id,&lt;br/&gt;    c.tipo_dia&lt;br/&gt;  FROM hor_semestres_detalle s,&lt;br/&gt;    hor_items i,&lt;br/&gt;    hor_ext_calendario c&lt;br/&gt;  WHERE i.semestre_id = s.semestre_id&lt;br/&gt;  AND c.dia_semana_id = i.dia_semana_id&lt;br/&gt;  AND (c.tipo_dia    IN (&apos;L&apos;, &apos;E&apos;, &apos;F&apos;)&lt;br/&gt;  AND TRUNC(c.fecha) BETWEEN s.fecha_inicio AND NVL(s.fecha_examenes_fin, s.fecha_fin)&lt;br/&gt;  AND c.vacaciones     = 0&lt;br/&gt;  AND i.detalle_manual = 1)&lt;br/&gt;  ) c,&lt;br/&gt;  hor_items_detalle d&lt;br/&gt;WHERE c.id         = d.item_id(+)&lt;br/&gt;AND TRUNC(c.fecha) = TRUNC(d.inicio(+))</userDefinedSQL>
+<layoutSQL>&lt;?xml version = &apos;1.0&apos; encoding = &apos;UTF-8&apos;?&gt;&lt;br&gt;&lt;ActiveQueryBuilderLayout&gt;&lt;SQL&gt;Select i.id, d.fecha, d.docencia docencia_paso_1, DECODE(NVL(d.repetir_cada_semanas, 1), 1, d.docencia, DECODE(MOD(d.orden_id, d.repetir_cada_semanas), 1, d.docencia, &apos;N&apos;)) docencia_paso_2, DECODE(d.tipo_dia, &apos;F&apos;, &apos;N&apos;, DECODE(d.numero_iteraciones, Null, DECODE(NVL(d.repetir_cada_semanas, 1), 1, d.docencia, DECODE(MOD(d.orden_id, d.repetir_cada_semanas), 1, d.docencia, &apos;N&apos;)), DECODE(SIGN(((d.orden_id - d.festivos) / d.repetir_cada_semanas) - (d.numero_iteraciones)), 1, &apos;N&apos;, DECODE(NVL(d.repetir_cada_semanas, 1), 1, d.docencia, DECODE(MOD(d.orden_id, d.repetir_cada_semanas), 1, d.docencia, &apos;N&apos;))))) docencia, d.orden_id, d.numero_iteraciones, d.repetir_cada_semanas, d.fecha_inicio, d.fecha_fin, d.estudio_id, d.semestre_id, d.curso_id, d.asignatura_id, d.grupo_id, d.tipo_subgrupo_id, d.subgrupo_id, d.dia_semana_id, d.tipo_dia, d.festivos From (Select x.id, x.fecha, hor_contar_festivos(NVL(x.desde_el_dia, x.fecha_inicio), x.fecha, x.dia_semana_id, x.repetir_cada_semanas) festivos, ROW_NUMBER() Over (Partition By DECODE(DECODE(SIGN(x.fecha - x.fecha_inicio), -1, &apos;N&apos;, DECODE(SIGN(x.fecha_fin - x.fecha), -1, &apos;N&apos;, &apos;S&apos;)), &apos;S&apos;, DECODE(DECODE(SIGN(x.fecha - NVL(x.desde_el_dia, x.fecha_inicio)), -1, &apos;N&apos;, DECODE(SIGN(NVL(x.hasta_el_dia, x.fecha_fin) - x.fecha), -1, &apos;N&apos;, &apos;S&apos;)), &apos;S&apos;, &apos;S&apos;, &apos;N&apos;), &apos;N&apos;), x.id, x.estudio_id, x.semestre_id, x.curso_id, x.asignatura_id, x.grupo_id, x.tipo_subgrupo_id, x.subgrupo_id, x.dia_semana_id Order By x.fecha) orden_id, DECODE(hor_f_fecha_entre(x.fecha, x.fecha_inicio, x.fecha_fin), &apos;S&apos;, DECODE(hor_f_fecha_entre(x.fecha, NVL(x.desde_el_dia, x.fecha_inicio), NVL(x.hasta_el_dia, x.fecha_fin)), &apos;S&apos;, &apos;S&apos;, &apos;N&apos;), &apos;N&apos;) docencia, x.estudio_id, x.curso_id, x.semestre_id, x.grupo_id, x.tipo_subgrupo_id, x.subgrupo_id, x.dia_semana_id, x.asignatura_id, x.fecha_inicio, x.fecha_fin, x.fecha_examenes_inicio, x.fecha_examenes_fin, x.desde_el_dia, x.hasta_el_dia, x.repetir_cada_semanas, x.numero_iteraciones, x.detalle_manual, x.tipo_dia, x.dia_semana From (Select i.id, Null estudio_id, i.curso_id, i.semestre_id, i.grupo_id, i.tipo_subgrupo_id, i.subgrupo_id, i.dia_semana_id, Null asignatura_id, s.fecha_inicio, s.fecha_fin, s.fecha_examenes_inicio, s.fecha_examenes_fin, i.desde_el_dia, i.hasta_el_dia, i.repetir_cada_semanas, i.numero_iteraciones, i.detalle_manual, c.fecha, c.tipo_dia, c.dia_semana From hor_semestres_detalle s, hor_items i, hor_ext_calendario c Where i.semestre_id = s.semestre_id And c.dia_semana_id = i.dia_semana_id And (i.detalle_manual = 0 And c.tipo_dia In (&apos;L&apos;, &apos;E&apos;, &apos;F&apos;) And TRUNC(c.fecha) Between s.fecha_inicio And NVL(s.fecha_examenes_fin, s.fecha_fin) And c.vacaciones = 0)) x) d, hor_items i Where i.curso_id = d.curso_id And i.semestre_id = d.semestre_id And i.grupo_id = d.grupo_id And i.tipo_subgrupo_id = d.tipo_subgrupo_id And i.subgrupo_id = d.subgrupo_id And i.dia_semana_id = d.dia_semana_id And i.id = d.id And (i.detalle_manual = 0) Union All Select c.id, c.fecha, &apos;N&apos; docencia_paso_1, &apos;N&apos; docencia_paso_2, DECODE(d.id, Null, &apos;N&apos;, &apos;S&apos;) docencia, 1 orden_id, c.numero_iteraciones, c.repetir_cada_semanas, c.fecha_inicio, c.fecha_fin, c.estudio_id, c.semestre_id, c.curso_id, c.asignatura_id, c.grupo_id, c.tipo_subgrupo_id, c.subgrupo_id, c.dia_semana_id, c.tipo_dia, DECODE(c.tipo_dia, &apos;F&apos;, 1, 0) festivos From (Select i.id, c.fecha, i.numero_iteraciones, i.repetir_cada_semanas, s.fecha_inicio, s.fecha_fin, Null estudio_id, i.semestre_id, i.curso_id, Null asignatura_id, i.grupo_id, i.tipo_subgrupo_id, i.subgrupo_id, i.dia_semana_id, c.tipo_dia From hor_semestres_detalle s, hor_items i, hor_ext_calendario c Where i.semestre_id = s.semestre_id And c.dia_semana_id = i.dia_semana_id And (c.tipo_dia In (&apos;L&apos;, &apos;E&apos;, &apos;F&apos;) And TRUNC(c.fecha) Between s.fecha_inicio And NVL(s.fecha_examenes_fin, s.fecha_fin) And c.vacaciones = 0 And i.detalle_manual = 1)) c, hor_items_detalle d Where c.id = d.item_id(+) And TRUNC(c.fecha) = TRUNC(d.inicio(+))&lt;/SQL&gt;&lt;SubQueries&gt;&lt;SubQuery SQL=&quot;Select i.id, d.fecha, d.docencia docencia_paso_1, DECODE(NVL(d.repetir_cada_semanas, 1), 1, d.docencia, DECODE(MOD(d.orden_id, d.repetir_cada_semanas), 1, d.docencia, &apos;N&apos;)) docencia_paso_2, DECODE(d.tipo_dia, &apos;F&apos;, &apos;N&apos;, DECODE(d.numero_iteraciones, Null, DECODE(NVL(d.repetir_cada_semanas, 1), 1, d.docencia, DECODE(MOD(d.orden_id, d.repetir_cada_semanas), 1, d.docencia, &apos;N&apos;)), DECODE(SIGN(((d.orden_id - d.festivos) / d.repetir_cada_semanas) - (d.numero_iteraciones)), 1, &apos;N&apos;, DECODE(NVL(d.repetir_cada_semanas, 1), 1, d.docencia, DECODE(MOD(d.orden_id, d.repetir_cada_semanas), 1, d.docencia, &apos;N&apos;))))) docencia, d.orden_id, d.numero_iteraciones, d.repetir_cada_semanas, d.fecha_inicio, d.fecha_fin, d.estudio_id, d.semestre_id, d.curso_id, d.asignatura_id, d.grupo_id, d.tipo_subgrupo_id, d.subgrupo_id, d.dia_semana_id, d.tipo_dia, d.festivos From (Select x.id, x.fecha, hor_contar_festivos(NVL(x.desde_el_dia, x.fecha_inicio), x.fecha, x.dia_semana_id, x.repetir_cada_semanas) festivos, ROW_NUMBER() Over (Partition By DECODE(DECODE(SIGN(x.fecha - x.fecha_inicio), -1, &apos;N&apos;, DECODE(SIGN(x.fecha_fin - x.fecha), -1, &apos;N&apos;, &apos;S&apos;)), &apos;S&apos;, DECODE(DECODE(SIGN(x.fecha - NVL(x.desde_el_dia, x.fecha_inicio)), -1, &apos;N&apos;, DECODE(SIGN(NVL(x.hasta_el_dia, x.fecha_fin) - x.fecha), -1, &apos;N&apos;, &apos;S&apos;)), &apos;S&apos;, &apos;S&apos;, &apos;N&apos;), &apos;N&apos;), x.id, x.estudio_id, x.semestre_id, x.curso_id, x.asignatura_id, x.grupo_id, x.tipo_subgrupo_id, x.subgrupo_id, x.dia_semana_id Order By x.fecha) orden_id, DECODE(hor_f_fecha_entre(x.fecha, x.fecha_inicio, x.fecha_fin), &apos;S&apos;, DECODE(hor_f_fecha_entre(x.fecha, NVL(x.desde_el_dia, x.fecha_inicio), NVL(x.hasta_el_dia, x.fecha_fin)), &apos;S&apos;, &apos;S&apos;, &apos;N&apos;), &apos;N&apos;) docencia, x.estudio_id, x.curso_id, x.semestre_id, x.grupo_id, x.tipo_subgrupo_id, x.subgrupo_id, x.dia_semana_id, x.asignatura_id, x.fecha_inicio, x.fecha_fin, x.fecha_examenes_inicio, x.fecha_examenes_fin, x.desde_el_dia, x.hasta_el_dia, x.repetir_cada_semanas, x.numero_iteraciones, x.detalle_manual, x.tipo_dia, x.dia_semana From (Select i.id, Null estudio_id, i.curso_id, i.semestre_id, i.grupo_id, i.tipo_subgrupo_id, i.subgrupo_id, i.dia_semana_id, Null asignatura_id, s.fecha_inicio, s.fecha_fin, s.fecha_examenes_inicio, s.fecha_examenes_fin, i.desde_el_dia, i.hasta_el_dia, i.repetir_cada_semanas, i.numero_iteraciones, i.detalle_manual, c.fecha, c.tipo_dia, c.dia_semana From hor_semestres_detalle s, hor_items i, hor_ext_calendario c Where i.semestre_id = s.semestre_id And c.dia_semana_id = i.dia_semana_id And (i.detalle_manual = 0 And c.tipo_dia In (&apos;L&apos;, &apos;E&apos;, &apos;F&apos;) And TRUNC(c.fecha) Between s.fecha_inicio And NVL(s.fecha_examenes_fin, s.fecha_fin) And c.vacaciones = 0)) x) d, hor_items i Where i.curso_id = d.curso_id And i.semestre_id = d.semestre_id And i.grupo_id = d.grupo_id And i.tipo_subgrupo_id = d.tipo_subgrupo_id And i.subgrupo_id = d.subgrupo_id And i.dia_semana_id = d.dia_semana_id And i.id = d.id And (i.detalle_manual = 0) Union All Select c.id, c.fecha, &apos;N&apos; docencia_paso_1, &apos;N&apos; docencia_paso_2, DECODE(d.id, Null, &apos;N&apos;, &apos;S&apos;) docencia, 1 orden_id, c.numero_iteraciones, c.repetir_cada_semanas, c.fecha_inicio, c.fecha_fin, c.estudio_id, c.semestre_id, c.curso_id, c.asignatura_id, c.grupo_id, c.tipo_subgrupo_id, c.subgrupo_id, c.dia_semana_id, c.tipo_dia, DECODE(c.tipo_dia, &apos;F&apos;, 1, 0) festivos From (Select i.id, c.fecha, i.numero_iteraciones, i.repetir_cada_semanas, s.fecha_inicio, s.fecha_fin, Null estudio_id, i.semestre_id, i.curso_id, Null asignatura_id, i.grupo_id, i.tipo_subgrupo_id, i.subgrupo_id, i.dia_semana_id, c.tipo_dia From hor_semestres_detalle s, hor_items i, hor_ext_calendario c Where i.semestre_id = s.semestre_id And c.dia_semana_id = i.dia_semana_id And (c.tipo_dia In (&apos;L&apos;, &apos;E&apos;, &apos;F&apos;) And TRUNC(c.fecha) Between s.fecha_inicio And NVL(s.fecha_examenes_fin, s.fecha_fin) And c.vacaciones = 0 And i.detalle_manual = 1)) c, hor_items_detalle d Where c.id = d.item_id(+) And TRUNC(c.fecha) = TRUNC(d.inicio(+))&quot;&gt;&lt;UnionSubQuery&gt;&lt;DataSource SQL=&quot;(Select x.id, x.fecha, hor_contar_festivos(NVL(x.desde_el_dia, x.fecha_inicio), x.fecha, x.dia_semana_id, x.repetir_cada_semanas) festivos, ROW_NUMBER() Over (Partition By DECODE(DECODE(SIGN(x.fecha - x.fecha_inicio), -1, &apos;N&apos;, DECODE(SIGN(x.fecha_fin - x.fecha), -1, &apos;N&apos;, &apos;S&apos;)), &apos;S&apos;, DECODE(DECODE(SIGN(x.fecha - NVL(x.desde_el_dia, x.fecha_inicio)), -1, &apos;N&apos;, DECODE(SIGN(NVL(x.hasta_el_dia, x.fecha_fin) - x.fecha), -1, &apos;N&apos;, &apos;S&apos;)), &apos;S&apos;, &apos;S&apos;, &apos;N&apos;), &apos;N&apos;), x.id, x.estudio_id, x.semestre_id, x.curso_id, x.asignatura_id, x.grupo_id, x.tipo_subgrupo_id, x.subgrupo_id, x.dia_semana_id Order By x.fecha) orden_id, DECODE(hor_f_fecha_entre(x.fecha, x.fecha_inicio, x.fecha_fin), &apos;S&apos;, DECODE(hor_f_fecha_entre(x.fecha, NVL(x.desde_el_dia, x.fecha_inicio), NVL(x.hasta_el_dia, x.fecha_fin)), &apos;S&apos;, &apos;S&apos;, &apos;N&apos;), &apos;N&apos;) docencia, x.estudio_id, x.curso_id, x.semestre_id, x.grupo_id, x.tipo_subgrupo_id, x.subgrupo_id, x.dia_semana_id, x.asignatura_id, x.fecha_inicio, x.fecha_fin, x.fecha_examenes_inicio, x.fecha_examenes_fin, x.desde_el_dia, x.hasta_el_dia, x.repetir_cada_semanas, x.numero_iteraciones, x.detalle_manual, x.tipo_dia, x.dia_semana From (Select i.id, Null estudio_id, i.curso_id, i.semestre_id, i.grupo_id, i.tipo_subgrupo_id, i.subgrupo_id, i.dia_semana_id, Null asignatura_id, s.fecha_inicio, s.fecha_fin, s.fecha_examenes_inicio, s.fecha_examenes_fin, i.desde_el_dia, i.hasta_el_dia, i.repetir_cada_semanas, i.numero_iteraciones, i.detalle_manual, c.fecha, c.tipo_dia, c.dia_semana From hor_semestres_detalle s, hor_items i, hor_ext_calendario c Where i.semestre_id = s.semestre_id And c.dia_semana_id = i.dia_semana_id And (i.detalle_manual = 0 And c.tipo_dia In (&apos;L&apos;, &apos;E&apos;, &apos;F&apos;) And TRUNC(c.fecha) Between s.fecha_inicio And NVL(s.fecha_examenes_fin, s.fecha_fin) And c.vacaciones = 0)) x) d&quot; X=&quot;50&quot; Y=&quot;20&quot; Height=&quot;481&quot; Width=&quot;140&quot;/&gt;&lt;DataSource SQL=&quot;hor_items i&quot; X=&quot;240&quot; Y=&quot;20&quot; Height=&quot;553&quot; Width=&quot;140&quot;/&gt;&lt;/UnionSubQuery&gt;&lt;UnionSubQuery&gt;&lt;DataSource SQL=&quot;(Select i.id, c.fecha, i.numero_iteraciones, i.repetir_cada_semanas, s.fecha_inicio, s.fecha_fin, Null estudio_id, i.semestre_id, i.curso_id, Null asignatura_id, i.grupo_id, i.tipo_subgrupo_id, i.subgrupo_id, i.dia_semana_id, c.tipo_dia From hor_semestres_detalle s, hor_items i, hor_ext_calendario c Where i.semestre_id = s.semestre_id And c.dia_semana_id = i.dia_semana_id And (c.tipo_dia In (&apos;L&apos;, &apos;E&apos;, &apos;F&apos;) And TRUNC(c.fecha) Between s.fecha_inicio And NVL(s.fecha_examenes_fin, s.fecha_fin) And c.vacaciones = 0 And i.detalle_manual = 1)) c&quot; X=&quot;50&quot; Y=&quot;20&quot; Height=&quot;319&quot; Width=&quot;140&quot;/&gt;&lt;DataSource SQL=&quot;hor_items_detalle d&quot; X=&quot;240&quot; Y=&quot;20&quot; Height=&quot;139&quot; Width=&quot;140&quot;/&gt;&lt;/UnionSubQuery&gt;&lt;/SubQuery&gt;&lt;SubQuery SQL=&quot;Select x.id, x.fecha, hor_contar_festivos(NVL(x.desde_el_dia, x.fecha_inicio), x.fecha, x.dia_semana_id, x.repetir_cada_semanas) festivos, ROW_NUMBER() Over (Partition By DECODE(DECODE(SIGN(x.fecha - x.fecha_inicio), -1, &apos;N&apos;, DECODE(SIGN(x.fecha_fin - x.fecha), -1, &apos;N&apos;, &apos;S&apos;)), &apos;S&apos;, DECODE(DECODE(SIGN(x.fecha - NVL(x.desde_el_dia, x.fecha_inicio)), -1, &apos;N&apos;, DECODE(SIGN(NVL(x.hasta_el_dia, x.fecha_fin) - x.fecha), -1, &apos;N&apos;, &apos;S&apos;)), &apos;S&apos;, &apos;S&apos;, &apos;N&apos;), &apos;N&apos;), x.id, x.estudio_id, x.semestre_id, x.curso_id, x.asignatura_id, x.grupo_id, x.tipo_subgrupo_id, x.subgrupo_id, x.dia_semana_id Order By x.fecha) orden_id, DECODE(hor_f_fecha_entre(x.fecha, x.fecha_inicio, x.fecha_fin), &apos;S&apos;, DECODE(hor_f_fecha_entre(x.fecha, NVL(x.desde_el_dia, x.fecha_inicio), NVL(x.hasta_el_dia, x.fecha_fin)), &apos;S&apos;, &apos;S&apos;, &apos;N&apos;), &apos;N&apos;) docencia, x.estudio_id, x.curso_id, x.semestre_id, x.grupo_id, x.tipo_subgrupo_id, x.subgrupo_id, x.dia_semana_id, x.asignatura_id, x.fecha_inicio, x.fecha_fin, x.fecha_examenes_inicio, x.fecha_examenes_fin, x.desde_el_dia, x.hasta_el_dia, x.repetir_cada_semanas, x.numero_iteraciones, x.detalle_manual, x.tipo_dia, x.dia_semana From (Select i.id, Null estudio_id, i.curso_id, i.semestre_id, i.grupo_id, i.tipo_subgrupo_id, i.subgrupo_id, i.dia_semana_id, Null asignatura_id, s.fecha_inicio, s.fecha_fin, s.fecha_examenes_inicio, s.fecha_examenes_fin, i.desde_el_dia, i.hasta_el_dia, i.repetir_cada_semanas, i.numero_iteraciones, i.detalle_manual, c.fecha, c.tipo_dia, c.dia_semana From hor_semestres_detalle s, hor_items i, hor_ext_calendario c Where i.semestre_id = s.semestre_id And c.dia_semana_id = i.dia_semana_id And (i.detalle_manual = 0 And c.tipo_dia In (&apos;L&apos;, &apos;E&apos;, &apos;F&apos;) And TRUNC(c.fecha) Between s.fecha_inicio And NVL(s.fecha_examenes_fin, s.fecha_fin) And c.vacaciones = 0)) x&quot;&gt;&lt;UnionSubQuery&gt;&lt;DataSource SQL=&quot;(Select i.id, Null estudio_id, i.curso_id, i.semestre_id, i.grupo_id, i.tipo_subgrupo_id, i.subgrupo_id, i.dia_semana_id, Null asignatura_id, s.fecha_inicio, s.fecha_fin, s.fecha_examenes_inicio, s.fecha_examenes_fin, i.desde_el_dia, i.hasta_el_dia, i.repetir_cada_semanas, i.numero_iteraciones, i.detalle_manual, c.fecha, c.tipo_dia, c.dia_semana From hor_semestres_detalle s, hor_items i, hor_ext_calendario c Where i.semestre_id = s.semestre_id And c.dia_semana_id = i.dia_semana_id And (i.detalle_manual = 0 And c.tipo_dia In (&apos;L&apos;, &apos;E&apos;, &apos;F&apos;) And TRUNC(c.fecha) Between s.fecha_inicio And NVL(s.fecha_examenes_fin, s.fecha_fin) And c.vacaciones = 0)) x&quot; X=&quot;50&quot; Y=&quot;20&quot; Height=&quot;427&quot; Width=&quot;140&quot;/&gt;&lt;/UnionSubQuery&gt;&lt;/SubQuery&gt;&lt;SubQuery SQL=&quot;Select i.id, Null estudio_id, i.curso_id, i.semestre_id, i.grupo_id, i.tipo_subgrupo_id, i.subgrupo_id, i.dia_semana_id, Null asignatura_id, s.fecha_inicio, s.fecha_fin, s.fecha_examenes_inicio, s.fecha_examenes_fin, i.desde_el_dia, i.hasta_el_dia, i.repetir_cada_semanas, i.numero_iteraciones, i.detalle_manual, c.fecha, c.tipo_dia, c.dia_semana From hor_semestres_detalle s, hor_items i, hor_ext_calendario c Where i.semestre_id = s.semestre_id And c.dia_semana_id = i.dia_semana_id And (i.detalle_manual = 0 And c.tipo_dia In (&apos;L&apos;, &apos;E&apos;, &apos;F&apos;) And TRUNC(c.fecha) Between s.fecha_inicio And NVL(s.fecha_examenes_fin, s.fecha_fin) And c.vacaciones = 0)&quot;&gt;&lt;UnionSubQuery&gt;&lt;DataSource SQL=&quot;hor_semestres_detalle s&quot; X=&quot;50&quot; Y=&quot;20&quot; Height=&quot;211&quot; Width=&quot;140&quot;/&gt;&lt;DataSource SQL=&quot;hor_items i&quot; X=&quot;240&quot; Y=&quot;20&quot; Height=&quot;553&quot; Width=&quot;140&quot;/&gt;&lt;DataSource SQL=&quot;hor_ext_calendario c&quot; X=&quot;430&quot; Y=&quot;20&quot; Height=&quot;211&quot; Width=&quot;140&quot;/&gt;&lt;/UnionSubQuery&gt;&lt;/SubQuery&gt;&lt;SubQuery SQL=&quot;Select i.id, c.fecha, i.numero_iteraciones, i.repetir_cada_semanas, s.fecha_inicio, s.fecha_fin, Null estudio_id, i.semestre_id, i.curso_id, Null asignatura_id, i.grupo_id, i.tipo_subgrupo_id, i.subgrupo_id, i.dia_semana_id, c.tipo_dia From hor_semestres_detalle s, hor_items i, hor_ext_calendario c Where i.semestre_id = s.semestre_id And c.dia_semana_id = i.dia_semana_id And (c.tipo_dia In (&apos;L&apos;, &apos;E&apos;, &apos;F&apos;) And TRUNC(c.fecha) Between s.fecha_inicio And NVL(s.fecha_examenes_fin, s.fecha_fin) And c.vacaciones = 0 And i.detalle_manual = 1)&quot;&gt;&lt;UnionSubQuery&gt;&lt;DataSource SQL=&quot;hor_semestres_detalle s&quot; X=&quot;50&quot; Y=&quot;20&quot; Height=&quot;211&quot; Width=&quot;140&quot;/&gt;&lt;DataSource SQL=&quot;hor_items i&quot; X=&quot;240&quot; Y=&quot;20&quot; Height=&quot;553&quot; Width=&quot;140&quot;/&gt;&lt;DataSource SQL=&quot;hor_ext_calendario c&quot; X=&quot;430&quot; Y=&quot;20&quot; Height=&quot;211&quot; Width=&quot;140&quot;/&gt;&lt;/UnionSubQuery&gt;&lt;/SubQuery&gt;&lt;/SubQueries&gt;&lt;/ActiveQueryBuilderLayout&gt;</layoutSQL>
+<parsed>true</parsed>
+<fonts>
+<FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
+<foType>Título</foType>
+<fontStyle>1</fontStyle>
+<colorRGB>-16776961</colorRGB>
+</FontObject>
+<FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
+<foType>Columna</foType>
+<colorRGB>-16777216</colorRGB>
+</FontObject>
+<FontObject class="oracle.dbtools.crest.model.design.FontObjectWr">
+<foType>Tipo de Dato</foType>
+<colorRGB>-16744448</colorRGB>
+</FontObject>
+</fonts>
+<usedContainers>
+<container alias="i" containerID="7185EE22-E0F3-C3F6-15A8-A27E06438805"/>
+</usedContainers>
+<viewElements>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="id" id="A9443BDE-DE9E-1B82-0DB7-3E4C3DA11F80">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-11-07 13:54:59 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<dataType>NUMBER</dataType>
+<expression>i.id</expression>
+<reference>false</reference>
+<referencedColumn>3C35D93B-F361-CCD8-4B50-81E0EE6166DF</referencedColumn>
+<tableAlias>i</tableAlias>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="fecha" id="587C6651-D8DB-6939-BD76-DF1C5199F34C">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-11-07 13:54:59 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<expression>d.fecha</expression>
+<reference>false</reference>
+<tableAlias>d</tableAlias>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="docencia" id="C8D196C4-E779-EA7A-661F-F4F5D235DF97">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-11-07 13:54:59 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<alias>docencia_paso_1</alias>
+<expression>d.docencia</expression>
+<reference>false</reference>
+<tableAlias>d</tableAlias>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" id="D7CB9840-1FA4-1E18-5F0D-C44B8F96F0E2" directorySegmentName="seg_1">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-11-08 11:55:07 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<alias>docencia_paso_2</alias>
+<expression>DECODE(NVL(d.repetir_cada_semanas, 1), 1, d.docencia, DECODE(MOD(d.orden_id, d.repetir_cada_semanas), 1, d.docencia, &apos;N&apos;))</expression>
+<reference>false</reference>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="COL_12" id="6F1DF35E-DCB2-425A-B5B6-8EB51A5606DF">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-11-07 13:54:59 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<alias>docencia</alias>
+<expression>DECODE(d.tipo_dia, &apos;F&apos;, &apos;N&apos;, DECODE(d.numero_iteraciones, Null, DECODE(NVL(d.repetir_cada_semanas, 1), 1, d.docencia, DECODE(MOD(d.orden_id, d.repetir_cada_semanas), 1, d.docencia, &apos;N&apos;)), DECODE(SIGN(((d.orden_id - d.festivos) / d.repetir_cada_semanas) - (d.numero_iteraciones)), 1, &apos;N&apos;, DECODE(NVL(d.repetir_cada_semanas, 1), 1, d.docencia, DECODE(MOD(d.orden_id, d.repetir_cada_semanas), 1, d.docencia, &apos;N&apos;)))))</expression>
+<reference>false</reference>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="orden_id" id="DE780B34-5602-2E23-FA01-EABA22F21951">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-11-07 13:54:59 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<expression>d.orden_id</expression>
+<reference>false</reference>
+<tableAlias>d</tableAlias>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="numero_iteraciones" id="6095EFAB-D9BA-0775-E606-930515BD9C7E">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-11-07 13:54:59 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<expression>d.numero_iteraciones</expression>
+<reference>false</reference>
+<tableAlias>d</tableAlias>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="repetir_cada_semanas" id="9337976B-B9BE-E89E-C0E8-FEDBED29F940">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-11-07 13:54:59 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<expression>d.repetir_cada_semanas</expression>
+<reference>false</reference>
+<tableAlias>d</tableAlias>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="fecha_inicio" id="FB3FBC53-A8CE-16B6-65B1-510E53F6454A">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-11-07 13:54:59 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<expression>d.fecha_inicio</expression>
+<reference>false</reference>
+<tableAlias>d</tableAlias>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="fecha_fin" id="9EF2D324-E003-A63A-5609-B9CB146D4E72">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-11-07 13:54:59 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<expression>d.fecha_fin</expression>
+<reference>false</reference>
+<tableAlias>d</tableAlias>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="estudio_id" id="DEDD7346-D8D8-10C6-637A-15F008716BA9">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-11-07 13:54:59 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<expression>d.estudio_id</expression>
+<reference>false</reference>
+<tableAlias>d</tableAlias>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="semestre_id" id="945B2A83-90A3-8ED9-860D-0871B85CEA7E">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-11-07 13:54:59 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<expression>d.semestre_id</expression>
+<reference>false</reference>
+<tableAlias>d</tableAlias>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="curso_id" id="67F2F1C6-1FE7-9578-B4C0-98211FC9B128">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-11-07 13:54:59 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<expression>d.curso_id</expression>
+<reference>false</reference>
+<tableAlias>d</tableAlias>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="asignatura_id" id="33D0EDCF-ECAE-0F22-C4FA-E720363BE30D">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-11-07 13:54:59 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<expression>d.asignatura_id</expression>
+<reference>false</reference>
+<tableAlias>d</tableAlias>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="grupo_id" id="3B338305-B421-5791-9057-449EFCA45E8C">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-11-07 13:54:59 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<expression>d.grupo_id</expression>
+<reference>false</reference>
+<tableAlias>d</tableAlias>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="tipo_subgrupo_id" id="DEE44E6E-D1A7-0393-C536-D8B7C432FDB0">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-11-07 13:54:59 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<expression>d.tipo_subgrupo_id</expression>
+<reference>false</reference>
+<tableAlias>d</tableAlias>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="subgrupo_id" id="9B316A1E-0A46-175F-71E3-25D5FC4F69EF">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-11-07 13:54:59 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<expression>d.subgrupo_id</expression>
+<reference>false</reference>
+<tableAlias>d</tableAlias>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="dia_Semana_id" id="C0E5B3B6-4BCA-786F-4D81-633F64607DAE">
+<createdBy>ferrerq</createdBy>
+<createdTime>2012-11-07 13:54:59 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<expression>d.dia_semana_id</expression>
+<reference>false</reference>
+<tableAlias>d</tableAlias>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="tipo_dia" id="1D25D2D8-ABA0-1007-3058-6F8700A8BDBA">
+<createdBy>ferrerq</createdBy>
+<createdTime>2013-01-08 09:38:08 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<expression>d.tipo_dia</expression>
+<reference>false</reference>
+<tableAlias>d</tableAlias>
+</viewElement>
+<viewElement class="oracle.dbtools.crest.model.design.relational.ColumnView" name="festivos" id="590753D2-0F7C-B9B3-1278-4F4D91A9CDC1">
+<createdBy>ferrerq</createdBy>
+<createdTime>2013-01-08 09:38:08 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<expression>d.festivos</expression>
+<reference>false</reference>
+<tableAlias>d</tableAlias>
+</viewElement>
+</viewElements>
+<usedObjects>
+<UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="7185EE22-E0F3-C3F6-15A8-A27E06438805">
+<container>true</container>
+<schema>uji_horarios</schema>
+<tableName>hor_items</tableName>
+</UsedObject>
+<UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="3900443F-A804-9F08-132A-806AF7E9CBDA">
+<container>true</container>
+<schema>uji_horarios</schema>
+<tableName>hor_ext_calendario</tableName>
+</UsedObject>
+<UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="3E028D4B-4EEC-FA73-5DB2-666FF613CFF3">
+<container>true</container>
+<schema>uji_horarios</schema>
+<tableName>hor_semestres_detalle</tableName>
+</UsedObject>
+<UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="C3F2E5BC-B942-639D-F47D-00C632CEE5DD">
+<container>true</container>
+<schema>uji_horarios</schema>
+<tableName>hor_items_detalle</tableName>
+</UsedObject>
+<UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="3C35D93B-F361-CCD8-4B50-81E0EE6166DF">
+<columnName>id</columnName>
+<schema>uji_horarios</schema>
+<tableName>hor_items</tableName>
+</UsedObject>
+<UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="40355874-F720-6F5D-CD00-362DAC0BB06F">
+<columnName>fecha</columnName>
+<schema>uji_horarios</schema>
+<tableName>hor_ext_calendario</tableName>
+</UsedObject>
+<UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="8D3AE27D-87C2-16C7-C902-DF11640AFB24">
+<columnName>repetir_cada_semanas</columnName>
+<schema>uji_horarios</schema>
+<tableName>hor_items</tableName>
+</UsedObject>
+<UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="524974EB-4603-DCD3-6C2D-08246497D66A">
+<columnName>tipo_dia</columnName>
+<schema>uji_horarios</schema>
+<tableName>hor_ext_calendario</tableName>
+</UsedObject>
+<UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="7C6041E8-0990-596B-A1C6-3FFADE6F0913">
+<columnName>numero_iteraciones</columnName>
+<schema>uji_horarios</schema>
+<tableName>hor_items</tableName>
+</UsedObject>
+<UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="A90E659E-09C8-47E4-A735-1A15A6567349">
+<columnName>fecha_inicio</columnName>
+<schema>uji_horarios</schema>
+<tableName>hor_semestres_detalle</tableName>
+</UsedObject>
+<UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="ACEAAE22-D5F5-B5A5-3FCA-50C37CEC9B9A">
+<columnName>fecha_fin</columnName>
+<schema>uji_horarios</schema>
+<tableName>hor_semestres_detalle</tableName>
+</UsedObject>
+<UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="0B34F468-D3F7-2A74-2C69-50FB7A0AE7C0">
+<columnName>semestre_id</columnName>
+<schema>uji_horarios</schema>
+<tableName>hor_items</tableName>
+</UsedObject>
+<UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="4C7D94EC-E7BD-EDF2-452A-40409D6348B5">
+<columnName>curso_id</columnName>
+<schema>uji_horarios</schema>
+<tableName>hor_items</tableName>
+</UsedObject>
+<UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="84B95FFD-EC47-7819-8889-9F9F339A221D">
+<columnName>grupo_id</columnName>
+<schema>uji_horarios</schema>
+<tableName>hor_items</tableName>
+</UsedObject>
+<UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="86809812-09FC-A0BF-91C0-0907992A565F">
+<columnName>tipo_subgrupo_id</columnName>
+<schema>uji_horarios</schema>
+<tableName>hor_items</tableName>
+</UsedObject>
+<UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="5E889152-6E21-AF2D-9362-1BA81B0FB474">
+<columnName>subgrupo_id</columnName>
+<schema>uji_horarios</schema>
+<tableName>hor_items</tableName>
+</UsedObject>
+<UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="4D67A757-4A56-0A72-CFEA-00531E069B8B">
+<columnName>dia_semana_id</columnName>
+<schema>uji_horarios</schema>
+<tableName>hor_items</tableName>
+</UsedObject>
+<UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="5FFC2870-0502-763C-4311-458CF79FA8AE">
+<columnName>desde_el_dia</columnName>
+<schema>uji_horarios</schema>
+<tableName>hor_items</tableName>
+</UsedObject>
+<UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="02302C09-ABDC-0817-5F09-2B27D4AF3129">
+<columnName>hasta_el_dia</columnName>
+<schema>uji_horarios</schema>
+<tableName>hor_items</tableName>
+</UsedObject>
+<UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="526CDE3C-8B1C-5C40-81B8-77DC9D2D9126">
+<columnName>fecha_examenes_inicio</columnName>
+<schema>uji_horarios</schema>
+<tableName>hor_semestres_detalle</tableName>
+</UsedObject>
+<UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="A88E0E32-ADA7-16D6-D9BD-F859920BF597">
+<columnName>fecha_examenes_fin</columnName>
+<schema>uji_horarios</schema>
+<tableName>hor_semestres_detalle</tableName>
+</UsedObject>
+<UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="7E2044FA-E177-C20C-1DD8-8F1AF76F226F">
+<columnName>detalle_manual</columnName>
+<schema>uji_horarios</schema>
+<tableName>hor_items</tableName>
+</UsedObject>
+<UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="3716A8C7-2451-2A5C-FBE3-FF87C279D148">
+<columnName>dia_semana</columnName>
+<schema>uji_horarios</schema>
+<tableName>hor_ext_calendario</tableName>
+</UsedObject>
+<UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="02402CE8-726D-2EAD-F24E-AFBD681C220D">
+<columnName>semestre_id</columnName>
+<schema>uji_horarios</schema>
+<tableName>hor_semestres_detalle</tableName>
+</UsedObject>
+<UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="76B71848-3E1C-8A43-D2C4-AE5495F2049E">
+<columnName>dia_semana_id</columnName>
+<schema>uji_horarios</schema>
+<tableName>hor_ext_calendario</tableName>
+</UsedObject>
+<UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="12A43D2C-674A-6D96-D271-7CEE93023084">
+<columnName>vacaciones</columnName>
+<schema>uji_horarios</schema>
+<tableName>hor_ext_calendario</tableName>
+</UsedObject>
+<UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="A24AF62F-E767-5D9C-7D6E-8D51E74B608B">
+<columnName>id</columnName>
+<schema>uji_horarios</schema>
+<tableName>hor_items_detalle</tableName>
+</UsedObject>
+<UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="8A2A02DE-B9A4-6845-BF43-4E67B737786B">
+<columnName>item_id</columnName>
+<schema>uji_horarios</schema>
+<tableName>hor_items_detalle</tableName>
+</UsedObject>
+<UsedObject class="oracle.dbtools.crest.swingui.editor.viewbuilder.SQLNameHelper" id="D84E064D-5BD8-B564-24E0-92C5C0D82FDE">
+<columnName>inicio</columnName>
+<schema>uji_horarios</schema>
+<tableName>hor_items_detalle</tableName>
+</UsedObject>
+</usedObjects>
+</TableView>
