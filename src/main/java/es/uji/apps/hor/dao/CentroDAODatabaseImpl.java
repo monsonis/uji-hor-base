@@ -16,6 +16,7 @@ import es.uji.apps.hor.db.AulaDTO;
 import es.uji.apps.hor.db.CargoPersonaDTO;
 import es.uji.apps.hor.db.CentroDTO;
 import es.uji.apps.hor.db.QAulaDTO;
+import es.uji.apps.hor.db.QAulaPersonaDTO;
 import es.uji.apps.hor.db.QAulaPlanificacionDTO;
 import es.uji.apps.hor.db.QCargoPersonaDTO;
 import es.uji.apps.hor.db.QCentroDTO;
@@ -65,18 +66,17 @@ public class CentroDAODatabaseImpl extends BaseDAODatabaseImpl implements Centro
         JPAQuery query = new JPAQuery(entityManager);
 
         QCentroDTO qCentro = QCentroDTO.centroDTO;
-        QCargoPersonaDTO qCargo = QCargoPersonaDTO.cargoPersonaDTO;
-        QTipoCargoDTO qTipoCargo = QTipoCargoDTO.tipoCargoDTO;
+        QAulaPersonaDTO qAulaPersona = QAulaPersonaDTO.aulaPersonaDTO;
 
-        query.from(qCargo).innerJoin(qCargo.centro, qCentro)
-                .innerJoin(qCargo.cargo, qTipoCargo)
-                .where(qCargo.persona.id.eq(connectedUserId));
+        query.from(qCentro, qAulaPersona)
+                .where(qAulaPersona.personaId.eq(connectedUserId).and(
+                        qCentro.id.eq(qAulaPersona.centroId))).distinct();
 
         List<Centro> listaCentros = new ArrayList<Centro>();
 
-        for (CargoPersonaDTO cargo : query.list(qCargo))
+        for (CentroDTO centro : query.list(qCentro))
         {
-            listaCentros.add(creaCentroDesdeCentroDTO(cargo.getCentro()));
+            listaCentros.add(creaCentroDesdeCentroDTO(centro));
         }
 
         return listaCentros;
