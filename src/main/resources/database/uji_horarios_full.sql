@@ -1,10 +1,12 @@
 -- Generado por Oracle SQL Developer Data Modeler 3.1.1.703
---   en:        2013-02-06 08:17:54 CET
+--   en:        2013-02-06 08:42:03 CET
 --   sitio:      Oracle Database 11g
 --   tipo:      Oracle Database 11g
 
 
 
+DROP VIEW uji_horarios.hor_v_aulas_personas 
+;
 DROP VIEW uji_horarios.hor_v_cursos 
 ;
 DROP VIEW uji_horarios.hor_v_grupos 
@@ -1015,6 +1017,22 @@ ALTER TABLE uji_horarios.hor_semestres_detalle
     ) 
 ;
 
+CREATE OR REPLACE VIEW uji_horarios.hor_v_aulas_personas AS
+SELECT DISTINCT c.persona_id,
+  ap.aula_id,
+  a.nombre,
+  a.centro_id,
+  c.centro,
+  a.codigo,
+  a.tipo
+FROM uji_horarios.hor_ext_cargos_per c,
+  uji_horarios.hor_aulas_planificacion ap,
+  uji_horarios.hor_aulas a
+WHERE c.estudio_id = ap.estudio_id
+AND ap.aula_id     = a.id ;
+
+
+
 CREATE OR REPLACE VIEW uji_horarios.hor_v_cursos AS
 SELECT DISTINCT hor_items_asignaturas.estudio_id,
   hor_items_asignaturas.estudio,
@@ -1184,7 +1202,7 @@ AND TRUNC(c.fecha) = TRUNC(d.inicio(+)) ;
 -- CREATE TABLE                            25
 -- CREATE INDEX                            23
 -- ALTER TABLE                             59
--- CREATE VIEW                              3
+-- CREATE VIEW                              4
 -- CREATE PACKAGE                           0
 -- CREATE PACKAGE BODY                      0
 -- CREATE PROCEDURE                         0
