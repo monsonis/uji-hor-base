@@ -346,4 +346,21 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         return creaListaAulasFiltradaDesde(listaAulasDTO);
     }
 
+    @Override
+    public List<TipoAula> getTiposAulaVisiblesPorUsuarioByCentroAndEdificio(Long centroId,
+            String edificio, Long connectedUserId)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        QAulaDTO qAula = QAulaDTO.aulaDTO;
+        QAulaPersonaDTO qAulaPersona = QAulaPersonaDTO.aulaPersonaDTO;
+
+        List<String> tiposAula = query
+                .from(qAula, qAulaPersona)
+                .where(qAulaPersona.personaId.eq(connectedUserId).and(qAula.centro.id.eq(centroId))
+                        .and(qAula.centro.id.eq(centroId).and(qAula.edificio.eq(edificio))))
+                .orderBy(qAula.tipo.asc()).distinct().list(qAula.tipo);
+
+        return creaListaTiposAulaDesde(tiposAula);
+    }
+
 }

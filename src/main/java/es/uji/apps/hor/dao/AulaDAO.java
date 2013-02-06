@@ -34,6 +34,9 @@ public interface AulaDAO extends BaseDAO
 
     List<TipoAula> getTiposAulaByCentroAndEdificio(Long centroId, String edificio);
 
+    List<TipoAula> getTiposAulaVisiblesPorUsuarioByCentroAndEdificio(Long centroId,
+            String edificio, Long connectedUserId);
+
     List<Aula> getAulasFiltradasPor(Long centroId, String edificio, String tipoAula, String planta);
 
     List<Aula> getAulasVisiblesPorUsuarioFiltradasPor(Long centroId, String edificio,

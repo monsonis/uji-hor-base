@@ -89,8 +89,8 @@ public class AulaService
     {
         if (!personaDAO.esAdmin(connectedUserId))
         {
-            Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
-            persona.compruebaAccesoACentro(centroId);
+            return aulaDAO.getTiposAulaVisiblesPorUsuarioByCentroAndEdificio(centroId, edificio,
+                    connectedUserId);
         }
 
         return aulaDAO.getTiposAulaByCentroAndEdificio(centroId, edificio);
