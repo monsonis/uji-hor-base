@@ -1,5 +1,5 @@
 -- Generado por Oracle SQL Developer Data Modeler 3.1.1.703
---   en:        2013-01-21 13:37:09 CET
+--   en:        2013-02-06 08:17:54 CET
 --   sitio:      Oracle Database 11g
 --   tipo:      Oracle Database 11g
 
@@ -106,11 +106,9 @@ ALTER TABLE uji_horarios.hor_aulas
 CREATE TABLE uji_horarios.hor_aulas_planificacion 
     ( 
      id NUMBER  NOT NULL , 
-     nombre VARCHAR2 (100)  NOT NULL , 
-     aula_id NUMBER , 
+     aula_id NUMBER  NOT NULL , 
      estudio_id NUMBER  NOT NULL , 
-     curso_id NUMBER , 
-     semestre_id NUMBER 
+     semestre_id NUMBER  NOT NULL 
     ) 
 ;
 
@@ -125,9 +123,18 @@ CREATE INDEX uji_horarios.hor_aulas_plan_est_IDX ON uji_horarios.hor_aulas_plani
      estudio_id ASC 
     ) 
 ;
+CREATE INDEX uji_horarios.hor_aulas_planif_hor_est_FK ON uji_horarios.hor_aulas_planificacion 
+    ( 
+     estudio_id ASC 
+    ) 
+;
 
 ALTER TABLE uji_horarios.hor_aulas_planificacion 
     ADD CONSTRAINT hor_aulas_planificacion_PK PRIMARY KEY ( id ) ;
+
+
+ALTER TABLE uji_horarios.hor_aulas_planificacion 
+    ADD CONSTRAINT hor_aulas_planificacion__UN UNIQUE ( aula_id , estudio_id , semestre_id ) ;
 
 
 
@@ -358,6 +365,11 @@ CREATE TABLE uji_horarios.hor_horarios_horas
 ;
 
 
+CREATE INDEX uji_horarios.hor_horarios_horas_est_FK ON uji_horarios.hor_horarios_horas 
+    ( 
+     estudio_id ASC 
+    ) 
+;
 
 ALTER TABLE uji_horarios.hor_horarios_horas 
     ADD CONSTRAINT hor_horarios_horas_PK PRIMARY KEY ( id ) ;
@@ -455,6 +467,16 @@ CREATE INDEX uji_horarios.hor_items_asig_est_asi_IDX ON uji_horarios.hor_items_a
      estudio_id ASC 
     ) 
 ;
+CREATE INDEX uji_horarios.hor_items_asig_items_FK ON uji_horarios.hor_items_asignaturas 
+    ( 
+     item_id ASC 
+    ) 
+;
+CREATE INDEX uji_horarios.hor_items_asig_estudios_FK ON uji_horarios.hor_items_asignaturas 
+    ( 
+     estudio_id ASC 
+    ) 
+;
 
 ALTER TABLE uji_horarios.hor_items_asignaturas 
     ADD CONSTRAINT hor_items_asignaturas_PK PRIMARY KEY ( id ) ;
@@ -494,6 +516,16 @@ CREATE INDEX uji_horarios.hor_items_comunes__IDX ON uji_horarios.hor_items_comun
     ) 
 ;
 CREATE INDEX uji_horarios.hor_items_comunes_com_IDX ON uji_horarios.hor_items_comunes 
+    ( 
+     item_comun_id ASC 
+    ) 
+;
+CREATE INDEX uji_horarios.hor_items_comunes_it_FK ON uji_horarios.hor_items_comunes 
+    ( 
+     item_id ASC 
+    ) 
+;
+CREATE INDEX uji_horarios.hor_items_comunes_it_com_FK ON uji_horarios.hor_items_comunes 
     ( 
      item_comun_id ASC 
     ) 
@@ -840,30 +872,6 @@ ALTER TABLE uji_horarios.hor_items_circuitos
 ;
 
 
-ALTER TABLE uji_horarios.hor_items_comunes 
-    ADD CONSTRAINT hor_items_comunes_it_FK FOREIGN KEY 
-    ( 
-     item_id
-    ) 
-    REFERENCES uji_horarios.hor_items 
-    ( 
-     id
-    ) 
-;
-
-
-ALTER TABLE uji_horarios.hor_items_comunes 
-    ADD CONSTRAINT hor_items_comunes_it_com_FK FOREIGN KEY 
-    ( 
-     item_comun_id
-    ) 
-    REFERENCES uji_horarios.hor_items 
-    ( 
-     id
-    ) 
-;
-
-
 ALTER TABLE uji_horarios.hor_items_detalle 
     ADD CONSTRAINT hor_items_detalle_hor_items_FK FOREIGN KEY 
     ( 
@@ -877,11 +885,11 @@ ALTER TABLE uji_horarios.hor_items_detalle
 
 
 ALTER TABLE uji_horarios.hor_items 
-    ADD CONSTRAINT hor_items_hor_aulas_plan_FK FOREIGN KEY 
+    ADD CONSTRAINT hor_items_hor_aulas_FK FOREIGN KEY 
     ( 
      aula_planificacion_id
     ) 
-    REFERENCES uji_horarios.hor_aulas_planificacion 
+    REFERENCES uji_horarios.hor_aulas 
     ( 
      id
     ) 
@@ -1174,8 +1182,8 @@ AND TRUNC(c.fecha) = TRUNC(d.inicio(+)) ;
 -- Informe de Resumen de Oracle SQL Developer Data Modeler: 
 -- 
 -- CREATE TABLE                            25
--- CREATE INDEX                            17
--- ALTER TABLE                             60
+-- CREATE INDEX                            23
+-- ALTER TABLE                             59
 -- CREATE VIEW                              3
 -- CREATE PACKAGE                           0
 -- CREATE PACKAGE BODY                      0

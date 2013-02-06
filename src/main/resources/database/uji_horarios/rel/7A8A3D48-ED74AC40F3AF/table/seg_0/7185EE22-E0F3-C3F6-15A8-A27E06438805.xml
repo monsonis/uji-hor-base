@@ -109,7 +109,7 @@
 <delegate>61527F6D-CA1F-4374-3CEE-8D9213F64AD5</delegate>
 <autoIncrementCycle>false</autoIncrementCycle>
 <associations>
-<colAssociation fkAssociation="B19A2405-3AAD-1625-24BC-166D2407A833" referredColumn="61527F6D-CA1F-4374-3CEE-8D9213F64AD5"/>
+<colAssociation fkAssociation="8118C7A8-3D32-7FDE-4D90-ABECF6D208B3" referredColumn="6C3BA2CB-552F-C920-0834-B393DC6F24E4"/>
 </associations>
 </Column>
 <Column class="oracle.dbtools.crest.model.design.relational.Column" name="aula_planificacion_nombre" id="3D1325A5-D33A-1F30-A28A-705DBC6D9AA3">
@@ -407,16 +407,6 @@
 <colUsage columnID="7E2044FA-E177-C20C-1DD8-8F1AF76F226F"/>
 </indexColumnUsage>
 </ind_PK_UK>
-<ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="5BF3C208-A39A-1F7D-4989-AEFA2E9FF8D5" name="hor_items_hor_aulas_plan_FK">
-<createdBy>ferrerq</createdBy>
-<createdTime>2012-05-28 14:28:56 UTC</createdTime>
-<generatorID>Generado por el Usuario</generatorID>
-<ownerDesignName>uji_horarios</ownerDesignName>
-<indexState>Foreign Key</indexState>
-<indexColumnUsage>
-<colUsage columnID="15F9BC0C-EEFF-4DEA-A494-73CE002D0253"/>
-</indexColumnUsage>
-</ind_PK_UK>
 <ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="5F7FF9B6-0901-55CE-3481-C86C67CCFADD" name="hor_items_hor_dias_semana_FK">
 <createdBy>ferrerq</createdBy>
 <createdTime>2012-05-28 14:28:56 UTC</createdTime>
@@ -445,6 +435,16 @@
 <indexState>Foreign Key</indexState>
 <indexColumnUsage>
 <colUsage columnID="0B34F468-D3F7-2A74-2C69-50FB7A0AE7C0"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="8EBEAFBE-23E4-ECF5-4B8E-E36E30B40590" name="hor_items_hor_aulas_FK">
+<createdBy>ferrerq</createdBy>
+<createdTime>2013-02-06 07:14:45 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<indexColumnUsage>
+<colUsage columnID="15F9BC0C-EEFF-4DEA-A494-73CE002D0253"/>
 </indexColumnUsage>
 </ind_PK_UK>
 </indexes>

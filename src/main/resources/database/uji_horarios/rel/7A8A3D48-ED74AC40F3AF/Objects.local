@@ -29,10 +29,11 @@
    <object objectType="View" objectID="9245C953-D169-2F30-1B52-69DDFD1E6032" name="hor_v_cursos" seqName="seg_0"/>
    <object objectType="View" objectID="0F4BC563-A5B6-20CF-D040-6F7583854AA2" name="hor_v_grupos" seqName="seg_0"/>
    <object objectType="View" objectID="0678D567-6BDC-3D9C-1247-9488502374F4" name="hor_v_items_detalle" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="8118C7A8-3D32-7FDE-4D90-ABECF6D208B3" name="hor_items_hor_aulas_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="2F57917F-059E-AB80-369F-8B9515A51188" name="hor_areas_hor_dep_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="C2D493CF-D651-A3B3-6E4A-B063AE77F2B3" name="hor_aulas_hor_centros_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="9F3819A1-AB03-5815-F767-1295110838B2" name="hor_aulas_planif_aulas_FK" seqName="seg_0"/>
-   <object objectType="FKIndexAssociation" objectID="9B395F58-AFBB-6D9B-9148-F6B8FD2ADE45" name="hor_aulas_planif_hor_est_FK" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="BE06DBFE-AEDE-7C44-C873-01BC6B4E79D9" name="hor_aulas_planif_hor_est_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="61465DD7-29C7-9A32-60A1-01AC46F8673A" name="hor_circuitos_est_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="D6F3D23D-4E42-E80A-2BED-AEAD87C67AD5" name="hor_dep_hor_centros_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="46F60721-DC8F-E59F-4571-C365B82899CF" name="hor_estudios_hor_centros_FK" seqName="seg_0"/>
@@ -41,15 +42,12 @@
    <object objectType="FKIndexAssociation" objectID="107A1700-355C-577A-9243-DB142AFAF91F" name="hor_ext_car_per_per_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="B1F692F3-257E-3447-ACA3-93A0CC0D4F61" name="hor_ext_car_per_tip_car_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="89A75572-DCFE-DBD5-C61A-43E7F08BADA6" name="hor_ext_per_dept_FK" seqName="seg_0"/>
-   <object objectType="FKIndexAssociation" objectID="C4054EB0-16A1-14CA-EECE-F32ACE3E11A2" name="hor_horarios_horas_est_FK" seqName="seg_0"/>
-   <object objectType="FKIndexAssociation" objectID="B1ACF1D1-F68D-4AC2-8F7E-6DAB74741A23" name="hor_items_asig_estudios_FK" seqName="seg_0"/>
-   <object objectType="FKIndexAssociation" objectID="EADD0003-9834-9565-67DB-5B7BFB055717" name="hor_items_asig_items_FK" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="DC99B076-38F4-B7BF-AE8C-F0C3D00BA16B" name="hor_horarios_horas_est_FK" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="1D001EA5-E31F-E05F-E42C-9B79689F28D7" name="hor_items_asig_estudios_FK" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="6F6C2529-48BC-BEDF-ACE7-B2FCE97DA795" name="hor_items_asig_items_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="FCA45D97-EFA8-153B-0E5C-6B93E9E87D69" name="hor_items_cir_cir_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="957AF0D7-B2C8-E9C0-D84F-6BFE545A6CA0" name="hor_items_cir_items_FK" seqName="seg_0"/>
-   <object objectType="FKIndexAssociation" objectID="3EFA8A76-76C1-13A5-DA85-FA6F45282EE9" name="hor_items_comunes_it_FK" seqName="seg_0"/>
-   <object objectType="FKIndexAssociation" objectID="15E5E3F6-D4B1-A041-51C0-9A025C55409B" name="hor_items_comunes_it_com_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="11686CC2-EA6A-0CF5-60AA-8AD1EA69E40E" name="hor_items_detalle_hor_items_FK" seqName="seg_0"/>
-   <object objectType="FKIndexAssociation" objectID="B19A2405-3AAD-1625-24BC-166D2407A833" name="hor_items_hor_aulas_plan_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="6E0627FB-B551-1BA5-C319-629C6A414062" name="hor_items_hor_dias_semana_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="81C927EF-C230-073F-32CB-D96714D80634" name="hor_items_hor_profesores_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="5ADE6010-2418-08A5-164D-A145E657E21C" name="hor_items_hor_semestres_FK" seqName="seg_0"/>
