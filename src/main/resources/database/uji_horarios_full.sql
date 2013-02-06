@@ -1,5 +1,5 @@
 -- Generado por Oracle SQL Developer Data Modeler 3.1.1.703
---   en:        2013-02-06 08:42:03 CET
+--   en:        2013-02-06 12:54:06 CET
 --   sitio:      Oracle Database 11g
 --   tipo:      Oracle Database 11g
 
@@ -1022,14 +1022,16 @@ SELECT DISTINCT c.persona_id,
   ap.aula_id,
   a.nombre,
   a.centro_id,
-  c.centro,
+  cen.nombre centro,
   a.codigo,
   a.tipo
-FROM uji_horarios.hor_ext_cargos_per c,
-  uji_horarios.hor_aulas_planificacion ap,
-  uji_horarios.hor_aulas a
+FROM hor_ext_cargos_per c,
+  hor_aulas_planificacion ap,
+  hor_aulas a,
+  hor_centros cen
 WHERE c.estudio_id = ap.estudio_id
-AND ap.aula_id     = a.id ;
+AND ap.aula_id     = a.id
+AND a.centro_id    = cen.id ;
 
 
 
