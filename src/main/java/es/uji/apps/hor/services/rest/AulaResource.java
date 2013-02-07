@@ -1,5 +1,6 @@
 package es.uji.apps.hor.services.rest;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -47,7 +48,21 @@ public class AulaResource extends CoreBaseService
         List<AulaPlanificacion> aulasAsignadas = consultaAulas.getAulasAsignadasToEstudio(
                 Long.parseLong(estudioId), semestre, connectedUserId);
 
-        return UIEntity.toUI(aulasAsignadas);
+        List<UIEntity> listaAulas = new ArrayList<UIEntity>();
+
+        for (AulaPlanificacion aulaPlanificacion : aulasAsignadas)
+        {
+            UIEntity entity = UIEntity.toUI(aulaPlanificacion);
+            entity.put("nombre", aulaPlanificacion.getAula().getNombre());
+            entity.put("edificio", aulaPlanificacion.getAula().getEdificio().getNombre());
+            entity.put("tipo", aulaPlanificacion.getAula().getTipo().getNombre());
+            entity.put("planta", aulaPlanificacion.getAula().getPlanta().getNombre());
+            entity.put("semestreId", aulaPlanificacion.getSemestre().getNombre());
+
+            listaAulas.add(entity);
+        }
+
+        return listaAulas;
     }
 
     @POST

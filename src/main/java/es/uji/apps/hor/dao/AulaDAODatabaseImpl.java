@@ -112,7 +112,7 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         QAulaDTO qAula = QAulaDTO.aulaDTO;
 
         query.from(qAulaPlanificacion)
-                .join(qAulaPlanificacion.aula, qAula)
+                .join(qAulaPlanificacion.aula, qAula).fetch()
                 .where(qAulaPlanificacion.estudio.id.eq(estudioId).and(
                         qAulaPlanificacion.semestre.eq(semestreId)));
 
@@ -177,8 +177,11 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         estudio.setNombre(aulaPlanificacionDTO.getEstudio().getNombre());
         aulaPlanificacion.setEstudio(estudio);
 
+        aulaPlanificacion.setAula(creaAulaDesdeAulaDTO(aulaPlanificacionDTO.getAula()));
+        
         Semestre semestre = new Semestre();
         semestre.setSemestre(aulaPlanificacionDTO.getSemestre());
+        semestre.setNombre(aulaPlanificacionDTO.getSemestre().toString());
         aulaPlanificacion.setSemestre(semestre);
 
         return aulaPlanificacion;

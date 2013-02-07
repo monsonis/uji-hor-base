@@ -113,8 +113,6 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
         this.getTreePanelAulas().setDisabled(false);
         this.getGridAulas().setDisabled(false);
 
-        this.actualizarDatosGridAsignaciones();
-
         fixLoadMaskBug(combo_semestre.getStore(), combo_semestre);
 
     },

@@ -32,7 +32,6 @@ import es.uji.apps.hor.model.TipoSubgrupo;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext-test.xml" })
-@TransactionConfiguration(defaultRollback = false)
 public class EventosDAOTest
 {
     @Autowired
