@@ -11,11 +11,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mysema.query.jpa.impl.JPAQuery;
 
+import es.uji.apps.hor.db.AulaDTO;
+import es.uji.apps.hor.db.AulaPersonaDTO;
 import es.uji.apps.hor.db.CargoPersonaDTO;
 import es.uji.apps.hor.db.CentroDTO;
 import es.uji.apps.hor.db.DepartamentoDTO;
 import es.uji.apps.hor.db.EstudioDTO;
 import es.uji.apps.hor.db.PersonaDTO;
+import es.uji.apps.hor.db.QAulaDTO;
+import es.uji.apps.hor.db.QAulaPersonaDTO;
 import es.uji.apps.hor.db.QCargoPersonaDTO;
 import es.uji.apps.hor.db.QCentroDTO;
 import es.uji.apps.hor.db.QEstudioDTO;
@@ -240,5 +244,23 @@ public class PersonaDAODatabaseImpl extends BaseDAODatabaseImpl implements Perso
         }
 
         return listaCargos;
+    }
+
+    @Override
+    public boolean isAulaAutorizada(Long aulaId, Long personaId)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        QAulaPersonaDTO qAulaPersona = QAulaPersonaDTO.aulaPersonaDTO;
+
+        List<AulaPersonaDTO> listaAulasDTO = query.from(qAulaPersona)
+                .where(qAulaPersona.personaId.eq(personaId).and(qAulaPersona.aulaId.eq(aulaId)))
+                .distinct().list(qAulaPersona);
+
+        if (listaAulasDTO.size() > 0)
+        {
+            return true;
+        }
+
+        return false;
     }
 }

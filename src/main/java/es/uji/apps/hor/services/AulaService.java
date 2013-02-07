@@ -10,8 +10,6 @@ import es.uji.apps.hor.dao.AulaDAO;
 import es.uji.apps.hor.dao.PersonaDAO;
 import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.AulaPlanificacion;
-import es.uji.apps.hor.model.Centro;
-import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.model.Persona;
 import es.uji.apps.hor.model.TipoAula;
 import es.uji.commons.rest.Role;

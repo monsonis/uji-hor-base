@@ -25,7 +25,8 @@ public class PersonaService
     }
 
     @Role({ "ADMIN", "USUARIO" })
-    public List<Cargo> getCargoByPersonaIdAndEstudioId(Long connectedUserId, Long estudioId) throws UnauthorizedUserException, RegistroNoEncontradoException
+    public List<Cargo> getCargoByPersonaIdAndEstudioId(Long connectedUserId, Long estudioId)
+            throws UnauthorizedUserException, RegistroNoEncontradoException
     {
         Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
 
@@ -33,7 +34,9 @@ public class PersonaService
         {
             persona.compruebaAccesoAEstudio(estudioId);
             return persona.getCargos();
-        } else {
+        }
+        else
+        {
             return personaDAO.getTodosLosCargos();
         }
     }

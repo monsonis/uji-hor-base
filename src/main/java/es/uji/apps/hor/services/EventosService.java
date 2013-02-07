@@ -92,8 +92,8 @@ public class EventosService
     }
 
     @Role({ "ADMIN", "USUARIO" })
-    public Evento modificaDiaYHoraEventoEnVistaDetalle(Long eventoDetalleId, Date inicio,
-            Date fin, Long connectedUserId) throws DuracionEventoIncorrectaException,
+    public Evento modificaDiaYHoraEventoEnVistaDetalle(Long eventoDetalleId, Date inicio, Date fin,
+            Long connectedUserId) throws DuracionEventoIncorrectaException,
             RegistroNoEncontradoException, UnauthorizedUserException, EventoFueraDeRangoException,
             EventoMasDeUnaRepeticionException
     {
@@ -397,11 +397,10 @@ public class EventosService
             List<Long> calendariosIds, Long connectedUserId) throws RegistroNoEncontradoException,
             UnauthorizedUserException
     {
-        if (!personaDAO.esAdmin(connectedUserId))
+        if (!personaDAO.esAdmin(connectedUserId)
+                && !personaDAO.isAulaAutorizada(aulaId, connectedUserId))
         {
-            Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
-            Centro centro = centroDAO.getCentroByAulaId(aulaId);
-            persona.compruebaAccesoACentro(centro.getId());
+            throw new UnauthorizedUserException();
         }
 
         return eventosDAO.getEventosSemanaGenericaPorAula(aulaId, semestreId, calendariosIds);

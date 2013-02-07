@@ -21,4 +21,5 @@ public interface PersonaDAO extends BaseDAO, LookupDAO
 
     List<Cargo> getTodosLosCargos();
 
+    boolean isAulaAutorizada(Long aulaId, Long personaId);
 }
