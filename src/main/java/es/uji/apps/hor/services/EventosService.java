@@ -381,11 +381,10 @@ public class EventosService
             List<Long> calendariosIds, Date rangoFechaInicio, Date rangoFechaFin,
             Long connectedUserId) throws RegistroNoEncontradoException, UnauthorizedUserException
     {
-        if (!personaDAO.esAdmin(connectedUserId))
+        if (!personaDAO.esAdmin(connectedUserId)
+                && !personaDAO.isAulaAutorizada(aulaId, connectedUserId))
         {
-            Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
-            Centro centro = centroDAO.getCentroByAulaId(aulaId);
-            persona.compruebaAccesoACentro(centro.getId());
+            throw new UnauthorizedUserException();
         }
 
         return eventosDAO.getEventosDetallePorAula(aulaId, semestreId, calendariosIds,
