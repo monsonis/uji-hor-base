@@ -37,17 +37,10 @@ public class AulaService
     public List<AulaPlanificacion> getAulasAsignadasToEstudio(Long estudioId, Long semestreId,
             Long connectedUserId) throws UnauthorizedUserException, RegistroNoEncontradoException
     {
-        if (!personaDAO.esAdmin(connectedUserId))
+        Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
+        if (!personaDAO.esAdmin(connectedUserId) && !persona.esGestorDeCentro())
         {
-            Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
-            if (persona.getCentroAutorizado() != null)
-            {
-                persona.compruebaAccesoAEstudioDesdeCentro(estudioId);
-            }
-            else
-            {
-                persona.compruebaAccesoAEstudio(estudioId);
-            }
+            persona.compruebaAccesoAEstudio(estudioId);
         }
 
         return aulaDAO.getAulasAsignadasToEstudio(estudioId, semestreId);
@@ -68,19 +61,17 @@ public class AulaService
     }
 
     @Role({ "ADMIN", "USUARIO" })
-    public void deleteAulaAsignadaToEstudio(Long aulaPlanificacionId, Long connectedUserId)
+    public void deleteAulaAsignadaToEstudio(Long aulaId, Long estudioId, Long semestreId, Long connectedUserId)
             throws RegistroConHijosException, UnauthorizedUserException,
             RegistroNoEncontradoException
     {
-        AulaPlanificacion aula = aulaDAO.getAulaById(aulaPlanificacionId);
-
         if (!personaDAO.esAdmin(connectedUserId))
         {
             Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
-            persona.compruebaAccesoAEstudio(aula.getEstudioId());
+            persona.compruebaAccesoAEstudio(estudioId);
         }
 
-        aulaDAO.deleteAulaAsignadaToEstudio(aulaPlanificacionId);
+        aulaDAO.deleteAulaAsignadaToEstudio(aulaId, estudioId, semestreId);
     }
 
     @Role({ "ADMIN", "USUARIO" })

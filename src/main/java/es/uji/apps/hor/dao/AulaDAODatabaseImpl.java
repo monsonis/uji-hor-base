@@ -22,7 +22,9 @@ import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.AulaPlanificacion;
 import es.uji.apps.hor.model.Centro;
 import es.uji.apps.hor.model.Edificio;
+import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.model.PlantaEdificio;
+import es.uji.apps.hor.model.Semestre;
 import es.uji.apps.hor.model.TipoAula;
 import es.uji.commons.db.BaseDAODatabaseImpl;
 import es.uji.commons.rest.exceptions.RegistroConHijosException;
@@ -112,7 +114,7 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         query.from(qAulaPlanificacion)
                 .join(qAulaPlanificacion.aula, qAula)
                 .where(qAulaPlanificacion.estudio.id.eq(estudioId).and(
-                        qAulaPlanificacion.semestreId.eq(semestreId)));
+                        qAulaPlanificacion.semestre.eq(semestreId)));
 
         List<AulaPlanificacion> listaAulasAsignadas = new ArrayList<AulaPlanificacion>();
 
@@ -146,7 +148,7 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
 
         query.from(qAulaPlan).where(
                 qAulaPlan.estudio.id.eq(estudioId).and(qAulaPlan.aula.id.eq(aulaId))
-                        .and(qAulaPlan.semestreId.eq(semestreId)));
+                        .and(qAulaPlan.semestre.eq(semestreId)));
 
         List<AulaPlanificacionDTO> aulasPlan = query.list(qAulaPlan);
 
@@ -158,7 +160,7 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         AulaPlanificacionDTO aulaPlan = new AulaPlanificacionDTO();
         aulaPlan.setAula(aula);
         aulaPlan.setEstudio(estudio);
-        aulaPlan.setSemestreId(semestreId);
+        aulaPlan.setSemestre(semestreId);
 
         aulaPlan = insert(aulaPlan);
 
@@ -169,37 +171,58 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
     {
         AulaPlanificacion aulaPlanificacion = new AulaPlanificacion();
         aulaPlanificacion.setId(aulaPlanificacionDTO.getId());
-        aulaPlanificacion.setEstudioId(aulaPlanificacionDTO.getEstudio().getId());
-        aulaPlanificacion.setSemestreId(aulaPlanificacionDTO.getSemestreId());
-        aulaPlanificacion.setEdificio(aulaPlanificacionDTO.getAula().getEdificio());
-        aulaPlanificacion.setTipo(aulaPlanificacionDTO.getAula().getTipo());
-        aulaPlanificacion.setPlanta(aulaPlanificacionDTO.getAula().getPlanta());
-        aulaPlanificacion.setCodigo(aulaPlanificacionDTO.getAula().getCodigo());
+
+        Estudio estudio = new Estudio();
+        estudio.setId(aulaPlanificacionDTO.getEstudio().getId());
+        estudio.setNombre(aulaPlanificacionDTO.getEstudio().getNombre());
+        aulaPlanificacion.setEstudio(estudio);
+
+        Semestre semestre = new Semestre();
+        semestre.setSemestre(aulaPlanificacionDTO.getSemestre());
+        aulaPlanificacion.setSemestre(semestre);
 
         return aulaPlanificacion;
     }
 
     @Override
-    public void deleteAulaAsignadaToEstudio(Long aulaPlanificacionId)
-            throws RegistroConHijosException
+    @Transactional
+    public void deleteAulaAsignadaToEstudio(Long aulaId, Long estudioId, Long semestreId)
+            throws RegistroConHijosException, RegistroNoEncontradoException
     {
-        try
+        JPAQuery query = new JPAQuery(entityManager);
+        QAulaPlanificacionDTO aulaPlanificacionDTO = QAulaPlanificacionDTO.aulaPlanificacionDTO;
+
+        query.from(aulaPlanificacionDTO).where(
+                aulaPlanificacionDTO.aula.id.eq(aulaId).and(
+                        aulaPlanificacionDTO.estudio.id.eq(estudioId).and(
+                                aulaPlanificacionDTO.semestre.eq(semestreId))));
+
+        if (query.list(aulaPlanificacionDTO).size() > 0)
         {
-            delete(AulaPlanificacionDTO.class, aulaPlanificacionId);
+            AulaPlanificacionDTO aulaPlanificacion = query.list(aulaPlanificacionDTO).get(0);
+
+            try
+            {
+                delete(AulaPlanificacionDTO.class, aulaPlanificacion.getId());
+            }
+            catch (DataIntegrityViolationException e)
+            {
+                throw new RegistroConHijosException(
+                        "No es pot borrar l'aula perque té classes assignades");
+            }
         }
-        catch (DataIntegrityViolationException e)
+        else
         {
-            throw new RegistroConHijosException(
-                    "No es pot borrar l'aula perque té classes assignades");
+            throw new RegistroNoEncontradoException();
         }
     }
 
     @Override
-    public AulaPlanificacion getAulaById(Long aulaId) throws RegistroNoEncontradoException
+    public Aula getAulaById(Long aulaId) throws RegistroNoEncontradoException
     {
         try
         {
-            return creaAulaPlanificacionDesde(get(AulaPlanificacionDTO.class, aulaId).get(0));
+            return creaAulaDesdeAulaDTO(get(AulaDTO.class, aulaId).get(0));
         }
         catch (Exception e)
         {
@@ -215,8 +238,8 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         AulaDTO aulaDTO = new AulaDTO();
 
         CentroDTO centroDTO = new CentroDTO();
-        centroDTO.setId(aula.getEdificio().getCentro().getId());
-        centroDTO.setNombre(aula.getEdificio().getCentro().getNombre());
+        centroDTO.setId(aula.getCentro().getId());
+        centroDTO.setNombre(aula.getCentro().getNombre());
 
         aulaDTO.setArea(aula.getArea().getNombre());
         aulaDTO.setCentro(centroDTO);
@@ -239,13 +262,14 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         AulaPlanificacionDTO aulaPlanificacionDTO = new AulaPlanificacionDTO();
 
         EstudioDTO estudioDTO = new EstudioDTO();
-        estudioDTO.setId(aulaPlanificacion.getEstudioId());
+        estudioDTO.setId(aulaPlanificacion.getEstudio().getId());
 
         AulaDTO aulaDTO = new AulaDTO();
-        aulaDTO.setId(aulaPlanificacion.getAulaId());
+        aulaDTO.setId(aulaPlanificacion.getAula().getId());
 
         aulaPlanificacionDTO.setAula(aulaDTO);
         aulaPlanificacionDTO.setEstudio(estudioDTO);
+        aulaPlanificacionDTO.setSemestre(aulaPlanificacion.getSemestre().getSemestre());
         aulaPlanificacionDTO = insert(aulaPlanificacionDTO);
 
         return this.creaAulaPlanificacionDesde(aulaPlanificacionDTO);
@@ -317,6 +341,25 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         }
 
         return listaAulas;
+    }
+
+    @Override
+    public AulaPlanificacion getAulaPlanificacionByAulaEstudioSemestre(Long aulaId, Long estudioId,
+            Long semestreId) throws RegistroNoEncontradoException
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        QAulaPlanificacionDTO qAulaPlanificacionDTO = QAulaPlanificacionDTO.aulaPlanificacionDTO;
+
+        query.from(qAulaPlanificacionDTO).where(
+                qAulaPlanificacionDTO.aula.id.eq(aulaId).and(
+                        qAulaPlanificacionDTO.semestre.eq(semestreId).and(
+                                qAulaPlanificacionDTO.estudio.id.eq(estudioId))));
+
+        if (query.list(qAulaPlanificacionDTO).size() > 0) {
+            return creaAulaPlanificacionDesde(query.list(qAulaPlanificacionDTO).get(0));
+        } else {
+            throw new RegistroNoEncontradoException();
+        }
     }
 
     @Override

@@ -30,7 +30,7 @@ public class AulaPlanificacionDTO implements Serializable
     private EstudioDTO estudio;
 
     @Column(name = "SEMESTRE_ID")
-    private Long semestreId;
+    private Long semestre;
 
     // bi-directional many-to-one association to AulaDTO
     @ManyToOne
@@ -51,16 +51,6 @@ public class AulaPlanificacionDTO implements Serializable
         this.id = id;
     }
 
-    public Long getSemestreId()
-    {
-        return this.semestreId;
-    }
-
-    public void setSemestreId(Long semestreId)
-    {
-        this.semestreId = semestreId;
-    }
-
     public AulaDTO getAula()
     {
         return this.aula;
@@ -79,6 +69,16 @@ public class AulaPlanificacionDTO implements Serializable
     public void setEstudio(EstudioDTO estudio)
     {
         this.estudio = estudio;
+    }
+
+    public Long getSemestre()
+    {
+        return semestre;
+    }
+
+    public void setSemestre(Long semestre)
+    {
+        this.semestre = semestre;
     }
 
 }

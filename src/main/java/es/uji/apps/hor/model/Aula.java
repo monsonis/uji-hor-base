@@ -1,5 +1,7 @@
 package es.uji.apps.hor.model;
 
+import java.util.List;
+
 public class Aula
 {
     private Long id;
@@ -10,6 +12,8 @@ public class Aula
     private PlantaEdificio planta;
     private TipoAula tipo;
     private Edificio edificio;
+    private Centro centro;
+    private List<AulaPlanificacion> planificacion;
     
     public Aula() {
         
@@ -98,6 +102,26 @@ public class Aula
     public void setEdificio(Edificio edificio)
     {
         this.edificio = edificio;
+    }
+
+    public Centro getCentro()
+    {
+        return centro;
+    }
+
+    public void setCentro(Centro centro)
+    {
+        this.centro = centro;
+    }
+
+    public List<AulaPlanificacion> getPlanificacion()
+    {
+        return planificacion;
+    }
+
+    public void setPlanificacion(List<AulaPlanificacion> planificacion)
+    {
+        this.planificacion = planificacion;
     }
 
 

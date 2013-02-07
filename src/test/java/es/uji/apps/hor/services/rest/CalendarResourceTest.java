@@ -45,6 +45,7 @@ import es.uji.apps.hor.model.Centro;
 import es.uji.apps.hor.model.Edificio;
 import es.uji.apps.hor.model.Evento;
 import es.uji.apps.hor.model.PlantaEdificio;
+import es.uji.apps.hor.model.Semestre;
 import es.uji.apps.hor.model.TipoAula;
 import es.uji.commons.rest.UIEntity;
 
@@ -327,7 +328,7 @@ public class CalendarResourceTest extends AbstractCalendarResourceTest
     private MultivaluedMap<String, String> buildQueryParamsEventosSinAsignar()
     {
         MultivaluedMap<String, String> params = new StringKeyStringValueIgnoreCaseMultivaluedMap();
-        params.putSingle("estudioId", String.valueOf(estudioId));
+        params.putSingle("estudioId", String.valueOf(estudio.getId()));
         params.putSingle("cursoId", String.valueOf(cursoId));
         params.putSingle("semestreId", String.valueOf(semestreId));
         params.putSingle("grupoId", grupoId);
@@ -390,12 +391,14 @@ public class CalendarResourceTest extends AbstractCalendarResourceTest
         Edificio edificio = new EdificioBuilder().withNombre("Edificio 1").withCentro(centro)
                 .build();
 
+        Semestre semestre = new Semestre(semestreId);
+        
         Aula aula = new AulaBuilder(aulaDao).withArea(areaEdificio).withCodigo("AUL1")
                 .withEdificio(edificio).withNombre("Aula 1").withPlanta(plantaEdificio)
                 .withPlazas(new Long(100)).withTipo(tipoAula).build();
 
         AulaPlanificacion aulaPlanificacion = new AulaPlanificacionBuilder(aulaDao)
-                .withAulaId(aula.getId()).withEstudioId(estudioId).withSemestreId(semestreId)
+                .withAula(aula).withEstudio(estudio).withSemestre(semestre)
                 .build();
 
         MultivaluedMap<String, String> params = new StringKeyStringValueIgnoreCaseMultivaluedMap();

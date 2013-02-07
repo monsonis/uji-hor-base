@@ -77,28 +77,6 @@ public class EstudiosDAODatabaseImpl extends BaseDAODatabaseImpl implements Estu
         return listaEstudios;
     }
 
-    @Override
-    public List<Estudio> getEstudiosByCentroIdVisiblesPorUsuario(Long centroId, Long userId)
-    {
-        JPAQuery query = new JPAQuery(entityManager);
-        QEstudioDTO qEstudio = QEstudioDTO.estudioDTO;
-        QCargoPersonaDTO qCargo = QCargoPersonaDTO.cargoPersonaDTO;
-
-        List<EstudioDTO> listaEstudios = query.from(qEstudio)
-                .innerJoin(qEstudio.cargosPersona, qCargo)
-                .where(qCargo.persona.id.eq(userId).and(qEstudio.centro.id.eq(centroId)))
-                .orderBy(qEstudio.nombre.asc()).list(qEstudio);
-
-        List<Estudio> estudios = new ArrayList<Estudio>();
-
-        for (EstudioDTO estudioDTO : listaEstudios)
-        {
-            estudios.add(creaEstudioDesdeEstudioDTO(estudioDTO));
-        }
-
-        return estudios;
-    }
-
     private Estudio creaEstudioDesdeEstudioDTO(EstudioDTO estudioDTO)
     {
         Estudio estudio = new Estudio(estudioDTO.getId(), estudioDTO.getNombre());

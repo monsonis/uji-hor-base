@@ -202,22 +202,8 @@ public class Persona
         return estudiosAutorizados;
     }
 
-    public void compruebaAccesoAEstudioDesdeCentro(Long estudioId) throws UnauthorizedUserException
+    public boolean esGestorDeCentro()
     {
-        Boolean tieneAcceso = false;
-        Centro centro = this.getCentroAutorizado();
-
-        for (Estudio estudio : centro.getEstudios())
-        {
-            if (estudio.getId().equals(estudioId))
-            {
-                tieneAcceso = true;
-            }
-        }
-
-        if (tieneAcceso == false)
-        {
-            throw new UnauthorizedUserException();
-        }
+        return this.centroAutorizado != null;
     }
 }

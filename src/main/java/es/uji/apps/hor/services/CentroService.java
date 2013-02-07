@@ -29,15 +29,15 @@ public class CentroService
     }
 
     @Role({ "ADMIN", "USUARIO" })
-    public List<Centro> getCentros(Long connectedUserId)
+    public List<Centro> getCentros(Long connectedUserId) throws RegistroNoEncontradoException
     {
-        if (!personaDAO.esAdmin(connectedUserId))
+        if (personaDAO.esAdmin(connectedUserId))
         {
-            return centroDAO.getCentrosVisiblesPorUsuario(connectedUserId);
+            return centroDAO.getCentros();
         }
         else
         {
-            return centroDAO.getCentros();
+            return centroDAO.getCentrosVisiblesPorUsuario(connectedUserId);
         }
     }
 
@@ -56,7 +56,8 @@ public class CentroService
         return centro;
     }
 
-    public List<Centro> getCentrosGestionables(Long connectedUserId) throws RegistroNoEncontradoException
+    public List<Centro> getCentrosGestionables(Long connectedUserId)
+            throws RegistroNoEncontradoException
     {
         if (!personaDAO.esAdmin(connectedUserId))
         {

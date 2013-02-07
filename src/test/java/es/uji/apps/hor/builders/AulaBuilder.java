@@ -3,6 +3,7 @@ package es.uji.apps.hor.builders;
 import es.uji.apps.hor.dao.AulaDAO;
 import es.uji.apps.hor.model.AreaEdificio;
 import es.uji.apps.hor.model.Aula;
+import es.uji.apps.hor.model.Centro;
 import es.uji.apps.hor.model.Edificio;
 import es.uji.apps.hor.model.PlantaEdificio;
 import es.uji.apps.hor.model.TipoAula;
@@ -65,6 +66,12 @@ public class AulaBuilder
         return this;
     }
 
+    public AulaBuilder withCentro(Centro centro)
+    {
+        aula.setCentro(centro);
+        return this;
+    }
+    
     public Aula build()
     {
         if (aulaDAO != null)

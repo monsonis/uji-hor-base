@@ -1,7 +1,10 @@
 package es.uji.apps.hor.builders;
 
 import es.uji.apps.hor.dao.AulaDAO;
+import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.AulaPlanificacion;
+import es.uji.apps.hor.model.Estudio;
+import es.uji.apps.hor.model.Semestre;
 
 public class AulaPlanificacionBuilder
 {
@@ -19,51 +22,21 @@ public class AulaPlanificacionBuilder
         this(null);
     }
 
-    public AulaPlanificacionBuilder withNombre(String nombre)
+    public AulaPlanificacionBuilder withAula(Aula aula)
     {
-        aulaPlanificacion.setNombre(nombre);
+        aulaPlanificacion.setAula(aula);
         return this;
     }
 
-    public AulaPlanificacionBuilder withAulaId(Long aulaId)
+    public AulaPlanificacionBuilder withEstudio(Estudio estudio)
     {
-        aulaPlanificacion.setAulaId(aulaId);
+        aulaPlanificacion.setEstudio(estudio);
         return this;
     }
 
-    public AulaPlanificacionBuilder withEstudioId(Long estudioId)
+    public AulaPlanificacionBuilder withSemestre(Semestre semestre)
     {
-        aulaPlanificacion.setEstudioId(estudioId);
-        return this;
-    }
-
-    public AulaPlanificacionBuilder withSemestreId(Long semestreId)
-    {
-        aulaPlanificacion.setSemestreId(semestreId);
-        return this;
-    }
-
-    public AulaPlanificacionBuilder withEdificio(String edificio)
-    {
-        aulaPlanificacion.setEdificio(edificio);
-        return this;
-    }
-
-    public AulaPlanificacionBuilder withTipo(String tipo)
-    {
-        aulaPlanificacion.setTipo(tipo);
-        return this;
-    }
-
-    public AulaPlanificacionBuilder withPlanta(String planta)
-    {
-        aulaPlanificacion.setPlanta(planta);
-        return this;
-    }
-
-    public AulaPlanificacionBuilder withCodigo(String codigo)
-    {
-        aulaPlanificacion.setCodigo(codigo);
+        aulaPlanificacion.setSemestre(semestre);
         return this;
     }
 

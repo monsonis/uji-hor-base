@@ -3,22 +3,9 @@ package es.uji.apps.hor.model;
 public class AulaPlanificacion
 {
     private Long id;
-
-    private String nombre;
-
-    private Long aulaId;
-
-    private Long estudioId;
-
-    private Long semestreId;
-
-    private String edificio;
-
-    private String tipo;
-
-    private String planta;
-
-    private String codigo;
+    private Aula aula;
+    private Estudio estudio;
+    private Semestre semestre;
 
     public Long getId()
     {
@@ -30,84 +17,34 @@ public class AulaPlanificacion
         this.id = id;
     }
 
-    public String getNombre()
+    public Aula getAula()
     {
-        return nombre == null ? "" : nombre;
+        return aula;
     }
 
-    public void setNombre(String nombre)
+    public void setAula(Aula aula)
     {
-        this.nombre = nombre;
+        this.aula = aula;
     }
 
-    public Long getAulaId()
+    public Estudio getEstudio()
     {
-        return aulaId;
+        return estudio;
     }
 
-    public void setAulaId(Long aulaId)
+    public void setEstudio(Estudio estudio)
     {
-        this.aulaId = aulaId;
+        this.estudio = estudio;
     }
 
-    public Long getEstudioId()
+    public Semestre getSemestre()
     {
-        return estudioId;
+        return semestre;
     }
 
-    public void setEstudioId(Long estudioId)
+    public void setSemestre(Semestre semestre)
     {
-        this.estudioId = estudioId;
-    }
-
-    public Long getSemestreId()
-    {
-        return semestreId;
-    }
-
-    public void setSemestreId(Long semestreId)
-    {
-        this.semestreId = semestreId;
-    }
-
-    public String getEdificio()
-    {
-        return edificio;
-    }
-
-    public void setEdificio(String edificio)
-    {
-        this.edificio = edificio;
-    }
-
-    public String getTipo()
-    {
-        return tipo;
-    }
-
-    public void setTipo(String tipo)
-    {
-        this.tipo = tipo;
-    }
-
-    public String getPlanta()
-    {
-        return planta;
-    }
-
-    public void setPlanta(String planta)
-    {
-        this.planta = planta;
-    }
-
-    public String getCodigo()
-    {
-        return codigo == null ? "" : codigo;
-    }
-
-    public void setCodigo(String codigo)
-    {
-        this.codigo = codigo;
+        this.semestre = semestre;
     }
 
 }

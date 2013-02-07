@@ -14,6 +14,7 @@ import com.mysema.query.jpa.impl.JPAUpdateClause;
 
 import es.uji.apps.hor.DuracionEventoIncorrectaException;
 import es.uji.apps.hor.EventoDetalleSinEventoException;
+import es.uji.apps.hor.db.AulaDTO;
 import es.uji.apps.hor.db.AulaPlanificacionDTO;
 import es.uji.apps.hor.db.DiaSemanaDTO;
 import es.uji.apps.hor.db.ItemCircuitoDTO;
@@ -31,7 +32,7 @@ import es.uji.apps.hor.db.QItemDetalleDTO;
 import es.uji.apps.hor.db.QItemsAsignaturaDTO;
 import es.uji.apps.hor.db.SemestreDTO;
 import es.uji.apps.hor.model.Asignatura;
-import es.uji.apps.hor.model.AulaPlanificacion;
+import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.Calendario;
 import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.model.Evento;
@@ -171,15 +172,13 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         semestre.setNombre(itemDTO.getSemestre().getNombre());
         evento.setSemestre(semestre);
 
-        if (itemDTO.getAulaPlanificacion() != null)
+        if (itemDTO.getAula() != null)
         {
-            AulaPlanificacion aulaPlanificacion = new AulaPlanificacion();
-            aulaPlanificacion.setId(itemDTO.getAulaPlanificacion().getId());
-            if (itemDTO.getAulaPlanificacion().getAula() != null)
-            {
-                aulaPlanificacion.setCodigo(itemDTO.getAulaPlanificacion().getAula().getCodigo());
-            }
-            evento.setAulaPlanificacion(aulaPlanificacion);
+            Aula aula = new Aula();
+            aula.setId(itemDTO.getAula().getId());
+            aula.setNombre(itemDTO.getAulaNombre());
+            aula.setCodigo(itemDTO.getAula().getCodigo());
+            evento.setAula(aula);
         }
 
         if (!itemDTO.getAsignaturas().isEmpty())
@@ -414,18 +413,18 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             throws RegistroNoEncontradoException
     {
         ItemDTO item;
-        AulaPlanificacionDTO aulaPlanificacion;
+        AulaDTO aula;
         try
         {
             item = get(ItemDTO.class, eventoId).get(0);
-            aulaPlanificacion = get(AulaPlanificacionDTO.class, aulaId).get(0);
+            aula = get(AulaDTO.class, aulaId).get(0);
         }
         catch (Exception e)
         {
             throw new RegistroNoEncontradoException();
         }
 
-        item.setAulaPlanificacion(aulaPlanificacion);
+        item.setAula(aula);
 
         update(item);
     }
@@ -606,12 +605,13 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         itemDTO.setGrupoId(evento.getGrupoId());
         itemDTO.setSubgrupoId(evento.getSubgrupoId());
 
-        if (evento.getAulaPlanificacion() != null)
+        if (evento.getAula() != null)
         {
-            AulaPlanificacionDTO aulaPlanificacionDTO = new AulaPlanificacionDTO();
-            aulaPlanificacionDTO.setId(evento.getAulaPlanificacion().getId());
-            itemDTO.setAulaPlanificacion(aulaPlanificacionDTO);
+            AulaDTO aulaDTO = new AulaDTO();
+            aulaDTO.setId(evento.getAula().getId());
+            itemDTO.setAula(aulaDTO);
         }
+        
         itemDTO.setHastaElDia(evento.getHastaElDia());
         itemDTO.setHoraFin(evento.getFin());
         itemDTO.setHoraInicio(evento.getInicio());
@@ -699,7 +699,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
     }
 
     @Override
-    public void desasignaAulaPlanificacion(Long eventoId) throws RegistroNoEncontradoException
+    public void desasignaAula(Long eventoId) throws RegistroNoEncontradoException
     {
         ItemDTO item;
 
@@ -712,8 +712,8 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             throw new RegistroNoEncontradoException();
         }
 
-        item.setAulaPlanificacion(null);
-        item.setAulaPlanificacionNombre("");
+        item.setAula(null);
+        item.setAulaNombre("");
 
         update(item);
     }
@@ -723,14 +723,14 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
     public void desplanificaEvento(Evento evento)
     {
         DiaSemanaDTO diaSemanaDTO = getDiaSemanaDTOParaFecha(evento.getInicio());
-        AulaPlanificacionDTO aulaPlanificacionDTO = null;
+        AulaDTO aulaDTO = null;
 
         QItemDTO qItem = QItemDTO.itemDTO;
         JPAUpdateClause updateClause = new JPAUpdateClause(entityManager, qItem);
         updateClause.where(qItem.id.eq(evento.getId())).set(qItem.horaInicio, evento.getInicio())
                 .set(qItem.horaFin, evento.getFin()).set(qItem.diaSemana, diaSemanaDTO)
-                .set(qItem.aulaPlanificacion, aulaPlanificacionDTO)
-                .set(qItem.aulaPlanificacionNombre, "").execute();
+                .set(qItem.aula, aulaDTO)
+                .set(qItem.aulaNombre, "").execute();
     }
 
     @Override
@@ -743,15 +743,13 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         QItemDTO item = QItemDTO.itemDTO;
         QItemsAsignaturaDTO itemsAsignatura = QItemsAsignaturaDTO.itemsAsignaturaDTO;
         QItemDetalleDTO itemsDetalle = QItemDetalleDTO.itemDetalleDTO;
-        QAulaPlanificacionDTO aulaPlanificacion = QAulaPlanificacionDTO.aulaPlanificacionDTO;
         QAulaDTO aula = QAulaDTO.aulaDTO;
 
         List<ItemDetalleDTO> listaItemsDetalleDTO = query
                 .from(item)
                 .join(item.itemsAsignaturas, itemsAsignatura)
                 .join(item.itemsDetalles, itemsDetalle)
-                .join(item.aulaPlanificacion, aulaPlanificacion)
-                .join(aulaPlanificacion.aula, aula)
+                .join(item.aula, aula)
                 .where(aula.id.eq(aulaId).and(item.semestre.id.eq(semestreId))
                         .and(itemsDetalle.inicio.goe(rangoFechaInicio))
                         .and(itemsDetalle.fin.loe(rangoFechaFin)).and(item.diaSemana.isNotNull())
@@ -777,7 +775,6 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
 
         QItemDTO item = QItemDTO.itemDTO;
         QItemsAsignaturaDTO asignatura = QItemsAsignaturaDTO.itemsAsignaturaDTO;
-        QAulaPlanificacionDTO aulaPlanificacion = QAulaPlanificacionDTO.aulaPlanificacionDTO;
         QAulaDTO aula = QAulaDTO.aulaDTO;
 
         List<String> tiposCalendarios = TipoSubgrupo.getTiposSubgrupos(calendariosIds);
@@ -785,8 +782,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         List<ItemDTO> listaItemsDTO = query
                 .from(item)
                 .join(item.itemsAsignaturas, asignatura)
-                .join(item.aulaPlanificacion, aulaPlanificacion)
-                .join(aulaPlanificacion.aula, aula)
+                .join(item.aula, aula)
                 .where(aula.id.eq(aulaId).and(item.semestre.id.eq(semestreId))
                         .and(item.diaSemana.isNotNull())
                         .and(item.tipoSubgrupoId.in(tiposCalendarios))).list(item);

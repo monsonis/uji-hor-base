@@ -19,6 +19,7 @@ import es.uji.apps.hor.dao.EventosDAO;
 import es.uji.apps.hor.dao.PersonaDAO;
 import es.uji.apps.hor.dao.RangoHorarioDAO;
 import es.uji.apps.hor.model.Asignatura;
+import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.AulaPlanificacion;
 import es.uji.apps.hor.model.Centro;
 import es.uji.apps.hor.model.Evento;
@@ -337,13 +338,13 @@ public class EventosService
             persona.compruebaAccesoAEvento(evento);
         }
 
-        AulaPlanificacion aula = null;
+        Aula aula = null;
 
         if (aulaId != null)
         {
             aula = aulaDAO.getAulaById(aulaId);
         }
-        actualizaAulaPlanificacion(evento, aula);
+        actualizaAula(evento, aula);
 
         List<Evento> eventos = new ArrayList<Evento>();
 
@@ -352,7 +353,7 @@ public class EventosService
             eventos = getEventosDelMismoGrupo(evento);
             for (Evento grupoComun : eventos)
             {
-                actualizaAulaPlanificacion(grupoComun, aula);
+                actualizaAula(grupoComun, aula);
             }
         }
         eventos.add(evento);
@@ -360,18 +361,18 @@ public class EventosService
         return eventos;
     }
 
-    private void actualizaAulaPlanificacion(Evento evento, AulaPlanificacion aula)
+    private void actualizaAula(Evento evento, Aula aula)
             throws AulaNoAsignadaAEstudioDelEventoException, RegistroNoEncontradoException
     {
         if (aula != null)
         {
-            evento.actualizaAulaPlanificacion(aula);
+            evento.actualizaAula(aula);
             eventosDAO.actualizaAulaAsignadaAEvento(evento.getId(), aula.getId());
         }
         else
         {
-            evento.desasignaAulaPlanificacion();
-            eventosDAO.desasignaAulaPlanificacion(evento.getId());
+            evento.desasignaAula();
+            eventosDAO.desasignaAula(evento.getId());
         }
     }
 

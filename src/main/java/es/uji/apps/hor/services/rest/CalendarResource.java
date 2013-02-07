@@ -265,9 +265,9 @@ public class CalendarResource extends CoreBaseService
             UIEntity eventoUI = new UIEntity();
             eventoUI.put("id", eventoDetalle.getId());
 
-            if (eventoDetalle.getEvento().getAulaPlanificacion() != null)
+            if (eventoDetalle.getEvento().getAula() != null)
             {
-                eventoUI.put("title", eventoDetalle.getEvento().getAulaPlanificacion().getCodigo());
+                eventoUI.put("title", eventoDetalle.getEvento().getAula().getCodigo());
             }
 
             eventoUI.put("cid", eventoDetalle.getEvento().getCalendario().getId());
@@ -503,9 +503,9 @@ public class CalendarResource extends CoreBaseService
             eventoUI.put("comunes", evento.getAsignaturasComunes(estudioId));
         }
 
-        if (evento.getAulaPlanificacion() != null)
+        if (evento.getAula() != null)
         {
-            eventoUI.put("aula_planificacion_id", evento.getAulaPlanificacion().getId());
+            eventoUI.put("aula_id", evento.getAula().getId());
         }
 
         if (evento.getInicio() != null)

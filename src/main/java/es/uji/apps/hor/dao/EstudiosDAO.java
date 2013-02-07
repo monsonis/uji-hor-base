@@ -15,6 +15,4 @@ public interface EstudiosDAO extends BaseDAO
 
     Estudio insert(Estudio estudio);
 
-    List<Estudio> getEstudiosByCentroIdVisiblesPorUsuario(Long centroId, Long connectedUserId);
-
 }

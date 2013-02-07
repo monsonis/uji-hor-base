@@ -71,14 +71,16 @@ public class AulaResource extends CoreBaseService
 
     @DELETE
     @Path("estudio/{id}")
-    public void deleteAulaAsignadaToEstudio(@PathParam("id") String aulaPlanificacionId)
+    public void deleteAulaAsignadaToEstudio(@PathParam("id") String aulaId,
+            @PathParam("estudioId") String estudioId, @PathParam("semestreId") String semestreId)
             throws RegistroConHijosException, RegistroNoEncontradoException, NumberFormatException,
             UnauthorizedUserException
     {
         Long connectedUserId = AccessManager.getConnectedUserId(request);
+        ParamUtils.checkNotNull(estudioId, aulaId, semestreId);
 
-        consultaAulas.deleteAulaAsignadaToEstudio(Long.parseLong(aulaPlanificacionId),
-                connectedUserId);
+        consultaAulas.deleteAulaAsignadaToEstudio(Long.parseLong(aulaId),
+                Long.parseLong(estudioId), Long.parseLong(semestreId), connectedUserId);
     }
 
     @GET

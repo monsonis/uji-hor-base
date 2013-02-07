@@ -48,7 +48,7 @@ public class Evento
     private Long plazas;
     private List<EventoDetalle> eventosDetalle = new ArrayList<EventoDetalle>();
 
-    private AulaPlanificacion aulaPlanificacion = null;
+    private Aula aula;
 
     public Evento(Long id, Calendario calendario, String titulo, Date inicio, Date fin)
     {
@@ -99,9 +99,9 @@ public class Evento
             texto = MessageFormat.format("{0} - C", texto);
         }
 
-        if (getAulaPlanificacion() != null)
+        if (getAula() != null)
         {
-            texto = MessageFormat.format("{0} {1}", texto, getAulaPlanificacion().getCodigo());
+            texto = MessageFormat.format("{0} {1}", texto, getAula().getCodigo());
         }
 
         return texto;
@@ -309,7 +309,7 @@ public class Evento
         nuevo.setRepetirCadaSemanas(this.getRepetirCadaSemanas());
         nuevo.setDesdeElDia(this.getDesdeElDia());
         nuevo.setHastaElDia(this.getHastaElDia());
-        nuevo.setAulaPlanificacion(this.getAulaPlanificacion());
+        nuevo.setAula(this.getAula());
         nuevo.setAsignaturas(this.getAsignaturas());
         nuevo.setSemestre(this.getSemestre());
         nuevo.setGrupoId(this.getGrupoId());
@@ -339,16 +339,6 @@ public class Evento
         EventoDetalle detalle = new EventoDetalle(this, fecha);
         addEventoDetalle(detalle);
         return detalle;
-    }
-
-    public AulaPlanificacion getAulaPlanificacion()
-    {
-        return aulaPlanificacion;
-    }
-
-    public void setAulaPlanificacion(AulaPlanificacion aulaPlanificacion)
-    {
-        this.aulaPlanificacion = aulaPlanificacion;
     }
 
     public List<Asignatura> getAsignaturas()
@@ -466,33 +456,40 @@ public class Evento
     {
         this.setInicio(null);
         this.setFin(null);
-        this.setAulaPlanificacion(null);
+        this.setAula(null);
     }
 
-    public void actualizaAulaPlanificacion(AulaPlanificacion aulaPlanificacion)
+    public void actualizaAula(Aula aula)
             throws AulaNoAsignadaAEstudioDelEventoException
     {
-        if (!aulaAsignadaAAlgunEstudioDelEvento(aulaPlanificacion))
+        if (!aulaAsignadaAAlgunEstudioDelEvento(aula))
         {
             throw new AulaNoAsignadaAEstudioDelEventoException();
         }
 
-        this.aulaPlanificacion = aulaPlanificacion;
+        this.aula = aula;
     }
 
-    public void desasignaAulaPlanificacion()
+    public void desasignaAula()
     {
-        aulaPlanificacion = null;
+        aula = null;
     }
 
-    private boolean aulaAsignadaAAlgunEstudioDelEvento(AulaPlanificacion aula)
+    private boolean aulaAsignadaAAlgunEstudioDelEvento(Aula aula)
     {
 
-        Long estudioIdDelAula = aula.getEstudioId();
-
+        List<Long> estudiosIds = new ArrayList<Long>();
+        
+        
         for (Asignatura asignatura : asignaturas)
         {
-            if (asignatura.getEstudio().getId().equals(estudioIdDelAula))
+            estudiosIds.add(asignatura.getEstudio().getId());
+        }
+        
+        for (AulaPlanificacion planificacion: aula.getPlanificacion()) {
+            Estudio estudio = planificacion.getEstudio();
+            
+            if (estudiosIds.contains(estudio))
             {
                 return true;
             }
@@ -555,5 +552,15 @@ public class Evento
         tituloEvento += " " + this.grupoId + " " + this.calendario.getLetraId() + this.subgrupoId;
 
         return tituloEvento;
+    }
+
+    public Aula getAula()
+    {
+        return aula;
+    }
+
+    public void setAula(Aula aula)
+    {
+        this.aula = aula;
     }
 }

@@ -22,9 +22,11 @@ public interface AulaDAO extends BaseDAO
     AulaPlanificacion asignaAulaToEstudio(Long estudioId, Long aulaId, Long semestreId)
             throws RegistroNoEncontradoException, AulaYaAsignadaAEstudioException;
 
-    void deleteAulaAsignadaToEstudio(Long aulaPlanificacionId) throws RegistroConHijosException;
+    void deleteAulaAsignadaToEstudio(Long aulaId, Long estudioId, Long semestreId) throws RegistroConHijosException, RegistroNoEncontradoException;
+    
+    AulaPlanificacion getAulaPlanificacionByAulaEstudioSemestre(Long aulaId, Long estudioId, Long semestreId) throws RegistroNoEncontradoException;
 
-    AulaPlanificacion getAulaById(Long aulaId) throws RegistroNoEncontradoException;
+    Aula getAulaById(Long aulaId) throws RegistroNoEncontradoException;
 
     Aula insertAula(Aula aula);
 

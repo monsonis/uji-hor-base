@@ -44,7 +44,7 @@ import es.uji.commons.rest.UIEntity;
 
 public abstract class AbstractCalendarResourceTest extends AbstractRestTest
 {
-    protected Long estudioId;
+    protected Estudio estudio;
     protected Long eventoId;
     protected Long otroEstudioId;
     protected final Long cursoId = new Long(1);
@@ -82,9 +82,8 @@ public abstract class AbstractCalendarResourceTest extends AbstractRestTest
     {
         TipoEstudio tipoEstudio = new TipoEstudioBuilder().withNombre("Grau").withId("G").build();
 
-        Estudio estudio = new EstudioBuilder(estudiosDAO).withNombre("Grau en Psicologia")
+        this.estudio = new EstudioBuilder(estudiosDAO).withNombre("Grau en Psicologia")
                 .withTipoEstudio(tipoEstudio).build();
-        estudioId = estudio.getId();
 
         Centro centro = new CentroBuilder(centroDAO).withNombre("Centro 1").withId(new Long(1))
                 .build();
@@ -206,7 +205,7 @@ public abstract class AbstractCalendarResourceTest extends AbstractRestTest
         MultivaluedMap<String, String> params = getDefaulQueryParams();
         params.putSingle("startDate", fecha_inicio);
         params.putSingle("endDate", fecha_fin);
-        params.putSingle("estudioId", estudioId.toString());
+        params.putSingle("estudioId", estudio.toString());
 
         ClientResponse response = resource.path("calendario/eventos/detalle").queryParams(params)
                 .accept(MediaType.APPLICATION_JSON_TYPE).get(ClientResponse.class);
@@ -219,7 +218,7 @@ public abstract class AbstractCalendarResourceTest extends AbstractRestTest
     protected MultivaluedMap<String, String> getDefaulQueryParams()
     {
         MultivaluedMap<String, String> params = new StringKeyStringValueIgnoreCaseMultivaluedMap();
-        params.putSingle("estudioId", String.valueOf(estudioId));
+        params.putSingle("estudioId", String.valueOf(estudio));
         params.putSingle("cursoId", String.valueOf(cursoId));
         params.putSingle("semestreId", String.valueOf(semestreId));
         params.putSingle("grupoId", grupoId);

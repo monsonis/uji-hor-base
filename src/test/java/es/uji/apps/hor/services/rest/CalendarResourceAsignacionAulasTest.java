@@ -39,6 +39,7 @@ import es.uji.apps.hor.model.Centro;
 import es.uji.apps.hor.model.Edificio;
 import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.model.PlantaEdificio;
+import es.uji.apps.hor.model.Semestre;
 import es.uji.apps.hor.model.TipoAula;
 import es.uji.apps.hor.model.TipoEstudio;
 import es.uji.commons.rest.UIEntity;
@@ -86,6 +87,8 @@ public class CalendarResourceAsignacionAulasTest extends AbstractCalendarResourc
         Edificio edificio = new EdificioBuilder().withNombre("Edificio 1").withCentro(centro)
                 .build();
 
+        Semestre semestre = new Semestre(semestreId);
+        
         Aula aula1 = new AulaBuilder(aulaDao).withArea(areaEdificio).withCodigo("AUL1")
                 .withEdificio(edificio).withNombre("Aula 1").withPlanta(plantaEdificio)
                 .withPlazas(new Long(100)).withTipo(tipoAula).build();
@@ -95,13 +98,13 @@ public class CalendarResourceAsignacionAulasTest extends AbstractCalendarResourc
                 .withPlazas(new Long(100)).withTipo(tipoAula2).build();
 
         AulaPlanificacion aulaPlanificacion = new AulaPlanificacionBuilder(aulaDao)
-                .withAulaId(aula1.getId()).withEstudioId(estudioId).withSemestreId(semestreId)
+                .withAula(aula1).withEstudio(estudio).withSemestre(semestre)
                 .build();
 
         aulaPlanificacionId = aulaPlanificacion.getId();
 
         AulaPlanificacion aulaPlanificacionSinEstudio = new AulaPlanificacionBuilder(aulaDao)
-                .withAulaId(aula2.getId()).withEstudioId(otroEstudioId).withSemestreId(semestreId)
+                .withAula(aula2).withEstudio(otroEstudio).withSemestre(semestre)
                 .build();
 
         aulaPlanificacionSinEstudioId = aulaPlanificacionSinEstudio.getId();

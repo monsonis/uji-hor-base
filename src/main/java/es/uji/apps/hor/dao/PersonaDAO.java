@@ -20,4 +20,5 @@ public interface PersonaDAO extends BaseDAO, LookupDAO
     Persona insertaCargos(Persona persona);
 
     List<Cargo> getTodosLosCargos();
+
 }

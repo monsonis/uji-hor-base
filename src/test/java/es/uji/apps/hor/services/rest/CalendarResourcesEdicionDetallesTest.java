@@ -31,7 +31,7 @@ public class CalendarResourcesEdicionDetallesTest extends AbstractCalendarResour
         nuevosDatos.put("fecha_detalle_manual_int",
                 "[\"10/10/2012 09:00:00\", \"17/10/2012 09:00:00\"]");
 
-        llamaServicioModificacionEventoGenerico1(nuevosDatos, estudioId);
+        llamaServicioModificacionEventoGenerico1(nuevosDatos, estudio.getId());
 
         String inicioPeriodo = "2012-10-01";
         String finPeriodo = "2012-10-28";
@@ -56,7 +56,7 @@ public class CalendarResourcesEdicionDetallesTest extends AbstractCalendarResour
         nuevosDatos.put("seleccionRadioFechaFin", tipoSeleccionFechaFinEsRepeticiones);
         nuevosDatos.put("end_rep_number_comp", numeroRepeticiones3);
 
-        llamaServicioModificacionEventoGenerico1(nuevosDatos, estudioId);
+        llamaServicioModificacionEventoGenerico1(nuevosDatos, estudio.getId());
 
         UIEntity entityActualizada = getDatosEventoGenerico("1");
         assertThat(valorPropiedadTipoFechaDeUIEntity(entityActualizada, "start_date_rep"),
@@ -84,7 +84,7 @@ public class CalendarResourcesEdicionDetallesTest extends AbstractCalendarResour
         nuevosDatos.put("end_rep_number_comp", numeroRepeticiones3);
         nuevosDatos.put("end_date_rep_comp", nuevaEndDateRep);
 
-        llamaServicioModificacionEventoGenerico1(nuevosDatos, estudioId);
+        llamaServicioModificacionEventoGenerico1(nuevosDatos, estudio.getId());
 
         UIEntity entityActualizada = getDatosEventoGenerico("1");
         assertThat(valorPropiedadTipoFechaDeUIEntity(entityActualizada, "start_date_rep"),
@@ -113,7 +113,7 @@ public class CalendarResourcesEdicionDetallesTest extends AbstractCalendarResour
         nuevosDatos.put("end_rep_number_comp", numeroRepeticiones3);
         nuevosDatos.put("end_date_rep_comp", nuevaEndDateRep);
 
-        llamaServicioModificacionEventoGenerico1(nuevosDatos, estudioId);
+        llamaServicioModificacionEventoGenerico1(nuevosDatos, estudio.getId());
 
         UIEntity entityActualizada = getDatosEventoGenerico("1");
         assertThat(valorPropiedadTipoFechaDeUIEntity(entityActualizada, "start_date_rep"),

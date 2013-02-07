@@ -16,7 +16,7 @@ import es.uji.apps.hor.DuracionEventoIncorrectaException;
 import es.uji.apps.hor.EventoFueraDeRangoException;
 import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.builders.AsignaturaBuilder;
-import es.uji.apps.hor.builders.AulaPlanificacionBuilder;
+import es.uji.apps.hor.builders.AulaBuilder;
 import es.uji.apps.hor.builders.CalendarioBuilder;
 import es.uji.apps.hor.builders.EstudioBuilder;
 import es.uji.apps.hor.builders.EventoBuilder;
@@ -115,11 +115,11 @@ public class EventoModelTest
         Long calendarioPRId = TipoSubgrupo.PR.getCalendarioAsociado();
         Calendario calendario = new CalendarioBuilder().withId(calendarioPRId).build();
 
-        AulaPlanificacion aula = new AulaPlanificacionBuilder().withCodigo(codigoAula).build();
+        Aula aula = new AulaBuilder().withCodigo(codigoAula).build();
 
         Evento evento = new EventoBuilder().withTitulo("Evento de prueba")
                 .withAsignatura(asignatura1).withAsignatura(asignatura2).withSubgrupoId(subgrupo)
-                .withCalendario(calendario).withAulaPlanficacion(aula).build();
+                .withCalendario(calendario).withAula(aula).build();
 
         String descripcion = evento.getDescripcionParaUnEstudio(estudio1.getId());
 

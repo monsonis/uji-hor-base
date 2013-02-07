@@ -56,12 +56,12 @@ public class CentroDAOTest
         TipoAula tipoAula = new TipoAulaBuilder().withNombre("Tipo Aula 1").withEdificio(edificio).build();
         TipoAula tipoAula2 = new TipoAulaBuilder().withNombre("Tipo Aula 2").withEdificio(edificio).build();
         
-        new AulaBuilder(aulaDAO).withNombre("Aula 1").withArea(areaEdificio).withTipo(tipoAula).withPlanta(plantaEdificio).withEdificio(edificio).build();
-        new AulaBuilder(aulaDAO).withNombre("Aula 2").withArea(areaEdificio2).withTipo(tipoAula).withPlanta(plantaEdificio2).withEdificio(edificio).build();
-        new AulaBuilder(aulaDAO).withNombre("Aula 3").withArea(areaEdificio).withTipo(tipoAula2).withPlanta(plantaEdificio).withEdificio(edificio).build();
-        new AulaBuilder(aulaDAO).withNombre("Aula 4").withArea(areaEdificio).withTipo(tipoAula).withPlanta(plantaEdificio).withEdificio(edificio).build();
-        new AulaBuilder(aulaDAO).withNombre("Aula 5").withArea(areaEdificio).withTipo(tipoAula).withPlanta(plantaEdificio2).withEdificio(edificio).build();
-        new AulaBuilder(aulaDAO).withNombre("Aula 6").withArea(areaEdificio2).withTipo(tipoAula2).withPlanta(plantaEdificio).withEdificio(edificio).build();  
+        new AulaBuilder(aulaDAO).withNombre("Aula 1").withArea(areaEdificio).withTipo(tipoAula).withPlanta(plantaEdificio).withEdificio(edificio).withCentro(centro).build();
+        new AulaBuilder(aulaDAO).withNombre("Aula 2").withArea(areaEdificio2).withTipo(tipoAula).withPlanta(plantaEdificio2).withEdificio(edificio).withCentro(centro).build();
+        new AulaBuilder(aulaDAO).withNombre("Aula 3").withArea(areaEdificio).withTipo(tipoAula2).withPlanta(plantaEdificio).withEdificio(edificio).withCentro(centro).build();
+        new AulaBuilder(aulaDAO).withNombre("Aula 4").withArea(areaEdificio).withTipo(tipoAula).withPlanta(plantaEdificio).withEdificio(edificio).withCentro(centro).build();
+        new AulaBuilder(aulaDAO).withNombre("Aula 5").withArea(areaEdificio).withTipo(tipoAula).withPlanta(plantaEdificio2).withEdificio(edificio).withCentro(centro).build();
+        new AulaBuilder(aulaDAO).withNombre("Aula 6").withArea(areaEdificio2).withTipo(tipoAula2).withPlanta(plantaEdificio).withEdificio(edificio).withCentro(centro).build();  
     }
 
     @Test
