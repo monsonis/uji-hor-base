@@ -11,6 +11,11 @@
        classpath:applicationContext.xml
     </param-value>
   </context-param>
+  
+    <context-param>
+    <param-name>appVersion</param-name>
+    <param-value>${pom.version}</param-value>
+  </context-param>
 
   <context-param>
     <param-name>log4jConfigLocation</param-name>

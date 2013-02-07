@@ -88,7 +88,8 @@ Ext.application(
                 tituloAplicacion : 'Gestión de horarios',
                 dashboard : true
             });
-            viewport.addNewTab('HOR.view.horarios.PanelHorarios');
+            //viewport.addNewTab('HOR.view.horarios.PanelHorarios');            
+            viewport.addNewTab('HOR.view.dashboard.PanelDashboard');
         });
     }
 

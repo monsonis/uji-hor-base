@@ -16,9 +16,13 @@
 <%
     String login = ((User) session.getAttribute(User.SESSION_USER))
 					.getName();
+
+	ServletContext context = getServletContext();
+    String appVersion = context.getInitParameter("appVersion");
 %>
 	<script type="text/javascript">
 	var login = '<%=login%>';
+	var appversion = '<%=appVersion%>';
 	</script>  
     <script type="text/javascript" src="app/Application.js"></script> 
     <style>

@@ -4,7 +4,7 @@ Ext.define('HOR.view.horarios.PanelHorarios',
     title : 'Gestió d\'horaris',
     requires : [ 'HOR.view.horarios.FiltroGrupos', 'HOR.view.horarios.PanelCalendario', 'HOR.view.horarios.PanelCalendarioDetalle', 'HOR.view.horarios.SelectorGrupos', 'HOR.view.horarios.SelectorCalendarios', 'HOR.view.commons.MenuSuperior' ],
     alias : 'widget.panelHorarios',
-    closable : false,
+    closable : true,
     layout :
     {
         type : 'vbox',

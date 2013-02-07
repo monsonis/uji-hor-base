@@ -15,7 +15,7 @@
     <dependency>
       <groupId>es.uji.commons</groupId>
       <artifactId>uji-commons-testing</artifactId>
-      <version>0.1.0</version>
+      <version>0.1.1-SNAPSHOT</version>
       <!-- exclusions>
         <exclusion>
           <groupId>org.hamcrest</groupId>
@@ -104,7 +104,7 @@
         </includes>
         <filtering>true</filtering>
         <targetPath>..</targetPath>
-      </resource>
+      </resource>       
     </resources>
 
     <plugins>
