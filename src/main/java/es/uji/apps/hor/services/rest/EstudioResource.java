@@ -14,6 +14,7 @@ import com.sun.jersey.api.core.InjectParam;
 import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.services.EstudiosService;
 import es.uji.commons.rest.CoreBaseService;
+import es.uji.commons.rest.ParamUtils;
 import es.uji.commons.rest.UIEntity;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 import es.uji.commons.sso.AccessManager;
@@ -31,19 +32,28 @@ public class EstudioResource extends CoreBaseService
             throws NumberFormatException, UnauthorizedUserException, RegistroNoEncontradoException
     {
         List<Estudio> estudios = new ArrayList<Estudio>();
-
+        ParamUtils.checkNotNull(centroId);
+        
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
-        if (centroId == null || centroId.isEmpty())
-        {
-            estudios = consultaEstudios.getEstudios(connectedUserId);
-        }
-        else
-        {
-            estudios = consultaEstudios.getEstudiosByCentroId(Long.parseLong(centroId), connectedUserId);
-        }
+        estudios = consultaEstudios
+                .getEstudiosByCentroId(Long.parseLong(centroId), connectedUserId);
 
         return UIEntity.toUI(estudios);
     }
-    
+
+    @GET
+    @Path("todos")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<UIEntity> getTodosLosEstudios() throws NumberFormatException,
+            UnauthorizedUserException, RegistroNoEncontradoException
+    {
+        List<Estudio> estudios = new ArrayList<Estudio>();
+
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+
+        estudios = consultaEstudios.getTodosLosEstudios(connectedUserId);
+        return UIEntity.toUI(estudios);
+    }
+
 }

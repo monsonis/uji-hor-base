@@ -204,6 +204,14 @@ public class Persona
 
     public boolean esGestorDeCentro()
     {
-        return this.centroAutorizado != null;
+        for (Cargo cargo : cargos)
+        {
+            if (cargo.getId().equals(Cargo.PAS_CENTRO)
+                    || cargo.getId().equals(Cargo.DIRECTOR_CENTRO))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

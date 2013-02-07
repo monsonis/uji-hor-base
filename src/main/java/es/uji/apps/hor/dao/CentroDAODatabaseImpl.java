@@ -13,11 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mysema.query.jpa.impl.JPAQuery;
 
 import es.uji.apps.hor.db.AulaDTO;
+import es.uji.apps.hor.db.CargoPersonaDTO;
 import es.uji.apps.hor.db.CentroDTO;
 import es.uji.apps.hor.db.QAulaDTO;
 import es.uji.apps.hor.db.QAulaPersonaDTO;
 import es.uji.apps.hor.db.QAulaPlanificacionDTO;
+import es.uji.apps.hor.db.QCargoPersonaDTO;
 import es.uji.apps.hor.db.QCentroDTO;
+import es.uji.apps.hor.db.QTipoCargoDTO;
 import es.uji.apps.hor.model.AreaEdificio;
 import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.Centro;
@@ -77,6 +80,32 @@ public class CentroDAODatabaseImpl extends BaseDAODatabaseImpl implements Centro
         }
 
         return listaCentros;
+    }
+
+    @Override
+    public Centro getCentroGestionablePorUsuario(Long connectedUserId, List<Long> listaCargosIds)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+
+        QCentroDTO qCentro = QCentroDTO.centroDTO;
+        QCargoPersonaDTO qCargo = QCargoPersonaDTO.cargoPersonaDTO;
+
+        // TODO: Cambiar a innerJoin cuando esté la relación correcta entre centro y cargoPersona
+        query.from(qCentro, qCargo).where(
+                qCargo.centro.id.eq(qCentro.id).and(
+                        qCargo.persona.id.eq(connectedUserId).and(
+                                qCargo.cargo.id.in(listaCargosIds))));
+
+        List<CentroDTO> listaCentrosDTO = query.list(qCentro);
+        if (listaCentrosDTO.size() > 0)
+        {
+            return creaCentroDesdeCentroDTO(listaCentrosDTO.get(0));
+        }
+        else
+        {
+            return new Centro();
+        }
+
     }
 
     private Centro creaCentroDesdeCentroDTO(CentroDTO centroDTO)

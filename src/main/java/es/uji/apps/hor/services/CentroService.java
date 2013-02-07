@@ -1,5 +1,6 @@
 package es.uji.apps.hor.services;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import es.uji.apps.hor.dao.CentroDAO;
 import es.uji.apps.hor.dao.PersonaDAO;
+import es.uji.apps.hor.model.Cargo;
 import es.uji.apps.hor.model.Centro;
 import es.uji.apps.hor.model.Persona;
 import es.uji.commons.rest.Role;
@@ -56,13 +58,22 @@ public class CentroService
         return centro;
     }
 
-    public List<Centro> getCentrosGestionables(Long connectedUserId)
-            throws RegistroNoEncontradoException
+    public List<Centro> getCentrosAGestionar(Long connectedUserId) throws RegistroNoEncontradoException
     {
         if (!personaDAO.esAdmin(connectedUserId))
         {
             Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
-            return Collections.singletonList(persona.getCentroAutorizado());
+            List<Long> listaCargosIds = new ArrayList<Long>();
+
+            for (Cargo cargo : persona.getCargos())
+            {
+                if (cargo.getId().equals(Cargo.DIRECTOR_CENTRO)
+                        || cargo.getId().equals(Cargo.PAS_CENTRO))
+                {
+                    listaCargosIds.add(cargo.getId());
+                }
+            }
+            return Collections.singletonList(centroDAO.getCentroGestionablePorUsuario(connectedUserId, listaCargosIds));
         }
         else
         {
