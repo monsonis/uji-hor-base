@@ -22,7 +22,7 @@ public interface AulaDAO extends BaseDAO
     AulaPlanificacion asignaAulaToEstudio(Long estudioId, Long aulaId, Long semestreId)
             throws RegistroNoEncontradoException, AulaYaAsignadaAEstudioException;
 
-    void deleteAulaAsignadaToEstudio(Long aulaId, Long estudioId, Long semestreId) throws RegistroConHijosException, RegistroNoEncontradoException;
+    void deleteAulaAsignadaToEstudio(Long aulaPlanificacionId) throws RegistroConHijosException, RegistroNoEncontradoException;
     
     AulaPlanificacion getAulaPlanificacionByAulaEstudioSemestre(Long aulaId, Long estudioId, Long semestreId) throws RegistroNoEncontradoException;
 
@@ -43,4 +43,6 @@ public interface AulaDAO extends BaseDAO
 
     List<Aula> getAulasVisiblesPorUsuarioFiltradasPor(Long centroId, String edificio,
             String tipoAula, String planta, Long connectedUserId);
+
+    AulaPlanificacion getAulaPlanificacionById(Long aulaPlanificacionId) throws RegistroNoEncontradoException;
 }

@@ -1,7 +1,7 @@
 Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
 {
     extend : 'Ext.app.Controller',
-    stores : [ 'StoreCentrosGestion', 'StoreEstudiosTodos', 'StoreCursos', 'TreeStoreAulas', 'StoreAulasAsignadas' ],
+    stores : [ 'StoreCentrosGestion', 'StoreEstudiosGestion', 'StoreCursos', 'TreeStoreAulas', 'StoreAulasAsignadas' ],
     model : [ 'Centro', 'Estudio', 'Semestre', 'Curso', 'AulaPlafinicacion' ],
     refs : [
     {
@@ -79,7 +79,7 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
         combo_estudios.setDisabled(false);
         combo_estudios.clearValue();
 
-        var estudios_store = this.getStoreEstudiosTodosStore();
+        var estudios_store = this.getStoreEstudiosGestionStore();
         estudios_store.load(
         {
             params :
@@ -219,7 +219,7 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
         var combo_estudios = this.getFiltroAsignacionAulas().down('combobox[name=estudio]');
         combo_estudios.clearValue();
 
-        var estudios_store = this.getStoreEstudiosTodosStore();
+        var estudios_store = this.getStoreEstudiosGestionStore();
 
         if (filtro == "solo")
         {

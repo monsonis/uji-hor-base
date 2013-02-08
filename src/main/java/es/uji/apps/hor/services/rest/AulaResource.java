@@ -52,17 +52,22 @@ public class AulaResource extends CoreBaseService
 
         for (AulaPlanificacion aulaPlanificacion : aulasAsignadas)
         {
-            UIEntity entity = UIEntity.toUI(aulaPlanificacion);
-            entity.put("nombre", aulaPlanificacion.getAula().getNombre());
-            entity.put("edificio", aulaPlanificacion.getAula().getEdificio().getNombre());
-            entity.put("tipo", aulaPlanificacion.getAula().getTipo().getNombre());
-            entity.put("planta", aulaPlanificacion.getAula().getPlanta().getNombre());
-            entity.put("semestreId", aulaPlanificacion.getSemestre().getNombre());
-
-            listaAulas.add(entity);
+            listaAulas.add(aulaPlanificacionToUI(aulaPlanificacion));
         }
 
         return listaAulas;
+    }
+
+    private UIEntity aulaPlanificacionToUI(AulaPlanificacion aulaPlanificacion)
+    {
+        UIEntity entity = UIEntity.toUI(aulaPlanificacion);
+        entity.put("nombre", aulaPlanificacion.getAula().getNombre());
+        entity.put("edificio", aulaPlanificacion.getAula().getEdificio().getNombre());
+        entity.put("tipo", aulaPlanificacion.getAula().getTipo().getNombre());
+        entity.put("planta", aulaPlanificacion.getAula().getPlanta().getNombre());
+        entity.put("semestreId", aulaPlanificacion.getSemestre().getNombre());
+
+        return entity;
     }
 
     @POST
@@ -81,21 +86,19 @@ public class AulaResource extends CoreBaseService
         AulaPlanificacion aulaPlanificacion = consultaAulas.asignaAulaToEstudio(
                 Long.parseLong(estudioId), Long.parseLong(aulaId), semestreId, connectedUserId);
 
-        return Collections.singletonList(UIEntity.toUI(aulaPlanificacion));
+        return Collections.singletonList(aulaPlanificacionToUI(aulaPlanificacion));
     }
 
     @DELETE
     @Path("estudio/{id}")
-    public void deleteAulaAsignadaToEstudio(@PathParam("id") String aulaId,
-            @PathParam("estudioId") String estudioId, @PathParam("semestreId") String semestreId)
+    public void deleteAulaAsignadaToEstudio(@PathParam("id") String aulaPlanificacionId)
             throws RegistroConHijosException, RegistroNoEncontradoException, NumberFormatException,
             UnauthorizedUserException
     {
         Long connectedUserId = AccessManager.getConnectedUserId(request);
-        ParamUtils.checkNotNull(estudioId, aulaId, semestreId);
+        ParamUtils.checkNotNull(aulaPlanificacionId);
 
-        consultaAulas.deleteAulaAsignadaToEstudio(Long.parseLong(aulaId),
-                Long.parseLong(estudioId), Long.parseLong(semestreId), connectedUserId);
+        consultaAulas.deleteAulaAsignadaToEstudio(Long.parseLong(aulaPlanificacionId), connectedUserId);
     }
 
     @GET

@@ -10,6 +10,7 @@ import es.uji.apps.hor.dao.AulaDAO;
 import es.uji.apps.hor.dao.PersonaDAO;
 import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.AulaPlanificacion;
+import es.uji.apps.hor.model.Centro;
 import es.uji.apps.hor.model.Persona;
 import es.uji.apps.hor.model.TipoAula;
 import es.uji.commons.rest.Role;
@@ -49,27 +50,44 @@ public class AulaService
             Long connectedUserId) throws RegistroNoEncontradoException,
             AulaYaAsignadaAEstudioException, UnauthorizedUserException
     {
-        if (!personaDAO.esAdmin(connectedUserId))
+        Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
+        if (personaDAO.esAdmin(connectedUserId) || persona.esGestorDeCentro())
         {
-            Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
-            persona.compruebaAccesoAEstudio(estudioId);
+            return aulaDAO.asignaAulaToEstudio(estudioId, aulaId, semestreId);
+        }
+        else
+        {
+            throw new UnauthorizedUserException();
         }
 
-        return aulaDAO.asignaAulaToEstudio(estudioId, aulaId, semestreId);
     }
 
     @Role({ "ADMIN", "USUARIO" })
-    public void deleteAulaAsignadaToEstudio(Long aulaId, Long estudioId, Long semestreId, Long connectedUserId)
-            throws RegistroConHijosException, UnauthorizedUserException,
+    public void deleteAulaAsignadaToEstudio(Long aulaPlanificacionId,
+            Long connectedUserId) throws RegistroConHijosException, UnauthorizedUserException,
             RegistroNoEncontradoException
     {
-        if (!personaDAO.esAdmin(connectedUserId))
+
+        if (personaDAO.esAdmin(connectedUserId))
+        {
+            aulaDAO.deleteAulaAsignadaToEstudio(aulaPlanificacionId);
+        }
+        else
         {
             Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
-            persona.compruebaAccesoAEstudio(estudioId);
-        }
 
-        aulaDAO.deleteAulaAsignadaToEstudio(aulaId, estudioId, semestreId);
+            AulaPlanificacion aulaPlanificacion = aulaDAO.getAulaPlanificacionById(aulaPlanificacionId);
+            Centro centro = aulaPlanificacion.getAula().getCentro();
+
+            if (persona.esGestorDeCentro(centro.getId()))
+            {
+                aulaDAO.deleteAulaAsignadaToEstudio(aulaPlanificacionId);
+            }
+            else
+            {
+                throw new UnauthorizedUserException();
+            }
+        }
     }
 
     @Role({ "ADMIN", "USUARIO" })

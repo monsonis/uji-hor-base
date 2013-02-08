@@ -214,4 +214,20 @@ public class Persona
         }
         return false;
     }
+
+    public boolean esGestorDeCentro(Long centroId)
+    {
+        for (Cargo cargo : cargos)
+        {
+            if (cargo.getId().equals(Cargo.PAS_CENTRO)
+                    || cargo.getId().equals(Cargo.DIRECTOR_CENTRO))
+            {
+                if (this.centroAutorizado.getId().equals(centroId))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

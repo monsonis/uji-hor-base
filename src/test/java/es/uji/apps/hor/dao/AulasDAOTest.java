@@ -172,7 +172,10 @@ public class AulasDAOTest
             RegistroNoEncontradoException
     {
 
-        aulasDAO.deleteAulaAsignadaToEstudio(aula.getId(), estudio.getId(), semestre.getSemestre());
+        AulaPlanificacion aulaPlanificacion = aulasDAO.getAulaPlanificacionByAulaEstudioSemestre(
+                aula.getId(), estudio.getId(), semestre.getSemestre());
+
+        aulasDAO.deleteAulaAsignadaToEstudio(aulaPlanificacion.getId());
         aulasDAO.getAulaPlanificacionByAulaEstudioSemestre(aula.getId(), estudio.getId(),
                 semestre.getSemestre());
 
@@ -180,7 +183,8 @@ public class AulasDAOTest
 
     @Transactional
     @Test(expected = RegistroConHijosException.class)
-    public void eliminaAulaPlanificadaConEventoAsignadoTest() throws RegistroConHijosException, DuracionEventoIncorrectaException, ParseException, RegistroNoEncontradoException
+    public void eliminaAulaPlanificadaConEventoAsignadoTest() throws RegistroConHijosException,
+            DuracionEventoIncorrectaException, ParseException, RegistroNoEncontradoException
     {
 
         Asignatura asignaturaFicticia1 = new AsignaturaBuilder().withCaracter("Obligatoria")
@@ -190,13 +194,16 @@ public class AulasDAOTest
         Calendario calendarioTE = new CalendarioBuilder().withId(new Long(1))
                 .withNombre(TipoSubgrupo.getTipoSubgrupo(new Long(1))).build();
 
-        Evento evento = new EventoBuilder(eventosDAO).withTitulo("Evento de prueba 1 de asignatura 1")
+        Evento evento = new EventoBuilder(eventosDAO)
+                .withTitulo("Evento de prueba 1 de asignatura 1")
                 .withAsignatura(asignaturaFicticia1).withAula(aula).withCalendario(calendarioTE)
-                .withInicioYFinFechaString("10/10/2012 09:00", "10/10/2012 11:00")
-                .withGrupoId("A").withSubgrupoId(new Long(1)).withSemestre(semestre)
-                .withDetalleManual(false).build();
+                .withInicioYFinFechaString("10/10/2012 09:00", "10/10/2012 11:00").withGrupoId("A")
+                .withSubgrupoId(new Long(1)).withSemestre(semestre).withDetalleManual(false)
+                .build();
 
+        AulaPlanificacion aulaPlanificacion = aulasDAO.getAulaPlanificacionByAulaEstudioSemestre(
+                aula.getId(), estudio.getId(), semestre.getSemestre());
 
-        aulasDAO.deleteAulaAsignadaToEstudio(aula.getId(), estudio.getId(), semestre.getSemestre());
+        aulasDAO.deleteAulaAsignadaToEstudio(aulaPlanificacion.getId());
     }
 }

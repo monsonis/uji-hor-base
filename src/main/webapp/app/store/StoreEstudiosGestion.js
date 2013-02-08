@@ -1,4 +1,4 @@
-Ext.define('HOR.store.StoreEstudiosTodos',
+Ext.define('HOR.store.StoreEstudiosGestion',
 {
     extend : 'Ext.data.Store',
     model : 'HOR.model.Estudio',
@@ -6,7 +6,7 @@ Ext.define('HOR.store.StoreEstudiosTodos',
     proxy :
     {
         type : 'rest',
-        url : '/hor/rest/estudio/todos',
+        url : '/hor/rest/estudio/gestion',
 
         reader :
         {

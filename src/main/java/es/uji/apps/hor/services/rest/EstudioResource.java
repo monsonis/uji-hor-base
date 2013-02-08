@@ -33,7 +33,7 @@ public class EstudioResource extends CoreBaseService
     {
         List<Estudio> estudios = new ArrayList<Estudio>();
         ParamUtils.checkNotNull(centroId);
-        
+
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
         estudios = consultaEstudios
@@ -43,16 +43,22 @@ public class EstudioResource extends CoreBaseService
     }
 
     @GET
-    @Path("todos")
+    @Path("gestion")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UIEntity> getTodosLosEstudios() throws NumberFormatException,
-            UnauthorizedUserException, RegistroNoEncontradoException
+    public List<UIEntity> getTodosLosEstudios(@QueryParam("centroId") String centroId)
+            throws NumberFormatException, UnauthorizedUserException, RegistroNoEncontradoException
     {
         List<Estudio> estudios = new ArrayList<Estudio>();
 
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
-        estudios = consultaEstudios.getTodosLosEstudios(connectedUserId);
+        if (centroId == null) {
+            estudios = consultaEstudios.getTodosLosEstudios(connectedUserId);
+        } else {
+            estudios = consultaEstudios
+                    .getEstudiosByCentroId(Long.parseLong(centroId), connectedUserId);
+        }
+        
         return UIEntity.toUI(estudios);
     }
 

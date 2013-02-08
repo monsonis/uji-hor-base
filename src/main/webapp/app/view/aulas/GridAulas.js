@@ -5,17 +5,23 @@ Ext.define('HOR.view.aulas.GridAulas',
     alias : 'widget.gridAulas',
     store : 'StoreAulasAsignadas',
     disableSelection : false,
-    selModel: {
-        mode: 'MULTI'
+    selModel :
+    {
+        mode : 'MULTI'
     },
     sortableColumns : true,
-    tbar: [ {
-        xtype: 'button',
-        name: 'borrar',
-        text: 'Esborrar aula',
+    tbar : [
+    {
+        xtype : 'button',
+        name : 'borrar',
+        text : 'Esborrar aula',
         iconCls : 'application-delete'
     } ],
-    columns : [
+    columns : [ {
+        text: 'Id',
+        dataIndex: 'id',
+        hidden : true,
+    },
     {
         text : 'Aula',
         dataIndex : 'nombre',
