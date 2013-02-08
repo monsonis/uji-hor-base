@@ -129,6 +129,10 @@ Ext.define('HOR.controller.ControllerCalendario',
             'panelHorarios button[name=imprimir]' :
             {
                 click : this.imprimirCalendario
+            },
+            'panelHorarios button[name=validar]' :
+            {
+                click : this.mostrarValidaciones
             }
         });
     },
@@ -628,6 +632,16 @@ Ext.define('HOR.controller.ControllerCalendario',
         {
             window.open("http://www.uji.es/cocoon/xxxx/" + titulacion + "/" + curso + "/" + semestre + "/" + grupo + "/horario-semana-detalle.pdf");
         }
+    },
+    
+    mostrarValidaciones : function()
+    {
+    	 var titulacion = this.getFiltroGrupos().down('combobox[name=estudio]').getValue();
+         var curso = this.getFiltroGrupos().down('combobox[name=curso]').getValue();
+         var semestre = this.getFiltroGrupos().down('combobox[name=semestre]').getValue();
+         var grupo = this.getFiltroGrupos().down('combobox[name=grupo]').getValue();
+         
+         window.open("http://www.uji.es/cocoon/xxxx/" + titulacion + "/" + curso + "/" + semestre + "/" + grupo + "/validaciones-horarios.pdf");
     }
 
 });
