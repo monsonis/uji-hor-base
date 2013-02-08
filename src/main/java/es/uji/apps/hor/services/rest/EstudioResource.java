@@ -32,12 +32,18 @@ public class EstudioResource extends CoreBaseService
             throws NumberFormatException, UnauthorizedUserException, RegistroNoEncontradoException
     {
         List<Estudio> estudios = new ArrayList<Estudio>();
-        ParamUtils.checkNotNull(centroId);
 
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
-        estudios = consultaEstudios
-                .getEstudiosByCentroId(Long.parseLong(centroId), connectedUserId);
+        if (centroId == null)
+        {
+            estudios = consultaEstudios.getEstudios(connectedUserId);
+        }
+        else
+        {
+            estudios = consultaEstudios.getEstudiosByCentroId(Long.parseLong(centroId),
+                    connectedUserId);
+        }
 
         return UIEntity.toUI(estudios);
     }
@@ -52,13 +58,16 @@ public class EstudioResource extends CoreBaseService
 
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
-        if (centroId == null) {
+        if (centroId == null)
+        {
             estudios = consultaEstudios.getTodosLosEstudios(connectedUserId);
-        } else {
-            estudios = consultaEstudios
-                    .getEstudiosByCentroId(Long.parseLong(centroId), connectedUserId);
         }
-        
+        else
+        {
+            estudios = consultaEstudios.getEstudiosByCentroId(Long.parseLong(centroId),
+                    connectedUserId);
+        }
+
         return UIEntity.toUI(estudios);
     }
 
