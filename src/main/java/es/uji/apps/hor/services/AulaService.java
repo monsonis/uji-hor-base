@@ -63,25 +63,44 @@ public class AulaService
     }
 
     @Role({ "ADMIN", "USUARIO" })
-    public void deleteAulaAsignadaToEstudio(Long aulaPlanificacionId,
-            Long connectedUserId) throws RegistroConHijosException, UnauthorizedUserException,
+    public void deleteAulaAsignadaToEstudio(Long aulaPlanificacionId, Long connectedUserId)
+            throws RegistroConHijosException, UnauthorizedUserException,
             RegistroNoEncontradoException
     {
 
         if (personaDAO.esAdmin(connectedUserId))
         {
-            aulaDAO.deleteAulaAsignadaToEstudio(aulaPlanificacionId);
+            AulaPlanificacion aulaPlanificacion = aulaDAO
+                    .getAulaPlanificacionById(aulaPlanificacionId);
+            Aula aula = aulaDAO.getAulaById(aulaPlanificacion.getAula().getId());
+            if (aula.sePuedeDesplanificar())
+            {
+                aulaDAO.deleteAulaAsignadaToEstudio(aulaPlanificacionId);
+            }
+            else
+            {
+                throw new RegistroConHijosException();
+            }
         }
         else
         {
             Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
 
-            AulaPlanificacion aulaPlanificacion = aulaDAO.getAulaPlanificacionById(aulaPlanificacionId);
+            AulaPlanificacion aulaPlanificacion = aulaDAO
+                    .getAulaPlanificacionById(aulaPlanificacionId);
             Centro centro = aulaPlanificacion.getAula().getCentro();
 
             if (persona.esGestorDeCentro(centro.getId()))
             {
-                aulaDAO.deleteAulaAsignadaToEstudio(aulaPlanificacionId);
+                Aula aula = aulaDAO.getAulaById(aulaPlanificacion.getAula().getId());
+                if (aula.sePuedeDesplanificar())
+                {
+                    aulaDAO.deleteAulaAsignadaToEstudio(aulaPlanificacionId);
+                }
+                else
+                {
+                    throw new RegistroConHijosException();
+                }
             }
             else
             {

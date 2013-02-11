@@ -1,6 +1,7 @@
 package es.uji.apps.hor.db;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -47,7 +48,10 @@ public class AulaDTO implements Serializable
 
     // bi-directional many-to-one association to AulaPlanificacionDTO
     @OneToMany(mappedBy = "aula")
-    private Set<AulaPlanificacionDTO> aulasPlanificacions;
+    private Set<AulaPlanificacionDTO> aulasPlanificacion = new HashSet<AulaPlanificacionDTO>();
+
+    @OneToMany(mappedBy = "aula")
+    private Set<ItemDTO> items = new HashSet<ItemDTO>();
 
     public AulaDTO()
     {
@@ -145,12 +149,22 @@ public class AulaDTO implements Serializable
 
     public Set<AulaPlanificacionDTO> getAulasPlanificacions()
     {
-        return this.aulasPlanificacions;
+        return this.aulasPlanificacion;
     }
 
-    public void setAulasPlanificacions(Set<AulaPlanificacionDTO> aulasPlanificacions)
+    public void setAulasPlanificacion(Set<AulaPlanificacionDTO> aulasPlanificacion)
     {
-        this.aulasPlanificacions = aulasPlanificacions;
+        this.aulasPlanificacion = aulasPlanificacion;
+    }
+
+    public Set<ItemDTO> getItems()
+    {
+        return items;
+    }
+
+    public void setItems(Set<ItemDTO> items)
+    {
+        this.items = items;
     }
 
 }

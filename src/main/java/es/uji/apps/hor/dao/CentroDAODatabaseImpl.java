@@ -338,7 +338,7 @@ public class CentroDAODatabaseImpl extends BaseDAODatabaseImpl implements Centro
         QAulaPlanificacionDTO qAulaPlanificacion = QAulaPlanificacionDTO.aulaPlanificacionDTO;
 
         List<CentroDTO> listaCentros = query.from(qCentro).join(qCentro.aulas, qAula)
-                .join(qAula.aulasPlanificacions, qAulaPlanificacion).where(qAula.id.eq(aulaId))
+                .join(qAula.aulasPlanificacion, qAulaPlanificacion).where(qAula.id.eq(aulaId))
                 .distinct().list(qCentro);
 
         if (listaCentros.size() == 0)

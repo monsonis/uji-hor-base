@@ -14,15 +14,18 @@ import es.uji.apps.hor.db.AulaDTO;
 import es.uji.apps.hor.db.AulaPlanificacionDTO;
 import es.uji.apps.hor.db.CentroDTO;
 import es.uji.apps.hor.db.EstudioDTO;
+import es.uji.apps.hor.db.ItemDTO;
 import es.uji.apps.hor.db.QAulaDTO;
 import es.uji.apps.hor.db.QAulaPersonaDTO;
 import es.uji.apps.hor.db.QAulaPlanificacionDTO;
+import es.uji.apps.hor.db.QItemDTO;
 import es.uji.apps.hor.model.AreaEdificio;
 import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.AulaPlanificacion;
 import es.uji.apps.hor.model.Centro;
 import es.uji.apps.hor.model.Edificio;
 import es.uji.apps.hor.model.Estudio;
+import es.uji.apps.hor.model.Evento;
 import es.uji.apps.hor.model.PlantaEdificio;
 import es.uji.apps.hor.model.Semestre;
 import es.uji.apps.hor.model.TipoAula;
@@ -55,6 +58,12 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         edificio.setCentro(centro);
         aula.setEdificio(edificio);
         aula.setCentro(centro);
+
+        for (ItemDTO item : aulaDTO.getItems())
+        {
+            Evento evento = new Evento();
+            evento.setId(item.getId());
+        }
 
         aula.setNombre(aulaDTO.getNombre());
         aula.setCodigo(aulaDTO.getCodigo());
@@ -210,11 +219,19 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
     @Override
     public Aula getAulaById(Long aulaId) throws RegistroNoEncontradoException
     {
-        try
+        JPAQuery query = new JPAQuery(entityManager);
+        QAulaDTO qAula = QAulaDTO.aulaDTO;
+        QItemDTO qItem = QItemDTO.itemDTO;
+
+        query.from(qAula).join(qAula.items, qItem).fetch().where(qAula.id.eq(aulaId));
+
+        List<AulaDTO> res = query.list(qAula);
+
+        if (res.size() > 0)
         {
-            return creaAulaDesdeAulaDTO(get(AulaDTO.class, aulaId).get(0));
+            return creaAulaDesdeAulaDTO(res.get(0));
         }
-        catch (Exception e)
+        else
         {
             throw new RegistroNoEncontradoException();
         }

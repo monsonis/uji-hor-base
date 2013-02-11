@@ -14,6 +14,7 @@ public class Aula
     private Edificio edificio;
     private Centro centro;
     private List<AulaPlanificacion> planificacion;
+    private List<Evento> eventos;
     
     public Aula() {
         
@@ -122,6 +123,21 @@ public class Aula
     public void setPlanificacion(List<AulaPlanificacion> planificacion)
     {
         this.planificacion = planificacion;
+    }
+
+    public boolean sePuedeDesplanificar()
+    {
+        return this.eventos == null;
+    }
+
+    public List<Evento> getEventos()
+    {
+        return eventos;
+    }
+
+    public void setEventos(List<Evento> eventos)
+    {
+        this.eventos = eventos;
     }
 
 
