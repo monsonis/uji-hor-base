@@ -76,9 +76,7 @@ Ext.define('HOR.view.horarios.PanelCalendario',
     
     showAsignarAulaView : function()
     {
-    	var asignarAulaId = this.id + '-aula';
-    	var layout = this.layout;
-    	
+    	var asignarAulaId = this.id + '-aula';    	
     	this.preAsignarAulaView = this.layout.getActiveItem().id;
     	this.setActiveViewForAsignarAula(asignarAulaId);
     	return this;
