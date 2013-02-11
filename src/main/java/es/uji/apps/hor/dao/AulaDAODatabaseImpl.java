@@ -179,7 +179,9 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         estudio.setNombre(aulaPlanificacionDTO.getEstudio().getNombre());
         aulaPlanificacion.setEstudio(estudio);
 
-        aulaPlanificacion.setAula(creaAulaDesdeAulaDTO(aulaPlanificacionDTO.getAula()));
+        Aula aula = new Aula();
+        aula.setId(aulaPlanificacionDTO.getAula().getId());
+        aulaPlanificacion.setAula(aula);
 
         Semestre semestre = new Semestre();
         semestre.setSemestre(aulaPlanificacionDTO.getSemestre());
