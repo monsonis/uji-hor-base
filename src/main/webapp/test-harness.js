@@ -6,21 +6,14 @@ Harness.configure({
 		'HOR' : 'app'
 	},
 
-	preload : [ '/hor/sinon/sinon-1.5.0.js', 	            
-	            '/hor/sinon/sinon-init.js',
-	// 'http://cdn.sencha.io/ext-4.1.0-gpl/resources/css/ext-all.css',
-	'/hor/Ext/ext-all-debug.css',
+	preload : [ '/hor/sinon/sinon-1.5.0.js', '/hor/sinon/sinon-init.js',
+			'/hor/Ext/ext-all-debug.css',
 			'/hor/extensible-1.5.1/resources/css/extensible-all.css',
 
-			'/hor/css/custom.css',
-			// 'http://cdn.sencha.io/ext-4.1.0-gpl/ext-debug.js',
-			'/hor/Ext/ext-all-debug-w-comments.js',
-			// 'http://cdn.sencha.io/ext-4.1.0-gpl/locale/ext-lang-ca.js',
+			'/hor/css/custom.css', '/hor/Ext/ext-all-debug-w-comments.js',
 			'/hor/Ext/ext-lang-ca.js',
 			'/hor/extensible-1.5.1/lib/extensible-all-debug.js',
-			'/hor/extensible-1.5.1/src/locale/extensible-lang-ca.js'
-	// '/hor/app/Application.js'
-	]
+			'/hor/extensible-1.5.1/src/locale/extensible-lang-ca.js' ]
 });
 
 Harness.start({
@@ -31,8 +24,8 @@ Harness.start({
 }, {
 	group : "Asignacio d'aules a estudis",
 	items : [ 'tests/020-AsignacioAulesEstudis/010_sanity.t.js'
-	         // 'tests/020-AsignacioAulesEstudis/020_view_filtroasignacionaulas.t.js',
-			 ]
+	// 'tests/020-AsignacioAulesEstudis/020_view_filtroasignacionaulas.t.js',
+	]
 }, {
 	group : 'Application',
 
@@ -41,22 +34,18 @@ Harness.start({
 	preload : [],
 
 	items : [ {
-		hostPageUrl : 'index.html',
+		hostPageUrl : 'index.jsp',
 		url : 'tests/900-Aplicacion/900-010_app.t.js'
-	},
-	 {
-		hostPageUrl : 'index.html',
+	}, {
+		hostPageUrl : 'index.jsp',
 		url : 'tests/900-Aplicacion/900-020_assial_combos.t.js'
-	},
-	{
-		hostPageUrl : 'index.html',
+	}, {
+		hostPageUrl : 'index.jsp',
 		url : 'tests/900-Aplicacion/900-030_assial_add.t.js'
-	},
-	{
-		hostPageUrl : 'index.html',
+	}, {
+		hostPageUrl : 'index.jsp',
 		url : 'tests/900-Aplicacion/900-040_assial_delete.t.js'
-	}
-	]
+	} ]
 }
 
 );
