@@ -3,15 +3,20 @@ StartTest(function(t) {
     t.diag("Comprobación lógica filtros asignación aulas");
 
 	
-	t.waitForCQ('splitbutton', function(splitbutton) {
+	t.waitForCQ('treepanel[alias=widget.navigationtree]', function(navigationtreelist) {
 		
 		var centro_seleccionado = 2;
 		var estudio_seleccionado = 1;
 		var estudio_semestre = 1;
 			
-		var steps = [
-		             { action : 'click', target: '>>splitbutton' }, 
-		             { action : 'click', target :'>>menuitem[action="asignacion-aulas]' },
+		var steps = [{ action : 'click', target :function() {
+						var navigationtree = navigationtreelist[0];
+						var treeview = navigationtree.getView();
+						var root = navigationtree.getRootNode();
+						var menuItem = root.findChild('id','HOR.view.aulas.PanelAulas');
+						return treeview.getNode(menuItem);
+						} 
+					}, 		             
 		             { waitFor : 'componentQuery', args : '>>combobox[alias=widget.comboCentros]'},
 		             { action : 'click', target :'>>combobox[alias=widget.comboCentros]' }, 		             
 		             function (next) {
