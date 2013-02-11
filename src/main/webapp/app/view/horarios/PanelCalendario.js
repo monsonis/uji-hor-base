@@ -55,6 +55,19 @@ Ext.define('HOR.view.horarios.PanelCalendario',
 
     initComponent : function()
     {
+
+        this.asignaEtiquetasDiasSemanaACalendario();
+
+        this.callParent(arguments);
+        
+        this.creaFormularioDeAsignacionAulas();
+        
+        this. activaMenuContextualYEdicionDetalle();
+
+    },
+
+    asignaEtiquetasDiasSemanaACalendario : function()
+    {
         Extensible.calendar.template.BoxLayout.override(
         {
             firstWeekDateFormat : 'l',
@@ -62,60 +75,180 @@ Ext.define('HOR.view.horarios.PanelCalendario',
             multiDayMonthStartFormat : 'l'
         });
 
-        this.callParent(arguments);
+    },
 
+    activaMenuContextualYEdicionDetalle : function()
+    {
+        Extensible.calendar.menu.Event.override(
+        {
+            buildMenu : function()
+            {
+                var me = this;
+
+                if (me.rendered)
+                {
+                    return;
+                }
+                Ext.apply(me,
+                {
+                    items : [
+                    {
+                        text : me.editDetailsText,
+                        iconCls : 'extensible-cal-icon-evt-edit',
+                        scope : me,
+                        handler : function()
+                        {
+                            me.fireEvent('editdetails', me, me.rec, me.ctxEl);
+                        }
+                    },
+                    {
+                        text : 'Assignar aula',
+                        iconCls : 'extensible-cal-icon-evt-edit',
+                        scope : me,
+                        handler : function()
+                        {
+                            Ext.ComponentQuery.query("panelCalendario")[0].fireEvent('eventasignaaula', me, me.rec);
+                        }
+                    },
+//                    {
+//                        text : 'Assignar a circuit',
+//                        iconCls : 'extensible-cal-icon-evt-edit',
+//                        menu : me.copyMenu
+//
+//                    },
+                    '-',
+                    {
+                        text : 'Dividir',
+                        iconCls : 'extensible-cal-icon-evt-copy',
+                        scope : me,
+                        handler : function()
+                        {
+                            Ext.ComponentQuery.query("panelCalendario")[0].fireEvent('eventdivide', me, me.rec);
+                        }
+                    },
+                    {
+                        text : me.deleteText,
+                        iconCls : 'extensible-cal-icon-evt-del',
+                        scope : me,
+                        handler : function()
+                        {
+                            me.fireEvent('eventdelete', me, me.rec, me.ctxEl);
+                        }
+                    } ]
+                });
+            },
+
+            showForEvent : function(rec, el, xy)
+            {
+                var me = this;
+                me.rec = rec;
+                me.ctxEl = el;
+                me.showAt(xy);
+            }
+        });
+
+        Extensible.calendar.form.EventWindow.override(
+        {
+            getFooterBarConfig : function()
+            {
+                var cfg = [ '->',
+                {
+                    text : this.saveButtonText,
+                    itemId : this.id + '-save-btn',
+                    disabled : false,
+                    handler : this.onSave,
+                    scope : this
+                },
+                {
+                    text : this.deleteButtonText,
+                    itemId : this.id + '-delete-btn',
+                    disabled : false,
+                    handler : this.onDelete,
+                    scope : this,
+                    hideMode : 'offsets' // IE requires this
+                },
+                {
+                    text : this.cancelButtonText,
+                    itemId : this.id + '-cancel-btn',
+                    disabled : false,
+                    handler : this.onCancel,
+                    scope : this
+                } ];
+
+                if (this.enableEditDetails !== false)
+                {
+                    cfg.unshift(
+                    {
+                        xtype : 'tbtext',
+                        itemId : this.id + '-details-btn',
+                        text : '<a href="#" class="' + this.editDetailsLinkClass + '">' + this.detailsLinkText + '</a>'
+                    });
+                }
+                return cfg;
+
+            }
+        });
+    },
+
+    creaFormularioDeAsignacionAulas : function()
+    {
         this.add([
         {
             xtype : 'formAsignacionAulas',
-            id: this.id+'-aula',
+            id : this.id + '-aula',
         } ]);
     },
+
     onStoreUpdate : function()
     {
     },
-    
+
     showAsignarAulaView : function()
     {
-    	var asignarAulaId = this.id + '-aula';    	
-    	this.preAsignarAulaView = this.layout.getActiveItem().id;
-    	this.setActiveViewForAsignarAula(asignarAulaId);
-    	return this;
+        var asignarAulaId = this.id + '-aula';
+        this.preAsignarAulaView = this.layout.getActiveItem().id;
+        this.setActiveViewForAsignarAula(asignarAulaId);
+        return this;
     },
-    
+
     hideAsignarAulaView : function()
     {
-    	if(this.preAsignarAulaView){
+        if (this.preAsignarAulaView)
+        {
             this.setActiveViewForAsignarAula(this.preAsignarAulaView);
             delete this.preEditView;
         }
         return this;
     },
-    
-    setActiveViewForAsignarAula: function(id, startDate){
-        var me = this,
-            layout = me.layout,
-            asignarAulaViewId = me.id + '-aula',
-            toolbar;
-        
-        if (startDate) {
+
+    setActiveViewForAsignarAula : function(id, startDate)
+    {
+        var me = this, layout = me.layout, asignarAulaViewId = me.id + '-aula', toolbar;
+
+        if (startDate)
+        {
             me.startDate = startDate;
         }
-        
+
         // Make sure we're actually changing views
-        if (id !== layout.getActiveItem().id) {
+        if (id !== layout.getActiveItem().id)
+        {
             // Show/hide the toolbar first so that the layout will calculate the correct item size
             toolbar = me.getDockedItems('toolbar')[0];
-            if (toolbar) {
+            if (toolbar)
+            {
                 toolbar[id === asignarAulaViewId ? 'hide' : 'show']();
             }
-            
+
             // Activate the new view and refresh the layout
             layout.setActiveItem(id || me.activeItem);
             me.doComponentLayout();
             me.activeView = layout.getActiveItem();
-            
-            if (id !== asignarAulaViewId) {
-                if (id && id !== me.preAsignarAulaView) {
+
+            if (id !== asignarAulaViewId)
+            {
+                if (id && id !== me.preAsignarAulaView)
+                {
                     // We're changing to a different view, so the view dates are likely different.
                     // Re-set the start date so that the view range will be updated if needed.
                     // If id is undefined, it means this is the initial pass after render so we can
@@ -130,8 +263,9 @@ Ext.define('HOR.view.horarios.PanelCalendario',
             me.fireViewChange();
         }
     },
-    
-    getEventStore : function() {
+
+    getEventStore : function()
+    {
         return this.store;
     }
 });

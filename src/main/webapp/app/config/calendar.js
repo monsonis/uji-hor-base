@@ -29,15 +29,16 @@ Extensible.calendar.menu.Event.override(
                     Ext.ComponentQuery.query("panelCalendario")[0].fireEvent('eventasignaaula', me, me.rec);
                 }
             },
-            {
-                text : 'Assignar a circuit',
-                iconCls : 'extensible-cal-icon-evt-edit',
-                menu : me.copyMenu
-
-            }, '-',
+//            {
+//                text : 'Assignar a circuit',
+//                iconCls : 'extensible-cal-icon-evt-edit',
+//                menu : me.copyMenu
+//
+//            },
+            '-',
             {
                 text : 'Dividir',
-                iconCls : 'extensible-cal-icon-evt-copy',
+                iconCls : 'application-split',
                 scope : me,
                 handler : function()
                 {

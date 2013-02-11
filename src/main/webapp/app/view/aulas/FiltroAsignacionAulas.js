@@ -37,11 +37,11 @@ Ext.define('HOR.view.aulas.FiltroAsignacionAulas',
             data : [
             {
                 id : 'solo',
-                nombre : 'Titulaciones sólo de este centro'
+                nombre : 'Titulacions només d\'aquest centre'
             },
             {
                 id : 'todos',
-                nombre : 'Todas las titulaciones'
+                nombre : 'Totes les titulacions'
             } ]
         },
         forceSelection:true,
