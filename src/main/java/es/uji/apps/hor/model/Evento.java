@@ -459,8 +459,7 @@ public class Evento
         this.setAula(null);
     }
 
-    public void actualizaAula(Aula aula)
-            throws AulaNoAsignadaAEstudioDelEventoException
+    public void actualizaAula(Aula aula) throws AulaNoAsignadaAEstudioDelEventoException
     {
         if (!aulaAsignadaAAlgunEstudioDelEvento(aula))
         {
@@ -479,17 +478,18 @@ public class Evento
     {
 
         List<Long> estudiosIds = new ArrayList<Long>();
-        
-        
+
         for (Asignatura asignatura : asignaturas)
         {
             estudiosIds.add(asignatura.getEstudio().getId());
         }
-        
-        for (AulaPlanificacion planificacion: aula.getPlanificacion()) {
+
+        for (AulaPlanificacion planificacion : aula.getPlanificacion())
+        {
             Estudio estudio = planificacion.getEstudio();
-            
-            if (estudiosIds.contains(estudio.getId()))
+
+            if (estudiosIds.contains(estudio.getId())
+                    && semestre.getSemestre().equals(planificacion.getSemestre().getSemestre()))
             {
                 return true;
             }
