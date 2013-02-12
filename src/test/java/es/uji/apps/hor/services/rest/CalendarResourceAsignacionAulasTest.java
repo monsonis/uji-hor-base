@@ -146,7 +146,7 @@ public class CalendarResourceAsignacionAulasTest extends AbstractCalendarResourc
         String message = response.getEntity(String.class);
 
         assertThat(message,
-                containsString("L'aula seleccinada no està assignada a la titulació del event"));
+                containsString("L'aula seleccionada no està assignada a la titulació del event"));
     }
 
     @Test

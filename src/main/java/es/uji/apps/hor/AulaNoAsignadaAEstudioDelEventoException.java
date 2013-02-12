@@ -5,6 +5,6 @@ public class AulaNoAsignadaAEstudioDelEventoException extends GeneralHORExceptio
 {
     public AulaNoAsignadaAEstudioDelEventoException()
     {
-        super("L'aula seleccinada no està assignada a la titulació del event");
+        super("L'aula seleccionada no està assignada a la titulació del event");
     }
 }
