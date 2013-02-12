@@ -221,6 +221,12 @@ Ext.define('HOR.controller.ControllerCalendario',
                                     },
                                     listeners :
                                     {
+                                    	 
+                                    	 dayclick: function(dt, allday, el) {
+                                    	       	return false;
+                                    	 },
+                                    	                                     	
+                                    	        
                                         afterrender : function()
                                         {
                                             params =
