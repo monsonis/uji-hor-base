@@ -14,14 +14,16 @@
     <script type="text/javascript" src="http://static.uji.es/js/extjs/extensible-1.5.1/src/Extensible.js"></script>
     <script type="text/javascript" src="http://static.uji.es/js/extjs/extensible-1.5.1/src/locale/extensible-lang-ca.js"></script>       
 <%
-    String login = ((User) session.getAttribute(User.SESSION_USER))
-					.getName();
+	User user = (User) session.getAttribute(User.SESSION_USER);
+    String login = user.getName();
+    String activeSession = user.getActiveSession();
 
 	ServletContext context = getServletContext();
     String appVersion = context.getInitParameter("appVersion");
 %>
 	<script type="text/javascript">
 	var login = '<%=login%>';
+	var session = '<%=activeSession%>';
 	var appversion = '<%=appVersion%>';
 	</script>  
     <script type="text/javascript" src="app/Application.js"></script> 

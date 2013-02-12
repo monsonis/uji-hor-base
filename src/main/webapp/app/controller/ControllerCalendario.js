@@ -451,11 +451,11 @@ Ext.define('HOR.controller.ControllerCalendario',
 
         if (this.getBotonCalendarioGenerica().pressed)
         {
-            window.open("http://www.uji.es/cocoon/xxxx/" + titulacion + "/" + curso + "/" + semestre + "/" + grupo + "/horario-semana-generica.pdf");
+            window.open("http://www.uji.es/cocoon/"+session+"/" + titulacion + "/" + curso + "/" + semestre + "/" + grupo + "/horario-semana-generica.pdf");
         }
         else
         {
-            window.open("http://www.uji.es/cocoon/xxxx/" + titulacion + "/" + curso + "/" + semestre + "/" + grupo + "/horario-semana-detalle.pdf");
+            window.open("http://www.uji.es/cocoon/"+session+"/" + titulacion + "/" + curso + "/" + semestre + "/" + grupo + "/horario-semana-detalle.pdf");
         }
     },
 
@@ -466,7 +466,7 @@ Ext.define('HOR.controller.ControllerCalendario',
         var semestre = this.getFiltroGrupos().down('combobox[name=semestre]').getValue();
         var grupo = this.getFiltroGrupos().down('combobox[name=grupo]').getValue();
 
-        window.open("http://www.uji.es/cocoon/xxxx/" + titulacion + "/" + curso + "/" + semestre + "/" + grupo + "/validaciones-horarios.pdf");
+        window.open("http://www.uji.es/cocoon/"+session+"/" + titulacion + "/" + curso + "/" + semestre + "/" + grupo + "/validaciones-horarios.pdf");
     }
 
 });
