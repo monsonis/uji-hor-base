@@ -18,10 +18,7 @@ import es.uji.apps.hor.dao.CentroDAO;
 import es.uji.apps.hor.dao.EventosDAO;
 import es.uji.apps.hor.dao.PersonaDAO;
 import es.uji.apps.hor.dao.RangoHorarioDAO;
-import es.uji.apps.hor.model.Asignatura;
 import es.uji.apps.hor.model.Aula;
-import es.uji.apps.hor.model.AulaPlanificacion;
-import es.uji.apps.hor.model.Centro;
 import es.uji.apps.hor.model.Evento;
 import es.uji.apps.hor.model.EventoDetalle;
 import es.uji.apps.hor.model.EventoDocencia;
@@ -160,55 +157,7 @@ public class EventosService
 
     private List<Evento> getEventosDelMismoGrupo(Evento eventoReferencia)
     {
-        List<Evento> eventosDeLaMismaSemana = getEventosDeLaMismaSemanaGenericaQueElEvento(eventoReferencia);
-        return getEventosDelMismoGrupoEnLaLista(eventoReferencia, eventosDeLaMismaSemana);
-
-    }
-
-    private List<Evento> getEventosDeLaMismaSemanaGenericaQueElEvento(Evento eventoReferencia)
-    {
-        if (eventoReferencia.getAsignaturas().isEmpty())
-        {
-            return new ArrayList<Evento>();
-        }
-
-        Asignatura unaAsignatura = eventoReferencia.getAsignaturas().get(0);
-        Long estudioId = unaAsignatura.getEstudio().getId();
-        Long cursoId = unaAsignatura.getCursoId();
-        Long semestreId = eventoReferencia.getSemestre().getSemestre();
-        String grupoId = eventoReferencia.getGrupoId();
-        List<Long> calendariosIds = new ArrayList<Long>();
-        calendariosIds.add(eventoReferencia.getCalendario().getId());
-
-        return eventosDAO.getEventosSemanaGenerica(estudioId, cursoId, semestreId, grupoId,
-                calendariosIds);
-    }
-
-    private List<Evento> getEventosDelMismoGrupoEnLaLista(Evento eventoReferencia,
-            List<Evento> eventos)
-    {
-        List<Evento> eventosDelMismoGrupo = new ArrayList<Evento>();
-        for (Evento evento : eventos)
-        {
-            if (elEventoEsDelMismoGrupo(eventoReferencia, evento))
-            {
-                eventosDelMismoGrupo.add(evento);
-            }
-        }
-        return eventosDelMismoGrupo;
-    }
-
-    private boolean elEventoEsDelMismoGrupo(Evento eventoReferencia, Evento evento)
-    {
-        for (Asignatura asignatura : evento.getAsignaturas())
-        {
-            if (!eventoReferencia.getAsignaturas().contains(asignatura))
-            {
-                return false;
-            }
-        }
-
-        return true;
+        return eventosDAO.getEventosDelMismoGrupo(eventoReferencia);
     }
 
     private boolean esElultimoEventoAsignadoDelGrupo(Evento evento)

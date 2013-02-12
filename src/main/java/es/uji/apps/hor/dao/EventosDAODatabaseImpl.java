@@ -15,7 +15,6 @@ import com.mysema.query.jpa.impl.JPAUpdateClause;
 import es.uji.apps.hor.DuracionEventoIncorrectaException;
 import es.uji.apps.hor.EventoDetalleSinEventoException;
 import es.uji.apps.hor.db.AulaDTO;
-import es.uji.apps.hor.db.AulaPlanificacionDTO;
 import es.uji.apps.hor.db.DiaSemanaDTO;
 import es.uji.apps.hor.db.ItemCircuitoDTO;
 import es.uji.apps.hor.db.ItemDTO;
@@ -23,7 +22,6 @@ import es.uji.apps.hor.db.ItemDetalleCompletoDTO;
 import es.uji.apps.hor.db.ItemDetalleDTO;
 import es.uji.apps.hor.db.ItemsAsignaturaDTO;
 import es.uji.apps.hor.db.QAulaDTO;
-import es.uji.apps.hor.db.QAulaPlanificacionDTO;
 import es.uji.apps.hor.db.QDiaSemanaDTO;
 import es.uji.apps.hor.db.QItemCircuitoDTO;
 import es.uji.apps.hor.db.QItemDTO;
@@ -611,7 +609,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             aulaDTO.setId(evento.getAula().getId());
             itemDTO.setAula(aulaDTO);
         }
-        
+
         itemDTO.setHastaElDia(evento.getHastaElDia());
         itemDTO.setHoraFin(evento.getFin());
         itemDTO.setHoraInicio(evento.getInicio());
@@ -729,8 +727,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         JPAUpdateClause updateClause = new JPAUpdateClause(entityManager, qItem);
         updateClause.where(qItem.id.eq(evento.getId())).set(qItem.horaInicio, evento.getInicio())
                 .set(qItem.horaFin, evento.getFin()).set(qItem.diaSemana, diaSemanaDTO)
-                .set(qItem.aula, aulaDTO)
-                .set(qItem.aulaNombre, "").execute();
+                .set(qItem.aula, aulaDTO).set(qItem.aulaNombre, "").execute();
     }
 
     @Override
@@ -795,5 +792,36 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         }
 
         return eventos;
+    }
+
+    @Override
+    public List<Evento> getEventosDelMismoGrupo(Evento evento)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        QItemDTO qItem = QItemDTO.itemDTO;
+        QItemsAsignaturaDTO qAsignatura = QItemsAsignaturaDTO.itemsAsignaturaDTO;
+
+        String asignaturaId = evento.getAsignaturas().get(0).getId();
+        Long estudioId = evento.getAsignaturas().get(0).getEstudio().getId();
+        Long cursoId = evento.getAsignaturas().get(0).getCursoId();
+
+        List<ItemDTO> listaItems = query
+                .from(qItem)
+                .innerJoin(qItem.itemsAsignaturas, qAsignatura)
+                .where(qAsignatura.asignaturaId.eq(asignaturaId)
+                        .and(qAsignatura.estudioId.eq(estudioId)).and(qItem.cursoId.eq(cursoId))
+                        .and(qItem.semestre.id.eq(evento.getSemestre().getSemestre()))
+                        .and(qItem.grupoId.eq(evento.getGrupoId()))
+                        .and(qItem.tipoSubgrupoId.eq(evento.getCalendario().getLetraId()))
+                        .and(qItem.subgrupoId.eq(evento.getSubgrupoId()))
+                        .and(qItem.id.ne(evento.getId()))).distinct().list(qItem);
+
+        List<Evento> listaEventos = new ArrayList<Evento>();
+        for (ItemDTO itemDTO : listaItems)
+        {
+            listaEventos.add(creaEventoDesdeItemDTO(itemDTO));
+        }
+
+        return listaEventos;
     }
 }
