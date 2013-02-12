@@ -28,6 +28,8 @@ public interface AulaDAO extends BaseDAO
 
     Aula getAulaById(Long aulaId) throws RegistroNoEncontradoException;
 
+    Aula getAulaYPlanificacionesByAulaId(Long aulaId) throws RegistroNoEncontradoException;
+
     Aula insertAula(Aula aula);
 
     AulaPlanificacion insertAulaPlanificacion(AulaPlanificacion aulaPlanificacion);
@@ -38,6 +40,8 @@ public interface AulaDAO extends BaseDAO
 
     List<TipoAula> getTiposAulaVisiblesPorUsuarioByCentroAndEdificio(Long centroId,
             String edificio, Long connectedUserId);
+
+    Aula getAulaConEventosById(Long aulaId) throws RegistroNoEncontradoException;
 
     List<Aula> getAulasFiltradasPor(Long centroId, String edificio, String tipoAula, String planta);
 

@@ -48,6 +48,7 @@ import es.uji.apps.hor.model.PlantaEdificio;
 import es.uji.apps.hor.model.Semestre;
 import es.uji.apps.hor.model.TipoAula;
 import es.uji.commons.rest.UIEntity;
+import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
 @Ignore
 public class CalendarResourceTest extends AbstractCalendarResourceTest
@@ -338,7 +339,7 @@ public class CalendarResourceTest extends AbstractCalendarResourceTest
 
     @Test
     @Transactional
-    public void devuelveEventosDetalleAsignadosAUnAula()
+    public void devuelveEventosDetalleAsignadosAUnAula() throws RegistroNoEncontradoException
     {
         Long aulaId = creaAulaYAsignalaAEvento(String.valueOf(eventoId));
 
@@ -362,7 +363,7 @@ public class CalendarResourceTest extends AbstractCalendarResourceTest
 
     @Test
     @Transactional
-    public void devuelveEventosSemanaGenericaAsignadosAUnAula()
+    public void devuelveEventosSemanaGenericaAsignadosAUnAula() throws RegistroNoEncontradoException
     {
         Long aulaId = creaAulaYAsignalaAEvento(String.valueOf(eventoId));
 
@@ -382,7 +383,7 @@ public class CalendarResourceTest extends AbstractCalendarResourceTest
         assertThat(listaEeventos, hasSize(1));
     }
 
-    private Long creaAulaYAsignalaAEvento(String eventoId)
+    private Long creaAulaYAsignalaAEvento(String eventoId) throws RegistroNoEncontradoException
     {
         Centro centro = new CentroBuilder(centroDao).withNombre("Centro de Prueba").build();
         AreaEdificio areaEdificio = new AreaEdificioBuilder().withNombre("Área 1").build();

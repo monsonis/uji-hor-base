@@ -489,7 +489,7 @@ public class Evento
         for (AulaPlanificacion planificacion: aula.getPlanificacion()) {
             Estudio estudio = planificacion.getEstudio();
             
-            if (estudiosIds.contains(estudio))
+            if (estudiosIds.contains(estudio.getId()))
             {
                 return true;
             }

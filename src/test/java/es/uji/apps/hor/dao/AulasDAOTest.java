@@ -76,7 +76,7 @@ public class AulasDAOTest
     private List<AulaPlanificacion> aulas = new ArrayList<AulaPlanificacion>();
 
     @Before
-    public void rellenaDatos()
+    public void rellenaDatos() throws RegistroNoEncontradoException
     {
         centro = new CentroBuilder(centroDAO).withNombre("Centro de prueba").build();
         tipoEstudio = new TipoEstudioBuilder(tipoEstudioDAO).withId("PR").withNombre("Pruebas")
@@ -184,7 +184,6 @@ public class AulasDAOTest
 
     @Transactional
     @Test(expected = RegistroConHijosException.class)
-    @Ignore
     public void eliminaAulaPlanificadaConEventoAsignadoTest() throws RegistroConHijosException,
             DuracionEventoIncorrectaException, ParseException, RegistroNoEncontradoException
     {
@@ -205,10 +204,10 @@ public class AulasDAOTest
 
         AulaPlanificacion aulaPlanificacion = aulasDAO.getAulaPlanificacionByAulaEstudioSemestre(
                 aula.getId(), estudio.getId(), semestre.getSemestre());
-
-        Aula aula = aulasDAO.getAulaById(aulaPlanificacion.getAula().getId());
         
-        if (aula.sePuedeDesplanificar()) {
+        Aula aulaConEventos = aulasDAO.getAulaConEventosById(aula.getId());
+        
+        if (aulaConEventos.sePuedeDesplanificar()) {
             aulasDAO.deleteAulaAsignadaToEstudio(aulaPlanificacion.getId());
         } else {
             throw new RegistroConHijosException();

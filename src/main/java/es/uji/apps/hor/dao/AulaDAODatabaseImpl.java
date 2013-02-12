@@ -54,21 +54,70 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
 
         Edificio edificio = new Edificio();
         edificio.setNombre(aulaDTO.getEdificio());
-        Centro centro = new Centro(aulaDTO.getCentro().getId(), aulaDTO.getCentro().getNombre());
-        edificio.setCentro(centro);
-        aula.setEdificio(edificio);
-        aula.setCentro(centro);
-
-        for (ItemDTO item : aulaDTO.getItems())
-        {
-            Evento evento = new Evento();
-            evento.setId(item.getId());
+        
+        if (aulaDTO.getCentro() != null) {
+            Centro centro = new Centro(aulaDTO.getCentro().getId(), aulaDTO.getCentro().getNombre());
+            edificio.setCentro(centro);
+            aula.setCentro(centro);
         }
+        
+        aula.setEdificio(edificio);
 
         aula.setNombre(aulaDTO.getNombre());
         aula.setCodigo(aulaDTO.getCodigo());
         aula.setPlazas(aulaDTO.getPlazas());
         return aula;
+    }
+
+    private List<AulaPlanificacion> getInformacionAulaAsignada(AulaDTO aulaDTO)
+    {
+        
+        JPAQuery query = new JPAQuery(entityManager);
+        QAulaPlanificacionDTO qAulaPlanificacion = QAulaPlanificacionDTO.aulaPlanificacionDTO;
+
+        query.from(qAulaPlanificacion).where(qAulaPlanificacion.id.eq(aulaDTO.getId()));
+
+        List<AulaPlanificacion> listaAulaPlanificacion = new ArrayList<AulaPlanificacion>();
+
+        for (AulaPlanificacionDTO aulaPlanificacionDTO : query.list(qAulaPlanificacion))
+        {
+            AulaPlanificacion aulaPlanificacion = new AulaPlanificacion();
+            aulaPlanificacion.setId(aulaPlanificacionDTO.getId());
+
+            Estudio estudio = new Estudio();
+            estudio.setId(aulaPlanificacionDTO.getEstudio().getId());
+            aulaPlanificacion.setEstudio(estudio);
+
+            Semestre semestre = new Semestre();
+            semestre.setSemestre(aulaPlanificacionDTO.getSemestre());
+            aulaPlanificacion.setSemestre(semestre);
+
+            Aula aula = new Aula();
+            aula.setId(aulaDTO.getId());
+            aulaPlanificacion.setAula(aula);
+
+            listaAulaPlanificacion.add(aulaPlanificacion);
+        }
+
+        return listaAulaPlanificacion;
+    }
+
+    private List<Evento> getInformacionEventosAula(AulaDTO aulaDTO)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        QItemDTO qItem = QItemDTO.itemDTO;
+        
+        query.from(qItem).where(qItem.aula.id.eq(aulaDTO.getId()));
+
+        List<Evento> listaEventos = new ArrayList<Evento>();
+
+        for (ItemDTO itemDTO : query.list(qItem))
+        {
+            Evento evento = new Evento();
+            evento.setId(itemDTO.getId());
+            listaEventos.add(evento);
+        }
+        return listaEventos;
     }
 
     @Override
@@ -188,9 +237,7 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         estudio.setNombre(aulaPlanificacionDTO.getEstudio().getNombre());
         aulaPlanificacion.setEstudio(estudio);
 
-        Aula aula = new Aula();
-        aula.setId(aulaPlanificacionDTO.getAula().getId());
-        aulaPlanificacion.setAula(aula);
+        aulaPlanificacion.setAula(creaAulaDesdeAulaDTO(aulaPlanificacionDTO.getAula()));
 
         Semestre semestre = new Semestre();
         semestre.setSemestre(aulaPlanificacionDTO.getSemestre());
@@ -217,19 +264,63 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
     }
 
     @Override
+    public Aula getAulaYPlanificacionesByAulaId(Long aulaId) throws RegistroNoEncontradoException
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        QAulaDTO qAula = QAulaDTO.aulaDTO;
+
+        query.from(qAula).where(qAula.id.eq(aulaId));
+
+        List<AulaDTO> res = query.list(qAula);
+
+        if (res.size() > 0)
+        {
+            Aula aula = creaAulaDesdeAulaDTO(res.get(0));
+            aula.setPlanificacion(getInformacionAulaAsignada(res.get(0)));
+            return aula;
+        }
+        else
+        {
+            throw new RegistroNoEncontradoException();
+        }
+    }
+
+    @Override
     public Aula getAulaById(Long aulaId) throws RegistroNoEncontradoException
     {
         JPAQuery query = new JPAQuery(entityManager);
         QAulaDTO qAula = QAulaDTO.aulaDTO;
-        QItemDTO qItem = QItemDTO.itemDTO;
 
-        query.from(qAula).join(qAula.items, qItem).fetch().where(qAula.id.eq(aulaId));
+        query.from(qAula).where(qAula.id.eq(aulaId));
 
         List<AulaDTO> res = query.list(qAula);
 
         if (res.size() > 0)
         {
             return creaAulaDesdeAulaDTO(res.get(0));
+        }
+        else
+        {
+            throw new RegistroNoEncontradoException();
+        }
+    }
+
+    @Override
+    public Aula getAulaConEventosById(Long aulaId) throws RegistroNoEncontradoException
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        QAulaDTO qAula = QAulaDTO.aulaDTO;
+        
+        query.from(qAula).where(qAula.id.eq(aulaId));
+
+        List<AulaDTO> res = query.list(qAula);
+
+        if (res.size() > 0)
+        {
+            AulaDTO aulaDTO = res.get(0);
+            Aula aula = creaAulaDesdeAulaDTO(aulaDTO);
+            aula.setEventos(getInformacionEventosAula(aulaDTO));
+            return aula;
         }
         else
         {

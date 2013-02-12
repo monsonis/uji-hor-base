@@ -43,6 +43,7 @@ import es.uji.apps.hor.model.Semestre;
 import es.uji.apps.hor.model.TipoAula;
 import es.uji.apps.hor.model.TipoEstudio;
 import es.uji.commons.rest.UIEntity;
+import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
 @Ignore
 public class CalendarResourceAsignacionAulasTest extends AbstractCalendarResourceTest
@@ -67,7 +68,7 @@ public class CalendarResourceAsignacionAulasTest extends AbstractCalendarResourc
 
     @Transactional
     private void creaAulasParaAsignarAEventos() throws DuracionEventoIncorrectaException,
-            ParseException
+            ParseException, RegistroNoEncontradoException
     {
         TipoEstudio tipoEstudio = new TipoEstudioBuilder().withId("G").withNombre("Grau").build();
 

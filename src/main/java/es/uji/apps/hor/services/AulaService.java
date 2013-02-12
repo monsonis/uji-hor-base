@@ -92,7 +92,7 @@ public class AulaService
 
             if (persona.esGestorDeCentro(centro.getId()))
             {
-                Aula aula = aulaDAO.getAulaById(aulaPlanificacion.getAula().getId());
+                Aula aula = aulaDAO.getAulaConEventosById(aulaPlanificacion.getAula().getId());
                 if (aula.sePuedeDesplanificar())
                 {
                     aulaDAO.deleteAulaAsignadaToEstudio(aulaPlanificacionId);

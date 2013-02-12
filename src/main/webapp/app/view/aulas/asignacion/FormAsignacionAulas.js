@@ -35,7 +35,7 @@ Ext.define('HOR.view.aulas.asignacion.FormAsignacionAulas',
         },
         store : 'StoreAulasAsignadas',
         displayField : 'nombre',
-        valueField : 'id',
+        valueField : 'aulaId',
         queryMode : 'local',
         emptyText : 'Sense assignar...',
         editable : false

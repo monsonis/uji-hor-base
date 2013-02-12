@@ -127,7 +127,7 @@ public class Aula
 
     public boolean sePuedeDesplanificar()
     {
-        return this.eventos == null;
+        return this.eventos == null || this.eventos.size() == 0;
     }
 
     public List<Evento> getEventos()

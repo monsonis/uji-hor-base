@@ -342,7 +342,7 @@ public class EventosService
 
         if (aulaId != null)
         {
-            aula = aulaDAO.getAulaById(aulaId);
+            aula = aulaDAO.getAulaYPlanificacionesByAulaId(aulaId);
         }
         actualizaAula(evento, aula);
 

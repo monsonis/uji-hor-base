@@ -5,6 +5,7 @@ import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.AulaPlanificacion;
 import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.model.Semestre;
+import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
 public class AulaPlanificacionBuilder
 {
@@ -40,7 +41,7 @@ public class AulaPlanificacionBuilder
         return this;
     }
 
-    public AulaPlanificacion build()
+    public AulaPlanificacion build() throws RegistroNoEncontradoException
     {
         if (aulaDAO != null)
         {
