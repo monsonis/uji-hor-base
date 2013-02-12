@@ -75,7 +75,7 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         JPAQuery query = new JPAQuery(entityManager);
         QAulaPlanificacionDTO qAulaPlanificacion = QAulaPlanificacionDTO.aulaPlanificacionDTO;
 
-        query.from(qAulaPlanificacion).where(qAulaPlanificacion.id.eq(aulaDTO.getId()));
+        query.from(qAulaPlanificacion).where(qAulaPlanificacion.aula.id.eq(aulaDTO.getId()));
 
         List<AulaPlanificacion> listaAulaPlanificacion = new ArrayList<AulaPlanificacion>();
 
@@ -275,8 +275,9 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
 
         if (res.size() > 0)
         {
-            Aula aula = creaAulaDesdeAulaDTO(res.get(0));
-            aula.setPlanificacion(getInformacionAulaAsignada(res.get(0)));
+            AulaDTO aulaDTO = res.get(0);
+            Aula aula = creaAulaDesdeAulaDTO(aulaDTO);
+            aula.setPlanificacion(getInformacionAulaAsignada(aulaDTO));
             return aula;
         }
         else
