@@ -47,6 +47,8 @@ Ext.define('HOR.view.aulas.calendar.PanelCalendarioDetallePorAula',
     {
         this.store.removeAll(false);
         this.setTitle('Ocupació Aula');
+        this.store.getProxy().extraParams['aulaId'] = "";
+        this.store.getProxy().extraParams['semestreId'] = "";
     },
     initComponent : function()
     {

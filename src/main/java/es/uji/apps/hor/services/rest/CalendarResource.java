@@ -195,7 +195,14 @@ public class CalendarResource extends CoreBaseService
 
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
-        ParamUtils.checkNotNull(estudioId, cursoId, semestreId, grupoId, startDate, endDate);
+        try
+        {
+            ParamUtils.checkNotNull(estudioId, cursoId, semestreId, grupoId, startDate, endDate);
+        }
+        catch (Exception e)
+        {
+            return new ArrayList<UIEntity>();
+        }
 
         Date rangoFechaInicio = queryParamDateFormat.parse(startDate);
         Date rangoFechaFin = queryParamDateFormat.parse(endDate);
@@ -624,7 +631,14 @@ public class CalendarResource extends CoreBaseService
             @QueryParam(END_DATE_QUERY_PARAM) String endDate) throws ParseException,
             RegistroNoEncontradoException, UnauthorizedUserException
     {
-        ParamUtils.checkNotNull(aulaId, semestreId, startDate, endDate);
+        try
+        {
+            ParamUtils.checkNotNull(aulaId, semestreId, startDate, endDate);
+        }
+        catch (Exception e)
+        {
+            return new ArrayList<UIEntity>();
+        }
 
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 

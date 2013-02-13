@@ -43,6 +43,10 @@ Ext.define('HOR.view.horarios.PanelCalendarioDetalle',
     limpiaCalendario : function()
     {
         this.store.removeAll(false);
+        this.store.getProxy().extraParams['estudioId'] = "";
+        this.store.getProxy().extraParams['cursoId'] = "";
+        this.store.getProxy().extraParams['grupoId'] = "";
+        this.store.getProxy().extraParams['semestreId'] = "";
     },
     initComponent : function()
     {
