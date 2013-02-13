@@ -219,6 +219,10 @@ Ext.define('HOR.controller.ControllerCalendario',
                                         viewStartHour : horaInicio,
                                         viewEndHour : horaFin
                                     },
+                                    
+                                    onInitDrag : function () {
+                                    	
+                                    },                                    
                                     listeners :
                                     {
                                     	 
@@ -226,6 +230,9 @@ Ext.define('HOR.controller.ControllerCalendario',
                                     	       	return false;
                                     	 },
                                     	                                     	
+                                    	 rangeselect: function() {                                    	
+                                 	       	return false;
+                                    	 },
                                     	        
                                         afterrender : function()
                                         {
