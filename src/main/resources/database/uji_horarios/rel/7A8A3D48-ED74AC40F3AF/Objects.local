@@ -6,10 +6,12 @@
    <object objectType="Table" objectID="66B3280B-32D8-8EB6-59EC-CBCF84A99C66" name="hor_aulas_planificacion" seqName="seg_0"/>
    <object objectType="Table" objectID="53F2BA3B-63DD-253E-E91F-3CE9E2787973" name="hor_centros" seqName="seg_0"/>
    <object objectType="Table" objectID="240F1530-6F6A-D642-DC26-D94F91C5E2E8" name="hor_circuitos" seqName="seg_0"/>
+   <object objectType="Table" objectID="8F1E4CC5-E2ED-FB61-C49E-FE609DDA981D" name="hor_curso_academico" seqName="seg_0"/>
    <object objectType="Table" objectID="0B454C61-C973-405B-DAC9-A4BA4541B544" name="hor_departamentos" seqName="seg_0"/>
    <object objectType="Table" objectID="C1BEA0B2-D2BC-FCDD-BE9B-10FC623D4569" name="hor_dias_semana" seqName="seg_0"/>
    <object objectType="Table" objectID="8E96C882-5066-EB5B-95BD-4AAD6AFC21CD" name="hor_estudios" seqName="seg_0"/>
    <object objectType="Table" objectID="D5254B60-789C-5FA9-121B-035A3DDA5579" name="hor_ext_asignaturas_comunes" seqName="seg_0"/>
+   <object objectType="Table" objectID="1C82693D-CCB5-9BA9-1DAE-CEB48B0D0CBA" name="hor_ext_asignaturas_detalle" seqName="seg_0"/>
    <object objectType="Table" objectID="3900443F-A804-9F08-132A-806AF7E9CBDA" name="hor_ext_calendario" seqName="seg_0"/>
    <object objectType="Table" objectID="67914D25-F962-F455-FC93-F3EDCBADE52D" name="hor_ext_cargos_per" seqName="seg_0"/>
    <object objectType="Table" objectID="5E82BFC1-818F-F9E1-6837-B07303E35672" name="hor_ext_circuitos" seqName="seg_0"/>

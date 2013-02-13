@@ -1,5 +1,5 @@
 -- Generado por Oracle SQL Developer Data Modeler 3.1.1.703
---   en:        2013-02-06 12:54:06 CET
+--   en:        2013-02-13 16:43:01 CET
 --   sitio:      Oracle Database 11g
 --   tipo:      Oracle Database 11g
 
@@ -23,6 +23,8 @@ DROP TABLE uji_horarios.hor_centros CASCADE CONSTRAINTS
 ;
 DROP TABLE uji_horarios.hor_circuitos CASCADE CONSTRAINTS 
 ;
+DROP TABLE uji_horarios.hor_curso_academico CASCADE CONSTRAINTS 
+;
 DROP TABLE uji_horarios.hor_departamentos CASCADE CONSTRAINTS 
 ;
 DROP TABLE uji_horarios.hor_dias_semana CASCADE CONSTRAINTS 
@@ -30,6 +32,8 @@ DROP TABLE uji_horarios.hor_dias_semana CASCADE CONSTRAINTS
 DROP TABLE uji_horarios.hor_estudios CASCADE CONSTRAINTS 
 ;
 DROP TABLE uji_horarios.hor_ext_asignaturas_comunes CASCADE CONSTRAINTS 
+;
+DROP TABLE uji_horarios.hor_ext_asignaturas_detalle CASCADE CONSTRAINTS 
 ;
 DROP TABLE uji_horarios.hor_ext_calendario CASCADE CONSTRAINTS 
 ;
@@ -172,6 +176,19 @@ ALTER TABLE uji_horarios.hor_circuitos
 
 
 
+CREATE TABLE uji_horarios.hor_curso_academico 
+    ( 
+     id NUMBER  NOT NULL 
+    ) 
+;
+
+
+
+ALTER TABLE uji_horarios.hor_curso_academico 
+    ADD CONSTRAINT hor_curso_academico_PK PRIMARY KEY ( id ) ;
+
+
+
 CREATE TABLE uji_horarios.hor_departamentos 
     ( 
      id NUMBER  NOT NULL , 
@@ -243,6 +260,30 @@ CREATE INDEX uji_horarios.hor_ext_asi_comunes_ca_IDX ON uji_horarios.hor_ext_asi
 
 ALTER TABLE uji_horarios.hor_ext_asignaturas_comunes 
     ADD CONSTRAINT hor_ext_asignaturas_comunes_PK PRIMARY KEY ( id ) ;
+
+
+
+CREATE TABLE uji_horarios.hor_ext_asignaturas_detalle 
+    ( 
+     asignatura_id VARCHAR2 (10)  NOT NULL , 
+     nombre_asignatura VARCHAR2 (1000) , 
+     creditos NUMBER , 
+     ciclo NUMBER , 
+     caracter VARCHAR2 (100) , 
+     crd_Te NUMBER , 
+     crd_pr NUMBER , 
+     crd_la NUMBER , 
+     crd_se NUMBER , 
+     crd_tu NUMBER , 
+     crd_ev NUMBER , 
+     crd_ctotal NUMBER 
+    ) 
+;
+
+
+
+ALTER TABLE uji_horarios.hor_ext_asignaturas_detalle 
+    ADD CONSTRAINT hor_ext_asignaturas_detalle_PK PRIMARY KEY ( asignatura_id ) ;
 
 
 
@@ -1201,9 +1242,9 @@ AND TRUNC(c.fecha) = TRUNC(d.inicio(+)) ;
 
 -- Informe de Resumen de Oracle SQL Developer Data Modeler: 
 -- 
--- CREATE TABLE                            25
+-- CREATE TABLE                            27
 -- CREATE INDEX                            23
--- ALTER TABLE                             59
+-- ALTER TABLE                             61
 -- CREATE VIEW                              4
 -- CREATE PACKAGE                           0
 -- CREATE PACKAGE BODY                      0
