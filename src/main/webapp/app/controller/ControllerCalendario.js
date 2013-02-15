@@ -229,6 +229,10 @@ Ext.define('HOR.controller.ControllerCalendario',
                                     	 dayclick: function(dt, allday, el) {
                                     	       	return false;
                                     	 },
+                                    	 
+                                    	 eventclick: function() {
+                                 	       	return false;
+                                    	 },
                                     	                                     	
                                     	 rangeselect: function() {                                    	
                                  	       	return false;
