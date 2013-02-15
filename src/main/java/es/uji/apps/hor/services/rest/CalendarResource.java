@@ -237,7 +237,7 @@ public class CalendarResource extends CoreBaseService
                     rangoFechaFin, connectedUserId);
         }
 
-        return eventosDetalletoUI(eventosDetalle);
+        return eventosDetalletoUI(eventosDetalle, Long.parseLong(estudioId));
     }
 
     @PUT
@@ -263,7 +263,7 @@ public class CalendarResource extends CoreBaseService
 
     }
 
-    private List<UIEntity> eventosDetalletoUI(List<EventoDetalle> eventosDetalle)
+    private List<UIEntity> eventosDetalletoUI(List<EventoDetalle> eventosDetalle, Long estudioId)
     {
         List<UIEntity> eventosUI = new ArrayList<UIEntity>();
 
@@ -274,7 +274,8 @@ public class CalendarResource extends CoreBaseService
 
             if (eventoDetalle.getEvento().getAula() != null)
             {
-                eventoUI.put("title", eventoDetalle.getEvento().getAula().getCodigo());
+                eventoUI.put("title", eventoDetalle.getEvento().getDescripcionParaUnEstudio(estudioId));
+
             }
 
             eventoUI.put("cid", eventoDetalle.getEvento().getCalendario().getId());
