@@ -28,26 +28,27 @@ public class EdificiosService
     }
 
     @Role({ "ADMIN", "USUARIO" })
-    public List<Edificio> getEdificiosByCentroId(Long centroId, Long connectedUserId)
-            throws UnauthorizedUserException, RegistroNoEncontradoException
+    public List<Edificio> getEdificiosByCentroId(Long centroId, Long semestreId,
+            Long connectedUserId) throws UnauthorizedUserException, RegistroNoEncontradoException
     {
         if (!personaDAO.esAdmin(connectedUserId))
         {
-            return edificiosDAO.getEdificiosVisiblesPorUsuarioByCentroId(centroId, connectedUserId);
+            return edificiosDAO.getEdificiosVisiblesPorUsuarioByCentroId(centroId, semestreId,
+                    connectedUserId);
         }
 
         return edificiosDAO.getEdificiosByCentroId(centroId);
     }
 
     @Role({ "ADMIN", "USUARIO" })
-    public List<PlantaEdificio> getPlantasEdificioByCentroAndEdificio(Long centroId,
-            String edificio, Long connectedUserId) throws UnauthorizedUserException,
-            RegistroNoEncontradoException
+    public List<PlantaEdificio> getPlantasEdificioByCentroAndSemestreAndEdificio(Long centroId,
+            Long semestreId, String edificio, Long connectedUserId)
+            throws UnauthorizedUserException, RegistroNoEncontradoException
     {
         if (!personaDAO.esAdmin(connectedUserId))
         {
-            return edificiosDAO.getPlantasEdificioVisiblesPorUsuarioByCentroAndEdificio(centroId,
-                    edificio, connectedUserId);
+            return edificiosDAO.getPlantasEdificioVisiblesPorUsuarioByCentroAndSemestreAndEdificio(
+                    centroId, semestreId, edificio, connectedUserId);
         }
 
         return edificiosDAO.getPlantasEdificioByCentroAndEdificio(centroId, edificio);

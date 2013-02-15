@@ -54,13 +54,14 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
 
         Edificio edificio = new Edificio();
         edificio.setNombre(aulaDTO.getEdificio());
-        
-        if (aulaDTO.getCentro() != null) {
+
+        if (aulaDTO.getCentro() != null)
+        {
             Centro centro = new Centro(aulaDTO.getCentro().getId(), aulaDTO.getCentro().getNombre());
             edificio.setCentro(centro);
             aula.setCentro(centro);
         }
-        
+
         aula.setEdificio(edificio);
 
         aula.setNombre(aulaDTO.getNombre());
@@ -71,7 +72,7 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
 
     private List<AulaPlanificacion> getInformacionAulaAsignada(AulaDTO aulaDTO)
     {
-        
+
         JPAQuery query = new JPAQuery(entityManager);
         QAulaPlanificacionDTO qAulaPlanificacion = QAulaPlanificacionDTO.aulaPlanificacionDTO;
 
@@ -106,7 +107,7 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
     {
         JPAQuery query = new JPAQuery(entityManager);
         QItemDTO qItem = QItemDTO.itemDTO;
-        
+
         query.from(qItem).where(qItem.aula.id.eq(aulaDTO.getId()));
 
         List<Evento> listaEventos = new ArrayList<Evento>();
@@ -311,7 +312,7 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
     {
         JPAQuery query = new JPAQuery(entityManager);
         QAulaDTO qAula = QAulaDTO.aulaDTO;
-        
+
         query.from(qAula).where(qAula.id.eq(aulaId));
 
         List<AulaDTO> res = query.list(qAula);
@@ -465,16 +466,20 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
     }
 
     @Override
-    public List<Aula> getAulasVisiblesPorUsuarioFiltradasPor(Long centroId, String edificio,
-            String tipoAula, String planta, Long connectedUserId)
+    public List<Aula> getAulasVisiblesPorUsuarioFiltradasPor(Long centroId, Long semestreId,
+            String edificio, String tipoAula, String planta, Long connectedUserId)
     {
         JPAQuery query = new JPAQuery(entityManager);
         QAulaDTO qAula = QAulaDTO.aulaDTO;
         QAulaPersonaDTO qAulaPersona = QAulaPersonaDTO.aulaPersonaDTO;
+        QAulaPlanificacionDTO qAulaPlanificacion = QAulaPlanificacionDTO.aulaPlanificacionDTO;
 
-        query.from(qAula, qAulaPersona).where(
+        query.from(qAula, qAulaPersona, qAulaPlanificacion).where(
                 qAulaPersona.personaId.eq(connectedUserId).and(qAula.id.eq(qAulaPersona.aulaId))
-                        .and(qAula.centro.id.eq(centroId)).and(qAula.edificio.eq(edificio)));
+                        .and(qAulaPlanificacion.aula.id.eq(qAula.id))
+                        .and(qAula.centro.id.eq(centroId))
+                        .and(qAulaPlanificacion.semestre.eq(semestreId))
+                        .and(qAula.edificio.eq(edificio)));
 
         if (tipoAula != null)
         {
@@ -492,18 +497,22 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
     }
 
     @Override
-    public List<TipoAula> getTiposAulaVisiblesPorUsuarioByCentroAndEdificio(Long centroId,
-            String edificio, Long connectedUserId)
+    public List<TipoAula> getTiposAulaVisiblesPorUsuarioByCentroAndSemestreAndEdificio(
+            Long centroId, Long semestreId, String edificio, Long connectedUserId)
     {
         JPAQuery query = new JPAQuery(entityManager);
         QAulaDTO qAula = QAulaDTO.aulaDTO;
         QAulaPersonaDTO qAulaPersona = QAulaPersonaDTO.aulaPersonaDTO;
+        QAulaPlanificacionDTO qAulaPlanificacion = QAulaPlanificacionDTO.aulaPlanificacionDTO;
 
         List<String> tiposAula = query
-                .from(qAula, qAulaPersona)
-                .where(qAulaPersona.personaId.eq(connectedUserId).and(qAula.centro.id.eq(centroId))
-                        .and(qAula.centro.id.eq(centroId).and(qAula.edificio.eq(edificio))))
-                .orderBy(qAula.tipo.asc()).distinct().list(qAula.tipo);
+                .from(qAula, qAulaPersona, qAulaPlanificacion)
+                .where(qAulaPersona.personaId.eq(connectedUserId)
+                        .and(qAula.id.eq(qAulaPersona.aulaId))
+                        .and(qAulaPlanificacion.aula.id.eq(qAula.id))
+                        .and(qAula.centro.id.eq(centroId)).and(qAula.edificio.eq(edificio))
+                        .and(qAulaPlanificacion.semestre.eq(semestreId))).orderBy(qAula.tipo.asc())
+                .distinct().list(qAula.tipo);
 
         return creaListaTiposAulaDesde(tiposAula);
     }

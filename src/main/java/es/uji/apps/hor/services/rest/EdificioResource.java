@@ -28,14 +28,16 @@ public class EdificioResource extends CoreBaseService
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UIEntity> getEdificios(@QueryParam("centroId") String centroId) throws UnauthorizedUserException, RegistroNoEncontradoException
+    public List<UIEntity> getEdificios(@QueryParam("centroId") String centroId,
+            @QueryParam("semestreId") String semestreId) throws UnauthorizedUserException,
+            RegistroNoEncontradoException
     {
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
-        ParamUtils.checkNotNull(centroId);
+        ParamUtils.checkNotNull(centroId, semestreId);
 
-        List<Edificio> edificios = edificiosService.getEdificiosByCentroId(ParamUtils
-                .parseLong(centroId), connectedUserId);
+        List<Edificio> edificios = edificiosService.getEdificiosByCentroId(
+                ParamUtils.parseLong(centroId), ParamUtils.parseLong(semestreId), connectedUserId);
 
         return UIEntity.toUI(edificios);
     }
@@ -44,14 +46,16 @@ public class EdificioResource extends CoreBaseService
     @Path("planta")
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> getPlantasEdificio(@QueryParam("centroId") String centroId,
-            @QueryParam("edificio") String edificio) throws UnauthorizedUserException, RegistroNoEncontradoException
+            @QueryParam("semestreId") String semestreId, @QueryParam("edificio") String edificio)
+            throws UnauthorizedUserException, RegistroNoEncontradoException
     {
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
-        ParamUtils.checkNotNull(centroId, edificio);
+        ParamUtils.checkNotNull(centroId, semestreId, edificio);
 
         List<PlantaEdificio> plantasEdificio = edificiosService
-                .getPlantasEdificioByCentroAndEdificio(ParamUtils.parseLong(centroId), edificio, connectedUserId);
+                .getPlantasEdificioByCentroAndSemestreAndEdificio(ParamUtils.parseLong(centroId),
+                        ParamUtils.parseLong(semestreId), edificio, connectedUserId);
 
         return UIEntity.toUI(plantasEdificio);
     }

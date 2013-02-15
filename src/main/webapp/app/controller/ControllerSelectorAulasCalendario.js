@@ -6,7 +6,7 @@ Ext.define('HOR.controller.ControllerSelectorAulasCalendario',
     {
         selector : 'selectorAulas',
         ref : 'selectorAulas'
-    }  ,
+    },
     {
         selector : 'filtroAulas',
         ref : 'filtroAulas'
@@ -16,10 +16,10 @@ Ext.define('HOR.controller.ControllerSelectorAulasCalendario',
         ref : 'selectorCalendarios'
     },
     {
-    	 selector : 'panelCalendarioAulas button[name=imprimir]',
-         ref : 'botonImprimir'
-    }],
-    
+        selector : 'panelCalendarioAulas button[name=imprimir]',
+        ref : 'botonImprimir'
+    } ],
+
     init : function()
     {
         this.control(
@@ -38,39 +38,39 @@ Ext.define('HOR.controller.ControllerSelectorAulasCalendario',
             }
         });
     },
-    
+
     updateAulasFiltradas : function()
     {
         var store = this.getStoreAulasStore();
-        
+
         var centro = this.getFiltroAulas().down('combobox[name=centro]').getValue();
         var semestre = this.getFiltroAulas().down('combobox[name=semestre]').getValue();
         var edificio = this.getFiltroAulas().down('combobox[name=edificio]').getValue();
         var tipoAula = this.getFiltroAulas().down('combobox[name=tipoAula]').getValue();
         var planta = this.getFiltroAulas().down('combobox[name=planta]').getValue();
-        
+
         store.load(
         {
             callback : this.onAulasFiltradasLoaded,
             params :
             {
                 centroId : centro,
-                semestre : semestre,
+                semestreId : semestre,
                 edificio : edificio,
                 tipoAula : tipoAula,
                 planta : planta
-             },
-             scope : this
+            },
+            scope : this
         });
 
     },
-    
+
     onAulasFiltradasLoaded : function(aulas, request)
     {
         var view = this.getSelectorAulas();
 
         view.removeAll();
-        
+
         var botones = new Array();
 
         for ( var i = 0, len = aulas.length; i < len; i++)
@@ -86,9 +86,9 @@ Ext.define('HOR.controller.ControllerSelectorAulasCalendario',
                 aulaId : aulas[i].data.id,
             };
 
-            botones.push(button);            
+            botones.push(button);
         }
-        
+
         view.add(botones);
     }
 });

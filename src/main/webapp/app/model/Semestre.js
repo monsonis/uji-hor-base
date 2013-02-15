@@ -2,5 +2,5 @@ Ext.define('HOR.model.Semestre',
 {
     extend : 'Ext.data.Model',
 
-    fields : [ 'semestre' ]
+    fields : [ 'semestre', 'nombre' ]
 });

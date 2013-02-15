@@ -39,4 +39,15 @@ public class SemestresService
 
         return semestresDAO.getSemestres(cursoId, estudioId);
     }
+
+    @Role({ "ADMIN", "USUARIO" })
+    public List<Semestre> getSemestresByCentroAndAulas(Long centroId, Long connectedUserId)
+    {
+        if (!personaDAO.esAdmin(connectedUserId))
+        {
+            return semestresDAO.getSemestresVisiblesByCentroAndAulas(centroId, connectedUserId);
+        }
+
+        return Semestre.getTodosLosSemestres();
+    }
 }

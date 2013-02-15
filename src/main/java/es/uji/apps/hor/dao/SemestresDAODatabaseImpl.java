@@ -7,6 +7,9 @@ import org.springframework.stereotype.Repository;
 
 import com.mysema.query.jpa.impl.JPAQuery;
 
+import es.uji.apps.hor.db.QAulaDTO;
+import es.uji.apps.hor.db.QAulaPersonaDTO;
+import es.uji.apps.hor.db.QAulaPlanificacionDTO;
 import es.uji.apps.hor.db.QItemDTO;
 import es.uji.apps.hor.db.QItemsAsignaturaDTO;
 import es.uji.apps.hor.db.QSemestreDTO;
@@ -51,5 +54,32 @@ public class SemestresDAODatabaseImpl extends BaseDAODatabaseImpl implements Sem
         semestreDTO = insert(semestreDTO);
 
         return new Semestre(semestreDTO.getId(), semestreDTO.getNombre());
+    }
+
+    @Override
+    public List<Semestre> getSemestresVisiblesByCentroAndAulas(Long centroId, Long connectedUserId)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+
+        QAulaDTO qAula = QAulaDTO.aulaDTO;
+        QAulaPersonaDTO qAulaPersona = QAulaPersonaDTO.aulaPersonaDTO;
+        QAulaPlanificacionDTO qAulaPlanificacion = QAulaPlanificacionDTO.aulaPlanificacionDTO;
+
+        List<Long> semestres = query
+                .from(qAula, qAulaPersona, qAulaPlanificacion)
+                .where(qAulaPersona.personaId.eq(connectedUserId)
+                        .and(qAula.id.eq(qAulaPersona.aulaId))
+                        .and(qAulaPlanificacion.aula.id.eq(qAula.id))
+                        .and(qAulaPersona.centroId.eq(centroId))).distinct()
+                .orderBy(qAulaPlanificacion.semestre.asc()).list(qAulaPlanificacion.semestre);
+
+        List<Semestre> listaSemestres = new ArrayList<Semestre>();
+
+        for (Long semestre : semestres)
+        {
+            listaSemestres.add(new Semestre(semestre, String.valueOf(semestre)));
+        }
+
+        return listaSemestres;
     }
 }

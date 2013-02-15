@@ -110,27 +110,28 @@ public class AulaService
     }
 
     @Role({ "ADMIN", "USUARIO" })
-    public List<TipoAula> getTiposAulaByCentroAndEdificio(Long centroId, String edificio,
-            Long connectedUserId) throws RegistroNoEncontradoException, UnauthorizedUserException
+    public List<TipoAula> getTiposAulaByCentroAndSemestreAndEdificio(Long centroId,
+            Long semestreId, String edificio, Long connectedUserId)
+            throws RegistroNoEncontradoException, UnauthorizedUserException
     {
         if (!personaDAO.esAdmin(connectedUserId))
         {
-            return aulaDAO.getTiposAulaVisiblesPorUsuarioByCentroAndEdificio(centroId, edificio,
-                    connectedUserId);
+            return aulaDAO.getTiposAulaVisiblesPorUsuarioByCentroAndSemestreAndEdificio(centroId,
+                    semestreId, edificio, connectedUserId);
         }
 
         return aulaDAO.getTiposAulaByCentroAndEdificio(centroId, edificio);
     }
 
     @Role({ "ADMIN", "USUARIO" })
-    public List<Aula> getAulasFiltradasPor(Long centroId, String edificio, String tipoAula,
-            String planta, Long connectedUserId) throws RegistroNoEncontradoException,
-            UnauthorizedUserException
+    public List<Aula> getAulasFiltradasPor(Long centroId, Long semestreId, String edificio,
+            String tipoAula, String planta, Long connectedUserId)
+            throws RegistroNoEncontradoException, UnauthorizedUserException
     {
         if (!personaDAO.esAdmin(connectedUserId))
         {
-            return aulaDAO.getAulasVisiblesPorUsuarioFiltradasPor(centroId, edificio, tipoAula,
-                    planta, connectedUserId);
+            return aulaDAO.getAulasVisiblesPorUsuarioFiltradasPor(centroId, semestreId, edificio,
+                    tipoAula, planta, connectedUserId);
         }
 
         return aulaDAO.getAulasFiltradasPor(centroId, edificio, tipoAula, planta);

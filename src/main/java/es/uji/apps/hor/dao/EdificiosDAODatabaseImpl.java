@@ -9,6 +9,7 @@ import com.mysema.query.jpa.impl.JPAQuery;
 
 import es.uji.apps.hor.db.QAulaDTO;
 import es.uji.apps.hor.db.QAulaPersonaDTO;
+import es.uji.apps.hor.db.QAulaPlanificacionDTO;
 import es.uji.apps.hor.model.Edificio;
 import es.uji.apps.hor.model.PlantaEdificio;
 import es.uji.commons.db.BaseDAODatabaseImpl;
@@ -71,35 +72,43 @@ public class EdificiosDAODatabaseImpl extends BaseDAODatabaseImpl implements Edi
     }
 
     @Override
-    public List<Edificio> getEdificiosVisiblesPorUsuarioByCentroId(Long centroId,
+    public List<Edificio> getEdificiosVisiblesPorUsuarioByCentroId(Long centroId, Long semestreId,
             Long connectedUserId)
     {
         JPAQuery query = new JPAQuery(entityManager);
         QAulaDTO qAula = QAulaDTO.aulaDTO;
         QAulaPersonaDTO qAulaPersona = QAulaPersonaDTO.aulaPersonaDTO;
+        QAulaPlanificacionDTO qAulaPlanificacion = QAulaPlanificacionDTO.aulaPlanificacionDTO;
 
         List<String> edificios = query
-                .from(qAula, qAulaPersona)
+                .from(qAula, qAulaPersona, qAulaPlanificacion)
                 .where(qAulaPersona.personaId.eq(connectedUserId)
+                        .and(qAulaPlanificacion.aula.id.eq(qAula.id))
                         .and(qAula.centro.id.eq(qAulaPersona.centroId))
-                        .and(qAula.centro.id.eq(centroId))).orderBy(qAula.edificio.asc())
-                .distinct().list(qAula.edificio);
+                        .and(qAula.centro.id.eq(centroId)).and(qAula.id.eq(qAulaPersona.aulaId))
+                        .and(qAulaPlanificacion.semestre.eq(semestreId)))
+                .orderBy(qAula.edificio.asc()).distinct().list(qAula.edificio);
 
         return creaListaEdificiosDesde(edificios);
     }
 
     @Override
-    public List<PlantaEdificio> getPlantasEdificioVisiblesPorUsuarioByCentroAndEdificio(
-            Long centroId, String edificio, Long connectedUserId)
+    public List<PlantaEdificio> getPlantasEdificioVisiblesPorUsuarioByCentroAndSemestreAndEdificio(
+            Long centroId, Long semestreId, String edificio, Long connectedUserId)
     {
         JPAQuery query = new JPAQuery(entityManager);
         QAulaDTO qAula = QAulaDTO.aulaDTO;
         QAulaPersonaDTO qAulaPersona = QAulaPersonaDTO.aulaPersonaDTO;
+        QAulaPlanificacionDTO qAulaPlanificacion = QAulaPlanificacionDTO.aulaPlanificacionDTO;
 
         List<String> plantasEdificio = query
-                .from(qAula, qAulaPersona)
-                .where(qAulaPersona.personaId.eq(connectedUserId).and(qAula.centro.id.eq(centroId))
-                        .and(qAula.centro.id.eq(centroId).and(qAula.edificio.eq(edificio))))
+                .from(qAula, qAulaPersona, qAulaPlanificacion)
+                .where(qAulaPersona.personaId.eq(connectedUserId)
+                        .and(qAula.id.eq(qAulaPersona.aulaId))
+                        .and(qAulaPlanificacion.aula.id.eq(qAula.id))
+                        .and(qAula.centro.id.eq(centroId)).and(qAula.centro.id.eq(centroId))
+                        .and(qAula.edificio.eq(edificio))
+                        .and(qAulaPlanificacion.semestre.eq(semestreId)))
                 .orderBy(qAula.planta.asc()).distinct().list(qAula.planta);
 
         return creaListaPlantasEdificioDesde(plantasEdificio);

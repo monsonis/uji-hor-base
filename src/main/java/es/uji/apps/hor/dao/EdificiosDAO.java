@@ -10,11 +10,11 @@ public interface EdificiosDAO extends BaseDAO
 {
     public List<Edificio> getEdificiosByCentroId(Long centroId);
 
-    public List<Edificio> getEdificiosVisiblesPorUsuarioByCentroId(Long centroId,
+    public List<Edificio> getEdificiosVisiblesPorUsuarioByCentroId(Long centroId, Long semestreId,
             Long connectedUserId);
 
     public List<PlantaEdificio> getPlantasEdificioByCentroAndEdificio(Long centroId, String edificio);
 
-    public List<PlantaEdificio> getPlantasEdificioVisiblesPorUsuarioByCentroAndEdificio(
-            Long centroId, String edificio, Long connectedUserId);
+    public List<PlantaEdificio> getPlantasEdificioVisiblesPorUsuarioByCentroAndSemestreAndEdificio(
+            Long centroId, Long semestreId, String edificio, Long connectedUserId);
 }

@@ -1,7 +1,7 @@
 Ext.define('HOR.controller.ControllerFiltroAulasCalendario',
 {
     extend : 'Ext.app.Controller',
-    stores : [ 'StoreCentros', 'StoreEdificios', 'StoreTiposAula', 'StorePlantasEdificio'],
+    stores : [ 'StoreCentros', 'StoreSemestresAulas', 'StoreEdificios', 'StoreTiposAula', 'StorePlantasEdificio' ],
     refs : [
     {
         selector : 'filtroAulas',
@@ -30,70 +30,46 @@ Ext.define('HOR.controller.ControllerFiltroAulasCalendario',
     {
         selector : 'panelCalendarioAulas button[name=imprimir]',
         ref : 'botonImprimir'
-    }],
-    
+    } ],
+
     init : function()
     {
         this.control(
         {
             'filtroAulas combobox[name=centro]' :
-             {
+            {
                 select : this.onCentroSelected
-             },
-             'filtroAulas combobox[name=semestre]' :
-             {
-                 select : this.onSemestreSelected
-             },
-             'filtroAulas combobox[name=edificio]' :
-             {
-                 select : this.onEdificioSelected
-             }
+            },
+            'filtroAulas combobox[name=semestre]' :
+            {
+                select : this.onSemestreSelected
+            },
+            'filtroAulas combobox[name=edificio]' :
+            {
+                select : this.onEdificioSelected
+            }
         });
     },
 
     onCentroSelected : function()
     {
-        var semestre = this.getFiltroAulas().down('combobox[name=semestre]');
-        
-        semestre.clearValue();
-        this.getFiltroAulas().down('combobox[name=edificio]').clearValue();
-        this.getFiltroAulas().down('combobox[name=tipoAula]').clearValue();
-        this.getFiltroAulas().down('combobox[name=planta]').clearValue();
-        this.getBotonImprimir().hide();
-        
-        this.getStoreEdificiosStore().removeAll();
-        this.getStoreTiposAulaStore().removeAll();
-        this.getStorePlantasEdificioStore().removeAll();
-        
-        this.getSelectorAulas().removeAll();
-        this.limpiaCalendario();
-        
-        var store = semestre.getStore();
-        
-        if (store.count() == 0)
-        {
-            store.loadData([ [ '1', '1' ], [ '2', '2' ] ]);
-        }
-    },
-    
-    onSemestreSelected : function()
-    {
+        this.getFiltroAulas().down('combobox[name=semestre]').clearValue();
         this.getFiltroAulas().down('combobox[name=edificio]').clearValue();
         this.getFiltroAulas().down('combobox[name=tipoAula]').clearValue();
         this.getFiltroAulas().down('combobox[name=planta]').clearValue();
         this.getBotonImprimir().hide();
 
-        
+        this.getStoreEdificiosStore().removeAll();
         this.getStoreTiposAulaStore().removeAll();
         this.getStorePlantasEdificioStore().removeAll();
-        
+
         this.getSelectorAulas().removeAll();
         this.limpiaCalendario();
-        
+
         var centro = this.getFiltroAulas().down('combobox[name=centro]').getValue();
-        
-        var store = this.getStoreEdificiosStore();
-        
+
+        var store = this.getStoreSemestresAulasStore();
+
         store.load(
         {
             params :
@@ -102,77 +78,119 @@ Ext.define('HOR.controller.ControllerFiltroAulasCalendario',
             },
             scope : this
         });
-        
+
+        fixLoadMaskBug(store, this.getFiltroAulas().down('combobox[name=semestre]'));
+    },
+
+    onSemestreSelected : function()
+    {
+        this.getFiltroAulas().down('combobox[name=edificio]').clearValue();
+        this.getFiltroAulas().down('combobox[name=tipoAula]').clearValue();
+        this.getFiltroAulas().down('combobox[name=planta]').clearValue();
+        this.getBotonImprimir().hide();
+
+        this.getStoreTiposAulaStore().removeAll();
+        this.getStorePlantasEdificioStore().removeAll();
+
+        this.getSelectorAulas().removeAll();
+        this.limpiaCalendario();
+
+        var centro = this.getFiltroAulas().down('combobox[name=centro]').getValue();
+        var semestre = this.getFiltroAulas().down('combobox[name=semestre]').getValue();
+
+        var store = this.getStoreEdificiosStore();
+
+        store.load(
+        {
+            params :
+            {
+                centroId : centro,
+                semestreId : semestre
+            },
+            scope : this
+        });
+
         fixLoadMaskBug(store, this.getFiltroAulas().down('combobox[name=edificio]'));
     },
-    
+
     onEdificioSelected : function()
     {
         this.getFiltroAulas().down('combobox[name=tipoAula]').clearValue();
         this.getFiltroAulas().down('combobox[name=planta]').clearValue();
-        
+
         var centro = this.getFiltroAulas().down('combobox[name=centro]').getValue();
+        var semestre = this.getFiltroAulas().down('combobox[name=semestre]').getValue();
         var edificio = this.getFiltroAulas().down('combobox[name=edificio]').getValue();
+
         this.getBotonImprimir().hide();
 
-        
         this.limpiaCalendario();
-        
+
         var storeTipos = this.getStoreTiposAulaStore();
         var storePlantas = this.getStorePlantasEdificioStore();
-        
+
         var tiposAulas = this.getFiltroAulas().down('combobox[name=tipoAula]');
-        
+
         storeTipos.load(
         {
-           params : 
-           {
-               centroId : centro,
-               edificio : edificio
-           },
-           callback: function(records, operation, success)
-           {
-               this.insert( 0, { nombre : 'Totes', valor : '' });
-               tiposAulas.setValue('');
-           }
-        });
-        
-        fixLoadMaskBug(storeTipos, tiposAulas);
-        
-        var plantas = this.getFiltroAulas().down('combobox[name=planta]');
-        
-        storePlantas.load(
-        {
-            params : 
+            params :
             {
                 centroId : centro,
+                semestreId : semestre,
                 edificio : edificio
             },
-            callback: function(records, operation, success)
+            callback : function(records, operation, success)
             {
-                this.insert( 0, { nombre : 'Totes', valor : '' });
-                plantas.setValue('');
-            }           
+                this.insert(0,
+                {
+                    nombre : 'Totes',
+                    valor : ''
+                });
+                tiposAulas.setValue('');
+            }
         });
-                
+
+        fixLoadMaskBug(storeTipos, tiposAulas);
+
+        var plantas = this.getFiltroAulas().down('combobox[name=planta]');
+
+        storePlantas.load(
+        {
+            params :
+            {
+                centroId : centro,
+                semestreId : semestre,
+                edificio : edificio
+            },
+            callback : function(records, operation, success)
+            {
+                this.insert(0,
+                {
+                    nombre : 'Totes',
+                    valor : ''
+                });
+                plantas.setValue('');
+            }
+        });
+
         fixLoadMaskBug(storePlantas, plantas);
     },
-    
+
     limpiaCalendario : function()
     {
-        if (this.getPanelCalendarioPorAula()) 
+        if (this.getPanelCalendarioPorAula())
         {
             this.getPanelCalendarioPorAula().limpiaCalendario();
         }
-        
-        if (this.getPanelCalendarioDetallePorAula()) 
+
+        if (this.getPanelCalendarioDetallePorAula())
         {
             this.getPanelCalendarioDetallePorAula().limpiaCalendario();
         }
-        
+
         this.getBotonCalendarioDetalle().hide();
         this.getBotonCalendarioGenerica().hide();
         this.getBotonImprimir().hide();
     }
-    
+
 });

@@ -98,22 +98,25 @@ public class AulaResource extends CoreBaseService
         Long connectedUserId = AccessManager.getConnectedUserId(request);
         ParamUtils.checkNotNull(aulaPlanificacionId);
 
-        consultaAulas.deleteAulaAsignadaToEstudio(Long.parseLong(aulaPlanificacionId), connectedUserId);
+        consultaAulas.deleteAulaAsignadaToEstudio(Long.parseLong(aulaPlanificacionId),
+                connectedUserId);
     }
 
     @GET
     @Path("tipo")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UIEntity> getTiposAulaByCentroAndEdificio(@QueryParam("centroId") String centroId,
+    public List<UIEntity> getTiposAulaByCentroAndSemestreAndEdificio(
+            @QueryParam("centroId") String centroId, @QueryParam("semestreId") String semestreId,
             @QueryParam("edificio") String edificio) throws RegistroNoEncontradoException,
             UnauthorizedUserException
     {
-        ParamUtils.checkNotNull(centroId, edificio);
+        ParamUtils.checkNotNull(centroId, semestreId, edificio);
 
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
-        List<TipoAula> tiposAula = consultaAulas.getTiposAulaByCentroAndEdificio(
-                ParamUtils.parseLong(centroId), edificio, connectedUserId);
+        List<TipoAula> tiposAula = consultaAulas.getTiposAulaByCentroAndSemestreAndEdificio(
+                ParamUtils.parseLong(centroId), ParamUtils.parseLong(semestreId), edificio,
+                connectedUserId);
 
         return UIEntity.toUI(tiposAula);
     }
@@ -121,11 +124,11 @@ public class AulaResource extends CoreBaseService
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> getAulasFiltradasPor(@QueryParam("centroId") String centroId,
-            @QueryParam("edificio") String edificio, @QueryParam("tipoAula") String tipoAula,
-            @QueryParam("planta") String planta) throws RegistroNoEncontradoException,
-            UnauthorizedUserException
+            @QueryParam("semestreId") String semestreId, @QueryParam("edificio") String edificio,
+            @QueryParam("tipoAula") String tipoAula, @QueryParam("planta") String planta)
+            throws RegistroNoEncontradoException, UnauthorizedUserException
     {
-        ParamUtils.checkNotNull(centroId, edificio);
+        ParamUtils.checkNotNull(centroId, semestreId, edificio);
 
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
@@ -133,7 +136,7 @@ public class AulaResource extends CoreBaseService
         planta = (planta == null || planta.equals("")) ? null : planta;
 
         List<Aula> aulas = consultaAulas.getAulasFiltradasPor(ParamUtils.parseLong(centroId),
-                edificio, tipoAula, planta, connectedUserId);
+                ParamUtils.parseLong(semestreId), edificio, tipoAula, planta, connectedUserId);
 
         return UIEntity.toUI(aulas);
     }

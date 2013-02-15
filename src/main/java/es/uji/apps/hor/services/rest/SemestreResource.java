@@ -28,7 +28,8 @@ public class SemestreResource extends CoreBaseService
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> getSemestres(@QueryParam("cursoId") String cursoId,
-            @QueryParam("estudioId") String estudioId) throws UnauthorizedUserException, RegistroNoEncontradoException
+            @QueryParam("estudioId") String estudioId) throws UnauthorizedUserException,
+            RegistroNoEncontradoException
     {
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
@@ -36,6 +37,22 @@ public class SemestreResource extends CoreBaseService
 
         List<Semestre> semestres = consultaSemestres.getSemestres(ParamUtils.parseLong(cursoId),
                 ParamUtils.parseLong(estudioId), connectedUserId);
+
+        return UIEntity.toUI(semestres);
+    }
+
+    @GET
+    @Path("aulas")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<UIEntity> getSemestresByCentroAndAulas(@QueryParam("centroId") String centroId)
+            throws UnauthorizedUserException, RegistroNoEncontradoException
+    {
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+
+        ParamUtils.checkNotNull(centroId);
+
+        List<Semestre> semestres = consultaSemestres.getSemestresByCentroAndAulas(
+                ParamUtils.parseLong(centroId), connectedUserId);
 
         return UIEntity.toUI(semestres);
     }
