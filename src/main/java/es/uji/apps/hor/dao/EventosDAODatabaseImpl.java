@@ -406,6 +406,31 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
     }
 
     @Override
+    public Evento getEventoByEventoDetalleId(Long eventoDetalleId)
+            throws RegistroNoEncontradoException
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+
+        QItemDTO item = QItemDTO.itemDTO;
+        QItemDetalleDTO itemDetalle = QItemDetalleDTO.itemDetalleDTO;
+
+        List<ItemDTO> listaItemsDTO = query.from(itemDetalle).join(itemDetalle.item, item)
+                .where(itemDetalle.id.eq(eventoDetalleId)).list(item);
+
+        if (listaItemsDTO.size() == 1)
+        {
+            Evento evento = creaEventoDesdeItemDTO(listaItemsDTO.get(0));
+            evento.setEventosDetalle(getEventosDetalleDeEvento(evento));
+
+            return evento;
+        }
+        else
+        {
+            throw new RegistroNoEncontradoException();
+        }
+    }
+
+    @Override
     @Transactional
     public void actualizaAulaAsignadaAEvento(Long eventoId, Long aulaId)
             throws RegistroNoEncontradoException
@@ -447,28 +472,11 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
     }
 
     @Override
-    public Evento getEventoByEventoDetalleId(Long eventoDetalleId)
-            throws RegistroNoEncontradoException
+    public Evento getEventoByIdConDetalles(Long eventoId) throws RegistroNoEncontradoException
     {
-        JPAQuery query = new JPAQuery(entityManager);
-
-        QItemDTO item = QItemDTO.itemDTO;
-        QItemDetalleDTO itemDetalle = QItemDetalleDTO.itemDetalleDTO;
-
-        List<ItemDTO> listaItemsDTO = query.from(itemDetalle).join(itemDetalle.item, item)
-                .where(itemDetalle.id.eq(eventoDetalleId)).list(item);
-
-        if (listaItemsDTO.size() == 1)
-        {
-            Evento evento = creaEventoDesdeItemDTO(listaItemsDTO.get(0));
-            evento.setEventosDetalle(getEventosDetalleDeEvento(evento));
-
-            return evento;
-        }
-        else
-        {
-            throw new RegistroNoEncontradoException();
-        }
+        Evento evento = getEventoById(eventoId);
+        evento.setEventosDetalle(getEventosDetalleDeEvento(evento));
+        return evento;
     }
 
     private List<EventoDetalle> getEventosDetalleDeEvento(Evento evento)
@@ -481,9 +489,12 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
 
         List<EventoDetalle> listaDetalles = new ArrayList<EventoDetalle>();
 
+        EventoDetalle eventoDetalle;
         for (ItemDetalleDTO detalleDTO : listaItemsDTO)
         {
-            listaDetalles.add(creaEventoDetalleDesdeItemDetalleDTO(detalleDTO));
+            eventoDetalle = creaEventoDetalleDesdeItemDetalleDTO(detalleDTO);
+            eventoDetalle.setEvento(evento);
+            listaDetalles.add(eventoDetalle);
         }
 
         return listaDetalles;

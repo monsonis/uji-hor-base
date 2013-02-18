@@ -61,7 +61,9 @@ public interface EventosDAO extends BaseDAO
     List<Evento> getEventosSemanaGenericaPorAula(Long aulaId, Long semestreId,
             List<Long> calendariosIds);
 
-    Evento getEventoByEventoDetalleId(Long eventoDetalleId) throws RegistroNoEncontradoException;
-    
     List<Evento> getEventosDelMismoGrupo(Evento evento);
+
+    Evento getEventoByIdConDetalles(Long eventoId) throws RegistroNoEncontradoException;
+
+    Evento getEventoByEventoDetalleId(Long eventoDetalleId) throws RegistroNoEncontradoException;
 }

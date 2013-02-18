@@ -89,12 +89,12 @@ public class EventosService
     }
 
     @Role({ "ADMIN", "USUARIO" })
-    public Evento modificaDiaYHoraEventoEnVistaDetalle(Long eventoDetalleId, Date inicio, Date fin,
+    public Evento modificaDiaYHoraEventoEnVistaDetalle(Long eventoId, Date inicio, Date fin,
             Long connectedUserId) throws DuracionEventoIncorrectaException,
             RegistroNoEncontradoException, UnauthorizedUserException, EventoFueraDeRangoException,
             EventoMasDeUnaRepeticionException
     {
-        Evento evento = eventosDAO.getEventoByEventoDetalleId(eventoDetalleId);
+        Evento evento = eventosDAO.getEventoByIdConDetalles(eventoId);
 
         if (!personaDAO.esAdmin(connectedUserId))
         {

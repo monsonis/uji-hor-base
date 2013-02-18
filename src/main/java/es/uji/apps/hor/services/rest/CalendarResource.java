@@ -255,12 +255,32 @@ public class CalendarResource extends CoreBaseService
         DateFormat uIEntityDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         Date inicio = uIEntityDateFormat.parse(entity.get("start"));
         Date fin = uIEntityDateFormat.parse(entity.get("end"));
-        Long idEventoDetalle = (Long.parseLong(entity.get("id")));
+        Long eventoId = (Long.parseLong(entity.get("id")));
 
-        Evento evento = eventosService.modificaDiaYHoraEventoEnVistaDetalle(idEventoDetalle,
-                inicio, fin, connectedUserId);
-        return toUI(Collections.singletonList(evento));
+        eventosService.modificaDiaYHoraEventoEnVistaDetalle(eventoId, inicio, fin, connectedUserId);
 
+        return Collections.singletonList(entity);
+
+    }
+
+    private UIEntity eventoDetalleToUI(EventoDetalle eventoDetalle, Long estudioId)
+    {
+        UIEntity eventoUI = new UIEntity();
+        eventoUI.put("id", eventoDetalle.getEvento().getId());
+
+        eventoUI.put("cid", eventoDetalle.getEvento().getCalendario().getId());
+        eventoUI.put("title", eventoDetalle.getDescripcionParaUnEstudio(estudioId));
+
+        if (eventoDetalle.getInicio() != null)
+        {
+            eventoUI.put("start", uIEntitydateFormat.format(eventoDetalle.getInicio()));
+        }
+
+        if (eventoDetalle.getFin() != null)
+        {
+            eventoUI.put("end", uIEntitydateFormat.format(eventoDetalle.getFin()));
+        }
+        return eventoUI;
     }
 
     private List<UIEntity> eventosDetalletoUI(List<EventoDetalle> eventosDetalle, Long estudioId)
@@ -269,24 +289,7 @@ public class CalendarResource extends CoreBaseService
 
         for (EventoDetalle eventoDetalle : eventosDetalle)
         {
-            UIEntity eventoUI = new UIEntity();
-            eventoUI.put("id", eventoDetalle.getId());
-
-            eventoUI.put("title", eventoDetalle.getDescripcionParaUnEstudio(estudioId));
-
-            eventoUI.put("cid", eventoDetalle.getEvento().getCalendario().getId());
-
-            if (eventoDetalle.getInicio() != null)
-            {
-                eventoUI.put("start", uIEntitydateFormat.format(eventoDetalle.getInicio()));
-            }
-
-            if (eventoDetalle.getFin() != null)
-            {
-                eventoUI.put("end", uIEntitydateFormat.format(eventoDetalle.getFin()));
-            }
-
-            eventosUI.add(eventoUI);
+            eventosUI.add(eventoDetalleToUI(eventoDetalle, estudioId));
         }
 
         return eventosUI;
