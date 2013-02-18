@@ -19,7 +19,7 @@ Ext.define('HOR.store.StoreEventos',
             estudioId : null,
             cursoId : null,
             semestreId : null,
-            grupoId : null,
+            gruposId : null,
             calendariosIds : null
         },
 

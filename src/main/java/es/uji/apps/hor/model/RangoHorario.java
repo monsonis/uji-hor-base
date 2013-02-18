@@ -33,6 +33,13 @@ public class RangoHorario
         this.grupoId = grupoId;
     }
 
+    public RangoHorario(Long estudioId, Long cursoId, Long semestreId)
+    {
+        this.estudioId = estudioId;
+        this.cursoId = cursoId;
+        this.semestreId = semestreId;
+    }
+
     public RangoHorario()
     {
 
@@ -196,9 +203,58 @@ public class RangoHorario
 
             rangoPorDefecto = creaNuevoRangoHorario(estudioId, cursoId, semestreId, grupoId,
                     inicio.getTime(), fin.getTime());
+
+            rangoPorDefecto = new RangoHorario();
+            rangoPorDefecto.setHoraInicio(inicio.getTime());
+            rangoPorDefecto.setHoraFin(fin.getTime());
         }
 
         return rangoPorDefecto;
+    }
+
+    public static RangoHorario getRangoHorarioPorDefecto(Long estudioId, Long cursoId,
+            Long semestreId)
+    {
+        return getRangoHorarioPorDefecto(estudioId, cursoId, semestreId, null);
+    }
+
+    public static RangoHorario getRangoHorarioAjustado(List<RangoHorario> rangosHorarios)
+    {
+        Date horaInicio = null;
+        Date horaFin = null;
+
+        Calendar ini = Calendar.getInstance();
+        Calendar fin = Calendar.getInstance();
+        Calendar aux = Calendar.getInstance();
+
+        for (RangoHorario rangoHorario : rangosHorarios)
+        {
+            ini.setTime(rangoHorario.getHoraInicio());
+            aux.set(Calendar.HOUR_OF_DAY, ini.get(Calendar.HOUR_OF_DAY));
+            aux.set(Calendar.MINUTE, ini.get(Calendar.MINUTE));
+
+            if (horaInicio == null || horaInicio.compareTo(aux.getTime()) > 0)
+            {
+                horaInicio = aux.getTime();
+            }
+
+            fin.setTime(rangoHorario.getHoraFin());
+            aux.set(Calendar.HOUR_OF_DAY, fin.get(Calendar.HOUR_OF_DAY));
+            aux.set(Calendar.MINUTE, fin.get(Calendar.MINUTE));
+
+            if (horaFin == null || horaFin.compareTo(aux.getTime()) < 0)
+            {
+                horaFin = aux.getTime();
+            }
+        }
+
+        RangoHorario rangoHorarioIni = rangosHorarios.get(0);
+        RangoHorario rangoHorario = new RangoHorario(rangoHorarioIni.getEstudioId(),
+                rangoHorarioIni.getCursoId(), rangoHorarioIni.getSemestreId());
+        rangoHorario.setHoraInicio(horaInicio);
+        rangoHorario.setHoraFin(horaFin);
+
+        return rangoHorario;
     }
 
 }

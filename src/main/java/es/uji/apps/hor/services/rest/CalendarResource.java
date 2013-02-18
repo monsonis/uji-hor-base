@@ -56,6 +56,7 @@ public class CalendarResource extends CoreBaseService
     private static final String START_DATE_QUERY_PARAM = "startDate";
     private static final String CALENDARIOS_IDS_QUERY_PARAM = "calendariosIds";
     private static final String GRUPO_ID_QUERY_PARAM = "grupoId";
+    private static final String GRUPOS_ID_QUERY_PARAM = "gruposId";
     private static final String CURSO_ID_QUERY_PARAM = "cursoId";
     private static final String SEMESTRE_ID_QUERY_PARAM = "semestreId";
     private static final String ESTUDIO_ID_QUERY_PARAM = "estudioId";
@@ -91,16 +92,28 @@ public class CalendarResource extends CoreBaseService
     public List<UIEntity> getConfiguracion(@QueryParam(ESTUDIO_ID_QUERY_PARAM) String estudioId,
             @QueryParam(CURSO_ID_QUERY_PARAM) String cursoId,
             @QueryParam(SEMESTRE_ID_QUERY_PARAM) String semestreId,
-            @QueryParam(GRUPO_ID_QUERY_PARAM) String grupoId) throws RegistroNoEncontradoException,
-            UnauthorizedUserException
+            @QueryParam(GRUPOS_ID_QUERY_PARAM) String gruposIds)
+            throws RegistroNoEncontradoException, UnauthorizedUserException
     {
 
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
-        ParamUtils.checkNotNull(estudioId, cursoId, semestreId, grupoId);
+        ParamUtils.checkNotNull(estudioId, cursoId, semestreId, gruposIds);
+
+        String[] grupos = gruposIds.split(";");
+        List<String> gruposList = new ArrayList<String>();
+
+        for (String grupo : grupos)
+        {
+            grupo = grupo.trim();
+            if (!grupo.equals(""))
+            {
+                gruposList.add(grupo);
+            }
+        }
 
         RangoHorario rangoHorario = rangoHorarioService.getHorario(ParamUtils.parseLong(estudioId),
-                ParamUtils.parseLong(cursoId), ParamUtils.parseLong(semestreId), grupoId,
+                ParamUtils.parseLong(cursoId), ParamUtils.parseLong(semestreId), gruposList,
                 connectedUserId);
 
         return rangoHorarioToUI(rangoHorario);
@@ -146,14 +159,14 @@ public class CalendarResource extends CoreBaseService
     public List<UIEntity> getEventosGenerica(@QueryParam(ESTUDIO_ID_QUERY_PARAM) String estudioId,
             @QueryParam(CURSO_ID_QUERY_PARAM) String cursoId,
             @QueryParam(SEMESTRE_ID_QUERY_PARAM) String semestreId,
-            @QueryParam(GRUPO_ID_QUERY_PARAM) String grupoId,
+            @QueryParam(GRUPOS_ID_QUERY_PARAM) String gruposIds,
             @QueryParam(CALENDARIOS_IDS_QUERY_PARAM) String calendariosIds) throws ParseException,
             UnauthorizedUserException, RegistroNoEncontradoException
     {
 
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
-        ParamUtils.checkNotNull(estudioId, cursoId, semestreId, grupoId);
+        ParamUtils.checkNotNull(estudioId, cursoId, semestreId, gruposIds);
 
         String[] calendarios = calendariosIds.split(";");
         List<Long> calendariosList = new ArrayList<Long>();
@@ -167,13 +180,25 @@ public class CalendarResource extends CoreBaseService
             }
         }
 
+        String[] grupos = gruposIds.split(";");
+        List<String> gruposList = new ArrayList<String>();
+
+        for (String grupo : grupos)
+        {
+            grupo = grupo.trim();
+            if (!grupo.equals(""))
+            {
+                gruposList.add(grupo);
+            }
+        }
+
         List<Evento> eventos = new ArrayList<Evento>();
 
         Long estudioIdComoLong = ParamUtils.parseLong(estudioId);
         if (calendariosList.size() != 0)
         {
             eventos = eventosService.eventosSemanaGenericaDeUnEstudio(estudioIdComoLong,
-                    ParamUtils.parseLong(cursoId), ParamUtils.parseLong(semestreId), grupoId,
+                    ParamUtils.parseLong(cursoId), ParamUtils.parseLong(semestreId), gruposList,
                     calendariosList, connectedUserId);
         }
 
@@ -186,7 +211,7 @@ public class CalendarResource extends CoreBaseService
     public List<UIEntity> getEventosDetalle(@QueryParam(ESTUDIO_ID_QUERY_PARAM) String estudioId,
             @QueryParam(CURSO_ID_QUERY_PARAM) String cursoId,
             @QueryParam(SEMESTRE_ID_QUERY_PARAM) String semestreId,
-            @QueryParam(GRUPO_ID_QUERY_PARAM) String grupoId,
+            @QueryParam(GRUPOS_ID_QUERY_PARAM) String gruposIds,
             @QueryParam(CALENDARIOS_IDS_QUERY_PARAM) String calendariosIds,
             @QueryParam(START_DATE_QUERY_PARAM) String startDate,
             @QueryParam(END_DATE_QUERY_PARAM) String endDate) throws ParseException,
@@ -197,7 +222,7 @@ public class CalendarResource extends CoreBaseService
 
         try
         {
-            ParamUtils.checkNotNull(estudioId, cursoId, semestreId, grupoId, startDate, endDate);
+            ParamUtils.checkNotNull(estudioId, cursoId, semestreId, gruposIds, startDate, endDate);
         }
         catch (Exception e)
         {
@@ -227,14 +252,26 @@ public class CalendarResource extends CoreBaseService
             }
         }
 
+        String[] grupos = gruposIds.split(";");
+        List<String> gruposList = new ArrayList<String>();
+
+        for (String grupo : grupos)
+        {
+            grupo = grupo.trim();
+            if (!grupo.equals(""))
+            {
+                gruposList.add(grupo);
+            }
+        }
+
         List<EventoDetalle> eventosDetalle = new ArrayList<EventoDetalle>();
 
         if (calendariosList.size() != 0)
         {
             eventosDetalle = eventosService.eventosDetalleDeUnEstudio(
                     ParamUtils.parseLong(estudioId), ParamUtils.parseLong(cursoId),
-                    ParamUtils.parseLong(semestreId), grupoId, calendariosList, rangoFechaInicio,
-                    rangoFechaFin, connectedUserId);
+                    ParamUtils.parseLong(semestreId), gruposList, calendariosList,
+                    rangoFechaInicio, rangoFechaFin, connectedUserId);
         }
 
         return eventosDetalletoUI(eventosDetalle, Long.parseLong(estudioId));

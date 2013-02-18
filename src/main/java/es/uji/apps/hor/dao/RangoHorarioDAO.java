@@ -18,4 +18,6 @@ public interface RangoHorarioDAO extends BaseDAO
 
     List<RangoHorario> getRangosHorariosDelEvento(Evento evento);
 
+    List<RangoHorario> getRangosHorariosPorGrupos(Long estudioId, Long cursoId, Long semestreId,
+            List<String> gruposIds) throws RegistroNoEncontradoException;
 }

@@ -34,12 +34,13 @@ public class GrupoAsignaturaResource extends CoreBaseService
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> getGruposAsignaturasSinAsignar(@QueryParam("estudioId") String estudioId,
             @QueryParam("cursoId") String cursoId, @QueryParam("semestreId") String semestreId,
-            @QueryParam("grupoId") String grupoId,
-            @QueryParam("calendariosIds") String calendariosIds) throws UnauthorizedUserException, RegistroNoEncontradoException
+            @QueryParam("gruposId") String gruposIds,
+            @QueryParam("calendariosIds") String calendariosIds) throws UnauthorizedUserException,
+            RegistroNoEncontradoException
     {
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
-        ParamUtils.checkNotNull(estudioId, cursoId, semestreId, grupoId);
+        ParamUtils.checkNotNull(estudioId, cursoId, semestreId, gruposIds);
 
         String[] calendarios = calendariosIds.split(";");
         List<Long> calendariosList = new ArrayList<Long>();
@@ -53,6 +54,18 @@ public class GrupoAsignaturaResource extends CoreBaseService
             }
         }
 
+        String[] grupos = gruposIds.split(";");
+        List<String> gruposList = new ArrayList<String>();
+
+        for (String grupo : grupos)
+        {
+            grupo = grupo.trim();
+            if (!grupo.equals(""))
+            {
+                gruposList.add(grupo);
+            }
+        }
+
         List<UIEntity> list = new ArrayList<UIEntity>();
 
         if (calendariosList.size() != 0)
@@ -60,7 +73,7 @@ public class GrupoAsignaturaResource extends CoreBaseService
             List<GrupoAsignatura> gruposAsignaturas = gruposAsignaturasService
                     .getGruposAsignaturasSinAsignar(ParamUtils.parseLong(estudioId),
                             ParamUtils.parseLong(cursoId), ParamUtils.parseLong(semestreId),
-                            grupoId, calendariosList, connectedUserId);
+                            gruposList, calendariosList, connectedUserId);
 
             list = UIEntity.toUI(gruposAsignaturas);
         }

@@ -29,7 +29,7 @@ public class GruposAsignaturasService
 
     @Role({ "ADMIN", "USUARIO" })
     public List<GrupoAsignatura> getGruposAsignaturasSinAsignar(Long estudioId, Long cursoId,
-            Long semestreId, String grupoId, List<Long> calendariosIds, Long connectedUserId)
+            Long semestreId, List<String> gruposIds, List<Long> calendariosIds, Long connectedUserId)
             throws UnauthorizedUserException, RegistroNoEncontradoException
     {
         if (!personaDAO.esAdmin(connectedUserId))
@@ -39,7 +39,7 @@ public class GruposAsignaturasService
         }
 
         return grupoAsignaturaDAO.getGruposAsignaturasSinAsignar(estudioId, cursoId, semestreId,
-                grupoId, calendariosIds);
+                gruposIds, calendariosIds);
     }
 
     @Role({ "ADMIN", "USUARIO" })

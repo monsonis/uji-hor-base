@@ -56,7 +56,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
 
     @Override
     public List<Evento> getEventosSemanaGenerica(Long estudioId, Long cursoId, Long semestreId,
-            String grupoId, List<Long> calendariosIds)
+            List<String> gruposIds, List<Long> calendariosIds)
     {
         JPAQuery query = new JPAQuery(entityManager);
 
@@ -70,7 +70,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
                 .join(asignatura.item, item)
                 .where(asignatura.estudioId.eq(estudioId).and(
                         item.cursoId.eq(cursoId).and(item.semestre.id.eq(semestreId))
-                                .and(item.grupoId.eq(grupoId)).and(item.diaSemana.isNotNull())
+                                .and(item.grupoId.in(gruposIds)).and(item.diaSemana.isNotNull())
                                 .and(item.tipoSubgrupoId.in(tiposCalendarios)))).list(item);
 
         List<Evento> eventos = new ArrayList<Evento>();
@@ -374,7 +374,8 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
 
     @Override
     public List<EventoDetalle> getEventosDetalle(Long estudioId, Long cursoId, Long semestreId,
-            String grupoId, List<Long> calendariosIds, Date rangoFechaInicio, Date rangoFechaFin)
+            List<String> gruposIds, List<Long> calendariosIds, Date rangoFechaInicio,
+            Date rangoFechaFin)
     {
         JPAQuery query = new JPAQuery(entityManager);
         List<String> tiposCalendarios = TipoSubgrupo.getTiposSubgrupos(calendariosIds);
@@ -391,7 +392,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
                         item.cursoId.eq(cursoId).and(item.semestre.id.eq(semestreId))
                                 .and(itemsDetalle.inicio.goe(rangoFechaInicio))
                                 .and(itemsDetalle.fin.loe(rangoFechaFin))
-                                .and(item.grupoId.eq(grupoId)).and(item.diaSemana.isNotNull())
+                                .and(item.grupoId.in(gruposIds)).and(item.diaSemana.isNotNull())
                                 .and(item.tipoSubgrupoId.in(tiposCalendarios)))).list(itemsDetalle);
 
         List<EventoDetalle> listaEventosDetalle = new ArrayList<EventoDetalle>();

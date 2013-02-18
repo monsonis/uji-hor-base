@@ -9,7 +9,7 @@ import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 public interface GrupoAsignaturaDAO extends BaseDAO
 {
     List<GrupoAsignatura> getGruposAsignaturasSinAsignar(Long estudioId, Long cursoId,
-            Long semestreId, String grupoId, List<Long> calendariosIds);
+            Long semestreId, List<String> gruposIds, List<Long> calendariosIds);
 
     GrupoAsignatura getGrupoAsignaturaById(Long grupoAsignaturaId, Long estudioId)
             throws RegistroNoEncontradoException;

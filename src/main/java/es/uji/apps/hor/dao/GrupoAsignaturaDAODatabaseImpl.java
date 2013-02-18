@@ -35,7 +35,7 @@ public class GrupoAsignaturaDAODatabaseImpl extends BaseDAODatabaseImpl implemen
     @Override
     @Transactional
     public List<GrupoAsignatura> getGruposAsignaturasSinAsignar(Long estudioId, Long cursoId,
-            Long semestreId, String grupoId, List<Long> calendariosIds)
+            Long semestreId, List<String> gruposIds, List<Long> calendariosIds)
     {
         JPAQuery query = new JPAQuery(entityManager);
 
@@ -49,7 +49,7 @@ public class GrupoAsignaturaDAODatabaseImpl extends BaseDAODatabaseImpl implemen
                 .join(asignatura.item, item)
                 .where(asignatura.estudioId.eq(estudioId).and(
                         item.cursoId.eq(cursoId).and(item.semestre.id.eq(semestreId))
-                                .and(item.grupoId.eq(grupoId))
+                                .and(item.grupoId.in(gruposIds))
                                 .and(item.tipoSubgrupoId.in(tiposCalendarios))
                                 .and(item.diaSemana.isNull()))).list(item);
 
@@ -78,6 +78,7 @@ public class GrupoAsignaturaDAODatabaseImpl extends BaseDAODatabaseImpl implemen
         grupoAsignatura.setAsignatura(asignatura);
         grupoAsignatura.setCalendario(calendario);
         grupoAsignatura.setSubgrupoId(itemDTO.getSubgrupoId());
+        grupoAsignatura.setGrupoId(itemDTO.getGrupoId());
         return grupoAsignatura;
     }
 

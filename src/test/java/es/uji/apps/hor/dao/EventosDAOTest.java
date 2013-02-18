@@ -1,6 +1,7 @@
 package es.uji.apps.hor.dao;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Assert;
@@ -42,10 +43,9 @@ public class EventosDAOTest
 
     @Autowired
     protected EstudiosDAO estudiosDao;
-    
+
     @Autowired
     protected TipoEstudioDAO tipoEstudioDAO;
-
 
     private Long estudioId;
     private List<Long> listaCalendariosId = new ArrayList<Long>();
@@ -60,8 +60,8 @@ public class EventosDAOTest
     {
 
         Centro centro = new CentroBuilder(centroDAO).withNombre("Centro de prueba").build();
-        TipoEstudio tipoEstudio = new TipoEstudioBuilder(tipoEstudioDAO).withId("PR").withNombre("Pruebas")
-                .build();
+        TipoEstudio tipoEstudio = new TipoEstudioBuilder(tipoEstudioDAO).withId("PR")
+                .withNombre("Pruebas").build();
         Estudio estudio = new EstudioBuilder(estudiosDao).withNombre("Estudio de prueba")
                 .withTipoEstudio(tipoEstudio).withCentro(centro).withOficial(true).build();
         estudioId = estudio.getId();
@@ -79,7 +79,7 @@ public class EventosDAOTest
 
         listaCalendariosId.add(calendarioPracticasId);
         listaCalendariosId.add(calendarioTeoriaId);
-        
+
         Asignatura asignaturaFicticia1 = new AsignaturaBuilder().withCaracter("Obligatoria")
                 .withCaracterId("OB").withComun(false).withCursoId(cursoId).withId("PS1026")
                 .withNombre("Intervenció Psicosocial").withEstudio(estudio).build();
@@ -112,7 +112,8 @@ public class EventosDAOTest
     @Transactional
     public void getEventosSemanaGenericaTest()
     {
-        List<Evento> listaEventos = eventosDAO.getEventosSemanaGenerica(estudioId, cursoId, semestreId, grupoId, listaCalendariosId);
+        List<Evento> listaEventos = eventosDAO.getEventosSemanaGenerica(estudioId, cursoId,
+                semestreId, Collections.singletonList(grupoId), listaCalendariosId);
 
         Assert.assertTrue(listaEventos.size() > 0);
     }

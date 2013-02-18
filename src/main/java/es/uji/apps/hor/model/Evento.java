@@ -91,8 +91,8 @@ public class Evento
             return "";
         }
 
-        String texto = MessageFormat.format("{0} {1}{2}", asignatura.getId(), getCalendario()
-                .getLetraId(), subgrupoId);
+        String texto = MessageFormat.format("{0} {1}{2} {3}", asignatura.getId(), getCalendario()
+                .getLetraId(), subgrupoId, grupoId);
 
         if (tieneComunes())
         {

@@ -72,8 +72,8 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
                 valueField : 'grupo',
                 name : 'grupo',
                 labelWidth : 55,
-                width : 100,
-
+                width : 150,
+                multiSelect : true
             },
             {
                 margin : '0 0 0 0',
@@ -152,5 +152,12 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
             } ]
         } ]
 
-    } ]
+    } ],
+    
+    getGruposSelected : function()
+    {
+        var grupos = this.down('combobox[name=grupo]').getValue();
+        
+        return grupos.join(';');
+    }
 });

@@ -33,6 +33,8 @@ public class GrupoAsignatura
 
     private Long subgrupoId;
 
+    private String grupoId;
+
     public GrupoAsignatura(Long id)
     {
         this.id = id;
@@ -138,8 +140,8 @@ public class GrupoAsignatura
     @Override
     public String toString()
     {
-        return MessageFormat.format("{0} {1}{2}", getAsignatura().getId(), getCalendario()
-                .getLetraId(), subgrupoId);
+        return MessageFormat.format("{0} {1}{2} {3}", getAsignatura().getId(), getCalendario()
+                .getLetraId(), subgrupoId, grupoId);
     }
 
     public Long getSubgrupoId()
@@ -150,5 +152,15 @@ public class GrupoAsignatura
     public void setSubgrupoId(Long subgrupoId)
     {
         this.subgrupoId = subgrupoId;
+    }
+
+    public String getGrupoId()
+    {
+        return grupoId;
+    }
+
+    public void setGrupoId(String grupoId)
+    {
+        this.grupoId = grupoId;
     }
 }

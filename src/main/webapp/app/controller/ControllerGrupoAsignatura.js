@@ -19,6 +19,10 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
     {
         selector : 'panelHorarios formAsignacionAulas',
         ref : 'formAsignacionAulas'
+    },
+    {
+        selector : 'panelHorarios filtroGrupos combobox[name=grupo]',
+        ref : 'comboGrupos'
     } ],
 
     initComponent : function()
@@ -37,7 +41,7 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
             },
             'panelHorarios filtroGrupos combobox[name=grupo]' :
             {
-                select : this.updateAsignaturasSinAsignar
+                blur : this.updateAsignaturasSinAsignar
             },
             'panelHorarios selectorCalendarios checkbox' :
             {
@@ -80,32 +84,34 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
 
     updateAsignaturasSinAsignar : function()
     {
+        if (this.getComboGrupos().getValue() == '')
+        {
+            return;
+        }
+
         var store = this.getStoreGruposAsignaturasSinAsignarStore();
 
         var estudio = this.getFiltroGrupos().down('combobox[name=estudio]').getValue();
         var curso = this.getFiltroGrupos().down('combobox[name=curso]').getValue();
         var semestre = this.getFiltroGrupos().down('combobox[name=semestre]').getValue();
-        var grupo = this.getFiltroGrupos().down('combobox[name=grupo]').getValue();
+        var grupo = this.getFiltroGrupos().getGruposSelected();
 
-        if (grupo != null)
+        var calendarios = this.getSelectorCalendarios().getCalendarsSelected();
+
+        store.load(
         {
-            var calendarios = this.getSelectorCalendarios().getCalendarsSelected();
-
-            store.load(
+            callback : this.onGruposAsignaturasSinAsignarLoaded,
+            params :
             {
-                callback : this.onGruposAsignaturasSinAsignarLoaded,
-                params :
-                {
-                    estudioId : estudio,
-                    cursoId : curso,
-                    semestreId : semestre,
-                    grupoId : grupo,
-                    calendariosIds : calendarios
-                },
-                scope : this
-            });
+                estudioId : estudio,
+                cursoId : curso,
+                semestreId : semestre,
+                gruposId : grupo,
+                calendariosIds : calendarios
+            },
+            scope : this
+        });
 
-        }
     },
 
     onGruposAsignaturasSinAsignarLoaded : function(gruposAsignaturas, request)
@@ -113,7 +119,7 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
         var view = this.getSelectorGrupos();
 
         view.removeAll();
-        
+
         var botones = new Array();
 
         for ( var i = 0, len = gruposAsignaturas.length; i < len; i++)
@@ -130,9 +136,9 @@ Ext.define('HOR.controller.ControllerGrupoAsignatura',
             };
 
             botones.push(button);
-            
+
         }
-        
+
         view.add(botones);
     }
 

@@ -1,6 +1,7 @@
 package es.uji.apps.hor.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -124,6 +125,38 @@ public class RangoHorarioDAODatabaseImpl extends BaseDAODatabaseImpl implements 
         rangoHorarioDTO = update(rangoHorarioDTO);
 
         return creaRangoHorario(rangoHorarioDTO);
+    }
+
+    @Override
+    public List<RangoHorario> getRangosHorariosPorGrupos(Long estudioId, Long cursoId,
+            Long semestreId, List<String> gruposIds) throws RegistroNoEncontradoException
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+
+        QRangoHorarioDTO qRangoHorarioDTO = QRangoHorarioDTO.rangoHorarioDTO;
+
+        query.from(qRangoHorarioDTO).where(
+                qRangoHorarioDTO.estudioId.eq(estudioId).and(
+                        qRangoHorarioDTO.cursoId.eq(cursoId).and(
+                                qRangoHorarioDTO.semestreId.eq(semestreId).and(
+                                        qRangoHorarioDTO.grupoId.in(gruposIds)))));
+        List<RangoHorarioDTO> listaRangoHorarioDTO = query.list(qRangoHorarioDTO);
+
+        if (listaRangoHorarioDTO.size() > 0)
+        {
+            List<RangoHorario> listaRangosHorarios = new ArrayList<RangoHorario>();
+
+            for (RangoHorarioDTO rangoHorarioDTO : listaRangoHorarioDTO)
+            {
+                listaRangosHorarios.add(creaRangoHorario(rangoHorarioDTO));
+            }
+
+            return listaRangosHorarios;
+        }
+        else
+        {
+            throw new RegistroNoEncontradoException();
+        }
     }
 
 }

@@ -53,7 +53,7 @@ public class EventosService
 
     @Role({ "ADMIN", "USUARIO" })
     public List<Evento> eventosSemanaGenericaDeUnEstudio(Long estudioId, Long cursoId,
-            Long semestreId, String grupoId, List<Long> calendariosIds, Long connectedUserId)
+            Long semestreId, List<String> gruposIds, List<Long> calendariosIds, Long connectedUserId)
             throws UnauthorizedUserException, RegistroNoEncontradoException
     {
         if (!personaDAO.esAdmin(connectedUserId))
@@ -62,7 +62,7 @@ public class EventosService
             persona.compruebaAccesoAEstudio(estudioId);
         }
 
-        return eventosDAO.getEventosSemanaGenerica(estudioId, cursoId, semestreId, grupoId,
+        return eventosDAO.getEventosSemanaGenerica(estudioId, cursoId, semestreId, gruposIds,
                 calendariosIds);
     }
 
@@ -259,7 +259,7 @@ public class EventosService
 
     @Role({ "ADMIN", "USUARIO" })
     public List<EventoDetalle> eventosDetalleDeUnEstudio(Long estudioId, Long cursoId,
-            Long semestreId, String grupoId, List<Long> calendariosIds, Date rangoFechaInicio,
+            Long semestreId, List<String> gruposIds, List<Long> calendariosIds, Date rangoFechaInicio,
             Date rangoFechaFin, Long connectedUserId) throws UnauthorizedUserException,
             RegistroNoEncontradoException
     {
@@ -270,7 +270,7 @@ public class EventosService
         }
 
         List<EventoDetalle> listaEventos = eventosDAO.getEventosDetalle(estudioId, cursoId,
-                semestreId, grupoId, calendariosIds, rangoFechaInicio, rangoFechaFin);
+                semestreId, gruposIds, calendariosIds, rangoFechaInicio, rangoFechaFin);
 
         for (EventoDetalle eventoDetalle : listaEventos)
         {
