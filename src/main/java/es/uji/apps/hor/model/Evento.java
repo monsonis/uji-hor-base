@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import es.uji.apps.hor.AsignaturasComparator;
 import es.uji.apps.hor.AulaNoAsignadaAEstudioDelEventoException;
 import es.uji.apps.hor.DuracionEventoIncorrectaException;
+import es.uji.apps.hor.EventoFueraDeFechasSemestreException;
 import es.uji.apps.hor.EventoFueraDeRangoException;
 import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.RangoHorarioFueradeLimites;
@@ -540,6 +541,22 @@ public class Evento
 
     }
 
+    public void compruebaDentroFechasSemestre(Date fechaInicioSemestre, Date fechaFinSemestre)
+            throws EventoFueraDeFechasSemestreException
+    {
+        if (!dentroDelRangoDeFechas(fechaInicioSemestre, fechaFinSemestre))
+        {
+            throw new EventoFueraDeFechasSemestreException();
+        }
+
+    }
+
+    private boolean dentroDelRangoDeFechas(Date fechaInicio, Date fechaFin)
+    {
+        return getInicio().after(fechaInicio) && getFin().before(fechaFin);
+
+    }
+
     public String getDescripcionConGrupoYComunes()
     {
         String tituloEvento = "";
@@ -563,4 +580,5 @@ public class Evento
     {
         this.aula = aula;
     }
+
 }

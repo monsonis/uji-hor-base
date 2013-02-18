@@ -10,20 +10,23 @@ import org.springframework.stereotype.Service;
 import es.uji.apps.hor.AulaNoAsignadaAEstudioDelEventoException;
 import es.uji.apps.hor.DuracionEventoIncorrectaException;
 import es.uji.apps.hor.EventoDetalleSinEventoException;
+import es.uji.apps.hor.EventoFueraDeFechasSemestreException;
 import es.uji.apps.hor.EventoFueraDeRangoException;
 import es.uji.apps.hor.EventoMasDeUnaRepeticionException;
 import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.dao.AulaDAO;
-import es.uji.apps.hor.dao.CentroDAO;
 import es.uji.apps.hor.dao.EventosDAO;
 import es.uji.apps.hor.dao.PersonaDAO;
 import es.uji.apps.hor.dao.RangoHorarioDAO;
+import es.uji.apps.hor.dao.SemestresDetalleDAO;
 import es.uji.apps.hor.model.Aula;
+import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.model.Evento;
 import es.uji.apps.hor.model.EventoDetalle;
 import es.uji.apps.hor.model.EventoDocencia;
 import es.uji.apps.hor.model.Persona;
 import es.uji.apps.hor.model.RangoHorario;
+import es.uji.apps.hor.model.SemestreDetalle;
 import es.uji.commons.rest.Role;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 import es.uji.commons.sso.exceptions.UnauthorizedUserException;
@@ -42,7 +45,7 @@ public class EventosService
     private RangoHorarioDAO rangoHorarioDAO;
 
     @Autowired
-    private CentroDAO centroDAO;
+    private SemestresDetalleDAO semestresDetalleDAO;
 
     @Autowired
     public EventosService(EventosDAO eventosDAO, AulaDAO aulaDAO)
@@ -92,7 +95,7 @@ public class EventosService
     public Evento modificaDiaYHoraEventoEnVistaDetalle(Long eventoId, Date inicio, Date fin,
             Long connectedUserId) throws DuracionEventoIncorrectaException,
             RegistroNoEncontradoException, UnauthorizedUserException, EventoFueraDeRangoException,
-            EventoMasDeUnaRepeticionException
+            EventoMasDeUnaRepeticionException, EventoFueraDeFechasSemestreException
     {
         Evento evento = eventosDAO.getEventoByIdConDetalles(eventoId);
 
@@ -109,11 +112,21 @@ public class EventosService
 
         evento.setFechaInicioYFin(inicio, fin);
 
+        SemestreDetalle semestre = getSemestreDelEvento(evento);
+        evento.compruebaDentroFechasSemestre(semestre.getFechaInicio(), semestre.getFechaFin());
+
         List<RangoHorario> rangosHorarios = rangoHorarioDAO.getRangosHorariosDelEvento(evento);
         evento.compruebaDentroDeLosRangosHorarios(rangosHorarios);
 
         eventosDAO.updateHorasEventoYSusDetalles(evento);
         return evento;
+    }
+
+    private SemestreDetalle getSemestreDelEvento(Evento evento)
+    {
+        Estudio unEstudio = evento.getAsignaturas().get(0).getEstudio();
+        return semestresDetalleDAO.getSemestresDetallesPorEstudioIdYSemestreId(unEstudio.getId(),
+                evento.getSemestre().getSemestre()).get(0);
     }
 
     private boolean elEventoTieneMasDeUnaRepeticion(Evento evento)
