@@ -10,6 +10,7 @@ public class EventoDetalle
     private Date inicio;
     private Date fin;
     private String descripcion;
+    private int comunes = 0;
 
     public EventoDetalle()
     {
@@ -104,6 +105,17 @@ public class EventoDetalle
         return tituloEvento;
     }
 
+    public String getDescripcionParaUnEstudio(Long estudioId)
+    {
+        String titulo = evento.getDescripcionParaUnEstudio(estudioId);
+        if (isEditable())
+        {
+            titulo += " *";
+        }
+
+        return titulo;
+    }
+
     public void setDescripcion(String descripcion)
     {
         this.descripcion = descripcion;
@@ -148,6 +160,16 @@ public class EventoDetalle
 
         return calendario.getTime();
 
+    }
+
+    public void setComunes(int comunes)
+    {
+        this.comunes = comunes;
+    }
+
+    private boolean isEditable()
+    {
+        return comunes == 0;
     }
 
 }

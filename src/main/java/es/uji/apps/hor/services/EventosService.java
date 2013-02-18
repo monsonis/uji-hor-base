@@ -269,8 +269,16 @@ public class EventosService
             persona.compruebaAccesoAEstudio(estudioId);
         }
 
-        return eventosDAO.getEventosDetalle(estudioId, cursoId, semestreId, grupoId,
-                calendariosIds, rangoFechaInicio, rangoFechaFin);
+        List<EventoDetalle> listaEventos = eventosDAO.getEventosDetalle(estudioId, cursoId,
+                semestreId, grupoId, calendariosIds, rangoFechaInicio, rangoFechaFin);
+
+        for (EventoDetalle eventoDetalle : listaEventos)
+        {
+            Evento evento = eventosDAO.getEventoByEventoDetalleId(eventoDetalle.getId());
+            eventoDetalle.setComunes(evento.getEventosDetalle().size() - 1);
+        }
+
+        return listaEventos;
     }
 
     @Role({ "ADMIN", "USUARIO" })
