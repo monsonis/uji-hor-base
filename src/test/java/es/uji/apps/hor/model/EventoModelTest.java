@@ -102,6 +102,7 @@ public class EventoModelTest
         String codigoAsignatura = "PS1026";
         Long subgrupo = (long) 2;
         String codigoAula = "AA203143";
+        String grupo = "A";
 
         Estudio estudio1 = new EstudioBuilder().withId(idEstudio).build();
 
@@ -119,12 +120,12 @@ public class EventoModelTest
 
         Evento evento = new EventoBuilder().withTitulo("Evento de prueba")
                 .withAsignatura(asignatura1).withAsignatura(asignatura2).withSubgrupoId(subgrupo)
-                .withCalendario(calendario).withAula(aula).build();
+                .withCalendario(calendario).withAula(aula).withGrupoId(grupo).build();
 
         String descripcion = evento.getDescripcionParaUnEstudio(estudio1.getId());
 
-        String descripcionEsperada = codigoAsignatura + " PR" + String.valueOf(subgrupo) + " - C "
-                + codigoAula;
+        String descripcionEsperada = codigoAsignatura + " PR" + String.valueOf(subgrupo) + " "
+                + grupo + " - C " + codigoAula;
 
         assertThat(descripcion, is(descripcionEsperada));
 
