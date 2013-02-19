@@ -176,7 +176,7 @@ public class EventosService
     private boolean esElultimoEventoAsignadoDelGrupo(Evento evento)
     {
         long cantidadEventosDelMismoGrupo = cantidadEventosDelMismoGrupo(evento);
-        return cantidadEventosDelMismoGrupo == 1;
+        return cantidadEventosDelMismoGrupo == 0;
     }
 
     @Role({ "ADMIN", "USUARIO" })
