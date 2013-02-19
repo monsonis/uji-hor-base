@@ -15,11 +15,14 @@ import es.uji.apps.hor.db.AulaPlanificacionDTO;
 import es.uji.apps.hor.db.CentroDTO;
 import es.uji.apps.hor.db.EstudioDTO;
 import es.uji.apps.hor.db.ItemDTO;
+import es.uji.apps.hor.db.ItemsAsignaturaDTO;
 import es.uji.apps.hor.db.QAulaDTO;
 import es.uji.apps.hor.db.QAulaPersonaDTO;
 import es.uji.apps.hor.db.QAulaPlanificacionDTO;
 import es.uji.apps.hor.db.QItemDTO;
+import es.uji.apps.hor.db.QItemsAsignaturaDTO;
 import es.uji.apps.hor.model.AreaEdificio;
+import es.uji.apps.hor.model.Asignatura;
 import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.AulaPlanificacion;
 import es.uji.apps.hor.model.Centro;
@@ -107,8 +110,10 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
     {
         JPAQuery query = new JPAQuery(entityManager);
         QItemDTO qItem = QItemDTO.itemDTO;
+        QItemsAsignaturaDTO qAsignatura = QItemsAsignaturaDTO.itemsAsignaturaDTO;
 
-        query.from(qItem).where(qItem.aula.id.eq(aulaDTO.getId()));
+        query.from(qItem).innerJoin(qItem.itemsAsignaturas, qAsignatura).fetch()
+                .where(qItem.aula.id.eq(aulaDTO.getId()));
 
         List<Evento> listaEventos = new ArrayList<Evento>();
 
@@ -116,6 +121,21 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         {
             Evento evento = new Evento();
             evento.setId(itemDTO.getId());
+
+            List<Asignatura> listaAsignaturas = new ArrayList<Asignatura>();
+
+            for (ItemsAsignaturaDTO asignaturaDTO : itemDTO.getAsignaturas())
+            {
+                Asignatura asignatura = new Asignatura(asignaturaDTO.getAsignaturaId());
+                Estudio estudio = new Estudio(asignaturaDTO.getEstudioId(),
+                        asignaturaDTO.getEstudio());
+                asignatura.setEstudio(estudio);
+
+                listaAsignaturas.add(asignatura);
+            }
+
+            evento.setAsignaturas(listaAsignaturas);
+
             listaEventos.add(evento);
         }
         return listaEventos;

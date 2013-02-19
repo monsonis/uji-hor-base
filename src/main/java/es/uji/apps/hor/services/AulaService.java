@@ -67,45 +67,28 @@ public class AulaService
             throws RegistroConHijosException, UnauthorizedUserException,
             RegistroNoEncontradoException
     {
+        AulaPlanificacion aulaPlanificacion = aulaDAO.getAulaPlanificacionById(aulaPlanificacionId);
 
-        if (personaDAO.esAdmin(connectedUserId))
-        {
-            AulaPlanificacion aulaPlanificacion = aulaDAO
-                    .getAulaPlanificacionById(aulaPlanificacionId);
-            Aula aula = aulaDAO.getAulaById(aulaPlanificacion.getAula().getId());
-            if (aula.sePuedeDesplanificar())
-            {
-                aulaDAO.deleteAulaAsignadaToEstudio(aulaPlanificacionId);
-            }
-            else
-            {
-                throw new RegistroConHijosException();
-            }
-        }
-        else
+        if (!personaDAO.esAdmin(connectedUserId))
         {
             Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
 
-            AulaPlanificacion aulaPlanificacion = aulaDAO
-                    .getAulaPlanificacionById(aulaPlanificacionId);
             Centro centro = aulaPlanificacion.getAula().getCentro();
 
-            if (persona.esGestorDeCentro(centro.getId()))
-            {
-                Aula aula = aulaDAO.getAulaConEventosById(aulaPlanificacion.getAula().getId());
-                if (aula.sePuedeDesplanificar())
-                {
-                    aulaDAO.deleteAulaAsignadaToEstudio(aulaPlanificacionId);
-                }
-                else
-                {
-                    throw new RegistroConHijosException();
-                }
-            }
-            else
+            if (!persona.esGestorDeCentro(centro.getId()))
             {
                 throw new UnauthorizedUserException();
             }
+        }
+
+        Aula aula = aulaDAO.getAulaConEventosById(aulaPlanificacion.getAula().getId());
+        if (aula.sePuedeDesplanificar(aulaPlanificacion.getEstudio().getId()))
+        {
+            aulaDAO.deleteAulaAsignadaToEstudio(aulaPlanificacionId);
+        }
+        else
+        {
+            throw new RegistroConHijosException();
         }
     }
 

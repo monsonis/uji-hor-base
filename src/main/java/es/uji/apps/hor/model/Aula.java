@@ -15,11 +15,12 @@ public class Aula
     private Centro centro;
     private List<AulaPlanificacion> planificacion;
     private List<Evento> eventos;
-    
-    public Aula() {
-        
+
+    public Aula()
+    {
+
     }
-    
+
     public Aula(Long id)
     {
         this.id = id;
@@ -125,9 +126,23 @@ public class Aula
         this.planificacion = planificacion;
     }
 
-    public boolean sePuedeDesplanificar()
+    public boolean sePuedeDesplanificar(Long estudioId)
     {
-        return this.eventos == null || this.eventos.size() == 0;
+        if (eventos != null)
+        {
+            for (Evento evento : eventos)
+            {
+                for (Asignatura asignatura : evento.getAsignaturas())
+                {
+                    if (asignatura.getEstudio().getId().equals(estudioId))
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
     }
 
     public List<Evento> getEventos()
@@ -139,6 +154,5 @@ public class Aula
     {
         this.eventos = eventos;
     }
-
 
 }
