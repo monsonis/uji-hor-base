@@ -246,6 +246,7 @@ Ext.define('HOR.controller.ControllerCalendario',
                                     {
                                         return false;
                                     },
+                                                                       
 
                                     afterrender : function()
                                     {
@@ -348,6 +349,11 @@ Ext.define('HOR.controller.ControllerCalendario',
                         },
                         listeners :
                         {
+                        	  eventover: function(calendar, event, el) {
+                        		ref.mostrarInfoAdicionalEvento(event,el);                        		
+                     		 	return true;
+                         	 },
+                         	 
                             afterrender : function()
                             {
                                 eventos.load();
@@ -357,6 +363,20 @@ Ext.define('HOR.controller.ControllerCalendario',
                 }
             }
         });
+    },
+    
+    mostrarInfoAdicionalEvento : function (event,el){
+	    
+	    var nombre = event.data.NombreAsignatura ;
+	    var plazas = event.data.PlazasAula;
+	    var tooltipHtml = 'Assignatura: '+nombre;
+	    if (plazas) {
+	    	tooltipHtml += '<br/>Plazas aula: '+plazas;
+	    }
+	 	Ext.create('Ext.tip.ToolTip', {
+		    target: el,
+		    html: tooltipHtml
+		});
     },
 
     addEvento : function(button)

@@ -172,6 +172,17 @@ Extensible.calendar.data.EventMappings.AulaPlanificacionId =
     name : 'AulaPlanificacionId',
     mapping : 'aula_id'
 };
+Extensible.calendar.data.EventMappings.nombreAsignatura =
+{
+    name : 'NombreAsignatura',
+    mapping : 'nombreAsignatura'
+};
+Extensible.calendar.data.EventMappings.plazasAula =
+{
+    name : 'PlazasAula',
+    mapping : 'plazasAula'
+};
+
 Extensible.calendar.data.EventModel.reconfigure();
 
 Extensible.calendar.form.EventDetails.override(
