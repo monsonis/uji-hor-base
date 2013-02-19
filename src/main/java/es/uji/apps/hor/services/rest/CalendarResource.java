@@ -93,6 +93,28 @@ public class CalendarResource extends CoreBaseService
     public List<UIEntity> getConfiguracion(@QueryParam(ESTUDIO_ID_QUERY_PARAM) String estudioId,
             @QueryParam(CURSO_ID_QUERY_PARAM) String cursoId,
             @QueryParam(SEMESTRE_ID_QUERY_PARAM) String semestreId,
+            @QueryParam(GRUPO_ID_QUERY_PARAM) String grupoId) throws RegistroNoEncontradoException,
+            UnauthorizedUserException
+    {
+
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+
+        ParamUtils.checkNotNull(estudioId, cursoId, semestreId, grupoId);
+
+        RangoHorario rangoHorario = rangoHorarioService.getHorario(ParamUtils.parseLong(estudioId),
+                ParamUtils.parseLong(cursoId), ParamUtils.parseLong(semestreId), grupoId,
+                connectedUserId);
+
+        return rangoHorarioToUI(rangoHorario);
+    }
+
+    @GET
+    @Path("config/adjust")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<UIEntity> getConfiguracionAjustada(
+            @QueryParam(ESTUDIO_ID_QUERY_PARAM) String estudioId,
+            @QueryParam(CURSO_ID_QUERY_PARAM) String cursoId,
+            @QueryParam(SEMESTRE_ID_QUERY_PARAM) String semestreId,
             @QueryParam(GRUPOS_ID_QUERY_PARAM) String gruposIds)
             throws RegistroNoEncontradoException, UnauthorizedUserException
     {
@@ -113,9 +135,9 @@ public class CalendarResource extends CoreBaseService
             }
         }
 
-        RangoHorario rangoHorario = rangoHorarioService.getHorario(ParamUtils.parseLong(estudioId),
-                ParamUtils.parseLong(cursoId), ParamUtils.parseLong(semestreId), gruposList,
-                connectedUserId);
+        RangoHorario rangoHorario = rangoHorarioService.getHorarioAjustado(
+                ParamUtils.parseLong(estudioId), ParamUtils.parseLong(cursoId),
+                ParamUtils.parseLong(semestreId), gruposList, connectedUserId);
 
         return rangoHorarioToUI(rangoHorario);
     }

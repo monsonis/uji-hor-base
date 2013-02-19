@@ -19,7 +19,11 @@ Ext.define('HOR.controller.ControllerFiltroCalendario',
     {
         selector : 'panelCalendario',
         ref : 'panelCalendario'
-    } ],
+    } ,
+    {
+        selector : 'panelHorarios filtroGrupos combobox[name=grupo]',
+        ref : 'comboGrupos'
+    }],
 
     init : function()
     {
@@ -38,36 +42,53 @@ Ext.define('HOR.controller.ControllerFiltroCalendario',
             'panelHorarios filtroGrupos combobox[name=semestre]' :
             {
                 select : this.onSemestreSelected
+            },
+            'panelHorarios filtroGrupos combobox[name=grupo]' :
+            {
+                blur : function()
+                {
+                    if (this.getComboGrupos().getValue() == '')
+                    {
+                        this.limpiaPanelesCalendario();
+                    }
+                }
             }
         });
     },
 
-    limpiaCamposComunes: function() {
+    limpiaCamposComunes : function()
+    {
         this.getFiltroGrupos().down('combobox[name=grupo]').clearValue();
         this.getFiltroGrupos().down('button[name=intervaloHorario]').hide();
         this.getFiltroGrupos().down('button[name=calendarioDetalle]').hide();
         this.getFiltroGrupos().down('button[name=calendarioGenerica]').hide();
         this.getFiltroGrupos().down('button[name=imprimir]').hide();
         this.getFiltroGrupos().down('button[name=validar]').hide();
-        
-        if (this.getPanelCalendario()) {
+
+        this.limpiaPanelesCalendario();
+    },
+
+    limpiaPanelesCalendario : function()
+    {
+        if (this.getPanelCalendario())
+        {
             this.getPanelCalendario().limpiaCalendario();
         }
-        
-        if (this.getPanelCalendarioDetalle()) {
+
+        if (this.getPanelCalendarioDetalle())
+        {
             this.getPanelCalendarioDetalle().limpiaCalendario();
         }
 
         this.getSelectorGrupos().limpiaGrupos();
-        
     },
-    
+
     onTitulacionSelected : function(combo, records)
     {
         this.getFiltroGrupos().down('combobox[name=curso]').clearValue();
         this.getFiltroGrupos().down('combobox[name=semestre]').clearValue();
         this.limpiaCamposComunes();
-        
+
         var store = this.getStoreCursosStore();
 
         store.load(

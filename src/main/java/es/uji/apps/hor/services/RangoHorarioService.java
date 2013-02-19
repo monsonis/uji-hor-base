@@ -34,7 +34,7 @@ public class RangoHorarioService
     }
 
     @Role({ "ADMIN", "USUARIO" })
-    public RangoHorario getHorario(Long estudioId, Long cursoId, Long semestreId,
+    public RangoHorario getHorarioAjustado(Long estudioId, Long cursoId, Long semestreId,
             List<String> gruposIds, Long connectedUserId) throws UnauthorizedUserException,
             RegistroNoEncontradoException
     {
@@ -59,6 +59,27 @@ public class RangoHorarioService
         }
 
         return RangoHorario.getRangoHorarioPorDefecto(estudioId, cursoId, semestreId);
+    }
+
+    @Role({ "ADMIN", "USUARIO" })
+    public RangoHorario getHorario(Long estudioId, Long cursoId, Long semestreId, String grupoId,
+            Long connectedUserId) throws UnauthorizedUserException, RegistroNoEncontradoException
+    {
+        if (!personaDAO.esAdmin(connectedUserId))
+        {
+            Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
+            persona.compruebaAccesoAEstudio(estudioId);
+        }
+
+        try
+        {
+            return rangoHorarioDAO.getRangoHorario(estudioId, cursoId, semestreId, grupoId);
+        }
+        catch (RegistroNoEncontradoException e)
+        {
+            return RangoHorario.getRangoHorarioPorDefecto(estudioId, cursoId, semestreId, grupoId);
+        }
+
     }
 
     @Role({ "ADMIN", "USUARIO" })

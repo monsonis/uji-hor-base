@@ -1,7 +1,7 @@
 Ext.define('HOR.controller.ControllerCalendario',
 {
     extend : 'Ext.app.Controller',
-    stores : [ 'StoreCalendarios', 'StoreEventos', 'StoreEventosDetalle', 'StoreGruposAsignaturasSinAsignar', 'StoreConfiguracion' ],
+    stores : [ 'StoreCalendarios', 'StoreEventos', 'StoreEventosDetalle', 'StoreGruposAsignaturasSinAsignar', 'StoreConfiguracionAjustada' ],
     model : [ 'Configuracion' ],
     refs : [
     {
@@ -154,7 +154,7 @@ Ext.define('HOR.controller.ControllerCalendario',
         var grupos = this.getFiltroGrupos().getGruposSelected();
 
         var calendarios = this.getSelectorCalendarios().getCalendarsSelected();
-        var storeConfiguracion = this.getStoreConfiguracionStore();
+        var storeConfiguracion = this.getStoreConfiguracionAjustadaStore();
 
         var ref = this;
         storeConfiguracion.load(
@@ -280,7 +280,7 @@ Ext.define('HOR.controller.ControllerCalendario',
         var grupos = this.getFiltroGrupos().getGruposSelected();
 
         var calendarios = this.getSelectorCalendarios().getCalendarsSelected();
-        var storeConfiguracion = this.getStoreConfiguracionStore();
+        var storeConfiguracion = this.getStoreConfiguracionAjustadaStore();
 
         var ref = this;
         storeConfiguracion.load(
