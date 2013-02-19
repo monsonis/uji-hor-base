@@ -73,7 +73,11 @@ public class CentroService
                     listaCargosIds.add(cargo.getId());
                 }
             }
-            return Collections.singletonList(centroDAO.getCentroGestionablePorUsuario(connectedUserId, listaCargosIds));
+            if (listaCargosIds.size() > 0) {
+                return Collections.singletonList(centroDAO.getCentroGestionablePorUsuario(connectedUserId, listaCargosIds));
+            } else {
+                return new ArrayList<Centro>();
+            }
         }
         else
         {
