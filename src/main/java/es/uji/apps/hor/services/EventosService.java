@@ -27,7 +27,7 @@ import es.uji.apps.hor.model.EventoDocencia;
 import es.uji.apps.hor.model.Persona;
 import es.uji.apps.hor.model.RangoHorario;
 import es.uji.apps.hor.model.SemestreDetalle;
-import es.uji.commons.rest.Role;
+import es.uji.commons.rest.auth.Role;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 import es.uji.commons.sso.exceptions.UnauthorizedUserException;
 
@@ -272,9 +272,9 @@ public class EventosService
 
     @Role({ "ADMIN", "USUARIO" })
     public List<EventoDetalle> eventosDetalleDeUnEstudio(Long estudioId, Long cursoId,
-            Long semestreId, List<String> gruposIds, List<Long> calendariosIds, Date rangoFechaInicio,
-            Date rangoFechaFin, Long connectedUserId) throws UnauthorizedUserException,
-            RegistroNoEncontradoException
+            Long semestreId, List<String> gruposIds, List<Long> calendariosIds,
+            Date rangoFechaInicio, Date rangoFechaFin, Long connectedUserId)
+            throws UnauthorizedUserException, RegistroNoEncontradoException
     {
         if (!personaDAO.esAdmin(connectedUserId))
         {

@@ -12,7 +12,7 @@ import es.uji.apps.hor.dao.PersonaDAO;
 import es.uji.apps.hor.model.Cargo;
 import es.uji.apps.hor.model.Centro;
 import es.uji.apps.hor.model.Persona;
-import es.uji.commons.rest.Role;
+import es.uji.commons.rest.auth.Role;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 import es.uji.commons.sso.exceptions.UnauthorizedUserException;
 
@@ -58,7 +58,8 @@ public class CentroService
         return centro;
     }
 
-    public List<Centro> getCentrosAGestionar(Long connectedUserId) throws RegistroNoEncontradoException
+    public List<Centro> getCentrosAGestionar(Long connectedUserId)
+            throws RegistroNoEncontradoException
     {
         if (!personaDAO.esAdmin(connectedUserId))
         {
@@ -73,11 +74,17 @@ public class CentroService
                     listaCargosIds.add(cargo.getId());
                 }
             }
-            if (listaCargosIds.size() > 0) {
-                return Collections.singletonList(centroDAO.getCentroGestionablePorUsuario(connectedUserId, listaCargosIds));
-            } else {
+
+            if (listaCargosIds.size() > 0)
+            {
+                return Collections.singletonList(centroDAO.getCentroGestionablePorUsuario(
+                        connectedUserId, listaCargosIds));
+            }
+            else
+            {
                 return new ArrayList<Centro>();
             }
+
         }
         else
         {

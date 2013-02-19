@@ -20,9 +20,9 @@ import com.sun.jersey.spi.spring.container.servlet.SpringServlet;
 import com.sun.jersey.test.framework.JerseyTest;
 import com.sun.jersey.test.framework.WebAppDescriptor;
 
-import es.uji.commons.rest.UIEntityJSONMessageBodyReader;
-import es.uji.commons.rest.UIEntityJSONMessageBodyWriter;
-import es.uji.commons.rest.UIEntityListJSONMessageBodyReader;
+import es.uji.commons.rest.json.UIEntityListMessageBodyReader;
+import es.uji.commons.rest.json.UIEntityMessageBodyReader;
+import es.uji.commons.rest.json.UIEntityMessageBodyWriter;
 import es.uji.commons.sso.AuthFilter;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -70,9 +70,9 @@ public abstract class AbstractRestTest extends JerseyTest
     private static ClientConfig createClientConfig()
     {
         ClientConfig config = new DefaultClientConfig();
-        config.getClasses().add(UIEntityJSONMessageBodyReader.class);
-        config.getClasses().add(UIEntityJSONMessageBodyWriter.class);
-        config.getClasses().add(UIEntityListJSONMessageBodyReader.class);
+        config.getClasses().add(UIEntityMessageBodyReader.class);
+        config.getClasses().add(UIEntityMessageBodyWriter.class);
+        config.getClasses().add(UIEntityListMessageBodyReader.class);
         config.getClasses().add(JsonProvider.class);
 
         return config;

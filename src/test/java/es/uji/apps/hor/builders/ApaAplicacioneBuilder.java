@@ -1,7 +1,5 @@
 package es.uji.apps.hor.builders;
 
-import es.uji.apps.hor.dao.RangoHorarioDAO;
-import es.uji.apps.hor.model.RangoHorario;
 import es.uji.commons.sso.dao.ApaDAO;
 import es.uji.commons.sso.db.ApaAplicacione;
 

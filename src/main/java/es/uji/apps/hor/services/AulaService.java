@@ -13,7 +13,7 @@ import es.uji.apps.hor.model.AulaPlanificacion;
 import es.uji.apps.hor.model.Centro;
 import es.uji.apps.hor.model.Persona;
 import es.uji.apps.hor.model.TipoAula;
-import es.uji.commons.rest.Role;
+import es.uji.commons.rest.auth.Role;
 import es.uji.commons.rest.exceptions.RegistroConHijosException;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 import es.uji.commons.sso.exceptions.UnauthorizedUserException;

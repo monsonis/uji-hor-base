@@ -13,7 +13,7 @@ import es.uji.apps.hor.dao.RangoHorarioDAO;
 import es.uji.apps.hor.model.Evento;
 import es.uji.apps.hor.model.Persona;
 import es.uji.apps.hor.model.RangoHorario;
-import es.uji.commons.rest.Role;
+import es.uji.commons.rest.auth.Role;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 import es.uji.commons.sso.exceptions.UnauthorizedUserException;
 

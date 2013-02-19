@@ -14,7 +14,6 @@ import com.sun.jersey.api.core.InjectParam;
 import es.uji.apps.hor.model.SemestreDetalle;
 import es.uji.apps.hor.services.SemestresDetalleService;
 import es.uji.commons.rest.CoreBaseService;
-import es.uji.commons.rest.Role;
 import es.uji.commons.rest.UIEntity;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 import es.uji.commons.sso.AccessManager;

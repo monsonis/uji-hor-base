@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import es.uji.apps.hor.dao.PersonaDAO;
 import es.uji.apps.hor.model.Cargo;
 import es.uji.apps.hor.model.Persona;
-import es.uji.commons.rest.Role;
+import es.uji.commons.rest.auth.Role;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 import es.uji.commons.sso.exceptions.UnauthorizedUserException;
 

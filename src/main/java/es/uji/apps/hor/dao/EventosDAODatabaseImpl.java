@@ -176,6 +176,7 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             aula.setId(itemDTO.getAula().getId());
             aula.setNombre(itemDTO.getAulaNombre());
             aula.setCodigo(itemDTO.getAula().getCodigo());
+            aula.setPlazas(itemDTO.getAula().getPlazas());
             evento.setAula(aula);
         }
 

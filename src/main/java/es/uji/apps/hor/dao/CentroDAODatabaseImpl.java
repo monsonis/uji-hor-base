@@ -13,14 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mysema.query.jpa.impl.JPAQuery;
 
 import es.uji.apps.hor.db.AulaDTO;
-import es.uji.apps.hor.db.CargoPersonaDTO;
 import es.uji.apps.hor.db.CentroDTO;
 import es.uji.apps.hor.db.QAulaDTO;
 import es.uji.apps.hor.db.QAulaPersonaDTO;
 import es.uji.apps.hor.db.QAulaPlanificacionDTO;
 import es.uji.apps.hor.db.QCargoPersonaDTO;
 import es.uji.apps.hor.db.QCentroDTO;
-import es.uji.apps.hor.db.QTipoCargoDTO;
 import es.uji.apps.hor.model.AreaEdificio;
 import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.Centro;

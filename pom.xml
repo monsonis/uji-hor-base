@@ -14,8 +14,14 @@
   <dependencies>
     <dependency>
       <groupId>es.uji.commons</groupId>
+      <artifactId>uji-commons-rest</artifactId>
+      <version>0.1.11-SNAPSHOT</version>
+    </dependency>
+      
+    <dependency>
+      <groupId>es.uji.commons</groupId>
       <artifactId>uji-commons-testing</artifactId>
-      <version>0.1.1</version>
+      <version>0.1.2-SNAPSHOT</version>
       <!-- exclusions>
         <exclusion>
           <groupId>org.hamcrest</groupId>

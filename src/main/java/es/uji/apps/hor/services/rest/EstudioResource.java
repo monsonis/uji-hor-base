@@ -14,7 +14,6 @@ import com.sun.jersey.api.core.InjectParam;
 import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.services.EstudiosService;
 import es.uji.commons.rest.CoreBaseService;
-import es.uji.commons.rest.ParamUtils;
 import es.uji.commons.rest.UIEntity;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 import es.uji.commons.sso.AccessManager;

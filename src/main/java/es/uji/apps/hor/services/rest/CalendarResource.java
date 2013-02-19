@@ -550,6 +550,12 @@ public class CalendarResource extends CoreBaseService
     {
         UIEntity entity = convierteEventoAUIEntity(evento, estudioId);
         entity.put("title", evento.getDescripcionParaUnEstudio(estudioId));
+        entity.put("nombreAsignatura", evento.getAsignaturaDelEstudio(estudioId).getNombre());
+        if (evento.getAula() != null)
+        {
+            entity.put("plazasAula", evento.getAula().getPlazas());
+        }
+
         return entity;
 
     }

@@ -1,7 +1,12 @@
 package es.uji.apps.hor.db;
 
 import java.io.Serializable;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
 
 /**
  * The persistent class for the HOR_V_AULAS_PERSONAS database table.

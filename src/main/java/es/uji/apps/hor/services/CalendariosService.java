@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import es.uji.apps.hor.dao.CalendariosDAO;
 import es.uji.apps.hor.model.Calendario;
-import es.uji.commons.rest.Role;
+import es.uji.commons.rest.auth.Role;
 
 @Service
 public class CalendariosService

@@ -2,10 +2,15 @@ package es.uji.apps.hor.db;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-
-import javax.persistence.*;
-
 import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * The persistent class for the HOR_V_ITEMS_DETALLE database table.

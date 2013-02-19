@@ -47,7 +47,7 @@ Ext.define('HOR.view.ApplicationViewport',
             	        proxy :
             	        {
             	            type : 'ajax',
-            	            url : '/hor/rest/navigation/json/class?codigoAplicacion=HOR',
+            	            url : '/hor/rest/navigation/class?codigoAplicacion=HOR',
             	            noCache : true,
 
             	            reader :

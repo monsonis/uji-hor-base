@@ -10,7 +10,7 @@ import es.uji.apps.hor.dao.PersonaDAO;
 import es.uji.apps.hor.db.PermisoExtraDTO;
 import es.uji.apps.hor.model.PermisoExtra;
 import es.uji.apps.hor.model.Persona;
-import es.uji.commons.rest.Role;
+import es.uji.commons.rest.auth.Role;
 import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 import es.uji.commons.sso.exceptions.UnauthorizedUserException;
 
