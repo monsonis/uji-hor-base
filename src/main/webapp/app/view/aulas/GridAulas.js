@@ -28,6 +28,11 @@ Ext.define('HOR.view.aulas.GridAulas',
         width : '40%',
     },
     {
+        text : 'Plazas',
+        dataIndex : 'plazas',
+        width : '15%',
+    },
+    {
         text : 'Edificio',
         dataIndex : 'edificio',
         width : '15%'

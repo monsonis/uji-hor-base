@@ -65,6 +65,7 @@ public class AulaResource extends CoreBaseService
         entity.put("edificio", aulaPlanificacion.getAula().getEdificio().getNombre());
         entity.put("tipo", aulaPlanificacion.getAula().getTipo().getNombre());
         entity.put("planta", aulaPlanificacion.getAula().getPlanta().getNombre());
+        entity.put("plazas", aulaPlanificacion.getAula().getPlazas());
         entity.put("semestreId", aulaPlanificacion.getSemestre().getNombre());
 
         return entity;
