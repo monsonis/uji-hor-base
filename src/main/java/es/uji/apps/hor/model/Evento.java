@@ -520,7 +520,10 @@ public class Evento
             }
         }
 
-        comunes = comunes.substring(2);
+        if (comunes.length() > 2) {
+          comunes = comunes.substring(2);
+        }
+        
         return comunes;
     }
 
