@@ -366,7 +366,6 @@ Ext.define('HOR.controller.ControllerCalendario',
     },
     
     mostrarInfoAdicionalEvento : function (event,el){
-	    
 	    var nombre = event.data.NombreAsignatura ;
 	    var plazas = event.data.PlazasAula;
 	    var tooltipHtml = 'Assignatura: '+nombre;
@@ -375,6 +374,7 @@ Ext.define('HOR.controller.ControllerCalendario',
 	    }
 	 	Ext.create('Ext.tip.ToolTip', {
 		    target: el,
+		    showDelay: 100,
 		    html: tooltipHtml
 		});
     },
