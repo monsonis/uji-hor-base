@@ -42,7 +42,7 @@ public class CentroResource extends CoreBaseService
 
         return UIEntity.toUI(centros);
     }
-    
+
     @GET
     @Path("gestion")
     @Produces(MediaType.APPLICATION_JSON)
@@ -172,11 +172,16 @@ public class CentroResource extends CoreBaseService
     {
         TreeRow nodo = new TreeRow();
 
+        String title = aula.getNombre();
+        if (aula.getPlazas() != null)
+        {
+            title += " (" + aula.getPlazas().toString() + " places)";
+        }
+
         nodo.setId(aula.getId().toString());
-        nodo.setTitle(aula.getNombre());
-        nodo.setText(aula.getNombre());
+        nodo.setTitle(title);
+        nodo.setText(title);
         nodo.setLeaf("true");
         return nodo;
     }
-
 }
