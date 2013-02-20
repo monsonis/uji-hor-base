@@ -1,5 +1,6 @@
 package es.uji.apps.hor.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -257,4 +258,13 @@ public class RangoHorario
         return rangoHorario;
     }
 
+    public String getRangoHorarioAsString()
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+
+        String horaInicio = dateFormat.format(getHoraInicio());
+        String horaFin = dateFormat.format(getHoraFin());
+
+        return horaInicio + " a " + horaFin;
+    }
 }

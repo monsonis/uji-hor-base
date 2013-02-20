@@ -520,10 +520,11 @@ public class Evento
             }
         }
 
-        if (comunes.length() > 2) {
-          comunes = comunes.substring(2);
+        if (comunes.length() > 2)
+        {
+            comunes = comunes.substring(2);
         }
-        
+
         return comunes;
     }
 
@@ -538,7 +539,8 @@ public class Evento
             }
             catch (RangoHorarioFueradeLimites e)
             {
-                throw new EventoFueraDeRangoException();
+                throw new EventoFueraDeRangoException(rangoHorario.getGrupoId(),
+                        rangoHorario.getRangoHorarioAsString());
             }
         }
 
