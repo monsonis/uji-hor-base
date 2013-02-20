@@ -28,6 +28,7 @@ import org.codehaus.jettison.json.JSONException;
 import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.hor.AulaNoAsignadaAEstudioDelEventoException;
+import es.uji.apps.hor.DiaNoLectivoException;
 import es.uji.apps.hor.DuracionEventoIncorrectaException;
 import es.uji.apps.hor.EventoDetalleSinEventoException;
 import es.uji.apps.hor.EventoFueraDeFechasSemestreException;
@@ -308,7 +309,7 @@ public class CalendarResource extends CoreBaseService
             DuracionEventoIncorrectaException, JSONException, RegistroNoEncontradoException,
             EventoDetalleSinEventoException, UnauthorizedUserException,
             EventoFueraDeRangoException, EventoMasDeUnaRepeticionException,
-            EventoFueraDeFechasSemestreException
+            EventoFueraDeFechasSemestreException, DiaNoLectivoException
     {
 
         Long connectedUserId = AccessManager.getConnectedUserId(request);

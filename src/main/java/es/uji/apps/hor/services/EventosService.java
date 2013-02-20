@@ -10,16 +10,19 @@ import org.springframework.stereotype.Service;
 import es.uji.apps.hor.AulaNoAsignadaAEstudioDelEventoException;
 import es.uji.apps.hor.DuracionEventoIncorrectaException;
 import es.uji.apps.hor.EventoDetalleSinEventoException;
+import es.uji.apps.hor.DiaNoLectivoException;
 import es.uji.apps.hor.EventoFueraDeFechasSemestreException;
 import es.uji.apps.hor.EventoFueraDeRangoException;
 import es.uji.apps.hor.EventoMasDeUnaRepeticionException;
 import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.dao.AulaDAO;
+import es.uji.apps.hor.dao.CalendarioAcademicoDAO;
 import es.uji.apps.hor.dao.EventosDAO;
 import es.uji.apps.hor.dao.PersonaDAO;
 import es.uji.apps.hor.dao.RangoHorarioDAO;
 import es.uji.apps.hor.dao.SemestresDetalleDAO;
 import es.uji.apps.hor.model.Aula;
+import es.uji.apps.hor.model.CalendarioAcademico;
 import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.model.Evento;
 import es.uji.apps.hor.model.EventoDetalle;
@@ -46,6 +49,9 @@ public class EventosService
 
     @Autowired
     private SemestresDetalleDAO semestresDetalleDAO;
+
+    @Autowired
+    private CalendarioAcademicoDAO calendarioAcademicoDAO;
 
     @Autowired
     public EventosService(EventosDAO eventosDAO, AulaDAO aulaDAO)
@@ -95,7 +101,8 @@ public class EventosService
     public Evento modificaDiaYHoraEventoEnVistaDetalle(Long eventoId, Date inicio, Date fin,
             Long connectedUserId) throws DuracionEventoIncorrectaException,
             RegistroNoEncontradoException, UnauthorizedUserException, EventoFueraDeRangoException,
-            EventoMasDeUnaRepeticionException, EventoFueraDeFechasSemestreException
+            EventoMasDeUnaRepeticionException, EventoFueraDeFechasSemestreException,
+            DiaNoLectivoException
     {
         Evento evento = eventosDAO.getEventoByIdConDetalles(eventoId);
 
@@ -117,6 +124,11 @@ public class EventosService
 
         List<RangoHorario> rangosHorarios = rangoHorarioDAO.getRangosHorariosDelEvento(evento);
         evento.compruebaDentroDeLosRangosHorarios(rangosHorarios);
+
+        CalendarioAcademico calendario = calendarioAcademicoDAO
+                .getCalendarioAcademicoByFecha(CalendarioAcademico
+                        .getFechaSinHoraEstablecida(evento.getInicio()));
+        calendario.compruebaDiaLectivo();
 
         eventosDAO.updateHorasEventoYSusDetalles(evento);
         return evento;

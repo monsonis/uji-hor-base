@@ -43,6 +43,8 @@ public class CalendarioDTO implements Serializable {
 
 	@Column(name="TIPO_DIA")
 	private String tipoDia;
+	
+	private Long vacaciones;
 
     public CalendarioDTO() {
     }
@@ -110,5 +112,15 @@ public class CalendarioDTO implements Serializable {
 	public void setTipoDia(String tipoDia) {
 		this.tipoDia = tipoDia;
 	}
+
+    public Long getVacaciones()
+    {
+        return vacaciones;
+    }
+
+    public void setVacaciones(Long vacaciones)
+    {
+        this.vacaciones = vacaciones;
+    }
 
 }
