@@ -124,8 +124,8 @@ public class EventoModelTest
 
         String descripcion = evento.getDescripcionParaUnEstudio(estudio1.getId());
 
-        String descripcionEsperada = codigoAsignatura + " PR" + String.valueOf(subgrupo) + " "
-                + grupo + " - C " + codigoAula;
+        String descripcionEsperada = codigoAsignatura + " " + grupo + " PR"
+                + String.valueOf(subgrupo) + " - C " + codigoAula;
 
         assertThat(descripcion, is(descripcionEsperada));
 
