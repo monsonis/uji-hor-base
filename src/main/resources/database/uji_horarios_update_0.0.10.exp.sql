@@ -763,3 +763,5 @@ insert into uji_horarios.hor_estudios_compartidos values (28,222,228);
 insert into uji_horarios.hor_estudios_compartidos values (29,222,220); 
 insert into uji_horarios.hor_estudios_compartidos values (30,222,221); 
  
+commit;
+
