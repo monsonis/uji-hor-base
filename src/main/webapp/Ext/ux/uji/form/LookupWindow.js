@@ -2,6 +2,7 @@ Ext.define('Ext.ux.uji.form.LookupWindow',
 {
     extend : 'Ext.Window',
 
+    alias : 'widget.lookupWindow',
     version : "0.0.2",
     appPrefix : '',
     bean : 'base',
@@ -204,7 +205,7 @@ Ext.define('Ext.ux.uji.form.LookupWindow',
                 proxy :
                 {
                     type : 'ajax',
-                    url : '/' + ref.appPrefix + '/rest/lookup/json',
+                    url : '/' + ref.appPrefix + '/rest/lookup',
 
                     reader :
                     {
