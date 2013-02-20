@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.uji.apps.hor.AulaNoAsignadaAEstudioDelEventoException;
+import es.uji.apps.hor.DiaNoLectivoException;
 import es.uji.apps.hor.DuracionEventoIncorrectaException;
 import es.uji.apps.hor.EventoDetalleSinEventoException;
-import es.uji.apps.hor.DiaNoLectivoException;
 import es.uji.apps.hor.EventoFueraDeFechasSemestreException;
 import es.uji.apps.hor.EventoFueraDeRangoException;
 import es.uji.apps.hor.EventoMasDeUnaRepeticionException;
@@ -120,7 +120,8 @@ public class EventosService
         evento.setFechaInicioYFin(inicio, fin);
 
         SemestreDetalle semestre = getSemestreDelEvento(evento);
-        evento.compruebaDentroFechasSemestre(semestre.getFechaInicio(), semestre.getFechaFin());
+        evento.compruebaDentroFechasSemestre(semestre.getFechaInicio(),
+                semestre.getFechaExamenesFin());
 
         List<RangoHorario> rangosHorarios = rangoHorarioDAO.getRangosHorariosDelEvento(evento);
         evento.compruebaDentroDeLosRangosHorarios(rangosHorarios);

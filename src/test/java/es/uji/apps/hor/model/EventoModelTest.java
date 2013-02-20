@@ -185,7 +185,7 @@ public class EventoModelTest
     }
 
     @Test
-    public void compruebaEventoDentroRangoSiEstaDentro() throws Exception
+    public void compruebaEventoDentroRangoHorarioSiEstaDentro() throws Exception
     {
         String fechaInicioInicial = "30/07/2012 12:00";
         String fechaFinInicial = "30/07/2012 15:00";
@@ -210,7 +210,7 @@ public class EventoModelTest
     }
 
     @Test(expected = EventoFueraDeRangoException.class)
-    public void compruebaEventoDentroRangoSiEstaFuera() throws Exception
+    public void compruebaEventoDentroRangoHorarioSiEstaFuera() throws Exception
     {
         String fechaInicioInicial = "30/07/2012 12:00";
         String fechaFinInicial = "30/07/2012 15:00";
@@ -229,6 +229,40 @@ public class EventoModelTest
 
         listaRangosHorariosOK.add(rangoOK);
         listaRangosHorariosOK.add(rangoFuera);
+
+        evento.compruebaDentroDeLosRangosHorarios(listaRangosHorariosOK);
+
+    }
+
+    @Test
+    public void compruebaEventoDentroSemestreSiEstaDentro() throws Exception
+    {
+        String fechaInicioEvento = "30/11/2012 12:00";
+        String fechaFinEvento = "30/11/2012 15:00";
+
+        Evento evento = buildEvento(fechaInicioEvento, fechaFinEvento);
+
+        List<RangoHorario> listaRangosHorariosOK = new ArrayList<RangoHorario>();
+
+        evento.compruebaDentroFechasSemestre(formatter.parse("01/10/2012 00:00"),
+                formatter.parse("30/01/2013 23:59"));
+
+        evento.compruebaDentroDeLosRangosHorarios(listaRangosHorariosOK);
+
+    }
+
+    @Test(expected = DuracionEventoIncorrectaException.class)
+    public void compruebaEventoDentroSemestreSiEstaFuera() throws Exception
+    {
+        String fechaInicioEvento = "30/02/2013 12:00";
+        String fechaFinEvento = "30/02/2013 15:00";
+
+        Evento evento = buildEvento(fechaInicioEvento, fechaFinEvento);
+
+        List<RangoHorario> listaRangosHorariosOK = new ArrayList<RangoHorario>();
+
+        evento.compruebaDentroFechasSemestre(formatter.parse("01/10/2012 00:00"),
+                formatter.parse("30/01/2013 23:59"));
 
         evento.compruebaDentroDeLosRangosHorarios(listaRangosHorariosOK);
 
