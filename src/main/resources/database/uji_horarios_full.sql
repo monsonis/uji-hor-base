@@ -1,5 +1,5 @@
 -- Generado por Oracle SQL Developer Data Modeler 3.1.1.703
---   en:        2013-02-13 16:43:01 CET
+--   en:        2013-02-20 16:50:55 CET
 --   sitio:      Oracle Database 11g
 --   tipo:      Oracle Database 11g
 
@@ -30,6 +30,8 @@ DROP TABLE uji_horarios.hor_departamentos CASCADE CONSTRAINTS
 DROP TABLE uji_horarios.hor_dias_semana CASCADE CONSTRAINTS 
 ;
 DROP TABLE uji_horarios.hor_estudios CASCADE CONSTRAINTS 
+;
+DROP TABLE uji_horarios.hor_estudios_compartidos CASCADE CONSTRAINTS 
 ;
 DROP TABLE uji_horarios.hor_ext_asignaturas_comunes CASCADE CONSTRAINTS 
 ;
@@ -234,6 +236,26 @@ CREATE TABLE uji_horarios.hor_estudios
 
 ALTER TABLE uji_horarios.hor_estudios 
     ADD CONSTRAINT hor_estudios_PK PRIMARY KEY ( id ) ;
+
+
+
+CREATE TABLE uji_horarios.hor_estudios_compartidos 
+    ( 
+     id NUMBER  NOT NULL , 
+     estudio_id NUMBER  NOT NULL , 
+     estudio_id_compartido NUMBER  NOT NULL 
+    ) 
+;
+
+
+CREATE INDEX uji_horarios.hor_estudios_comp_est_IDX ON uji_horarios.hor_estudios_compartidos 
+    ( 
+     estudio_id ASC 
+    ) 
+;
+
+ALTER TABLE uji_horarios.hor_estudios_compartidos 
+    ADD CONSTRAINT hor_estudios_compartidos_PK PRIMARY KEY ( id ) ;
 
 
 
@@ -783,6 +805,30 @@ ALTER TABLE uji_horarios.hor_departamentos
 ;
 
 
+ALTER TABLE uji_horarios.hor_estudios_compartidos 
+    ADD CONSTRAINT hor_estudios_comp_est1_FK FOREIGN KEY 
+    ( 
+     estudio_id
+    ) 
+    REFERENCES uji_horarios.hor_estudios 
+    ( 
+     id
+    ) 
+;
+
+
+ALTER TABLE uji_horarios.hor_estudios_compartidos 
+    ADD CONSTRAINT hor_estudios_comp_est2_FK FOREIGN KEY 
+    ( 
+     estudio_id_compartido
+    ) 
+    REFERENCES uji_horarios.hor_estudios 
+    ( 
+     id
+    ) 
+;
+
+
 ALTER TABLE uji_horarios.hor_estudios 
     ADD CONSTRAINT hor_estudios_hor_centros_FK FOREIGN KEY 
     ( 
@@ -1242,9 +1288,9 @@ AND TRUNC(c.fecha) = TRUNC(d.inicio(+)) ;
 
 -- Informe de Resumen de Oracle SQL Developer Data Modeler: 
 -- 
--- CREATE TABLE                            27
--- CREATE INDEX                            23
--- ALTER TABLE                             61
+-- CREATE TABLE                            28
+-- CREATE INDEX                            24
+-- ALTER TABLE                             64
 -- CREATE VIEW                              4
 -- CREATE PACKAGE                           0
 -- CREATE PACKAGE BODY                      0

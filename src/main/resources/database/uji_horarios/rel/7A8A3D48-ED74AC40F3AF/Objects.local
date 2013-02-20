@@ -10,6 +10,7 @@
    <object objectType="Table" objectID="0B454C61-C973-405B-DAC9-A4BA4541B544" name="hor_departamentos" seqName="seg_0"/>
    <object objectType="Table" objectID="C1BEA0B2-D2BC-FCDD-BE9B-10FC623D4569" name="hor_dias_semana" seqName="seg_0"/>
    <object objectType="Table" objectID="8E96C882-5066-EB5B-95BD-4AAD6AFC21CD" name="hor_estudios" seqName="seg_0"/>
+   <object objectType="Table" objectID="8F497D79-5793-6E1E-FD3A-ACF6738D6ED7" name="hor_estudios_compartidos" seqName="seg_0"/>
    <object objectType="Table" objectID="D5254B60-789C-5FA9-121B-035A3DDA5579" name="hor_ext_asignaturas_comunes" seqName="seg_0"/>
    <object objectType="Table" objectID="1C82693D-CCB5-9BA9-1DAE-CEB48B0D0CBA" name="hor_ext_asignaturas_detalle" seqName="seg_0"/>
    <object objectType="Table" objectID="3900443F-A804-9F08-132A-806AF7E9CBDA" name="hor_ext_calendario" seqName="seg_0"/>
@@ -38,6 +39,8 @@
    <object objectType="FKIndexAssociation" objectID="BE06DBFE-AEDE-7C44-C873-01BC6B4E79D9" name="hor_aulas_planif_hor_est_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="61465DD7-29C7-9A32-60A1-01AC46F8673A" name="hor_circuitos_est_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="D6F3D23D-4E42-E80A-2BED-AEAD87C67AD5" name="hor_dep_hor_centros_FK" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="EE8AC75B-2617-EB8F-38D9-5C267035E9AB" name="hor_estudios_comp_est1_FK" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="9849E1A7-240B-B13A-955C-608DBE18AFE7" name="hor_estudios_comp_est2_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="46F60721-DC8F-E59F-4571-C365B82899CF" name="hor_estudios_hor_centros_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="EA52A24A-594B-E772-4C15-614C23282C8B" name="hor_estudios_hor_tipos_est_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="88E1F889-82E7-C466-346C-929AC20F37F2" name="hor_ext_car_per_est_FK" seqName="seg_0"/>
