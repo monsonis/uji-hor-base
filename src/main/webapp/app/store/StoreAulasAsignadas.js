@@ -28,12 +28,8 @@ Ext.define('HOR.store.StoreAulasAsignadas',
         {
             exception : function(proxy, response, operation)
             {
-                var msgList = response.responseXML.getElementsByTagName("msg");
-
-                if (msgList && msgList[0] && msgList[0].firstChild)
-                {
-                    Ext.Msg.alert("Error", msgList[0].firstChild.nodeValue);
-                }
+            	var myResponseJSON = JSON.parse(response.responseText);
+    	        Ext.Msg.alert('Error', myResponseJSON['msg']);
             }
         }
     }
