@@ -13,6 +13,7 @@ import java.util.List;
 import org.junit.Test;
 
 import es.uji.apps.hor.DuracionEventoIncorrectaException;
+import es.uji.apps.hor.EventoFueraDeFechasSemestreException;
 import es.uji.apps.hor.EventoFueraDeRangoException;
 import es.uji.apps.hor.EventoNoDivisibleException;
 import es.uji.apps.hor.builders.AsignaturaBuilder;
@@ -251,7 +252,7 @@ public class EventoModelTest
 
     }
 
-    @Test(expected = DuracionEventoIncorrectaException.class)
+    @Test(expected = EventoFueraDeFechasSemestreException.class)
     public void compruebaEventoDentroSemestreSiEstaFuera() throws Exception
     {
         String fechaInicioEvento = "30/02/2013 12:00";

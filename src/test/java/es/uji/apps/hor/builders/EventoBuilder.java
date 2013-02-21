@@ -41,14 +41,16 @@ public class EventoBuilder
     public EventoBuilder withInicioYFinFechaString(String inicio, String fin)
             throws ParseException, DuracionEventoIncorrectaException
     {
-        evento.setFechaInicioYFin(formatter.parse(inicio), formatter.parse(fin));
+        evento.setInicio(formatter.parse(inicio));
+        evento.setFin(formatter.parse(fin));
         return this;
     }
 
     public EventoBuilder withInicioYFin(Date inicio, Date fin)
             throws DuracionEventoIncorrectaException
     {
-        evento.setFechaInicioYFin(inicio, fin);
+        evento.setInicio(inicio);
+        evento.setFin(fin);
         return this;
     }
 
