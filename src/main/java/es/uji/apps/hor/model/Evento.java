@@ -108,6 +108,30 @@ public class Evento
         return texto;
     }
 
+    public String getDescripcionCompletaParaUnEstudio(Long estudioId)
+    {
+        Asignatura asignatura = getAsignaturaDelEstudio(estudioId);
+        if (asignatura == null)
+        {
+            return "";
+        }
+
+        String texto = MessageFormat.format("{0} {1} Grup {2} {3}{4}", asignatura.getId(),
+                asignatura.getNombre(), grupoId, getCalendario().getLetraId(), subgrupoId);
+
+        if (tieneComunes())
+        {
+            texto = MessageFormat.format("{0} - Comú", texto);
+        }
+
+        if (getAula() != null)
+        {
+            texto = MessageFormat.format("{0} {1}", texto, getAula().getNombre());
+        }
+
+        return texto;
+    }
+
     public boolean tieneComunes()
     {
         return asignaturas.size() > 1;
@@ -539,7 +563,7 @@ public class Evento
             }
             catch (RangoHorarioFueradeLimites e)
             {
-                throw new EventoFueraDeRangoException(rangoHorario.getGrupoId(),
+                throw new EventoFueraDeRangoException(grupoId,
                         rangoHorario.getRangoHorarioAsString());
             }
         }
