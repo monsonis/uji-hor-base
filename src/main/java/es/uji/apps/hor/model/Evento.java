@@ -169,7 +169,7 @@ public class Evento
         return inicio;
     }
 
-    private void setInicio(Date inicio)
+    public void setInicio(Date inicio)
     {
         this.inicio = inicio;
     }
@@ -179,7 +179,7 @@ public class Evento
         return fin;
     }
 
-    private void setFin(Date fin)
+    public void setFin(Date fin)
     {
         this.fin = fin;
     }
@@ -188,14 +188,37 @@ public class Evento
     {
         if (fechasEnElMismoDiaYEnSemanaLaboral(inicio, fin))
         {
+            if (this.hasDetalleManual() && this.nuevaFechaCambiaDeDiaSemana(inicio))
+            {
+                this.setDetalleManual(false);
+            }
+
             this.setInicio(inicio);
             this.setFin(fin);
+
             propagaRangoHorarioAEventosDetalle();
         }
         else
         {
             throw new DuracionEventoIncorrectaException();
         }
+    }
+
+    private boolean nuevaFechaCambiaDeDiaSemana(Date nuevaFechaInicio)
+    {
+
+        return !mismoDiaSemana(this.inicio, nuevaFechaInicio);
+    }
+
+    private boolean mismoDiaSemana(Date unDia, Date otroDia)
+    {
+        Calendar calUnDia = Calendar.getInstance();
+        Calendar calOtroDia = Calendar.getInstance();
+
+        calUnDia.setTime(unDia);
+        calOtroDia.setTime(otroDia);
+
+        return calUnDia.get(Calendar.DAY_OF_WEEK) == calOtroDia.get(Calendar.DAY_OF_WEEK);
     }
 
     private boolean fechasEnElMismoDiaYEnSemanaLaboral(Date inicio, Date fin)

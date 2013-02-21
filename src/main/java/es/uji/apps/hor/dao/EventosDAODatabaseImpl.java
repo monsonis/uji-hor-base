@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
 
-import es.uji.apps.hor.DuracionEventoIncorrectaException;
 import es.uji.apps.hor.EventoDetalleSinEventoException;
 import es.uji.apps.hor.db.AulaDTO;
 import es.uji.apps.hor.db.DiaSemanaDTO;
@@ -143,16 +142,8 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             Calendar fin = generaItemCalendarioSemanaGenerica(itemDTO.getDiaSemana().getId()
                     .intValue(), itemDTO.getHoraFin());
 
-            try
-            {
-                evento.setFechaInicioYFin(inicio.getTime(), fin.getTime());
-            }
-            catch (DuracionEventoIncorrectaException e)
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-
+            evento.setInicio(inicio.getTime());
+            evento.setFin(fin.getTime());
         }
 
         evento.setDetalleManual(itemDTO.getDetalleManual());
@@ -646,7 +637,8 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         QItemDTO qItem = QItemDTO.itemDTO;
         JPAUpdateClause updateClause = new JPAUpdateClause(entityManager, qItem);
         updateClause.where(qItem.id.eq(evento.getId())).set(qItem.horaInicio, evento.getInicio())
-                .set(qItem.horaFin, evento.getFin()).set(qItem.diaSemana, diaSemanaDTO).execute();
+                .set(qItem.horaFin, evento.getFin()).set(qItem.diaSemana, diaSemanaDTO)
+                .set(qItem.detalleManual, evento.hasDetalleManual()).execute();
 
         if (evento.hasDetalleManual())
         {
