@@ -126,7 +126,7 @@ public class Evento
 
         if (getAula() != null)
         {
-            texto = MessageFormat.format("{0} {1}", texto, getAula().getNombre());
+            texto = MessageFormat.format("{0} - {1}", texto, getAula().getNombre());
         }
 
         return texto;

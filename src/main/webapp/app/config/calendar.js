@@ -74,7 +74,7 @@ Extensible.calendar.form.EventWindow.override(
         {
             xtype : 'textfield',
             itemId : this.id + '-title',
-            name : Extensible.calendar.data.EventMappings.Title.name,
+            name : Extensible.calendar.data.EventMappings.Descripcion.name,
             fieldLabel : this.titleLabelText,
             anchor : '100%',
             readOnly : true
@@ -182,6 +182,11 @@ Extensible.calendar.data.EventMappings.plazasAula =
     name : 'PlazasAula',
     mapping : 'plazasAula'
 };
+Extensible.calendar.data.EventMappings.Descripcion =
+{
+    name : 'Descripcion',
+    mapping : 'descripcion'
+};
 
 Extensible.calendar.data.EventModel.reconfigure();
 
@@ -240,7 +245,7 @@ Extensible.calendar.form.EventDetails.override(
         this.titleField = Ext.create('Ext.form.TextField',
         {
             fieldLabel : this.titleLabelText,
-            name : Extensible.calendar.data.EventMappings.Title.name,
+            name : Extensible.calendar.data.EventMappings.Descripcion.name,
             anchor : '90%',
             readOnly : true
         });
