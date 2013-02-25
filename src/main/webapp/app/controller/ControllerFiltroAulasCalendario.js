@@ -38,6 +38,7 @@ Ext.define('HOR.controller.ControllerFiltroAulasCalendario',
         {
             'filtroAulas combobox[name=centro]' :
             {
+                afterrender : this.loadCentros,
                 select : this.onCentroSelected
             },
             'filtroAulas combobox[name=semestre]' :
@@ -51,9 +52,32 @@ Ext.define('HOR.controller.ControllerFiltroAulasCalendario',
         });
     },
 
+    loadCentros : function()
+    {
+        var comboCentros = this.getFiltroAulas().down('combobox[name=centro]');
+        var store = this.getStoreCentrosStore();
+
+        store.load(
+        {
+            scope : this,
+            callback : function(records, operation, success)
+            {
+                if (success && records.length == 1)
+                {
+                    comboCentros.select(records[0]);
+                    comboCentross.fireEvent('select');
+                }
+            }
+        });
+
+        fixLoadMaskBug(store, comboCentros);
+    },
+
     onCentroSelected : function()
     {
-        this.getFiltroAulas().down('combobox[name=semestre]').clearValue();
+        var comboSemestres = this.getFiltroAulas().down('combobox[name=semestre]');
+
+        comboSemestres.clearValue();
         this.getFiltroAulas().down('combobox[name=edificio]').clearValue();
         this.getFiltroAulas().down('combobox[name=tipoAula]').clearValue();
         this.getFiltroAulas().down('combobox[name=planta]').clearValue();
@@ -76,7 +100,15 @@ Ext.define('HOR.controller.ControllerFiltroAulasCalendario',
             {
                 centroId : centro
             },
-            scope : this
+            scope : this,
+            callback : function(records, operation, success)
+            {
+                if (success && records.length == 1)
+                {
+                    comboSemestres.select(records[0]);
+                    comboSemestres.fireEvent('select');
+                }
+            }
         });
 
         fixLoadMaskBug(store, this.getFiltroAulas().down('combobox[name=semestre]'));
@@ -84,7 +116,9 @@ Ext.define('HOR.controller.ControllerFiltroAulasCalendario',
 
     onSemestreSelected : function()
     {
-        this.getFiltroAulas().down('combobox[name=edificio]').clearValue();
+        var comboEdificios = this.getFiltroAulas().down('combobox[name=edificio]');
+
+        comboEdificios.clearValue();
         this.getFiltroAulas().down('combobox[name=tipoAula]').clearValue();
         this.getFiltroAulas().down('combobox[name=planta]').clearValue();
         this.getBotonImprimir().hide();
@@ -107,7 +141,15 @@ Ext.define('HOR.controller.ControllerFiltroAulasCalendario',
                 centroId : centro,
                 semestreId : semestre
             },
-            scope : this
+            scope : this,
+            callback : function(records, operation, success)
+            {
+                if (success && records.length == 1)
+                {
+                    comboEdificios.select(records[0]);
+                    comboEdificios.fireEvent('select');
+                }
+            }
         });
 
         fixLoadMaskBug(store, this.getFiltroAulas().down('combobox[name=edificio]'));
@@ -115,8 +157,11 @@ Ext.define('HOR.controller.ControllerFiltroAulasCalendario',
 
     onEdificioSelected : function()
     {
-        this.getFiltroAulas().down('combobox[name=tipoAula]').clearValue();
-        this.getFiltroAulas().down('combobox[name=planta]').clearValue();
+        var tiposAulas = this.getFiltroAulas().down('combobox[name=tipoAula]');
+        var plantas = this.getFiltroAulas().down('combobox[name=planta]');
+
+        tiposAulas.clearValue();
+        plantas.clearValue();
 
         var centro = this.getFiltroAulas().down('combobox[name=centro]').getValue();
         var semestre = this.getFiltroAulas().down('combobox[name=semestre]').getValue();
@@ -129,8 +174,6 @@ Ext.define('HOR.controller.ControllerFiltroAulasCalendario',
         var storeTipos = this.getStoreTiposAulaStore();
         var storePlantas = this.getStorePlantasEdificioStore();
 
-        var tiposAulas = this.getFiltroAulas().down('combobox[name=tipoAula]');
-
         storeTipos.load(
         {
             params :
@@ -141,18 +184,26 @@ Ext.define('HOR.controller.ControllerFiltroAulasCalendario',
             },
             callback : function(records, operation, success)
             {
-                this.insert(0,
+                if (success)
                 {
-                    nombre : 'Totes',
-                    valor : ''
-                });
-                tiposAulas.setValue('');
+                    if (records.length > 1)
+                    {
+                        this.insert(0,
+                        {
+                            nombre : 'Totes',
+                            valor : ''
+                        });
+                        tiposAulas.setValue('');
+                    }
+                    else if (records.length > 0)
+                    {
+                        tiposAulas.select(records[0]);
+                    }
+                }
             }
         });
 
         fixLoadMaskBug(storeTipos, tiposAulas);
-
-        var plantas = this.getFiltroAulas().down('combobox[name=planta]');
 
         storePlantas.load(
         {
@@ -164,12 +215,22 @@ Ext.define('HOR.controller.ControllerFiltroAulasCalendario',
             },
             callback : function(records, operation, success)
             {
-                this.insert(0,
+                if (success)
                 {
-                    nombre : 'Totes',
-                    valor : ''
-                });
-                plantas.setValue('');
+                    if (records.length > 1)
+                    {
+                        this.insert(0,
+                        {
+                            nombre : 'Totes',
+                            valor : ''
+                        });
+                        plantas.setValue('');
+                    }
+                    else if (records.length > 0)
+                    {
+                        plantas.select(records[0]);
+                    }
+                }
             }
         });
 

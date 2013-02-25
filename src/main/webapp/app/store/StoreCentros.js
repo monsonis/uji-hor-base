@@ -1,8 +1,9 @@
 Ext.define('HOR.store.StoreCentros',
 {   
-           
  	extend : 'Ext.data.Store',
     model : 'HOR.model.Centro',
+    autoLoad : false,
+    autoSync : false,
     proxy :
     {
         type : 'rest',

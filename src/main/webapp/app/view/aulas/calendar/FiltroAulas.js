@@ -23,7 +23,8 @@ Ext.define('HOR.view.aulas.calendar.FiltroAulas',
             editable : false,
             labelWidth : 60,
             labelAlign : 'left',
-            margin : '0 20 0 0'
+            margin : '0 20 0 0',
+            lastQuery : ''
         },
         items : [
         {
@@ -41,7 +42,6 @@ Ext.define('HOR.view.aulas.calendar.FiltroAulas',
             valueField : 'semestre',
             name : 'semestre',
             width : 120,
-            lastQuery : ''
         } ]
     },
     {
