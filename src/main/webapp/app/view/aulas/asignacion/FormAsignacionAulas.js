@@ -72,7 +72,7 @@ Ext.define('HOR.view.aulas.asignacion.FormAsignacionAulas',
     },
     {
         xtype : 'fieldset',
-        title : 'Assignatures comuns',
+        title : 'Assignatures compartides',
         style :
         {
             marginTop : '30px'

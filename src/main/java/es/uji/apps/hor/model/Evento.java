@@ -121,7 +121,7 @@ public class Evento
 
         if (tieneComunes())
         {
-            texto = MessageFormat.format("{0} - Comú", texto);
+            texto = MessageFormat.format("{0} - Compartida", texto);
         }
 
         if (getAula() != null)

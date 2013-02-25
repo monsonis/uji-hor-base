@@ -97,7 +97,7 @@ Ext.define('HOR.controller.ControllerAsignacionAulasForm',
         var formulario = Ext.ComponentQuery.query('formAsignacionAulas')[0];
         formulario.getForm().reset();
 
-        formulario.down('displayfield[name=event]').setValue(rec.data[Extensible.calendar.data.EventMappings.Title.name]);
+        formulario.down('displayfield[name=event]').setValue(rec.data[Extensible.calendar.data.EventMappings.Descripcion.name]);
         formulario.down('hiddenfield[name=eventId]').setValue(rec.data[Extensible.calendar.data.EventMappings.EventId.name]);
 
         if (rec.data[Extensible.calendar.data.EventMappings.Comunes.name])
