@@ -108,25 +108,45 @@ Extensible.calendar.form.EventWindow.override(
     },
 
     // private
-    /*onSave : function()
+    onSave : function()
     {
-        console.log(this.formPanel.form);
-        alert('Waiting...');
         if (!this.formPanel.form.isValid())
         {
             return;
         }
-        
-        var horaInicio = rec.get(Extensible.calendar.data.EventMappings.StartDate.name);
-        var horaFin = rec.get(Extensible.calendar.data.EventMappings.EndDate.name);
-        
+
+        var horaInicio = this.activeRecord.get(Extensible.calendar.data.EventMappings.StartDate.name);
+
+        var startDate = this.formPanel.form.findField('start-date-hidden').getValue();
+
+        var ref = this;
+
+        if (this.activeRecord.get(Extensible.calendar.data.EventMappings.DetalleManual.name) == 'true' && Extensible.Date.diffDays(horaInicio, startDate) != 0)
+        {
+            Ext.Msg.confirm('Event amb detall manual', 'Aquest event té detall manual, si el cambies de dia es perdrà aquest detall. Estàs segur de voler continuar?', function(btn, text)
+            {
+                if (btn == 'yes')
+                {
+                    ref.saveEvent();
+                }
+            });
+        }
+        else
+        {
+            this.saveEvent();
+        }
+    },
+
+    saveEvent : function()
+    {
         if (!this.updateRecord(this.activeRecord))
         {
             this.onCancel();
             return;
         }
         this.fireEvent(this.activeRecord.phantom ? 'eventadd' : 'eventupdate', this, this.activeRecord, this.animateTarget);
-    },*/
+    }
+
 });
 
 Extensible.calendar.data.EventMappings.RepetirCada =

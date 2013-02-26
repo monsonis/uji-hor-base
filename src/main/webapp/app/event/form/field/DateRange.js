@@ -107,6 +107,7 @@ Ext.define('Event.form.field.DateRange',
     getStartDateConfig: function() {
         return {
             xtype: 'datefield',
+            name : 'start-date-hidden',
             id: this.id + '-start-date',
             format: this.dateFormat,
             hidden : true
