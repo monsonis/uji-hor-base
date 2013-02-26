@@ -1,8 +1,9 @@
 Ext.define('HOR.view.circuitos.PanelCircuitos',
 {
     extend : 'Ext.panel.Panel',
-    title : 'Ocupació d\'aules',
-    requires : [ 'HOR.view.circuitos.FiltroCircuitos', 'HOR.view.circuitos.PanelGestionCircuitos', 'HOR.view.circuitos.SelectorCircuitos', 'HOR.view.circuitos.SelectorCalendariosCircuitos' ],
+    title : 'Circuit',
+    requires : [ 'HOR.view.circuitos.FiltroCircuitos', 'HOR.view.circuitos.PanelGestionCircuitos', 'HOR.view.circuitos.SelectorCircuitos', 'HOR.view.circuitos.SelectorCalendariosCircuitos',
+            'HOR.view.circuitos.PanelCalendarioCircuitos' ],
     alias : 'widget.panelCircuitos',
     closable : true,
     layout :
@@ -16,7 +17,7 @@ Ext.define('HOR.view.circuitos.PanelCircuitos',
     {
         xtype : 'filtroCircuitos',
         height : 60
-     },
+    },
     {
         xtype : 'panel',
         flex : 1,
@@ -43,12 +44,12 @@ Ext.define('HOR.view.circuitos.PanelCircuitos',
                 xtype : 'selectorCircuitos'
             },
             {
-                xtype: 'selectorCalendariosCircuitos'
-            }]
-//        },
-//        {
-//            xtype : 'panelCalendario',
-//            flex : 1
+                xtype : 'selectorCalendariosCircuitos'
+            } ]
+        },
+        {
+            xtype : 'panelCalendarioCircuitos',
+            flex : 1
         } ]
     } ]
 
