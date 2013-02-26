@@ -29,12 +29,12 @@ Extensible.calendar.menu.Event.override(
                     Ext.ComponentQuery.query("panelCalendario")[0].fireEvent('eventasignaaula', me, me.rec);
                 }
             },
-//            {
-//                text : 'Assignar a circuit',
-//                iconCls : 'extensible-cal-icon-evt-edit',
-//                menu : me.copyMenu
-//
-//            },
+            // {
+            // text : 'Assignar a circuit',
+            // iconCls : 'extensible-cal-icon-evt-edit',
+            // menu : me.copyMenu
+            //
+            // },
             '-',
             {
                 text : 'Dividir',
@@ -106,6 +106,27 @@ Extensible.calendar.form.EventWindow.override(
 
         return items;
     },
+
+    // private
+    /*onSave : function()
+    {
+        console.log(this.formPanel.form);
+        alert('Waiting...');
+        if (!this.formPanel.form.isValid())
+        {
+            return;
+        }
+        
+        var horaInicio = rec.get(Extensible.calendar.data.EventMappings.StartDate.name);
+        var horaFin = rec.get(Extensible.calendar.data.EventMappings.EndDate.name);
+        
+        if (!this.updateRecord(this.activeRecord))
+        {
+            this.onCancel();
+            return;
+        }
+        this.fireEvent(this.activeRecord.phantom ? 'eventadd' : 'eventupdate', this, this.activeRecord, this.animateTarget);
+    },*/
 });
 
 Extensible.calendar.data.EventMappings.RepetirCada =
@@ -237,7 +258,7 @@ Extensible.calendar.form.EventDetails.override(
              *            rec The new {@link Extensible.calendar.data.EventModel record} that was
              *            canceled
              */
-            eventcancel : true            
+            eventcancel : true
         });
 
         this.trackResetOnLoad = true;
@@ -278,7 +299,7 @@ Extensible.calendar.form.EventDetails.override(
 
                             this.dateRangeField.disableFields();
                             this.dateRepeatField.disableFields();
-                            
+
                             this.detalleManualButton.show();
                         }
                         else
@@ -287,7 +308,7 @@ Extensible.calendar.form.EventDetails.override(
 
                             this.dateRangeField.enableFields();
                             this.dateRepeatField.enableFields();
-                            
+
                             this.detalleManualButton.hide();
                         }
                     },
@@ -302,7 +323,7 @@ Extensible.calendar.form.EventDetails.override(
             nameCheckbox : Extensible.calendar.data.EventMappings.FechaDetalleManual.name,
             nameHidden : Extensible.calendar.data.EventMappings.FechaDetalleManualInt.name,
         });
-        
+
         this.detalleManualButton = Ext.create('Ext.Button',
         {
             text : 'Desmarcar totes',
@@ -340,8 +361,8 @@ Extensible.calendar.form.EventDetails.override(
             anchor : '90%'
         });
 
-        var leftFields = [ this.titleField, this.dateRangeField, this.dateRepeatField, this.detalleManualField, this.detalleManualFechas, this.detalleManualButton, this.detalleClases, this.posteoDetalleField,
-                this.notaExamenes, this.panelAviso ];
+        var leftFields = [ this.titleField, this.dateRangeField, this.dateRepeatField, this.detalleManualField, this.detalleManualFechas, this.detalleManualButton, this.detalleClases,
+                this.posteoDetalleField, this.notaExamenes, this.panelAviso ];
 
         if (this.calendarStore)
         {
@@ -475,10 +496,11 @@ Extensible.calendar.form.EventDetails.override(
         {
             return;
         }
-        
-        if (this.detalleManualField.getValue() && this.detalleManualFechas.numer_seleccionados() == 0){
-        	Ext.Msg.alert('Error al detalle manual','És necessari marcar almenys una data en el detall manual de classes');
-        	return;
+
+        if (this.detalleManualField.getValue() && this.detalleManualFechas.numer_seleccionados() == 0)
+        {
+            Ext.Msg.alert('Error al detalle manual', 'És necessari marcar almenys una data en el detall manual de classes');
+            return;
         }
 
         if (!me.updateRecord(me.activeRecord))
@@ -636,22 +658,23 @@ Extensible.calendar.form.EventDetails.override(
         }
 
         var fechas = obj[Extensible.calendar.data.EventMappings.FechaDetalleManual.name];
-        if (! (fechas instanceof Array)){ // Si sólo hay un objeto no lo mapea a array y el servidor luego no lo entiende
-        	fechas = [fechas];
+        if (!(fechas instanceof Array))
+        { // Si sólo hay un objeto no lo mapea a array y el servidor luego no lo entiende
+            fechas = [ fechas ];
         }
         obj[Extensible.calendar.data.EventMappings.FechaDetalleManualInt.name] = Ext.JSON.encode(fechas);
 
         record.set(obj);
         return record.dirty;
     }
-    
 
 });
 
-Extensible.calendar.view.AbstractCalendar.override({
-		notifyOnException: function(response, operation) {
-	    	var myResponseJSON = JSON.parse(response.responseText);
-	        Ext.Msg.alert('Error', myResponseJSON['msg']);
-	    }		
-}
-);
+Extensible.calendar.view.AbstractCalendar.override(
+{
+    notifyOnException : function(response, operation)
+    {
+        var myResponseJSON = JSON.parse(response.responseText);
+        Ext.Msg.alert('Error', myResponseJSON['msg']);
+    }
+});

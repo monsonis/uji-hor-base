@@ -98,6 +98,13 @@ Ext.define('HOR.controller.ControllerCalendario',
                 eventasignaaula : function(cal, rec)
                 {
                     this.mostrarVentanaAsignarAulaAEvento();
+                },
+                beforeeventmove : function(cal, rec, date)
+                {
+                    if (rec.get(Extensible.calendar.data.EventMappings.DetalleManual.name) == 'true')
+                    {
+                        return this.moverEventoConDetalleManual(cal, rec, date);
+                    }
                 }
             },
             'panelHorarios button[name=calendarioDetalle]' :
@@ -246,7 +253,6 @@ Ext.define('HOR.controller.ControllerCalendario',
                                     {
                                         return false;
                                     },
-                                                                       
 
                                     afterrender : function()
                                     {
@@ -349,11 +355,12 @@ Ext.define('HOR.controller.ControllerCalendario',
                         },
                         listeners :
                         {
-                        	  eventover: function(calendar, event, el) {
-                        		ref.mostrarInfoAdicionalEvento(event,el);                        		
-                     		 	return true;
-                         	 },
-                         	 
+                            eventover : function(calendar, event, el)
+                            {
+                                ref.mostrarInfoAdicionalEvento(event, el);
+                                return true;
+                            },
+
                             afterrender : function()
                             {
                                 eventos.load();
@@ -364,19 +371,22 @@ Ext.define('HOR.controller.ControllerCalendario',
             }
         });
     },
-    
-    mostrarInfoAdicionalEvento : function (event,el){
-	    var nombre = event.data.NombreAsignatura ;
-	    var plazas = event.data.PlazasAula;
-	    var tooltipHtml = 'Assignatura: '+nombre;
-	    if (plazas) {
-	    	tooltipHtml += '<br/>Plazas aula: '+plazas;
-	    }
-	 	Ext.create('Ext.tip.ToolTip', {
-		    target: el,
-		    showDelay: 100,
-		    html: tooltipHtml
-		});
+
+    mostrarInfoAdicionalEvento : function(event, el)
+    {
+        var nombre = event.data.NombreAsignatura;
+        var plazas = event.data.PlazasAula;
+        var tooltipHtml = 'Assignatura: ' + nombre;
+        if (plazas)
+        {
+            tooltipHtml += '<br/>Plazas aula: ' + plazas;
+        }
+        Ext.create('Ext.tip.ToolTip',
+        {
+            target : el,
+            showDelay : 100,
+            html : tooltipHtml
+        });
     },
 
     addEvento : function(button)
@@ -509,6 +519,35 @@ Ext.define('HOR.controller.ControllerCalendario',
         var grupo = this.getFiltroGrupos().down('combobox[name=grupo]').getValue();
 
         window.open("http://www.uji.es/cocoon/" + session + "/" + titulacion + "/" + curso + "/" + semestre + "/" + grupo + "/validaciones-horarios.pdf");
+    },
+
+    moverEventoConDetalleManual : function(cal, rec, date)
+    {
+        var horaInicio = rec.get(Extensible.calendar.data.EventMappings.StartDate.name);
+        var horaFin = rec.get(Extensible.calendar.data.EventMappings.EndDate.name);
+        
+        var me = this.getPanelCalendario();
+
+        if (Extensible.Date.diffDays(horaInicio, date) != 0)
+        {
+            Ext.Msg.confirm('Event amb detall manual', 'Aquest event té detall manual, si el cambies de dia es perdrà aquest detall. Estàs segur de voler continuar?', function(btn, text)
+            {
+                if (btn == 'yes')
+                {
+                    rec.set(Extensible.calendar.data.EventMappings.StartDate.name, date);
+                    
+                    var diff = Extensible.Date.diff(horaFin, horaInicio);
+                    var endDate = Extensible.Date.add(date, diff);
+                    rec.set(Extensible.calendar.data.EventMappings.EndDate.name, endDate);
+                    
+                    me.getEventStore().save();
+                }
+            });
+            
+            return false;
+        }
+        
+        return true;
     }
 
 });

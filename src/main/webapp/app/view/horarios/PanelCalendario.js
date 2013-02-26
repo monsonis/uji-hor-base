@@ -267,5 +267,10 @@ Ext.define('HOR.view.horarios.PanelCalendario',
     getEventStore : function()
     {
         return this.store;
+    },
+    
+    updateEventManually : function(rec)
+    {
+       this.onEventUpdate(null, rec);
     }
 });
