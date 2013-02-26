@@ -52,7 +52,7 @@ Ext.require('Ext.grid.Panel');
 Ext.require('Ext.Date');
 Ext.require('Event.form.PanelInfo');
 
-//var login = 'borillo';
+// var login = 'borillo';
 
 function fixLoadMaskBug(store, combo)
 {
@@ -72,11 +72,12 @@ Ext.application(
     autoCreateViewport : false,
 
     views : [ 'dashboard.PanelDashboard', 'horarios.PanelHorarios', 'horarios.FiltroGrupos', 'horarios.PanelCalendario', 'horarios.PanelCalendarioDetalle', 'horarios.SelectorIntervaloHorario',
-            'commons.MenuSuperior', 'permisos.PanelPermisos', 'permisos.VentanaNewPermiso', 'semestres.PanelSemestres', 'ApplicationViewport', 'aulas.asignacion.FormAsignacionAulas', 'aulas.calendar.PanelCalendarioAulas', 
-            'aulas.calendar.PanelCalendarioPorAula', 'aulas.calendar.PanelCalendarioDetallePorAula',
-            'aulas.calendar.FiltroAulas', 'aulas.calendar.SelectorAulas' ],
+            'commons.MenuSuperior', 'permisos.PanelPermisos', 'permisos.VentanaNewPermiso', 'semestres.PanelSemestres', 'ApplicationViewport', 'aulas.asignacion.FormAsignacionAulas',
+            'aulas.calendar.PanelCalendarioAulas', 'circuitos.PanelCircuitos', 'aulas.calendar.PanelCalendarioPorAula', 'aulas.calendar.PanelCalendarioDetallePorAula', 'aulas.calendar.FiltroAulas',
+            'aulas.calendar.SelectorAulas' ],
     controllers : [ 'ControllerDashboards', 'ControllerCalendario', 'ControllerGrupoAsignatura', 'ControllerFiltroCalendario', 'ControllerConfiguracion', 'ControllerPrincipal', 'ControllerPermisos',
-            'ControllerSemestreDetalle', 'ControllerFiltroAsignacionAulas', 'ControllerAsignacionAulasForm', 'ControllerFiltroAulasCalendario', 'ControllerSelectorAulasCalendario', 'ControllerCalendarioAulas' ],
+            'ControllerSemestreDetalle', 'ControllerFiltroAsignacionAulas', 'ControllerAsignacionAulasForm', 'ControllerFiltroAulasCalendario', 'ControllerSelectorAulasCalendario',
+            'ControllerCalendarioAulas' ],
 
     launch : function()
     {
@@ -88,7 +89,7 @@ Ext.application(
                 tituloAplicacion : 'Gestión de horarios',
                 dashboard : true
             });
-            //viewport.addNewTab('HOR.view.horarios.PanelHorarios');            
+            // viewport.addNewTab('HOR.view.horarios.PanelHorarios');
             viewport.addNewTab('HOR.view.dashboard.PanelDashboard');
         });
     }
