@@ -1,5 +1,5 @@
 -- Generado por Oracle SQL Developer Data Modeler 3.1.1.703
---   en:        2013-02-20 16:50:55 CET
+--   en:        2013-02-26 08:29:13 CET
 --   sitio:      Oracle Database 11g
 --   tipo:      Oracle Database 11g
 
@@ -22,6 +22,8 @@ DROP TABLE uji_horarios.hor_aulas_planificacion CASCADE CONSTRAINTS
 DROP TABLE uji_horarios.hor_centros CASCADE CONSTRAINTS 
 ;
 DROP TABLE uji_horarios.hor_circuitos CASCADE CONSTRAINTS 
+;
+DROP TABLE uji_horarios.hor_circuitos_estudios CASCADE CONSTRAINTS 
 ;
 DROP TABLE uji_horarios.hor_curso_academico CASCADE CONSTRAINTS 
 ;
@@ -163,11 +165,9 @@ ALTER TABLE uji_horarios.hor_centros
 CREATE TABLE uji_horarios.hor_circuitos 
     ( 
      id NUMBER  NOT NULL , 
-     estudio_id NUMBER  NOT NULL , 
      grupo_id VARCHAR2 (10)  NOT NULL , 
-     id_circuito NUMBER  NOT NULL , 
      nombre VARCHAR2 (100)  NOT NULL , 
-     especial NUMBER DEFAULT 0  NOT NULL CHECK ( especial IN (0, 1)) 
+     plazas NUMBER  NOT NULL 
     ) 
 ;
 
@@ -175,6 +175,31 @@ CREATE TABLE uji_horarios.hor_circuitos
 
 ALTER TABLE uji_horarios.hor_circuitos 
     ADD CONSTRAINT hor_circuitos_est_PK PRIMARY KEY ( id ) ;
+
+
+
+CREATE TABLE uji_horarios.hor_circuitos_estudios 
+    ( 
+     id NUMBER  NOT NULL , 
+     circuito_id NUMBER  NOT NULL , 
+     estudio_id NUMBER  NOT NULL 
+    ) 
+;
+
+
+CREATE INDEX uji_horarios.hor_circuitos_est_cir_IDX ON uji_horarios.hor_circuitos_estudios 
+    ( 
+     circuito_id ASC 
+    ) 
+;
+CREATE INDEX uji_horarios.hor_circuitos_est_est_IDX ON uji_horarios.hor_circuitos_estudios 
+    ( 
+     estudio_id ASC 
+    ) 
+;
+
+ALTER TABLE uji_horarios.hor_circuitos_estudios 
+    ADD CONSTRAINT hor_circuitos_estudios_PK PRIMARY KEY ( id ) ;
 
 
 
@@ -552,8 +577,7 @@ CREATE TABLE uji_horarios.hor_items_circuitos
     ( 
      id NUMBER  NOT NULL , 
      item_id NUMBER  NOT NULL , 
-     circuito_id NUMBER  NOT NULL , 
-     plazas NUMBER 
+     circuito_id NUMBER  NOT NULL 
     ) 
 ;
 
@@ -781,8 +805,20 @@ ALTER TABLE uji_horarios.hor_aulas_planificacion
 ;
 
 
-ALTER TABLE uji_horarios.hor_circuitos 
-    ADD CONSTRAINT hor_circuitos_est_FK FOREIGN KEY 
+ALTER TABLE uji_horarios.hor_circuitos_estudios 
+    ADD CONSTRAINT hor_circuitos_est_cir_FK FOREIGN KEY 
+    ( 
+     circuito_id
+    ) 
+    REFERENCES uji_horarios.hor_circuitos 
+    ( 
+     id
+    ) 
+;
+
+
+ALTER TABLE uji_horarios.hor_circuitos_estudios 
+    ADD CONSTRAINT hor_circuitos_est_est_FK FOREIGN KEY 
     ( 
      estudio_id
     ) 
@@ -1288,9 +1324,9 @@ AND TRUNC(c.fecha) = TRUNC(d.inicio(+)) ;
 
 -- Informe de Resumen de Oracle SQL Developer Data Modeler: 
 -- 
--- CREATE TABLE                            28
--- CREATE INDEX                            24
--- ALTER TABLE                             64
+-- CREATE TABLE                            29
+-- CREATE INDEX                            26
+-- ALTER TABLE                             66
 -- CREATE VIEW                              4
 -- CREATE PACKAGE                           0
 -- CREATE PACKAGE BODY                      0

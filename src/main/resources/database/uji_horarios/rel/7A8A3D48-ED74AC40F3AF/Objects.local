@@ -6,6 +6,7 @@
    <object objectType="Table" objectID="66B3280B-32D8-8EB6-59EC-CBCF84A99C66" name="hor_aulas_planificacion" seqName="seg_0"/>
    <object objectType="Table" objectID="53F2BA3B-63DD-253E-E91F-3CE9E2787973" name="hor_centros" seqName="seg_0"/>
    <object objectType="Table" objectID="240F1530-6F6A-D642-DC26-D94F91C5E2E8" name="hor_circuitos" seqName="seg_0"/>
+   <object objectType="Table" objectID="8E8DF267-E1C8-682B-E81D-65B02A80F4ED" name="hor_circuitos_estudios" seqName="seg_0"/>
    <object objectType="Table" objectID="8F1E4CC5-E2ED-FB61-C49E-FE609DDA981D" name="hor_curso_academico" seqName="seg_0"/>
    <object objectType="Table" objectID="0B454C61-C973-405B-DAC9-A4BA4541B544" name="hor_departamentos" seqName="seg_0"/>
    <object objectType="Table" objectID="C1BEA0B2-D2BC-FCDD-BE9B-10FC623D4569" name="hor_dias_semana" seqName="seg_0"/>
@@ -37,7 +38,8 @@
    <object objectType="FKIndexAssociation" objectID="C2D493CF-D651-A3B3-6E4A-B063AE77F2B3" name="hor_aulas_hor_centros_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="9F3819A1-AB03-5815-F767-1295110838B2" name="hor_aulas_planif_aulas_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="BE06DBFE-AEDE-7C44-C873-01BC6B4E79D9" name="hor_aulas_planif_hor_est_FK" seqName="seg_0"/>
-   <object objectType="FKIndexAssociation" objectID="61465DD7-29C7-9A32-60A1-01AC46F8673A" name="hor_circuitos_est_FK" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="7F25E108-883E-6907-2B7D-63CD67258C8E" name="hor_circuitos_est_cir_FK" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="D4F74CB6-5EA7-BCB7-8EC3-2D7BE1375B92" name="hor_circuitos_est_est_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="D6F3D23D-4E42-E80A-2BED-AEAD87C67AD5" name="hor_dep_hor_centros_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="EE8AC75B-2617-EB8F-38D9-5C267035E9AB" name="hor_estudios_comp_est1_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="9849E1A7-240B-B13A-955C-608DBE18AFE7" name="hor_estudios_comp_est2_FK" seqName="seg_0"/>

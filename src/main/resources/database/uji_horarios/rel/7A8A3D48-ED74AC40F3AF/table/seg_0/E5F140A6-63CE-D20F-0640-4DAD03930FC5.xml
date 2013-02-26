@@ -80,17 +80,6 @@
 <colAssociation fkAssociation="FCA45D97-EFA8-153B-0E5C-6B93E9E87D69" referredColumn="5883BE83-3561-0F2D-3EB6-A9EB94A28FE6"/>
 </associations>
 </Column>
-<Column class="oracle.dbtools.crest.model.design.relational.Column" name="plazas" id="B9531528-D1C4-7342-C3E6-FA9D20FBE90A">
-<createdBy>ferrerq</createdBy>
-<createdTime>2012-06-01 08:34:00 UTC</createdTime>
-<generatorID>Generado por el Usuario</generatorID>
-<ownerDesignName>uji_horarios</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
-<use>0</use>
-<logicalDatatype>LOGDT019</logicalDatatype>
-<domain>B784D6D2-343C-97AF-8447-8FE7645FA837</domain>
-<autoIncrementCycle>false</autoIncrementCycle>
-</Column>
 </columns>
 <indexes>
 <ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="E6C64F6C-4DD1-4233-1527-3DDE5C8857E6" name="hor_items_circuitos_PK">
