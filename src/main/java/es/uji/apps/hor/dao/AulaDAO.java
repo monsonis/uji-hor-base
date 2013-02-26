@@ -6,6 +6,7 @@ import es.uji.apps.hor.AulaYaAsignadaAEstudioException;
 import es.uji.apps.hor.db.AulaDTO;
 import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.AulaPlanificacion;
+import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.model.TipoAula;
 import es.uji.commons.db.BaseDAO;
 import es.uji.commons.rest.exceptions.RegistroConHijosException;
@@ -52,4 +53,6 @@ public interface AulaDAO extends BaseDAO
 
     AulaPlanificacion getAulaPlanificacionById(Long aulaPlanificacionId)
             throws RegistroNoEncontradoException;
+
+    List<Estudio> getEstudiosComunesByEstudioId(Long estudioId);
 }

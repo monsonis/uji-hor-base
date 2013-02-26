@@ -19,6 +19,8 @@ import es.uji.apps.hor.db.ItemsAsignaturaDTO;
 import es.uji.apps.hor.db.QAulaDTO;
 import es.uji.apps.hor.db.QAulaPersonaDTO;
 import es.uji.apps.hor.db.QAulaPlanificacionDTO;
+import es.uji.apps.hor.db.QEstudioDTO;
+import es.uji.apps.hor.db.QEstudiosCompartidosDTO;
 import es.uji.apps.hor.db.QItemDTO;
 import es.uji.apps.hor.db.QItemsAsignaturaDTO;
 import es.uji.apps.hor.model.AreaEdificio;
@@ -552,4 +554,29 @@ public class AulaDAODatabaseImpl extends BaseDAODatabaseImpl implements AulaDAO
         }
     }
 
+    @Override
+    public List<Estudio> getEstudiosComunesByEstudioId(Long estudioId)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        QEstudioDTO qEstudio = QEstudioDTO.estudioDTO;
+        QEstudiosCompartidosDTO qEstudiosCompartidosDTO = QEstudiosCompartidosDTO.estudiosCompartidosDTO;
+
+        query.from(qEstudio).innerJoin(qEstudio.estudiosCompartidos, qEstudiosCompartidosDTO).where(qEstudiosCompartidosDTO.estudio.id.eq(estudioId));
+        
+        List<Estudio> listaEstudiosCompartidos = new ArrayList<Estudio>();
+        
+        for (EstudioDTO estudioDTO: query.list(qEstudio)) {
+            listaEstudiosCompartidos.add(creaEstudioDesdeEstudioDTO(estudioDTO));
+        }
+        return listaEstudiosCompartidos;
+                
+    }
+
+    private Estudio creaEstudioDesdeEstudioDTO(EstudioDTO estudioDTO)
+    {
+        Estudio estudio = new Estudio();
+        estudio.setId(estudioDTO.getId());
+        estudio.setNombre(estudioDTO.getNombre());
+        return estudio;
+    }
 }

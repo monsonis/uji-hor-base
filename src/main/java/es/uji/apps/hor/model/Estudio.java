@@ -1,5 +1,7 @@
 package es.uji.apps.hor.model;
 
+import java.util.List;
+
 
 public class Estudio
 {
@@ -9,6 +11,7 @@ public class Estudio
     private Centro centro;
     private Boolean oficial;
     private Integer numeroCursos;
+    private List<Estudio> estudiosCompartidos;
 
     public Estudio(Long id, String nombre)
     {
@@ -77,5 +80,15 @@ public class Estudio
     public void setNumeroCursos(Integer numeroCursos)
     {
         this.numeroCursos = numeroCursos;
+    }
+
+    public List<Estudio> getEstudiosCompartidos()
+    {
+        return estudiosCompartidos;
+    }
+
+    public void setEstudiosCompartidos(List<Estudio> estudiosCompartidos)
+    {
+        this.estudiosCompartidos = estudiosCompartidos;
     }
 }

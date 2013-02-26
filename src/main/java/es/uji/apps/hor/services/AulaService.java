@@ -11,6 +11,7 @@ import es.uji.apps.hor.dao.PersonaDAO;
 import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.AulaPlanificacion;
 import es.uji.apps.hor.model.Centro;
+import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.model.Persona;
 import es.uji.apps.hor.model.TipoAula;
 import es.uji.commons.rest.auth.Role;
@@ -53,7 +54,14 @@ public class AulaService
         Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
         if (personaDAO.esAdmin(connectedUserId) || persona.esGestorDeCentro())
         {
-            return aulaDAO.asignaAulaToEstudio(estudioId, aulaId, semestreId);
+            AulaPlanificacion nuevaPlanificacion = aulaDAO.asignaAulaToEstudio(estudioId, aulaId, semestreId);
+            
+            List<Estudio> listaEstudiosCompartidos = aulaDAO.getEstudiosComunesByEstudioId(estudioId);
+            
+            for (Estudio estudio: listaEstudiosCompartidos) {
+                aulaDAO.asignaAulaToEstudio(estudio.getId(), aulaId, semestreId);
+            }
+            return nuevaPlanificacion;
         }
         else
         {
@@ -85,6 +93,14 @@ public class AulaService
         if (aula.sePuedeDesplanificar(aulaPlanificacion.getEstudio().getId()))
         {
             aulaDAO.deleteAulaAsignadaToEstudio(aulaPlanificacionId);
+            
+            List<Estudio> listaEstudiosCompartidos = aulaDAO.getEstudiosComunesByEstudioId(aulaPlanificacion.getEstudio().getId());
+            
+            for (Estudio estudio: listaEstudiosCompartidos) {
+                AulaPlanificacion aulaPlanificacionEstudioCompartido = aulaDAO.getAulaPlanificacionByAulaEstudioSemestre(aulaPlanificacion.getAula().getId(), estudio.getId(), aulaPlanificacion.getSemestre().getSemestre());
+                aulaDAO.deleteAulaAsignadaToEstudio(aulaPlanificacionEstudioCompartido.getId());
+            }
+
         }
         else
         {

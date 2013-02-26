@@ -34,6 +34,10 @@ public class EstudioDTO implements Serializable
     @OneToMany(mappedBy = "estudio")
     private Set<CircuitoDTO> circuitos;
 
+    // bi-directional many-to-one association to EstudiosCompartidosDTO
+    @OneToMany(mappedBy = "estudioCompartido")
+    private Set<EstudiosCompartidosDTO> estudiosCompartidos;
+
     // bi-directional many-to-one association to CentroDTO
     @ManyToOne
     @JoinColumn(name = "CENTRO_ID")
@@ -147,6 +151,16 @@ public class EstudioDTO implements Serializable
     public void setNumeroCursos(Long numeroCursos)
     {
         this.numeroCursos = numeroCursos;
+    }
+
+    public Set<EstudiosCompartidosDTO> getEstudiosCompartidos()
+    {
+        return estudiosCompartidos;
+    }
+
+    public void setEstudiosCompartidos(Set<EstudiosCompartidosDTO> estudiosCompartidos)
+    {
+        this.estudiosCompartidos = estudiosCompartidos;
     }
 
 }
