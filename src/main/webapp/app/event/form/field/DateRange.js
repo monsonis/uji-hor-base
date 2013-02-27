@@ -75,8 +75,7 @@ Ext.define('Event.form.field.DateRange',
 
     getDayConfig : function()
     {
-        return
-        {
+        return {
             xtype : 'combobox',
             id : this.id + '-day',
             labelWidth : 0,
@@ -105,8 +104,7 @@ Ext.define('Event.form.field.DateRange',
 
     getStartDateConfig : function()
     {
-        return
-        {
+        return {
             xtype : 'datefield',
             name : 'start-date-hidden',
             id : this.id + '-start-date',
@@ -117,8 +115,7 @@ Ext.define('Event.form.field.DateRange',
 
     getStartTimeConfig : function()
     {
-        return
-        {
+        return {
             xtype : 'timefield',
             id : this.id + '-start-time',
             hidden : this.showTimes === false,
@@ -142,8 +139,7 @@ Ext.define('Event.form.field.DateRange',
 
     getEndDateConfig : function()
     {
-        return
-        {
+        return {
             xtype : 'datefield',
             id : this.id + '-end-date',
             format : this.dateFormat,
@@ -153,8 +149,7 @@ Ext.define('Event.form.field.DateRange',
 
     getEndTimeConfig : function()
     {
-        return
-        {
+        return {
             xtype : 'timefield',
             id : this.id + '-end-time',
             hidden : this.showTimes === false,
@@ -178,8 +173,7 @@ Ext.define('Event.form.field.DateRange',
 
     getDateSeparatorConfig : function()
     {
-        return
-        {
+        return {
             xtype : 'label',
             id : this.id + '-to-label',
             text : this.toText,
