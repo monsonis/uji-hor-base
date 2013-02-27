@@ -1,5 +1,5 @@
 -- Generado por Oracle SQL Developer Data Modeler 3.1.1.703
---   en:        2013-02-26 08:29:13 CET
+--   en:        2013-02-27 16:28:35 CET
 --   sitio:      Oracle Database 11g
 --   tipo:      Oracle Database 11g
 
@@ -165,6 +165,7 @@ ALTER TABLE uji_horarios.hor_centros
 CREATE TABLE uji_horarios.hor_circuitos 
     ( 
      id NUMBER  NOT NULL , 
+     semestre_id NUMBER  NOT NULL , 
      grupo_id VARCHAR2 (10)  NOT NULL , 
      nombre VARCHAR2 (100)  NOT NULL , 
      plazas NUMBER  NOT NULL 
@@ -829,6 +830,18 @@ ALTER TABLE uji_horarios.hor_circuitos_estudios
 ;
 
 
+ALTER TABLE uji_horarios.hor_circuitos 
+    ADD CONSTRAINT hor_circuitos_hor_semestres_FK FOREIGN KEY 
+    ( 
+     semestre_id
+    ) 
+    REFERENCES uji_horarios.hor_semestres 
+    ( 
+     id
+    ) 
+;
+
+
 ALTER TABLE uji_horarios.hor_departamentos 
     ADD CONSTRAINT hor_dep_hor_centros_FK FOREIGN KEY 
     ( 
@@ -1326,7 +1339,7 @@ AND TRUNC(c.fecha) = TRUNC(d.inicio(+)) ;
 -- 
 -- CREATE TABLE                            29
 -- CREATE INDEX                            26
--- ALTER TABLE                             66
+-- ALTER TABLE                             67
 -- CREATE VIEW                              4
 -- CREATE PACKAGE                           0
 -- CREATE PACKAGE BODY                      0

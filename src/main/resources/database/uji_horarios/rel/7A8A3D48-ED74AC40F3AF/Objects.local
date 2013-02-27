@@ -34,6 +34,7 @@
    <object objectType="View" objectID="9245C953-D169-2F30-1B52-69DDFD1E6032" name="hor_v_cursos" seqName="seg_0"/>
    <object objectType="View" objectID="0F4BC563-A5B6-20CF-D040-6F7583854AA2" name="hor_v_grupos" seqName="seg_0"/>
    <object objectType="View" objectID="0678D567-6BDC-3D9C-1247-9488502374F4" name="hor_v_items_detalle" seqName="seg_0"/>
+   <object objectType="FKIndexAssociation" objectID="F76D18EA-9F48-259D-A225-D1191BB27F3C" name="hor_circuitos_hor_semestres_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="2F57917F-059E-AB80-369F-8B9515A51188" name="hor_areas_hor_dep_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="C2D493CF-D651-A3B3-6E4A-B063AE77F2B3" name="hor_aulas_hor_centros_FK" seqName="seg_0"/>
    <object objectType="FKIndexAssociation" objectID="9F3819A1-AB03-5815-F767-1295110838B2" name="hor_aulas_planif_aulas_FK" seqName="seg_0"/>

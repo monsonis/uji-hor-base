@@ -108,3 +108,23 @@ ALTER TABLE uji_horarios.hor_circuitos_estudios
 
 
 
+ALTER TABLE uji_horarios.hor_circuitos 
+    ADD ( 
+     semestre_id NUMBER  NOT NULL 
+    ) 
+;
+
+
+
+
+ALTER TABLE uji_horarios.hor_circuitos 
+    ADD CONSTRAINT hor_circuitos_hor_semestres_FK FOREIGN KEY 
+    ( 
+     semestre_id
+    ) 
+    REFERENCES uji_horarios.hor_semestres 
+    ( 
+     id
+    ) 
+;
+

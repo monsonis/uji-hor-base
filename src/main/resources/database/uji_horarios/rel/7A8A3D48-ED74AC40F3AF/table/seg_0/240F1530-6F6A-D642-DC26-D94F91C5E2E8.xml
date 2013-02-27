@@ -52,6 +52,20 @@
 <domain>B784D6D2-343C-97AF-8447-8FE7645FA837</domain>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
+<Column class="oracle.dbtools.crest.model.design.relational.Column" name="semestre_id" id="DB65CFDE-1A9F-32BE-6611-E5FEDC344560">
+<createdBy>ferrerq</createdBy>
+<createdTime>2013-02-27 15:25:35 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<use>0</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<domain>B784D6D2-343C-97AF-8447-8FE7645FA837</domain>
+<delegate>5F7DDD1D-BCFE-D5C2-79CB-6710229D5330</delegate>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="F76D18EA-9F48-259D-A225-D1191BB27F3C" referredColumn="5F7DDD1D-BCFE-D5C2-79CB-6710229D5330"/>
+</associations>
+</Column>
 <Column class="oracle.dbtools.crest.model.design.relational.Column" name="grupo_id" id="CDF3B026-BB09-6973-4793-B65F2AAE4CEF">
 <createdBy>ferrerq</createdBy>
 <createdTime>2012-05-28 14:28:56 UTC</createdTime>
@@ -93,6 +107,16 @@
 <indexState>Primary Constraint</indexState>
 <indexColumnUsage>
 <colUsage columnID="5883BE83-3561-0F2D-3EB6-A9EB94A28FE6"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="13576DD9-76F0-9DB1-5228-C9512A39272C" name="hor_circuitos_hor_semestres_FK">
+<createdBy>ferrerq</createdBy>
+<createdTime>2013-02-27 15:25:35 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<indexColumnUsage>
+<colUsage columnID="DB65CFDE-1A9F-32BE-6611-E5FEDC344560"/>
 </indexColumnUsage>
 </ind_PK_UK>
 </indexes>
