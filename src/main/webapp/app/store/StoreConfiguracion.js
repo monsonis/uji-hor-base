@@ -34,11 +34,12 @@ Ext.define('HOR.store.StoreConfiguracion',
 
                     if (msgList && msgList[0] && msgList[0].firstChild)
                     {
-                        Ext.MessageBox.show({
-                            title: 'Server error',
-                            msg: msgList[0].firstChild.nodeValue,
-                            icon: Ext.MessageBox.ERROR,
-                            buttons: Ext.Msg.OK
+                        Ext.MessageBox.show(
+                        {
+                            title : 'Server error',
+                            msg : msgList[0].firstChild.nodeValue,
+                            icon : Ext.MessageBox.ERROR,
+                            buttons : Ext.Msg.OK
                         });
                     }
                 }

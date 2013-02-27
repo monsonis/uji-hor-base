@@ -3,7 +3,7 @@ Ext.define('HOR.view.commons.MenuSuperior',
     extend : 'Ext.toolbar.Toolbar',
     alias : 'widget.menuSuperior',
     width : 200,
-    menuVisible: false,
+    menuVisible : false,
     items : [
     {
         xtype : 'splitbutton',
@@ -12,7 +12,7 @@ Ext.define('HOR.view.commons.MenuSuperior',
         menu :
         {
             xtype : 'menu',
-            titleCollapse: true,
+            titleCollapse : true,
             items : [
             {
                 text : 'Gestió d\'horaris',
@@ -33,13 +33,17 @@ Ext.define('HOR.view.commons.MenuSuperior',
             {
                 text : 'Ocupació d\'aules',
                 action : 'ocupacion-aulas'
-            }]
+            } ]
         },
-        handler: function(button, event) {
-            if (!this.menuVisible) {
+        handler : function(button, event)
+        {
+            if (!this.menuVisible)
+            {
                 button.showMenu();
                 this.menuVisible = true;
-            } else {
+            }
+            else
+            {
                 button.hideMenu();
                 this.menuVisible = false;
             }

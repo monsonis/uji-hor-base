@@ -21,13 +21,13 @@ Ext.define('Event.form.field.RadioNumber',
         {
             xtype : 'radio',
             name : this.radioName,
-            inputValue: this.inputValue,
+            inputValue : this.inputValue,
             boxLabel : this.boxLabel
         },
         {
             xtype : 'numberfield',
             margin : '0 5 0 5',
-            value: this.value,
+            value : this.value,
             minValue : this.minValue,
             name : this.numberName,
             listeners :
@@ -57,12 +57,12 @@ Ext.define('Event.form.field.RadioNumber',
 
         this.callParent(arguments);
     },
-    
+
     disableEndLabel : function()
     {
         this.down('label[name=endLabel]').addCls('form-disabled-label');
     },
-    
+
     enableEndLabel : function()
     {
         this.down('label[name=endLabel]').removeCls('form-disabled-label');

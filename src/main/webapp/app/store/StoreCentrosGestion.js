@@ -1,7 +1,7 @@
 Ext.define('HOR.store.StoreCentrosGestion',
-{   
-           
- 	extend : 'Ext.data.Store',
+{
+
+    extend : 'Ext.data.Store',
     model : 'HOR.model.Centro',
     proxy :
     {
@@ -19,7 +19,6 @@ Ext.define('HOR.store.StoreCentrosGestion',
         {
             type : 'json'
         }
-    }	 
-	    
+    }
 
 });

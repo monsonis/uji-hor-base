@@ -56,12 +56,21 @@ Ext.define('HOR.view.circuitos.FiltroCircuitos',
             },
             items : [
             {
+                fieldLabel : 'Curs',
+                store : [ 1 ],
+                width: 120,
+                value: 1,
+                displayField : 'name',
+                valueField : 'id',
+                name : 'curso'
+            },
+            {
                 fieldLabel : 'Semestre',
                 width : 200,
                 matchFieldWidth : false,
                 store : 'StoreSemestres',
                 displayField : 'nombre',
-                valueField : 'nombre',
+                valueField : 'semestre',
                 name : 'semestre',
             },
             {
@@ -74,61 +83,61 @@ Ext.define('HOR.view.circuitos.FiltroCircuitos',
                 width : 150,
                 multiSelect : true
             } ]
-        // },
-        // {
-        // xtype : 'panel',
-        // border : 0,
-        // anchor : '50%',
-        // flex : 1,
-        // layout :
-        // {
-        // type : 'hbox',
-        // align : 'fit',
-        // pack : 'end'
-        // },
-        // defaults :
-        // {
-        // width : 120,
-        // labelWidth : 75,
-        // labelAlign : 'left',
-        // margin : '0 20 0 0'
-        // },
-        // items : [
-        // {
-        // margin : '0 0 0 0',
-        // name : 'imprimir',
-        // xtype : 'button',
-        // hidden : true,
-        // margin : '0 0 0 5',
-        // width : '40',
-        // flex : 0,
-        // text : 'Imprimir',
-        // iconCls : 'printer'
-        // },
-        // {
-        // margin : '0 0 0 10',
-        // name : 'calendarioAulasDetalle',
-        // xtype : 'button',
-        // enableToggle : true,
-        // hidden : true,
-        // width : '40',
-        // flex : 0,
-        // text : 'Set. detallada',
-        // iconCls : 'calendar-week'
-        // },
-        // {
-        // margin : '0 0 0 10',
-        // name : 'calendarioAulasGenerica',
-        // xtype : 'button',
-        // enableToggle : true,
-        // pressed : true,
-        // hidden : true,
-        // margin : '0 0 0 5',
-        // width : '40',
-        // flex : 0,
-        // text : 'Set. genèrica',
-        // iconCls : 'calendar-edit'
-        // } ]
+         },
+        {
+            xtype : 'panel',
+            border : 0,
+            anchor : '50%',
+            flex : 1,
+            layout :
+            {
+                type : 'hbox',
+                align : 'fit',
+                pack : 'end'
+            },
+            defaults :
+            {
+                width : 120,
+                labelWidth : 75,
+                labelAlign : 'left',
+                margin : '0 20 0 0'
+            },
+            items : [
+            {
+                margin : '0 0 0 0',
+                name : 'imprimir',
+                xtype : 'button',
+                hidden : true,
+                margin : '0 0 0 5',
+                width : '40',
+                flex : 0,
+                text : 'Imprimir',
+                iconCls : 'printer'
+            },
+            {
+                margin : '0 0 0 10',
+                name : 'calendarioCircuitosDetalle',
+                xtype : 'button',
+                enableToggle : true,
+                hidden : true,
+                width : '40',
+                flex : 0,
+                text : 'Set. detallada',
+                iconCls : 'calendar-week'
+            },
+            {
+                margin : '0 0 0 10',
+                name : 'calendarioCircuitosGenerica',
+                xtype : 'button',
+                enableToggle : true,
+                pressed : true,
+                hidden : true,
+                margin : '0 0 0 5',
+                width : '40',
+                flex : 0,
+                text : 'Set. genèrica',
+                iconCls : 'calendar-edit'
+            } ]
         } ]
     } ],
 

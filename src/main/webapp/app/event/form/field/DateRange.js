@@ -9,12 +9,12 @@ Ext.define('Event.form.field.DateRange',
      * @cfg {String} toText The text to display in between the date/time fields (defaults to 'to')
      */
     toText : 'a',
-    
+
     /**
-     * @cfg {String} dateFormat
-     * The date display format used by the date fields (defaults to 'n/j/Y') 
+     * @cfg {String} dateFormat The date display format used by the date fields (defaults to
+     *      'n/j/Y')
      */
-    dateFormat: 'n/j/Y',
+    dateFormat : 'n/j/Y',
 
     // private
     fieldLayout :
@@ -64,13 +64,7 @@ Ext.define('Event.form.field.DateRange',
     getFieldConfigs : function()
     {
         var me = this;
-        return [
-        me.getStartDateConfig(),
-        me.getDayConfig(), me.getStartTimeConfig(),
-        me.getDateSeparatorConfig(),
-        me.getEndTimeConfig(),
-        me.getEndDateConfig(),
-        ];
+        return [ me.getStartDateConfig(), me.getDayConfig(), me.getStartTimeConfig(), me.getDateSeparatorConfig(), me.getEndTimeConfig(), me.getEndDateConfig(), ];
     },
 
     getLayoutItems : function()
@@ -81,85 +75,102 @@ Ext.define('Event.form.field.DateRange',
 
     getDayConfig : function()
     {
-        return {
-            xtype: 'combobox',
+        return
+        {
+            xtype : 'combobox',
             id : this.id + '-day',
-            labelWidth: 0,
-            hideLabel: true,
-            width: 90,
+            labelWidth : 0,
+            hideLabel : true,
+            width : 90,
             valueField : 'index',
             displayField : 'day',
-            store : Ext.create('Ext.data.ArrayStore', {
-                fields : ['index', 'day'],
-                data : [['1', 'Dilluns'], ['2', 'Dimarts'], ['3', 'Dimecres'], ['4', 'Dijous'], ['5', 'Divendres']]
+            store : Ext.create('Ext.data.ArrayStore',
+            {
+                fields : [ 'index', 'day' ],
+                data : [ [ '1', 'Dilluns' ], [ '2', 'Dimarts' ], [ '3', 'Dimecres' ], [ '4', 'Dijous' ], [ '5', 'Divendres' ] ]
             }),
-            listeners: {
-                'select': {
-                    fn: function(){
+            listeners :
+            {
+                'select' :
+                {
+                    fn : function()
+                    {
                         this.updateDates(parseInt(this.day.getValue()));
                     },
-                    scope: this
+                    scope : this
                 }
             }
         };
     },
-    
-    getStartDateConfig: function() {
-        return {
-            xtype: 'datefield',
+
+    getStartDateConfig : function()
+    {
+        return
+        {
+            xtype : 'datefield',
             name : 'start-date-hidden',
-            id: this.id + '-start-date',
-            format: this.dateFormat,
+            id : this.id + '-start-date',
+            format : this.dateFormat,
             hidden : true
         };
     },
 
     getStartTimeConfig : function()
     {
-        return {
-            xtype: 'timefield',
-            id: this.id + '-start-time',
-            hidden: this.showTimes === false,
-            labelWidth: 0,
-            hideLabel: true,
-            width: 90,
-            format: this.timeFormat,
-            listeners: {
-                'select': {
-                    fn: function(){
+        return
+        {
+            xtype : 'timefield',
+            id : this.id + '-start-time',
+            hidden : this.showTimes === false,
+            labelWidth : 0,
+            hideLabel : true,
+            width : 90,
+            format : this.timeFormat,
+            listeners :
+            {
+                'select' :
+                {
+                    fn : function()
+                    {
                         this.onFieldChange('time', 'start');
                     },
-                    scope: this
+                    scope : this
                 }
             }
         };
     },
-    
-    getEndDateConfig: function() {
-        return {
-            xtype: 'datefield',
-            id: this.id + '-end-date',
-            format: this.dateFormat,
+
+    getEndDateConfig : function()
+    {
+        return
+        {
+            xtype : 'datefield',
+            id : this.id + '-end-date',
+            format : this.dateFormat,
             hidden : true
         };
     },
 
     getEndTimeConfig : function()
     {
-        return {
-            xtype: 'timefield',
-            id: this.id + '-end-time',
-            hidden: this.showTimes === false,
-            labelWidth: 0,
-            hideLabel: true,
-            width: 90,
-            format: this.timeFormat,
-            listeners: {
-                'select': {
-                    fn: function(){
+        return
+        {
+            xtype : 'timefield',
+            id : this.id + '-end-time',
+            hidden : this.showTimes === false,
+            labelWidth : 0,
+            hideLabel : true,
+            width : 90,
+            format : this.timeFormat,
+            listeners :
+            {
+                'select' :
+                {
+                    fn : function()
+                    {
                         this.onFieldChange('time', 'end');
                     },
-                    scope: this
+                    scope : this
                 }
             }
         };
@@ -167,11 +178,18 @@ Ext.define('Event.form.field.DateRange',
 
     getDateSeparatorConfig : function()
     {
-        return {
-            xtype: 'label',
-            id: this.id + '-to-label',
-            text: this.toText,
-            margins: { top: 4, right: 5, bottom: 0, left: 0 },
+        return
+        {
+            xtype : 'label',
+            id : this.id + '-to-label',
+            text : this.toText,
+            margins :
+            {
+                top : 4,
+                right : 5,
+                bottom : 0,
+                left : 0
+            },
             disabledCls : 'opacity: .3'
         };
     },
@@ -182,13 +200,13 @@ Ext.define('Event.form.field.DateRange',
         this.checkDates(type, startend);
         this.fireEvent('change', this, this.getValue());
     },
-    
+
     // private
     updateDates : function(newDay)
     {
         var dt = this.getDT('start');
         var oldDay = parseInt(Ext.Date.format(dt, 'N'));
-        
+
         dt = Ext.Date.add(dt, Ext.Date.DAY, newDay - oldDay);
         this.startDate.setValue(dt);
         this.endDate.setValue(dt);
@@ -231,8 +249,7 @@ Ext.define('Event.form.field.DateRange',
      */
     getValue : function()
     {
-        return [ this.getDT('start'), this.getDT('end')
-        ];
+        return [ this.getDT('start'), this.getDT('end') ];
     },
 
     // private getValue helper
@@ -375,12 +392,12 @@ Ext.define('Event.form.field.DateRange',
      * @hide
      */
     setRawValue : Ext.emptyFn,
-    
+
     disableFields : function()
     {
         this.day.setReadOnly(true);
     },
-    
+
     enableFields : function()
     {
         this.day.setReadOnly(false);

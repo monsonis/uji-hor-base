@@ -2,11 +2,11 @@ Ext.define('Event.form.field.RadioDate',
 {
     extend : 'Ext.container.Container',
     alias : 'widget.radiodatefield',
-    
+
     layout :
-        {
+    {
         type : 'hbox'
-        },
+    },
 
     value : '',
     boxLabel : '',
@@ -20,15 +20,15 @@ Ext.define('Event.form.field.RadioDate',
         {
             xtype : 'radio',
             name : this.radioName,
-            inputValue: this.inputValue,
+            inputValue : this.inputValue,
             boxLabel : this.boxLabel
         },
         {
             xtype : 'datefield',
-            value: this.value,
+            value : this.value,
             name : this.dateName,
             format : this.format,
-            altFormats: this.altFormats,
+            altFormats : this.altFormats,
             margin : '0 0 0 5',
             listeners :
             {

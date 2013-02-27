@@ -19,11 +19,11 @@ Ext.define('HOR.controller.ControllerFiltroCalendario',
     {
         selector : 'panelCalendario',
         ref : 'panelCalendario'
-    } ,
+    },
     {
         selector : 'panelHorarios filtroGrupos combobox[name=grupo]',
         ref : 'comboGrupos'
-    }],
+    } ],
 
     init : function()
     {

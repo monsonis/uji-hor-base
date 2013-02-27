@@ -5,7 +5,7 @@ Ext.define('HOR.view.configuracion.SelectorHoras',
     title : 'Hores del calendari',
     padding : 5,
 
-    width: 500,
+    width : 500,
     layout :
     {
         type : 'hbox',

@@ -11,10 +11,10 @@ Ext.define('Event.form.PanelInfo',
 
     showAviso : function(msg)
     {
-        this.update("<div style='color: #FF9900;'><img src='/hor/images/warning.png' style='margin-right: 5px;' />" + msg + "</div>");       
+        this.update("<div style='color: #FF9900;'><img src='/hor/images/warning.png' style='margin-right: 5px;' />" + msg + "</div>");
         this.show();
     },
-    
+
     dropAviso : function()
     {
         this.update("");

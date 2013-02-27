@@ -1,17 +1,18 @@
-Ext.define('HOR.controller.ControllerDashboards', {
-	extend : 'Ext.app.Controller',
-	views : [ 'dashboard.PanelDashboard', 'ApplicationViewport' ],
+Ext.define('HOR.controller.ControllerDashboards',
+{
+    extend : 'Ext.app.Controller',
+    views : [ 'dashboard.PanelDashboard', 'ApplicationViewport' ],
 
-//	init : function() {
-//		this.control({
-//			'viewport > treepanel' : {
-//			   itemclick : this.treeItemSelected
-//			},
-//		});
-//	},
+// init : function() {
+// this.control({
+// 'viewport > treepanel' : {
+// itemclick : this.treeItemSelected
+// },
+// });
+// },
 //	
-//	treeItemSelected : function(view, node, item, index, event, opts)
-//	{
-//	   view.up("viewport").addNewTab(node.data.id);
-//	}
+// treeItemSelected : function(view, node, item, index, event, opts)
+// {
+// view.up("viewport").addNewTab(node.data.id);
+// }
 });

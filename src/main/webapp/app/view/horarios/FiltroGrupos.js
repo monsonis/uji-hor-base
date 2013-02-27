@@ -104,17 +104,17 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
                 margin : '0 20 0 0'
             },
             items : [
-             {
-                 margin : '0 0 0 0',
-                 name : 'validar',
-                 xtype : 'button',
-                 hidden : true,
-                 margin : '0 0 0 5',
-                 width : '40',
-                 flex : 0,
-                 text : 'Validaciones',
-                 iconCls : 'tick'
-             },
+            {
+                margin : '0 0 0 0',
+                name : 'validar',
+                xtype : 'button',
+                hidden : true,
+                margin : '0 0 0 5',
+                width : '40',
+                flex : 0,
+                text : 'Validaciones',
+                iconCls : 'tick'
+            },
             {
                 margin : '0 0 0 0',
                 name : 'imprimir',
@@ -153,11 +153,11 @@ Ext.define('HOR.view.horarios.FiltroGrupos',
         } ]
 
     } ],
-    
+
     getGruposSelected : function()
     {
         var grupos = this.down('combobox[name=grupo]').getValue();
-        
+
         return grupos.join(';');
     }
 });

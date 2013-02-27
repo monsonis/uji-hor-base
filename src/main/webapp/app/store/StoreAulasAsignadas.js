@@ -4,10 +4,11 @@ Ext.define('HOR.store.StoreAulasAsignadas',
     autoLoad : false,
     autoSync : false,
     model : 'HOR.model.AulaPlanificacion',
-    sorters: [{
-        property: 'nombre',
-        direction: 'ASC'
-    }],
+    sorters : [
+    {
+        property : 'nombre',
+        direction : 'ASC'
+    } ],
     proxy :
     {
         type : 'rest',
@@ -28,8 +29,8 @@ Ext.define('HOR.store.StoreAulasAsignadas',
         {
             exception : function(proxy, response, operation)
             {
-            	var myResponseJSON = JSON.parse(response.responseText);
-    	        Ext.Msg.alert('Error', myResponseJSON['msg']);
+                var myResponseJSON = JSON.parse(response.responseText);
+                Ext.Msg.alert('Error', myResponseJSON['msg']);
             }
         }
     }

@@ -94,12 +94,12 @@ Ext.define('Event.form.field.DateRepeat',
         this.down('combobox[name=' + Extensible.calendar.data.EventMappings.RepetirCada.name + ']').enable();
         this.down('radiogroup').enable();
     },
-    
+
     setRepetirCadaValue : function(value)
     {
         this.down('combobox[name=' + Extensible.calendar.data.EventMappings.RepetirCada.name + ']').setValue(value);
     },
-    
+
     setNumeroRepeticionesValue : function(value)
     {
         this.down('numberfield[name=' + Extensible.calendar.data.EventMappings.EndRepNumberComp.name + ']').setValue(value);

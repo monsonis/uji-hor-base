@@ -1,9 +1,9 @@
 Ext.define('HOR.store.StoreCargos',
-{   
-           
- 	extend : 'Ext.data.Store',
+{
+
+    extend : 'Ext.data.Store',
     model : 'HOR.model.Cargo',
-    autoLoad: false,
+    autoLoad : false,
     proxy :
     {
         type : 'rest',
@@ -16,14 +16,14 @@ Ext.define('HOR.store.StoreCargos',
             root : 'data'
         },
 
-        extraParams: {
-            estudioId: null
+        extraParams :
+        {
+            estudioId : null
         },
         writer :
         {
             type : 'json'
         }
-    }	 
-	    
+    }
 
 });

@@ -2,9 +2,12 @@ Ext.define('HOR.store.StoreSemestreDetalles',
 {
     extend : 'Ext.data.Store',
     model : 'HOR.model.SemestreDetalle',
-    autoLoad: true,
-    
-    sorters : [{property : 'nombreTipoEstudio'}],
+    autoLoad : true,
+
+    sorters : [
+    {
+        property : 'nombreTipoEstudio'
+    } ],
 
     proxy :
     {

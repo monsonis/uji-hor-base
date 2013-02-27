@@ -8,14 +8,14 @@ Ext.define('HOR.store.StoreCircuitos',
     {
         type : 'rest',
         url : '/hor/rest/circuito',
-        
+
         reader :
         {
             type : 'json',
             successProperty : 'success',
             root : 'data'
         },
-        
+
         writer :
         {
             type : 'json'

@@ -525,7 +525,7 @@ Ext.define('HOR.controller.ControllerCalendario',
     {
         var horaInicio = rec.get(Extensible.calendar.data.EventMappings.StartDate.name);
         var horaFin = rec.get(Extensible.calendar.data.EventMappings.EndDate.name);
-        
+
         var me = this.getPanelCalendario();
 
         if (Extensible.Date.diffDays(horaInicio, date) != 0)
@@ -535,18 +535,18 @@ Ext.define('HOR.controller.ControllerCalendario',
                 if (btn == 'yes')
                 {
                     rec.set(Extensible.calendar.data.EventMappings.StartDate.name, date);
-                    
+
                     var diff = Extensible.Date.diff(horaFin, horaInicio);
                     var endDate = Extensible.Date.add(date, diff);
                     rec.set(Extensible.calendar.data.EventMappings.EndDate.name, endDate);
-                    
+
                     me.getEventStore().save();
                 }
             });
-            
+
             return false;
         }
-        
+
         return true;
     }
 

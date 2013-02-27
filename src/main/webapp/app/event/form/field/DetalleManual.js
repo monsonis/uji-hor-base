@@ -20,14 +20,14 @@ Ext.define('Event.form.field.DetalleManual',
     {
         xtype : 'hidden',
         name : this.nameHidden
-    }],
+    } ],
 
     initComponent : function()
     {
         this.callParent(arguments);
 
     },
-   
+
     addPosiblesFechas : function(clases)
     {
         this.items.items[0].removeAll();
@@ -82,21 +82,22 @@ Ext.define('Event.form.field.DetalleManual',
             }
         }
     },
-    
-    numer_seleccionados : function(){
-    	var checkboxes = this.down('checkboxgroup').items.items;
-    	var nselecs = 0;
+
+    numer_seleccionados : function()
+    {
+        var checkboxes = this.down('checkboxgroup').items.items;
+        var nselecs = 0;
 
         for ( var i = 0; i < checkboxes.length; i++)
         {
             if (checkboxes[i].getValue())
             {
-               nselecs = nselecs +1;
+                nselecs = nselecs + 1;
             }
         }
         return nselecs;
     },
-    
+
     uncheckAllBoxes : function()
     {
         var checkboxes = this.down('checkboxgroup').items.items;

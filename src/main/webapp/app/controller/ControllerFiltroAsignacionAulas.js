@@ -240,7 +240,7 @@ Ext.define('HOR.controller.ControllerFiltroAsignacionAulas',
         {
             estudios_store.load(
             {
-                params :{},
+                params : {},
                 scope : this
             });
 

@@ -14,7 +14,7 @@ Ext.define('HOR.view.configuracion.ConfiguracionCalendario',
         anchor : '50%',
     } ],
 
-    buttonAlign: 'left',
+    buttonAlign : 'left',
     buttons : [
     {
         text : 'Guardar',

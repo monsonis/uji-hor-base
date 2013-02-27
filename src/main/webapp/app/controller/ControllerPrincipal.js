@@ -11,17 +11,17 @@ Ext.define('HOR.controller.ControllerPrincipal',
     init : function()
     {
         this.control(
-        {           
+        {
             'viewport > treepanel' :
             {
                 itemclick : this.navigationTreeItemClick
             }
         });
     },
-    
-    navigationTreeItemClick : function (view, node, item, index, e) {
-    	view.up("viewport").addNewTab(node.data.id);
+
+    navigationTreeItemClick : function(view, node, item, index, e)
+    {
+        view.up("viewport").addNewTab(node.data.id);
     },
-  
 
 });

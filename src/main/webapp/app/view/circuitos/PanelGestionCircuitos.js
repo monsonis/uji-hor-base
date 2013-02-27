@@ -26,7 +26,7 @@ Ext.define('HOR.view.circuitos.PanelGestionCircuitos',
         margin : '0 0 5 0',
         width : '40',
         flex : 0,
-        text : 'Set. detallada',
+        text : 'Editar circuit',
         iconCls : 'application-edit'
     },
     {

@@ -6,7 +6,8 @@ Ext.define('HOR.model.AulaPlanificacion',
     {
         name : 'nombreYPlazas',
         mapping : 'nombre',
-        convert: function(v, record) {
+        convert : function(v, record)
+        {
             return v + " (" + record.data.plazas + " plaçes)";
         }
     } ]

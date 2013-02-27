@@ -11,8 +11,9 @@ Ext.define('HOR.view.aulas.circuitos.SelectorCircuitos',
         type : 'vbox',
         align : 'stretch'
     },
-    
-    limpiaGrupos: function() {
+
+    limpiaGrupos : function()
+    {
         this.removeAll();
     }
 });
