@@ -46,7 +46,7 @@ Ext.define('HOR.view.circuitos.VentanaEdicionCircuitos',
         },
         {
             xtype : 'hidden',
-            name : 'id_circuito'
+            name : 'id-circuito'
         } ]
     } ]
 });
