@@ -75,7 +75,8 @@ Ext.define('Event.form.field.DateRange',
 
     getDayConfig : function()
     {
-        return {
+        var combobox =
+        {
             xtype : 'combobox',
             id : this.id + '-day',
             labelWidth : 0,
@@ -100,22 +101,28 @@ Ext.define('Event.form.field.DateRange',
                 }
             }
         };
+
+        return combobox;
     },
 
     getStartDateConfig : function()
     {
-        return {
+        var date =
+        {
             xtype : 'datefield',
             name : 'start-date-hidden',
             id : this.id + '-start-date',
             format : this.dateFormat,
             hidden : true
         };
+
+        return date;
     },
 
     getStartTimeConfig : function()
     {
-        return {
+        var time =
+        {
             xtype : 'timefield',
             id : this.id + '-start-time',
             hidden : this.showTimes === false,
@@ -135,21 +142,27 @@ Ext.define('Event.form.field.DateRange',
                 }
             }
         };
+
+        return time;
     },
 
     getEndDateConfig : function()
     {
-        return {
+        var date =
+        {
             xtype : 'datefield',
             id : this.id + '-end-date',
             format : this.dateFormat,
             hidden : true
         };
+
+        return date;
     },
 
     getEndTimeConfig : function()
     {
-        return {
+        var time =
+        {
             xtype : 'timefield',
             id : this.id + '-end-time',
             hidden : this.showTimes === false,
@@ -169,11 +182,14 @@ Ext.define('Event.form.field.DateRange',
                 }
             }
         };
+
+        var time;
     },
 
     getDateSeparatorConfig : function()
     {
-        return {
+        var label =
+        {
             xtype : 'label',
             id : this.id + '-to-label',
             text : this.toText,
@@ -186,6 +202,8 @@ Ext.define('Event.form.field.DateRange',
             },
             disabledCls : 'opacity: .3'
         };
+
+        return label;
     },
 
     // private
