@@ -17,13 +17,11 @@ Ext.define('HOR.view.circuitos.FiltroCircuitos',
         labelWidth : 60,
         labelAlign : 'left',
         margin : '0 20 0 0',
-        lastQuery : '',
-
-        fieldLabel : 'Centre',
-        store : 'StoreCentros',
+        fieldLabel : 'Titulacio',
+        store : 'StoreEstudios',
         displayField : 'nombre',
         valueField : 'id',
-        name : 'centro',
+        name : 'estudio',
         width : 500,
     },
     {
@@ -59,87 +57,86 @@ Ext.define('HOR.view.circuitos.FiltroCircuitos',
             items : [
             {
                 fieldLabel : 'Semestre',
-                width : 120,
+                width : 200,
                 matchFieldWidth : false,
-                listConfig :
-                {
-                    width : 180
-                },
                 store : 'StoreSemestres',
                 displayField : 'nombre',
                 valueField : 'nombre',
-                name : 'edificio',
+                name : 'semestre',
             },
             {
                 fieldLabel : 'Grup',
-                width : 100,
-                labelWidth: 40,
-                matchFieldWidth : false,
-                listConfig :
-                {
-                    width : 180
-                },
-                store : 'StoreTiposAula',
-                displayField : 'nombre',
-                valueField : 'valor',
-                name : 'tipoAula',
+                store : 'StoreGrupos',
+                displayField : 'grupo',
+                valueField : 'grupo',
+                name : 'grupo',
+                labelWidth : 55,
+                width : 150,
+                multiSelect : true
             } ]
-//        },
-//        {
-//            xtype : 'panel',
-//            border : 0,
-//            anchor : '50%',
-//            flex : 1,
-//            layout :
-//            {
-//                type : 'hbox',
-//                align : 'fit',
-//                pack : 'end'
-//            },
-//            defaults :
-//            {
-//                width : 120,
-//                labelWidth : 75,
-//                labelAlign : 'left',
-//                margin : '0 20 0 0'
-//            },
-//            items : [
-//            {
-//                margin : '0 0 0 0',
-//                name : 'imprimir',
-//                xtype : 'button',
-//                hidden : true,
-//                margin : '0 0 0 5',
-//                width : '40',
-//                flex : 0,
-//                text : 'Imprimir',
-//                iconCls : 'printer'
-//            },
-//            {
-//                margin : '0 0 0 10',
-//                name : 'calendarioAulasDetalle',
-//                xtype : 'button',
-//                enableToggle : true,
-//                hidden : true,
-//                width : '40',
-//                flex : 0,
-//                text : 'Set. detallada',
-//                iconCls : 'calendar-week'
-//            },
-//            {
-//                margin : '0 0 0 10',
-//                name : 'calendarioAulasGenerica',
-//                xtype : 'button',
-//                enableToggle : true,
-//                pressed : true,
-//                hidden : true,
-//                margin : '0 0 0 5',
-//                width : '40',
-//                flex : 0,
-//                text : 'Set. genèrica',
-//                iconCls : 'calendar-edit'
-//            } ]
+        // },
+        // {
+        // xtype : 'panel',
+        // border : 0,
+        // anchor : '50%',
+        // flex : 1,
+        // layout :
+        // {
+        // type : 'hbox',
+        // align : 'fit',
+        // pack : 'end'
+        // },
+        // defaults :
+        // {
+        // width : 120,
+        // labelWidth : 75,
+        // labelAlign : 'left',
+        // margin : '0 20 0 0'
+        // },
+        // items : [
+        // {
+        // margin : '0 0 0 0',
+        // name : 'imprimir',
+        // xtype : 'button',
+        // hidden : true,
+        // margin : '0 0 0 5',
+        // width : '40',
+        // flex : 0,
+        // text : 'Imprimir',
+        // iconCls : 'printer'
+        // },
+        // {
+        // margin : '0 0 0 10',
+        // name : 'calendarioAulasDetalle',
+        // xtype : 'button',
+        // enableToggle : true,
+        // hidden : true,
+        // width : '40',
+        // flex : 0,
+        // text : 'Set. detallada',
+        // iconCls : 'calendar-week'
+        // },
+        // {
+        // margin : '0 0 0 10',
+        // name : 'calendarioAulasGenerica',
+        // xtype : 'button',
+        // enableToggle : true,
+        // pressed : true,
+        // hidden : true,
+        // margin : '0 0 0 5',
+        // width : '40',
+        // flex : 0,
+        // text : 'Set. genèrica',
+        // iconCls : 'calendar-edit'
+        // } ]
         } ]
-    } ]
+    } ],
+
+    getGruposSelected : function()
+    {
+        var grupos = this.down('combobox[name=grupo]').getValue();
+
+        return grupos.join(';');
+    }
 
 });

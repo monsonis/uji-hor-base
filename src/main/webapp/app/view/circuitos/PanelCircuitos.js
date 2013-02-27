@@ -3,7 +3,7 @@ Ext.define('HOR.view.circuitos.PanelCircuitos',
     extend : 'Ext.panel.Panel',
     title : 'Circuit',
     requires : [ 'HOR.view.circuitos.FiltroCircuitos', 'HOR.view.circuitos.PanelGestionCircuitos', 'HOR.view.circuitos.SelectorCircuitos', 'HOR.view.circuitos.SelectorCalendariosCircuitos',
-            'HOR.view.circuitos.PanelCalendarioCircuitos' ],
+            'HOR.view.circuitos.PanelCalendarioCircuitos', 'HOR.view.circuitos.PanelCalendarioCircuitosDetalle' ],
     alias : 'widget.panelCircuitos',
     closable : true,
     layout :

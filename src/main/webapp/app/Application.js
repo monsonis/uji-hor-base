@@ -73,11 +73,11 @@ Ext.application(
 
     views : [ 'dashboard.PanelDashboard', 'horarios.PanelHorarios', 'horarios.FiltroGrupos', 'horarios.PanelCalendario', 'horarios.PanelCalendarioDetalle', 'horarios.SelectorIntervaloHorario',
             'commons.MenuSuperior', 'permisos.PanelPermisos', 'permisos.VentanaNewPermiso', 'semestres.PanelSemestres', 'ApplicationViewport', 'aulas.asignacion.FormAsignacionAulas',
-            'aulas.calendar.PanelCalendarioAulas', 'circuitos.PanelCircuitos', 'aulas.calendar.PanelCalendarioPorAula', 'aulas.calendar.PanelCalendarioDetallePorAula', 'aulas.calendar.FiltroAulas',
-            'aulas.calendar.SelectorAulas' ],
+            'aulas.calendar.PanelCalendarioAulas', 'aulas.calendar.PanelCalendarioPorAula', 'aulas.calendar.PanelCalendarioDetallePorAula', 'aulas.calendar.FiltroAulas',
+            'aulas.calendar.SelectorAulas', 'circuitos.FiltroCircuitos', 'circuitos.PanelCalendarioCircuitos', 'circuitos.PanelCalendarioCircuitosDetalle', 'circuitos.SelectorCircuitos' ],
     controllers : [ 'ControllerDashboards', 'ControllerCalendario', 'ControllerGrupoAsignatura', 'ControllerFiltroCalendario', 'ControllerConfiguracion', 'ControllerPrincipal', 'ControllerPermisos',
             'ControllerSemestreDetalle', 'ControllerFiltroAsignacionAulas', 'ControllerAsignacionAulasForm', 'ControllerFiltroAulasCalendario', 'ControllerSelectorAulasCalendario',
-            'ControllerCalendarioAulas' ],
+            'ControllerCalendarioAulas', 'ControllerFiltroCircuitos' ],
 
     launch : function()
     {
