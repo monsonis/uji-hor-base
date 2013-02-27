@@ -93,6 +93,24 @@
 <colUsage columnID="3E246583-6130-8E44-C895-6632399138A4"/>
 </indexColumnUsage>
 </ind_PK_UK>
+<ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="730A362D-5FB7-3CB4-5F1E-5EF519A17EFC" name="hor_items_circuitos_item_IDX">
+<createdBy>ferrerq</createdBy>
+<createdTime>2013-02-27 15:31:08 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<indexColumnUsage>
+<colUsage columnID="24693E20-D2C1-4BBA-2203-98D9C7F4BF1B"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="AE592D85-91F3-6CC4-BE61-65A317E5850A" name="hor_items_circuitos_cir_IDX">
+<createdBy>ferrerq</createdBy>
+<createdTime>2013-02-27 15:31:08 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<indexColumnUsage>
+<colUsage columnID="29977451-2E55-BE81-F0D9-B75093C60C28"/>
+</indexColumnUsage>
+</ind_PK_UK>
 <ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="A50BE2AE-3914-3DB9-A713-35ECF4149BA9" name="hor_items_cir_cir_FK">
 <createdBy>ferrerq</createdBy>
 <createdTime>2012-06-01 08:34:34 UTC</createdTime>

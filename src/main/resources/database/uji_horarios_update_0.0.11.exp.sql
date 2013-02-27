@@ -128,3 +128,19 @@ ALTER TABLE uji_horarios.hor_circuitos
     ) 
 ;
 
+CREATE INDEX uji_horarios.hor_items_circuitos_item_IDX ON uji_horarios.hor_items_circuitos 
+    ( 
+     item_id ASC 
+    ) 
+;
+CREATE INDEX uji_horarios.hor_items_circuitos_cir_IDX ON uji_horarios.hor_items_circuitos 
+    ( 
+     circuito_id ASC 
+    ) 
+;
+CREATE INDEX uji_horarios.hor_circuitos_sem_IDX ON uji_horarios.hor_circuitos 
+    ( 
+     semestre_id ASC 
+    ) 
+;
+

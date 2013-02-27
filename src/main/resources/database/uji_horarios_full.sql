@@ -1,5 +1,5 @@
 -- Generado por Oracle SQL Developer Data Modeler 3.1.1.703
---   en:        2013-02-27 16:28:35 CET
+--   en:        2013-02-27 16:32:26 CET
 --   sitio:      Oracle Database 11g
 --   tipo:      Oracle Database 11g
 
@@ -173,6 +173,11 @@ CREATE TABLE uji_horarios.hor_circuitos
 ;
 
 
+CREATE INDEX uji_horarios.hor_circuitos_sem_IDX ON uji_horarios.hor_circuitos 
+    ( 
+     semestre_id ASC 
+    ) 
+;
 
 ALTER TABLE uji_horarios.hor_circuitos 
     ADD CONSTRAINT hor_circuitos_est_PK PRIMARY KEY ( id ) ;
@@ -583,6 +588,16 @@ CREATE TABLE uji_horarios.hor_items_circuitos
 ;
 
 
+CREATE INDEX uji_horarios.hor_items_circuitos_item_IDX ON uji_horarios.hor_items_circuitos 
+    ( 
+     item_id ASC 
+    ) 
+;
+CREATE INDEX uji_horarios.hor_items_circuitos_cir_IDX ON uji_horarios.hor_items_circuitos 
+    ( 
+     circuito_id ASC 
+    ) 
+;
 
 ALTER TABLE uji_horarios.hor_items_circuitos 
     ADD CONSTRAINT hor_items_circuitos_PK PRIMARY KEY ( id ) ;
@@ -1338,7 +1353,7 @@ AND TRUNC(c.fecha) = TRUNC(d.inicio(+)) ;
 -- Informe de Resumen de Oracle SQL Developer Data Modeler: 
 -- 
 -- CREATE TABLE                            29
--- CREATE INDEX                            26
+-- CREATE INDEX                            29
 -- ALTER TABLE                             67
 -- CREATE VIEW                              4
 -- CREATE PACKAGE                           0

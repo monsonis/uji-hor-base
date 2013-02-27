@@ -109,6 +109,15 @@
 <colUsage columnID="5883BE83-3561-0F2D-3EB6-A9EB94A28FE6"/>
 </indexColumnUsage>
 </ind_PK_UK>
+<ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="8FE12424-7B76-1CB9-F8D7-7D6F2CD60777" name="hor_circuitos_sem_IDX">
+<createdBy>ferrerq</createdBy>
+<createdTime>2013-02-27 15:30:32 UTC</createdTime>
+<generatorID>Generado por el Usuario</generatorID>
+<ownerDesignName>uji_horarios</ownerDesignName>
+<indexColumnUsage>
+<colUsage columnID="DB65CFDE-1A9F-32BE-6611-E5FEDC344560"/>
+</indexColumnUsage>
+</ind_PK_UK>
 <ind_PK_UK class="oracle.dbtools.crest.model.design.relational.Index" id="13576DD9-76F0-9DB1-5228-C9512A39272C" name="hor_circuitos_hor_semestres_FK">
 <createdBy>ferrerq</createdBy>
 <createdTime>2013-02-27 15:25:35 UTC</createdTime>
