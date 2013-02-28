@@ -54,11 +54,14 @@ public class AulaService
         Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
         if (personaDAO.esAdmin(connectedUserId) || persona.esGestorDeCentro())
         {
-            AulaPlanificacion nuevaPlanificacion = aulaDAO.asignaAulaToEstudio(estudioId, aulaId, semestreId);
-            
-            List<Estudio> listaEstudiosCompartidos = aulaDAO.getEstudiosComunesByEstudioId(estudioId);
-            
-            for (Estudio estudio: listaEstudiosCompartidos) {
+            AulaPlanificacion nuevaPlanificacion = aulaDAO.asignaAulaToEstudio(estudioId, aulaId,
+                    semestreId);
+
+            List<Estudio> listaEstudiosCompartidos = aulaDAO
+                    .getEstudiosComunesByEstudioId(estudioId);
+
+            for (Estudio estudio : listaEstudiosCompartidos)
+            {
                 aulaDAO.asignaAulaToEstudio(estudio.getId(), aulaId, semestreId);
             }
             return nuevaPlanificacion;
@@ -90,22 +93,45 @@ public class AulaService
         }
 
         Aula aula = aulaDAO.getAulaConEventosById(aulaPlanificacion.getAula().getId());
-        if (aula.sePuedeDesplanificar(aulaPlanificacion.getEstudio().getId()))
+        List<Estudio> listaEstudiosCompartidos = aulaDAO
+                .getEstudiosComunesByEstudioId(aulaPlanificacion.getEstudio().getId());
+
+        if (sePuedeDesplanificarAulaDeTodosLosEstudios(aula, aulaPlanificacion.getEstudio(), listaEstudiosCompartidos))
         {
             aulaDAO.deleteAulaAsignadaToEstudio(aulaPlanificacionId);
-            
-            List<Estudio> listaEstudiosCompartidos = aulaDAO.getEstudiosComunesByEstudioId(aulaPlanificacion.getEstudio().getId());
-            
-            for (Estudio estudio: listaEstudiosCompartidos) {
-                AulaPlanificacion aulaPlanificacionEstudioCompartido = aulaDAO.getAulaPlanificacionByAulaEstudioSemestre(aulaPlanificacion.getAula().getId(), estudio.getId(), aulaPlanificacion.getSemestre().getSemestre());
+            for (Estudio estudio : listaEstudiosCompartidos)
+            {
+                AulaPlanificacion aulaPlanificacionEstudioCompartido = aulaDAO
+                        .getAulaPlanificacionByAulaEstudioSemestre(aulaPlanificacion.getAula()
+                                .getId(), estudio.getId(), aulaPlanificacion.getSemestre()
+                                .getSemestre());
                 aulaDAO.deleteAulaAsignadaToEstudio(aulaPlanificacionEstudioCompartido.getId());
             }
-
         }
         else
         {
             throw new RegistroConHijosException();
         }
+    }
+
+    private Boolean sePuedeDesplanificarAulaDeTodosLosEstudios(Aula aula, Estudio estudio,
+            List<Estudio> listaEstudiosCompartidos)
+    {
+
+        Boolean sePuedeDesplanificar = true;
+        if (!aula.sePuedeDesplanificar(estudio.getId())) {
+            sePuedeDesplanificar = false;
+        }
+        
+        for (Estudio estudioCompartido : listaEstudiosCompartidos)
+        {
+            if (!aula.sePuedeDesplanificar(estudioCompartido.getId()))
+            {
+                sePuedeDesplanificar = false;
+            }
+        }
+
+        return sePuedeDesplanificar;
     }
 
     @Role({ "ADMIN", "USUARIO" })
