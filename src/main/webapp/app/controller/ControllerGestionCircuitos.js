@@ -94,7 +94,7 @@ Ext.define('HOR.controller.ControllerGestionCircuitos',
         var plazas = form.findField('plazas').getValue();
 
         var estudio = this.getFiltroCircuitos().down('combobox[name=estudio]').getValue();
-        // var semestre = this.getFiltroCircuitos().down('combobox[name=semestre]').getValue();
+        var semestre = this.getFiltroCircuitos().down('combobox[name=semestre]').getValue();
         var grupo = this.getFiltroCircuitos().down('combobox[name=grupo]').getValue();
 
         if (form.isValid())
@@ -105,6 +105,7 @@ Ext.define('HOR.controller.ControllerGestionCircuitos',
                 nombre : nombre,
                 plazas : plazas,
                 estudio : estudio,
+                semestre : semestre,
                 grupo : grupo
             }, "HOR.model.Circuito");
 
