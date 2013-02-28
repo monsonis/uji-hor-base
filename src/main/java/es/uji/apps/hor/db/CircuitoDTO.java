@@ -1,12 +1,14 @@
 package es.uji.apps.hor.db;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -28,6 +30,12 @@ public class CircuitoDTO implements Serializable
 
     private String nombre;
     private Long plazas;
+
+    @OneToMany(mappedBy = "estudio")
+    private Set<CircuitoEstudioDTO> circuitosEstudios;
+
+    @OneToMany(mappedBy = "item")
+    private Set<ItemCircuitoDTO> itemsCircuitos;
 
     public CircuitoDTO()
     {
@@ -71,5 +79,25 @@ public class CircuitoDTO implements Serializable
     public void setPlazas(Long plazas)
     {
         this.plazas = plazas;
+    }
+
+    public Set<CircuitoEstudioDTO> getCircuitosEstudios()
+    {
+        return circuitosEstudios;
+    }
+
+    public void setCircuitosEstudios(Set<CircuitoEstudioDTO> circuitosEstudios)
+    {
+        this.circuitosEstudios = circuitosEstudios;
+    }
+
+    public Set<ItemCircuitoDTO> getItemsCircuitos()
+    {
+        return itemsCircuitos;
+    }
+
+    public void setItemsCircuitos(Set<ItemCircuitoDTO> itemsCircuitos)
+    {
+        this.itemsCircuitos = itemsCircuitos;
     }
 }
