@@ -25,10 +25,15 @@ Ext.define('HOR.controller.ControllerGestionCircuitos',
     {
         selector : 'panelCircuitos selectorCircuitos',
         ref : 'selectorCircuitos',
+    },
+    {
+        selector : 'panelCircuitos filtroCircuitos combobox[name=grupo]',
+        ref : 'comboGrupos'
     } ],
 
     init : function()
     {
+        var ref = this;
         this.control(
         {
             'panelGestionCircuitos button[name=nuevo-circuito]' :
@@ -50,6 +55,16 @@ Ext.define('HOR.controller.ControllerGestionCircuitos',
             'ventanaEdicionCircuitos button[action=guardar]' :
             {
                 click : this.guardarCircuito
+            },
+            'filtroCircuitos combobox[name=grupo]' :
+            {
+                blur : function()
+                {
+                    if (ref.getComboGrupos().getValue() != '')
+                    {
+                        ref.loadCircuitos();
+                    }
+                }
             }
         });
     },
@@ -128,7 +143,7 @@ Ext.define('HOR.controller.ControllerGestionCircuitos',
                 {
                     ref.closeVentanaEdicionCircuitos();
 
-                    ref.getSelectorCircuitos().fireEvent('circuitosupdate', ref.getSelectorCircuitos());
+                    ref.actualizaSelectorCircuitos();
                 }
             });
         }
@@ -149,7 +164,7 @@ Ext.define('HOR.controller.ControllerGestionCircuitos',
                 {
                     success : function()
                     {
-                        ref.getSelectorCircuitos().fireEvent('circuitosupdate', ref.getSelectorCircuitos());
+                        ref.actualizaSelectorCircuitos();
                     }
                 });
             }
@@ -164,8 +179,57 @@ Ext.define('HOR.controller.ControllerGestionCircuitos',
         {
             if (circuitos[i].active == true)
             {
-                return circuito[i].id;
+                return circuito[i].circuitoId;
             }
         }
+    },
+
+    loadCircuitos : function()
+    {
+        var estudio = this.getFiltroCircuitos().down('combobox[name=estudio]').getValue();
+        var semestre = this.getFiltroCircuitos().down('combobox[name=semestre]').getValue();
+        var grupo = this.getFiltroCircuitos().down('combobox[name=grupo]').getValue();
+
+        var store = this.getStoreCircuitosStore();
+
+        store.load(
+        {
+            callback : this.actualizaSelectorCircuitos,
+            params :
+            {
+                estudioId : estudio,
+                semestreId : semestre,
+                grupoId : grupo
+            },
+            scope : this
+        });
+    },
+
+    actualizaSelectorCircuitos : function()
+    {
+        var view = this.getSelectorCircuitos();
+
+        view.removeAll();
+
+        var store = this.getStoreCircuitosStore();
+        var botones = new Array();
+
+        for ( var i = 0; i < store.count(); i++)
+        {
+            var circuito = store.getAt(i);
+
+            var button =
+            {
+                xtype : 'button',
+                text : circuito.get('nombre'),
+                padding : '2 5 2 5',
+                margin : '10 10 0 10',
+                circuitoId : circuito.get('id')
+            };
+
+            botones.push(button);
+        }
+
+        view.add(botones);
     }
 });
