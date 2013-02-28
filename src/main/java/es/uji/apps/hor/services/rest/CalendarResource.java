@@ -58,6 +58,7 @@ public class CalendarResource extends CoreBaseService
     private static final String START_DATE_QUERY_PARAM = "startDate";
     private static final String CALENDARIOS_IDS_QUERY_PARAM = "calendariosIds";
     private static final String GRUPO_ID_QUERY_PARAM = "grupoId";
+    private static final String CIRCUITO_ID_QUERY_PARAM = "circuitoId";
     private static final String GRUPOS_ID_QUERY_PARAM = "gruposId";
     private static final String CURSO_ID_QUERY_PARAM = "cursoId";
     private static final String SEMESTRE_ID_QUERY_PARAM = "semestreId";
@@ -227,6 +228,64 @@ public class CalendarResource extends CoreBaseService
         }
 
         return toUI(eventos, estudioIdComoLong);
+    }
+
+    @GET
+    @Path("eventos/generica/circuito")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<UIEntity> getEventosGenericaCircuitos(
+            @QueryParam(ESTUDIO_ID_QUERY_PARAM) String estudioId,
+            @QueryParam(CIRCUITO_ID_QUERY_PARAM) String circuitoId,
+            @QueryParam(SEMESTRE_ID_QUERY_PARAM) String semestreId,
+            @QueryParam(GRUPO_ID_QUERY_PARAM) String grupoId,
+            @QueryParam(CALENDARIOS_IDS_QUERY_PARAM) String calendariosIds) throws ParseException,
+            UnauthorizedUserException, RegistroNoEncontradoException
+    {
+
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+
+        ParamUtils.checkNotNull(estudioId, semestreId, grupoId);
+
+        String[] calendarios = calendariosIds.split(";");
+        List<Long> calendariosList = new ArrayList<Long>();
+
+        for (String calendario : calendarios)
+        {
+            calendario = calendario.trim();
+            if (!calendario.equals(""))
+            {
+                calendariosList.add(ParamUtils.parseLong(calendario));
+            }
+        }
+
+        List<Evento> eventos = new ArrayList<Evento>();
+
+        Long estudioIdComoLong = ParamUtils.parseLong(estudioId);
+        eventos = eventosService.eventosSemanaGenericaCircuito(estudioIdComoLong,
+                ParamUtils.parseLong(semestreId), grupoId, ParamUtils.parseLong(circuitoId),
+                calendariosList, connectedUserId);
+
+        List<UIEntity> listaResultado = new ArrayList<UIEntity>();
+
+        for (Evento evento : eventos)
+        {
+            UIEntity eventoUI = eventoCircuitoToUI(evento, estudioIdComoLong);
+            listaResultado.add(eventoUI);
+        }
+
+        return listaResultado;
+    }
+
+    private UIEntity eventoCircuitoToUI(Evento evento, Long estudioId)
+    {
+        UIEntity eventoUI = new UIEntity();
+        
+        eventoUI.put("id", evento.getId());
+        eventoUI.put("titulo", evento.getDescripcionParaUnEstudio(estudioId));
+        //eventoUI.put("cid", evento.getCalendario().getId());
+        eventoUI.put("start", uIEntitydateFormat.format(evento.getInicio()));
+        eventoUI.put("end", uIEntitydateFormat.format(evento.getFin()));
+        return eventoUI;
     }
 
     @GET

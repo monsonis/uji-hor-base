@@ -80,8 +80,7 @@ Ext.define('HOR.view.circuitos.FiltroCircuitos',
                 valueField : 'grupo',
                 name : 'grupo',
                 labelWidth : 55,
-                width : 150,
-                multiSelect : true
+                width : 150
             } ]
          },
         {
@@ -139,13 +138,5 @@ Ext.define('HOR.view.circuitos.FiltroCircuitos',
                 iconCls : 'calendar-edit'
             } ]
         } ]
-    } ],
-
-    getGruposSelected : function()
-    {
-        var grupos = this.down('combobox[name=grupo]').getValue();
-
-        return grupos.join(';');
-    }
-
+    } ]
 });

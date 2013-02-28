@@ -31,6 +31,7 @@ import es.uji.apps.hor.db.SemestreDTO;
 import es.uji.apps.hor.model.Asignatura;
 import es.uji.apps.hor.model.Aula;
 import es.uji.apps.hor.model.Calendario;
+import es.uji.apps.hor.model.Circuito;
 import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.model.Evento;
 import es.uji.apps.hor.model.EventoDetalle;
@@ -77,6 +78,35 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
         for (ItemDTO itemDTO : listaItemsDTO)
         {
             eventos.add(creaEventoDesdeItemDTO(itemDTO));
+        }
+
+        return eventos;
+    }
+
+    @Override
+    public List<Evento> getTodosLosEventosSemanaGenericaCircuito(Long estudioId, Long semestreId,
+            String grupoId)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+
+        QItemDTO item = QItemDTO.itemDTO;
+        QItemsAsignaturaDTO asignatura = QItemsAsignaturaDTO.itemsAsignaturaDTO;
+
+        List<ItemDTO> listaItemsDTO = query
+                .from(asignatura)
+                .join(asignatura.item, item)
+                .where(asignatura.estudioId.eq(estudioId).and(
+                        item.cursoId.eq(new Long(1)).and(item.semestre.id.eq(semestreId))
+                                .and(item.grupoId.eq(grupoId)).and(item.diaSemana.isNotNull())))
+                .list(item);
+
+        List<Evento> eventos = new ArrayList<Evento>();
+
+        Long circuitoId = null;
+
+        for (ItemDTO itemDTO : listaItemsDTO)
+        {
+            eventos.add(creaEventoParaCircuitoDesdeItemDTO(itemDTO, circuitoId));
         }
 
         return eventos;
@@ -171,6 +201,63 @@ public class EventosDAODatabaseImpl extends BaseDAODatabaseImpl implements Event
             evento.setAula(aula);
         }
 
+        if (!itemDTO.getAsignaturas().isEmpty())
+        {
+            List<Asignatura> listaAsignaturas = new ArrayList<Asignatura>();
+            for (ItemsAsignaturaDTO itemAsignatura : itemDTO.getAsignaturas())
+            {
+                listaAsignaturas
+                        .add(creaAsignaturasDesdeItemAsignaturaDTO(itemAsignatura, itemDTO));
+            }
+            evento.setAsignaturas(listaAsignaturas);
+        }
+
+        return evento;
+    }
+
+    private Evento creaEventoParaCircuitoDesdeItemDTO(ItemDTO itemDTO, Long circuitoId)
+    {
+        Calendario calendario = obtenerCalendarioAsociadoPorTipoSubgrupo(itemDTO);
+
+        Evento evento = new Evento();
+        evento.setCalendario(calendario);
+
+        if (itemDTO.getHoraInicio() != null && itemDTO.getHoraFin() != null)
+        {
+            Calendar inicio = generaItemCalendarioSemanaGenerica(itemDTO.getDiaSemana().getId()
+                    .intValue(), itemDTO.getHoraInicio());
+
+            Calendar fin = generaItemCalendarioSemanaGenerica(itemDTO.getDiaSemana().getId()
+                    .intValue(), itemDTO.getHoraFin());
+
+            evento.setInicio(inicio.getTime());
+            evento.setFin(fin.getTime());
+        }
+
+        Circuito circuito = new Circuito();
+        circuito.setId(circuitoId);
+        evento.setCircuito(circuito);
+        
+        evento.setGrupoId(itemDTO.getGrupoId());
+        evento.setSubgrupoId(itemDTO.getSubgrupoId());
+        evento.setPlazas(itemDTO.getPlazas());
+        evento.setId(itemDTO.getId());
+
+        Semestre semestre = new Semestre();
+        semestre.setSemestre(itemDTO.getSemestre().getId());
+        semestre.setNombre(itemDTO.getSemestre().getNombre());
+        evento.setSemestre(semestre);
+
+        if (itemDTO.getAula() != null)
+        {
+            Aula aula = new Aula();
+            aula.setId(itemDTO.getAula().getId());
+            aula.setNombre(itemDTO.getAula().getNombre());
+            aula.setCodigo(itemDTO.getAula().getCodigo());
+            aula.setPlazas(itemDTO.getAula().getPlazas());
+            evento.setAula(aula);
+        }
+        
         if (!itemDTO.getAsignaturas().isEmpty())
         {
             List<Asignatura> listaAsignaturas = new ArrayList<Asignatura>();

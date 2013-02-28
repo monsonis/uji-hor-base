@@ -47,6 +47,7 @@ public class Evento
     private String grupoId;
     private Long subgrupoId;
     private Long plazas;
+    private Circuito circuito;
     private List<EventoDetalle> eventosDetalle = new ArrayList<EventoDetalle>();
 
     private Aula aula;
@@ -631,6 +632,16 @@ public class Evento
     public void setAula(Aula aula)
     {
         this.aula = aula;
+    }
+
+    public Circuito getCircuito()
+    {
+        return circuito;
+    }
+
+    public void setCircuito(Circuito circuito)
+    {
+        this.circuito = circuito;
     }
 
 }

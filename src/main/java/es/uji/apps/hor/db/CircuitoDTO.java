@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -30,8 +32,13 @@ public class CircuitoDTO implements Serializable
 
     private String nombre;
     private Long plazas;
+    
+    @ManyToOne
+    @JoinColumn(name = "SEMESTRE_ID")
+    private SemestreDTO semestre;
 
-    @OneToMany(mappedBy = "estudio")
+
+    @OneToMany(mappedBy = "circuito")
     private Set<CircuitoEstudioDTO> circuitosEstudios;
 
     @OneToMany(mappedBy = "item")
@@ -99,5 +106,15 @@ public class CircuitoDTO implements Serializable
     public void setItemsCircuitos(Set<ItemCircuitoDTO> itemsCircuitos)
     {
         this.itemsCircuitos = itemsCircuitos;
+    }
+
+    public SemestreDTO getSemestre()
+    {
+        return semestre;
+    }
+
+    public void setSemestre(SemestreDTO semestre)
+    {
+        this.semestre = semestre;
     }
 }

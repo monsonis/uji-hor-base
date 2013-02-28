@@ -36,8 +36,9 @@ public class AulaPersonaDTOId implements Serializable
 
     public boolean equals(Object o)
     {
-        return ((o instanceof AulaPersonaDTOId) && aulaId == ((AulaPersonaDTOId) o).getAulaId() && personaId == ((AulaPersonaDTOId) o)
-                .getPersonaId());
+        return ((o instanceof AulaPersonaDTOId)
+                && aulaId.equals(((AulaPersonaDTOId) o).getAulaId()) && personaId
+                    .equals(((AulaPersonaDTOId) o).getPersonaId()));
     }
 
 }

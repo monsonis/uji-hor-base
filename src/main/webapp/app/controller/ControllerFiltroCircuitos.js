@@ -44,28 +44,15 @@ Ext.define('HOR.controller.ControllerFiltroCircuitos',
             },
             'filtroCircuitos combobox[name=grupo]' :
             {
-                blur : function()
+                select : function()
                 {
-                    if (this.getComboGrupos().getValue() == '')
+                    if (ref.getFiltroCircuitos().down('button[name=calendarioCircuitosDetalle]').pressed)
                     {
-                        this.limpiaPanelesCalendario();
+                        ref.refreshCalendarDetalle();
                     }
-                }
-            },
-            'filtroCircuitos combobox[name=grupo]' :
-            {
-                blur : function()
-                {
-                    if (ref.getComboGrupos().getValue() != '')
+                    else
                     {
-                        if (ref.getFiltroCircuitos().down('button[name=calendarioCircuitosDetalle]').pressed)
-                        {
-                            ref.refreshCalendarDetalle();
-                        }
-                        else
-                        {
-                            ref.refreshCalendar();
-                        }
+                        ref.refreshCalendar();
                     }
                 }
             }
@@ -136,7 +123,7 @@ Ext.define('HOR.controller.ControllerFiltroCircuitos',
         var titulaciones = this.getFiltroCircuitos().down('combobox[name=estudio]');
         var cursos = this.getFiltroCircuitos().down('combobox[name=curso]');
         var semestres = this.getFiltroCircuitos().down('combobox[name=semestre]');
-        var grupos = this.getFiltroCircuitos().getGruposSelected();
+        var grupos = this.getFiltroCircuitos().down('combobox[name=grupo]');
 
         var calendarios = this.getSelectorCalendariosCircuitos().getCalendarsSelected();
         var storeConfiguracion = this.getStoreConfiguracionAjustadaStore();
@@ -149,7 +136,7 @@ Ext.define('HOR.controller.ControllerFiltroCircuitos',
                 estudioId : titulaciones.getValue(),
                 cursoId : 1,
                 semestreId : semestres.getValue(),
-                gruposId : grupos
+                gruposId : grupos.getValue()
             },
             scope : this,
             callback : function(records, operation, success)
@@ -240,7 +227,7 @@ Ext.define('HOR.controller.ControllerFiltroCircuitos',
                                             cursoId : cursos.getValue(),
                                             semestreId : semestres.getValue(),
                                             calendariosIds : calendarios,
-                                            gruposId : grupos,
+                                            gruposId : grupos.getValue(),
                                             startDate : inicio,
                                             endDate : fin
                                         };
@@ -262,7 +249,7 @@ Ext.define('HOR.controller.ControllerFiltroCircuitos',
         var titulaciones = this.getFiltroCircuitos().down('combobox[name=estudio]');
         var cursos = this.getFiltroCircuitos().down('combobox[name=curso]');
         var semestres = this.getFiltroCircuitos().down('combobox[name=semestre]');
-        var grupos = this.getFiltroCircuitos().getGruposSelected();
+        var grupos = this.getFiltroCircuitos().down('combobox[name=grupo]');
 
         var calendarios = this.getSelectorCalendariosCircuitos().getCalendarsSelected();
         var storeConfiguracion = this.getStoreConfiguracionAjustadaStore();
@@ -275,7 +262,7 @@ Ext.define('HOR.controller.ControllerFiltroCircuitos',
                 estudioId : titulaciones.getValue(),
                 cursoId : 1,
                 semestreId : semestres.getValue(),
-                gruposId : grupos
+                gruposId : grupos.getValue()
             },
             scope : this,
             callback : function(records, operation, success)
@@ -317,7 +304,7 @@ Ext.define('HOR.controller.ControllerFiltroCircuitos',
                         cursoId : 1,
                         semestreId : semestres.getValue(),
                         calendariosIds : calendarios,
-                        gruposId : grupos
+                        gruposId : grupos.getValue()
                     };
                     eventos.getProxy().extraParams = params;
                     panelPadre.add(

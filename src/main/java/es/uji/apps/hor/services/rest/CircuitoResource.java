@@ -1,5 +1,6 @@
 package es.uji.apps.hor.services.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -27,16 +28,24 @@ public class CircuitoResource extends CoreBaseService
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UIEntity> getCursos(@QueryParam("estudioId") String estudioId)
+    public List<UIEntity> getCursos(@QueryParam("estudioId") String estudioId, @QueryParam("grupoId") String grupoId, @QueryParam("semestreId") String semestreId)
             throws UnauthorizedUserException, RegistroNoEncontradoException
     {
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
-        ParamUtils.checkNotNull(estudioId);
+        ParamUtils.checkNotNull(estudioId, semestreId, grupoId);
 
-        List<Circuito> circuitos = circuitoService.getCircuitosByEstudioId(
-                ParamUtils.parseLong(estudioId), connectedUserId);
+        List<Circuito> circuitos = circuitoService.getCircuitosByEstudioIdAndSemestreIdAndGrupoId(
+                ParamUtils.parseLong(estudioId), ParamUtils.parseLong(semestreId), grupoId, connectedUserId);
 
-        return UIEntity.toUI(circuitos);
+        List<UIEntity> listaResultado = new ArrayList<UIEntity>();
+        
+        for (Circuito circuito: circuitos) {
+            UIEntity entity = UIEntity.toUI(circuito);
+            entity.put("semestre", circuito.getSemestre().getSemestre());
+            listaResultado.add(entity);
+        }
+        return listaResultado;
+                
     }
 }

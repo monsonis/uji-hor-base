@@ -31,7 +31,7 @@ public class EstudioDTO implements Serializable
     private Long oficial;
 
     // bi-directional many-to-one association to CircuitoEstudioDTO
-    @OneToMany(mappedBy = "circuito")
+    @OneToMany(mappedBy = "estudio")
     private Set<CircuitoEstudioDTO> circuitosEstudio;
 
     // bi-directional many-to-one association to EstudiosCompartidosDTO

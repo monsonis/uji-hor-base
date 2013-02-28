@@ -387,4 +387,21 @@ public class EventosService
 
         return eventosDAO.getEventosSemanaGenericaPorAula(aulaId, semestreId, calendariosIds);
     }
+
+    @Role({ "ADMIN", "USUARIO" })
+    public List<Evento> eventosSemanaGenericaCircuito(Long estudioId, Long semestreId,
+            String grupoId, Long circuitoId, List<Long> calendariosList, Long connectedUserId) throws RegistroNoEncontradoException, UnauthorizedUserException
+    {
+        if (!personaDAO.esAdmin(connectedUserId))
+        {
+            Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
+            persona.compruebaAccesoAEstudio(estudioId);
+        }
+
+        List<Evento> eventos = new ArrayList<Evento>();
+        if (circuitoId == null) {
+            eventos = eventosDAO.getTodosLosEventosSemanaGenericaCircuito(estudioId, semestreId, grupoId);    
+        }
+        return eventos;
+    }
 }

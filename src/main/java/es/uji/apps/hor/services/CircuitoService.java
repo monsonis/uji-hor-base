@@ -23,7 +23,7 @@ public class CircuitoService
     private PersonaDAO personaDAO;
 
     @Role({ "ADMIN", "USUARIO" })
-    public List<Circuito> getCircuitosByEstudioId(Long estudioId, Long connectedUserId)
+    public List<Circuito> getCircuitosByEstudioIdAndSemestreIdAndGrupoId(Long estudioId, Long semestreId, String grupoId, Long connectedUserId)
             throws UnauthorizedUserException, RegistroNoEncontradoException
     {
         if (!personaDAO.esAdmin(connectedUserId))
@@ -32,6 +32,6 @@ public class CircuitoService
             persona.compruebaAccesoAEstudio(estudioId);
         }
 
-        return circuitoDAO.getCircuitosByEstudioId(estudioId);
+        return circuitoDAO.getCircuitosByEstudioIdAndSemestreIdAndGrupoId(estudioId, semestreId, grupoId);
     }
 }

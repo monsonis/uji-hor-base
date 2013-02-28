@@ -58,12 +58,9 @@ Ext.define('HOR.controller.ControllerGestionCircuitos',
             },
             'filtroCircuitos combobox[name=grupo]' :
             {
-                blur : function()
+                select : function()
                 {
-                    if (ref.getComboGrupos().getValue() != '')
-                    {
-                        ref.loadCircuitos();
-                    }
+                    ref.loadCircuitos();
                 }
             }
         });
