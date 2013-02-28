@@ -12,4 +12,7 @@ public interface CircuitoDAO extends BaseDAO
     List<Circuito> getCircuitosByEstudioIdAndSemestreIdAndGrupoId(Long estudioId, Long semestreId, String grupoId);
     void deleteCircuitoById(Long circuitoId) throws RegistroConHijosException;
     Circuito addCircuito(Circuito circuito);
+    Circuito getCircuitoById(Long circuitoId, Long estudioId);
+    Circuito insertNuevoCircuitoEnEstudio(Circuito circuito);
+    
 }

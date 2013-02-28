@@ -9,9 +9,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mysema.query.jpa.impl.JPAQuery;
 
+import es.uji.apps.hor.db.AulaPlanificacionDTO;
 import es.uji.apps.hor.db.CircuitoDTO;
+import es.uji.apps.hor.db.CircuitoEstudioDTO;
+import es.uji.apps.hor.db.EstudioDTO;
 import es.uji.apps.hor.db.QCircuitoDTO;
 import es.uji.apps.hor.db.QCircuitoEstudioDTO;
+import es.uji.apps.hor.db.SemestreDTO;
 import es.uji.apps.hor.model.Circuito;
 import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.model.Semestre;
@@ -23,35 +27,39 @@ public class CircuitoDAODatabaseImpl extends BaseDAODatabaseImpl implements Circ
 {
 
     @Override
-    public List<Circuito> getCircuitosByEstudioIdAndSemestreIdAndGrupoId(Long estudioId, Long semestreId, String grupoId)
+    public List<Circuito> getCircuitosByEstudioIdAndSemestreIdAndGrupoId(Long estudioId,
+            Long semestreId, String grupoId)
     {
         JPAQuery query = new JPAQuery(entityManager);
         QCircuitoDTO qCircuito = QCircuitoDTO.circuitoDTO;
         QCircuitoEstudioDTO qCircuitoEstudio = QCircuitoEstudioDTO.circuitoEstudioDTO;
-        
 
-        query.from(qCircuito).innerJoin(qCircuito.circuitosEstudios, qCircuitoEstudio).where(qCircuitoEstudio.estudio.id.eq(estudioId).and(qCircuito.semestre.id.eq(semestreId).and(qCircuito.grupoId.eq(grupoId))));
-        
+        query.from(qCircuito)
+                .innerJoin(qCircuito.circuitosEstudios, qCircuitoEstudio)
+                .where(qCircuitoEstudio.estudio.id.eq(estudioId).and(
+                        qCircuito.semestre.id.eq(semestreId).and(qCircuito.grupoId.eq(grupoId))));
+
         List<Circuito> listaCircuitos = new ArrayList<Circuito>();
-        
-        for (CircuitoDTO circuitoDTO: query.list(qCircuito)) {
+
+        for (CircuitoDTO circuitoDTO : query.list(qCircuito))
+        {
             listaCircuitos.add(creaCircuitoDesdeCircuitoDTO(circuitoDTO, estudioId));
         }
-        
+
         return listaCircuitos;
     }
-    
+
     private Circuito creaCircuitoDesdeCircuitoDTO(CircuitoDTO circuitoDTO, Long estudioId)
     {
         Circuito circuito = new Circuito();
         circuito.setId(circuitoDTO.getId());
         circuito.setNombre(circuitoDTO.getNombre());
         circuito.setGrupo(circuitoDTO.getGrupoId());
-        
+
         Semestre semestre = new Semestre();
         semestre.setSemestre(circuitoDTO.getSemestre().getId());
         circuito.setSemestre(semestre);
-        
+
         Estudio estudio = new Estudio();
         estudio.setId(estudioId);
         circuito.setEstudio(estudio);
@@ -81,4 +89,59 @@ public class CircuitoDAODatabaseImpl extends BaseDAODatabaseImpl implements Circ
         return null;
     }
 
+    @Override
+    public Circuito getCircuitoById(Long circuitoId, Long estudioId)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        QCircuitoDTO qCircuito = QCircuitoDTO.circuitoDTO;
+        QCircuitoEstudioDTO qCircuitoEstudio = QCircuitoEstudioDTO.circuitoEstudioDTO;
+
+        query.from(qCircuito).innerJoin(qCircuito.circuitosEstudios, qCircuitoEstudio)
+                .where(qCircuitoEstudio.estudio.id.eq(estudioId).and(qCircuito.id.eq(circuitoId)));
+
+        List<CircuitoDTO> listaCircuitos = query.list(qCircuito);
+
+        if (listaCircuitos.size() == 1)
+        {
+            return creaCircuitoDesdeCircuitoDTO(listaCircuitos.get(0), estudioId);
+        }
+        else
+        {
+            return new Circuito();
+        }
+    }
+
+    @Override
+    public Circuito insertNuevoCircuitoEnEstudio(Circuito circuito)
+    {
+        CircuitoDTO circuitoDTO = new CircuitoDTO();
+        circuitoDTO.setId(circuito.getId());
+        circuitoDTO.setNombre(circuito.getNombre());
+        circuitoDTO.setPlazas(circuito.getPlazas());
+        circuitoDTO.setGrupoId(circuito.getGrupo());
+        
+        SemestreDTO semestreDTO = new SemestreDTO();
+        semestreDTO.setId(circuito.getSemestre().getSemestre());
+        circuitoDTO.setSemestre(semestreDTO);
+
+        circuitoDTO = insert(circuitoDTO);
+        
+        insertaNuevoCircuitoEstudio(circuito.getId(), circuito.getEstudio().getId());
+        
+        return creaCircuitoDesdeCircuitoDTO(circuitoDTO, circuito.getEstudio().getId());
+    }
+
+    private void insertaNuevoCircuitoEstudio(Long circuitoId, Long estudioId)
+    {
+        CircuitoDTO circuitoDTO = new CircuitoDTO();
+        circuitoDTO.setId(circuitoId);
+        
+        EstudioDTO estudioDTO = new EstudioDTO();
+        estudioDTO.setId(estudioId);
+        
+        CircuitoEstudioDTO circuitoEstudioDTO = new CircuitoEstudioDTO();
+        circuitoEstudioDTO.setCircuito(circuitoDTO);
+        circuitoEstudioDTO.setEstudio(estudioDTO);
+        insert(circuitoEstudioDTO);
+    }
 }
