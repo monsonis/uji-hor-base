@@ -30,9 +30,9 @@ public class EstudioDTO implements Serializable
 
     private Long oficial;
 
-    // bi-directional many-to-one association to CircuitoDTO
-    @OneToMany(mappedBy = "estudio")
-    private Set<CircuitoDTO> circuitos;
+    // bi-directional many-to-one association to CircuitoEstudioDTO
+    @OneToMany(mappedBy = "circuito")
+    private Set<CircuitoEstudioDTO> circuitosEstudio;
 
     // bi-directional many-to-one association to EstudiosCompartidosDTO
     @OneToMany(mappedBy = "estudioCompartido")
@@ -93,16 +93,6 @@ public class EstudioDTO implements Serializable
         this.oficial = oficial;
     }
 
-    public Set<CircuitoDTO> getCircuitos()
-    {
-        return this.circuitos;
-    }
-
-    public void setCircuitos(Set<CircuitoDTO> circuitos)
-    {
-        this.circuitos = circuitos;
-    }
-
     public CentroDTO getCentro()
     {
         return this.centro;
@@ -161,6 +151,16 @@ public class EstudioDTO implements Serializable
     public void setEstudiosCompartidos(Set<EstudiosCompartidosDTO> estudiosCompartidos)
     {
         this.estudiosCompartidos = estudiosCompartidos;
+    }
+
+    public Set<CircuitoEstudioDTO> getCircuitosEstudio()
+    {
+        return circuitosEstudio;
+    }
+
+    public void setCircuitosEstudio(Set<CircuitoEstudioDTO> circuitosEstudio)
+    {
+        this.circuitosEstudio = circuitosEstudio;
     }
 
 }

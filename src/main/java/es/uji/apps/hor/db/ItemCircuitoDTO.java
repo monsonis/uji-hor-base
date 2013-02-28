@@ -17,14 +17,12 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="HOR_ITEMS_CIRCUITOS")
+@SuppressWarnings("serial")
 public class ItemCircuitoDTO implements Serializable {
-	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
-
-	private Long plazas;
 
 	//bi-directional many-to-one association to CircuitoDTO
     @ManyToOne
@@ -45,14 +43,6 @@ public class ItemCircuitoDTO implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Long getPlazas() {
-		return this.plazas;
-	}
-
-	public void setPlazas(Long plazas) {
-		this.plazas = plazas;
 	}
 
 	public CircuitoDTO getCircuito() {

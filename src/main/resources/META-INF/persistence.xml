@@ -59,5 +59,6 @@
     <class>es.uji.apps.hor.db.ItemsAsignaturaDTO</class>
     <class>es.uji.apps.hor.db.AulaPersonaDTO</class>
     <class>es.uji.apps.hor.db.EstudiosCompartidosDTO</class>
+    <class>es.uji.apps.hor.db.CircuitoEstudioDTO</class>
   </persistence-unit>
 </persistence>
