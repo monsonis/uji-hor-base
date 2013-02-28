@@ -77,7 +77,7 @@ Ext.application(
             'aulas.calendar.SelectorAulas', 'circuitos.FiltroCircuitos', 'circuitos.PanelCalendarioCircuitos', 'circuitos.PanelCalendarioCircuitosDetalle', 'circuitos.SelectorCircuitos' ],
     controllers : [ 'ControllerDashboards', 'ControllerCalendario', 'ControllerGrupoAsignatura', 'ControllerFiltroCalendario', 'ControllerConfiguracion', 'ControllerPrincipal', 'ControllerPermisos',
             'ControllerSemestreDetalle', 'ControllerFiltroAsignacionAulas', 'ControllerAsignacionAulasForm', 'ControllerFiltroAulasCalendario', 'ControllerSelectorAulasCalendario',
-            'ControllerCalendarioAulas', 'ControllerFiltroCircuitos', 'ControllerGestionCircuitos' ],
+            'ControllerCalendarioAulas', 'ControllerFiltroCircuitos', 'ControllerGestionCircuitos', 'ControllerCalendarioCircuitos' ],
 
     launch : function()
     {
