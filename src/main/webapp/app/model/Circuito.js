@@ -2,5 +2,5 @@ Ext.define('HOR.model.Circuito',
 {
     extend : 'Ext.data.Model',
 
-    fields : [ 'id', 'nombre', 'plazas', 'estudioId', 'semestreId', 'grupoId' ]
+    fields : [ 'id', 'nombre', 'plazas', 'estudioId', 'semestre', 'grupo' ]
 });

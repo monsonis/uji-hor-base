@@ -10,38 +10,41 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-
 /**
  * The persistent class for the HOR_CIRCUITOS_ESTUDIOS database table.
  * 
  */
 @Entity
-@Table(name="HOR_CIRCUITOS_ESTUDIOS")
+@Table(name = "HOR_CIRCUITOS_ESTUDIOS")
 @SuppressWarnings("serial")
-public class CircuitoEstudioDTO implements Serializable {
-    
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private long id;
+public class CircuitoEstudioDTO implements Serializable
+{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "CIRCUITO_ID")
-	private CircuitoDTO circuito;
+    private CircuitoDTO circuito;
 
     @ManyToOne
     @JoinColumn(name = "ESTUDIO_ID")
-	private EstudioDTO estudio;
+    private EstudioDTO estudio;
 
-	public CircuitoEstudioDTO() {
-	}
+    public CircuitoEstudioDTO()
+    {
+    }
 
-	public long getId() {
-		return this.id;
-	}
+    public Long getId()
+    {
+        return this.id;
+    }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    public void setId(Long id)
+    {
+        this.id = id;
+    }
 
     public CircuitoDTO getCircuito()
     {

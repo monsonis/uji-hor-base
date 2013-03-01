@@ -4,9 +4,9 @@ Ext.define('HOR.view.circuitos.PanelCalendarioCircuitos',
     alias : 'widget.panelCalendarioCircuitos',
     region : 'center',
     title : 'Circuit',
-    depends : [ 'HOR.store.StoreCalendarios', 'HOR.store.StoreAulasGenerica' ],
+    depends : [ 'HOR.store.StoreCalendarios', 'HOR.store.StoreEventosCircuito' ],
     calendarStore : Ext.create('HOR.store.StoreCalendarios'),
-    eventStore : Ext.create('HOR.store.StoreAulasGenerica'),
+    eventStore : Ext.create('HOR.store.StoreEventosCircuito'),
     editModal : true,
     flex : 1,
     padding : 5,
@@ -40,8 +40,10 @@ Ext.define('HOR.view.circuitos.PanelCalendarioCircuitos',
         getStoreParams : function()
         {
             var params = this.getStoreDateParams();
-            params.aulaId = this.store.getProxy().extraParams['aulaId'];
+            params.estudioId = this.store.getProxy().extraParams['estudioId'];
             params.semestreId = this.store.getProxy().extraParams['semestreId'];
+            params.grupoId = this.store.getProxy().extraParams['grupoId'];
+            params.circuitoId = this.store.getProxy().extraParams['circuitoId'];
             return params;
         }
     },
@@ -70,8 +72,9 @@ Ext.define('HOR.view.circuitos.PanelCalendarioCircuitos',
     onStoreUpdate : function()
     {
     },
-    
-    getEventStore : function() {
+
+    getEventStore : function()
+    {
         return this.store;
     }
 });

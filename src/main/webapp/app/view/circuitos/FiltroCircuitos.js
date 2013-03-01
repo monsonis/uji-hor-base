@@ -58,8 +58,8 @@ Ext.define('HOR.view.circuitos.FiltroCircuitos',
             {
                 fieldLabel : 'Curs',
                 store : [ 1 ],
-                width: 120,
-                value: 1,
+                width : 120,
+                value : 1,
                 displayField : 'name',
                 valueField : 'id',
                 name : 'curso'
@@ -82,7 +82,7 @@ Ext.define('HOR.view.circuitos.FiltroCircuitos',
                 labelWidth : 55,
                 width : 150
             } ]
-         },
+        },
         {
             xtype : 'panel',
             border : 0,
@@ -102,6 +102,17 @@ Ext.define('HOR.view.circuitos.FiltroCircuitos',
                 margin : '0 20 0 0'
             },
             items : [
+            {
+                margin : '0 0 0 0',
+                name : 'validar',
+                xtype : 'button',
+                hidden : true,
+                margin : '0 0 0 5',
+                width : '40',
+                flex : 0,
+                text : 'Validaciones',
+                iconCls : 'tick'
+            },
             {
                 margin : '0 0 0 0',
                 name : 'imprimir',

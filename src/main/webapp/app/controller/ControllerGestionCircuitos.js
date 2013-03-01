@@ -33,7 +33,6 @@ Ext.define('HOR.controller.ControllerGestionCircuitos',
 
     init : function()
     {
-        var ref = this;
         this.control(
         {
             'panelGestionCircuitos button[name=nuevo-circuito]' :
@@ -60,8 +59,15 @@ Ext.define('HOR.controller.ControllerGestionCircuitos',
             {
                 select : function()
                 {
-                    ref.loadCircuitos();
+                    this.loadCircuitos();
+                    this.getPanelGestionCircuitos().down('button[name=nuevo-circuito]').show();
+                    this.getPanelGestionCircuitos().down('button[name=editar-circuito]').hide();
+                    this.getPanelGestionCircuitos().down('button[name=eliminar-circuito]').hide();
                 }
+            },
+            'panelCircuitos selectorCircuitos button' :
+            {
+                click : this.clickOnCircuito
             }
         });
     },
@@ -79,7 +85,8 @@ Ext.define('HOR.controller.ControllerGestionCircuitos',
 
     showVentanaEdicionCircuito : function()
     {
-        var circuito = this.getStoreCircuitos().find('id', this.getCircuitoSeleccionadoId());
+        var store = this.getStoreCircuitosStore();
+        var circuito = store.getAt(store.find('id', this.getCircuitoSeleccionadoId()));
         this.ventanaEdicionCircuitos = this.getVentanaEdicionCurcuitosView();
 
         var form = this.getFormEdicionCircuitos().getForm();
@@ -116,7 +123,7 @@ Ext.define('HOR.controller.ControllerGestionCircuitos',
                 id : circuitoId,
                 nombre : nombre,
                 plazas : plazas,
-                estudio : estudio,
+                estudioId : estudio,
                 semestre : semestre,
                 grupo : grupo
             }, "HOR.model.Circuito");
@@ -129,18 +136,20 @@ Ext.define('HOR.controller.ControllerGestionCircuitos',
             }
             else
             {
-                var record = store.find('id', circuitoId);
+                var record = store.getAt(store.find('id', circuitoId));
                 record.set('nombre', nombre);
                 record.set('plazas', plazas);
+
+                store.getProxy().extraParams['estudioId'] = estudio;
             }
 
             store.sync(
             {
-                success : function()
+                success : function(response)
                 {
                     ref.closeVentanaEdicionCircuitos();
-
-                    ref.actualizaSelectorCircuitos();
+                    var circuitoId = response.operations[0].records[0].data.id;
+                    ref.actualizaSelectorCircuitos(circuitoId);
                 }
             });
         }
@@ -149,19 +158,24 @@ Ext.define('HOR.controller.ControllerGestionCircuitos',
     eliminarCircuito : function()
     {
         var ref = this;
-        var circuito = this.getStoreCircuitos().find('id', this.getCircuitoSeleccionadoId());
+        var store = this.getStoreCircuitosStore();
+        var circuito = store.getAt(store.find('id', this.getCircuitoSeleccionadoId()));
+        var estudio = this.getFiltroCircuitos().down('combobox[name=estudio]').getValue();
 
         Ext.Msg.confirm('Eliminar circuit', 'Totes les dades d\'aquest circuit s\'esborraràn. Estàs segur de voler continuar?', function(btn, text)
         {
             if (btn == 'yes')
             {
-                ref.getStoreCircuitos().remove([ circuito ]);
+                store.getProxy().extraParams['estudioId'] = estudio;
+                store.remove([ circuito ]);
 
-                ref.getStoreCircuitos().sync(
+                store.sync(
                 {
                     success : function()
                     {
                         ref.actualizaSelectorCircuitos();
+                        ref.getPanelGestionCircuitos().down('button[name=editar-circuito]').hide();
+                        ref.getPanelGestionCircuitos().down('button[name=eliminar-circuito]').hide();
                     }
                 });
             }
@@ -174,9 +188,9 @@ Ext.define('HOR.controller.ControllerGestionCircuitos',
 
         for ( var i = 0; i < circuitos.length; i++)
         {
-            if (circuitos[i].active == true)
+            if (circuitos[i].pressed == true)
             {
-                return circuito[i].circuitoId;
+                return circuitos[i].circuitoId;
             }
         }
     },
@@ -202,18 +216,26 @@ Ext.define('HOR.controller.ControllerGestionCircuitos',
         });
     },
 
-    actualizaSelectorCircuitos : function()
+    actualizaSelectorCircuitos : function(circuitoAMostrar)
     {
         var view = this.getSelectorCircuitos();
 
         view.removeAll();
 
         var store = this.getStoreCircuitosStore();
+        store.sort('nombre', 'ASC');
+
         var botones = new Array();
 
         for ( var i = 0; i < store.count(); i++)
         {
             var circuito = store.getAt(i);
+
+            var pressed = false;
+            if (circuitoAMostrar && circuitoAMostrar == circuito.get('id'))
+            {
+                pressed = true;
+            }
 
             var button =
             {
@@ -221,12 +243,29 @@ Ext.define('HOR.controller.ControllerGestionCircuitos',
                 text : circuito.get('nombre'),
                 padding : '2 5 2 5',
                 margin : '10 10 0 10',
-                circuitoId : circuito.get('id')
+                circuitoId : circuito.get('id'),
+                enableToggle : true,
+                toggleGroup : 'circuitos',
+                pressed : pressed
             };
 
             botones.push(button);
         }
 
         view.add(botones);
+    },
+
+    clickOnCircuito : function(button)
+    {
+        if (button.pressed)
+        {
+            this.getPanelGestionCircuitos().down('button[name=editar-circuito]').show();
+            this.getPanelGestionCircuitos().down('button[name=eliminar-circuito]').show();
+        }
+        else
+        {
+            this.getPanelGestionCircuitos().down('button[name=editar-circuito]').hide();
+            this.getPanelGestionCircuitos().down('button[name=eliminar-circuito]').hide();
+        }
     }
 });

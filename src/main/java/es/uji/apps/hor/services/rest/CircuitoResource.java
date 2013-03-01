@@ -66,8 +66,8 @@ public class CircuitoResource extends CoreBaseService
         Long connectedUserId = AccessManager.getConnectedUserId(request);
 
         String estudioId = entity.get("estudioId");
-        String semestreId = entity.get("semestreId");
-        String grupoId = entity.get("grupoId");
+        String semestreId = entity.get("semestre");
+        String grupoId = entity.get("grupo");
         String nombre = entity.get("nombre");
         String plazas = entity.get("plazas");
 
@@ -84,11 +84,11 @@ public class CircuitoResource extends CoreBaseService
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<UIEntity> updateCircuito(@PathParam("id") String circuitoId,
-            @PathParam("estudioId") String estudioId, UIEntity entity)
+            @QueryParam("estudioId") String estudioId, UIEntity entity)
             throws RegistroNoEncontradoException, UnauthorizedUserException
     {
         Long connectedUserId = AccessManager.getConnectedUserId(request);
-        String semestreId = entity.get("semestreId");
+        String semestreId = entity.get("semestre");
         String nombre = entity.get("nombre");
         String plazas = entity.get("plazas");
 
@@ -104,7 +104,7 @@ public class CircuitoResource extends CoreBaseService
     @DELETE
     @Path("{id}")
     public void deleteAulaAsignadaToEstudio(@PathParam("id") String circuitoId,
-            @PathParam("estudioId") String estudioId) throws RegistroNoEncontradoException,
+            @QueryParam("estudioId") String estudioId) throws RegistroNoEncontradoException,
             RegistroConHijosException, UnauthorizedUserException
     {
         Long connectedUserId = AccessManager.getConnectedUserId(request);

@@ -2,7 +2,7 @@ Ext.define('HOR.view.circuitos.PanelGestionCircuitos',
 {
     extend : 'Ext.panel.Panel',
     alias : 'widget.panelGestionCircuitos',
-    border: 0,
+    border : 0,
     autoScroll : true,
     padding : 5,
     layout :
@@ -18,7 +18,8 @@ Ext.define('HOR.view.circuitos.PanelGestionCircuitos',
         width : '40',
         flex : 0,
         text : 'Crear circuit',
-        iconCls : 'application-add'
+        iconCls : 'application-add',
+        hidden : true
     },
     {
         name : 'editar-circuito',
@@ -27,7 +28,8 @@ Ext.define('HOR.view.circuitos.PanelGestionCircuitos',
         width : '40',
         flex : 0,
         text : 'Editar circuit',
-        iconCls : 'application-edit'
+        iconCls : 'application-edit',
+        hidden : true
     },
     {
         name : 'eliminar-circuito',
@@ -36,6 +38,7 @@ Ext.define('HOR.view.circuitos.PanelGestionCircuitos',
         width : '40',
         flex : 0,
         text : 'Esborrar circuit',
-        iconCls : 'application-delete'
+        iconCls : 'application-delete',
+        hidden : true
     } ]
 });

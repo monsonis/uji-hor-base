@@ -55,6 +55,7 @@ public class CircuitoDAODatabaseImpl extends BaseDAODatabaseImpl implements Circ
         circuito.setId(circuitoDTO.getId());
         circuito.setNombre(circuitoDTO.getNombre());
         circuito.setGrupo(circuitoDTO.getGrupoId());
+        circuito.setPlazas(circuitoDTO.getPlazas());
 
         Semestre semestre = new Semestre();
         semestre.setSemestre(circuitoDTO.getSemestre().getId());
@@ -73,7 +74,7 @@ public class CircuitoDAODatabaseImpl extends BaseDAODatabaseImpl implements Circ
     {
         try
         {
-            delete(Circuito.class, circuitoId);
+            delete(CircuitoDTO.class, circuitoId);
         }
         catch (DataIntegrityViolationException e)
         {
@@ -126,7 +127,7 @@ public class CircuitoDAODatabaseImpl extends BaseDAODatabaseImpl implements Circ
 
         circuitoDTO = insert(circuitoDTO);
 
-        insertaNuevoCircuitoEstudio(circuito.getId(), circuito.getEstudio().getId());
+        insertaNuevoCircuitoEstudio(circuitoDTO.getId(), circuito.getEstudio().getId());
 
         return creaCircuitoDesdeCircuitoDTO(circuitoDTO, circuito.getEstudio().getId());
     }
@@ -147,7 +148,8 @@ public class CircuitoDAODatabaseImpl extends BaseDAODatabaseImpl implements Circ
 
     @Override
     @Transactional
-    public Circuito updateCircuito(Long circuitoId, Long estudioId, String nombre, Long plazas) throws RegistroNoEncontradoException
+    public Circuito updateCircuito(Long circuitoId, Long estudioId, String nombre, Long plazas)
+            throws RegistroNoEncontradoException
     {
         JPAQuery query = new JPAQuery(entityManager);
         QCircuitoDTO qCircuito = QCircuitoDTO.circuitoDTO;
@@ -162,7 +164,7 @@ public class CircuitoDAODatabaseImpl extends BaseDAODatabaseImpl implements Circ
             CircuitoDTO circuitoDTO = listaCircuitos.get(0);
             circuitoDTO.setPlazas(plazas);
             circuitoDTO.setNombre(nombre);
-            
+
             update(circuitoDTO);
             return creaCircuitoDesdeCircuitoDTO(circuitoDTO, estudioId);
         }

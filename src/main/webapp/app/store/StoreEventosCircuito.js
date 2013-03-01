@@ -1,4 +1,4 @@
-Ext.define('HOR.store.StoreEventos',
+Ext.define('HOR.store.StoreEventosCircuito',
 {
     extend : 'Extensible.calendar.data.EventStore',
     autoLoad : false,

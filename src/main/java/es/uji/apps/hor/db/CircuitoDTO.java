@@ -3,6 +3,7 @@ package es.uji.apps.hor.db;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,13 +33,12 @@ public class CircuitoDTO implements Serializable
 
     private String nombre;
     private Long plazas;
-    
+
     @ManyToOne
     @JoinColumn(name = "SEMESTRE_ID")
     private SemestreDTO semestre;
 
-
-    @OneToMany(mappedBy = "circuito")
+    @OneToMany(mappedBy = "circuito", cascade = CascadeType.REMOVE)
     private Set<CircuitoEstudioDTO> circuitosEstudios;
 
     @OneToMany(mappedBy = "item")
