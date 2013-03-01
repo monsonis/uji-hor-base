@@ -5,6 +5,7 @@ import java.util.List;
 import es.uji.apps.hor.model.Circuito;
 import es.uji.commons.db.BaseDAO;
 import es.uji.commons.rest.exceptions.RegistroConHijosException;
+import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
 public interface CircuitoDAO extends BaseDAO
 {
@@ -14,5 +15,5 @@ public interface CircuitoDAO extends BaseDAO
     Circuito addCircuito(Circuito circuito);
     Circuito getCircuitoById(Long circuitoId, Long estudioId);
     Circuito insertNuevoCircuitoEnEstudio(Circuito circuito);
-    
+    Circuito updateCircuito(Long circuitoId, Long estudioId, String nombre, Long plazas) throws RegistroNoEncontradoException;
 }

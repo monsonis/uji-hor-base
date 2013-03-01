@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mysema.query.jpa.impl.JPAQuery;
 
-import es.uji.apps.hor.db.AulaPlanificacionDTO;
 import es.uji.apps.hor.db.CircuitoDTO;
 import es.uji.apps.hor.db.CircuitoEstudioDTO;
 import es.uji.apps.hor.db.EstudioDTO;
@@ -21,6 +20,7 @@ import es.uji.apps.hor.model.Estudio;
 import es.uji.apps.hor.model.Semestre;
 import es.uji.commons.db.BaseDAODatabaseImpl;
 import es.uji.commons.rest.exceptions.RegistroConHijosException;
+import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 
 @Repository
 public class CircuitoDAODatabaseImpl extends BaseDAODatabaseImpl implements CircuitoDAO
@@ -119,15 +119,15 @@ public class CircuitoDAODatabaseImpl extends BaseDAODatabaseImpl implements Circ
         circuitoDTO.setNombre(circuito.getNombre());
         circuitoDTO.setPlazas(circuito.getPlazas());
         circuitoDTO.setGrupoId(circuito.getGrupo());
-        
+
         SemestreDTO semestreDTO = new SemestreDTO();
         semestreDTO.setId(circuito.getSemestre().getSemestre());
         circuitoDTO.setSemestre(semestreDTO);
 
         circuitoDTO = insert(circuitoDTO);
-        
+
         insertaNuevoCircuitoEstudio(circuito.getId(), circuito.getEstudio().getId());
-        
+
         return creaCircuitoDesdeCircuitoDTO(circuitoDTO, circuito.getEstudio().getId());
     }
 
@@ -135,13 +135,40 @@ public class CircuitoDAODatabaseImpl extends BaseDAODatabaseImpl implements Circ
     {
         CircuitoDTO circuitoDTO = new CircuitoDTO();
         circuitoDTO.setId(circuitoId);
-        
+
         EstudioDTO estudioDTO = new EstudioDTO();
         estudioDTO.setId(estudioId);
-        
+
         CircuitoEstudioDTO circuitoEstudioDTO = new CircuitoEstudioDTO();
         circuitoEstudioDTO.setCircuito(circuitoDTO);
         circuitoEstudioDTO.setEstudio(estudioDTO);
         insert(circuitoEstudioDTO);
+    }
+
+    @Override
+    @Transactional
+    public Circuito updateCircuito(Long circuitoId, Long estudioId, String nombre, Long plazas) throws RegistroNoEncontradoException
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        QCircuitoDTO qCircuito = QCircuitoDTO.circuitoDTO;
+        QCircuitoEstudioDTO qCircuitoEstudio = QCircuitoEstudioDTO.circuitoEstudioDTO;
+
+        query.from(qCircuito).where(qCircuito.id.eq(circuitoId));
+
+        List<CircuitoDTO> listaCircuitos = query.list(qCircuito);
+
+        if (listaCircuitos.size() == 1)
+        {
+            CircuitoDTO circuitoDTO = listaCircuitos.get(0);
+            circuitoDTO.setPlazas(plazas);
+            circuitoDTO.setNombre(nombre);
+            
+            update(circuitoDTO);
+            return creaCircuitoDesdeCircuitoDTO(circuitoDTO, estudioId);
+        }
+        else
+        {
+            throw new RegistroNoEncontradoException();
+        }
     }
 }

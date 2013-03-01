@@ -80,4 +80,19 @@ public class CircuitoService
         Circuito circuito = circuitoDAO.getCircuitoById(circuitoId, estudioId);
         circuitoDAO.deleteCircuitoById(circuito.getId());
     }
+
+    @Role({ "ADMIN", "USUARIO" })
+    public Circuito updateCircuito(Long circuitoId, Long estudioId, Long semestreId, String nombre, Long plazas,
+            Long connectedUserId) throws RegistroNoEncontradoException, UnauthorizedUserException
+    {
+        if (!personaDAO.esAdmin(connectedUserId))
+        {
+            Persona persona = personaDAO.getPersonaConTitulacionesYCentrosById(connectedUserId);
+            persona.compruebaAccesoAEstudio(estudioId);
+        }
+
+        Circuito resultado = circuitoDAO.updateCircuito(circuitoId, estudioId, nombre, plazas);
+        return resultado;
+        
+    }
 }

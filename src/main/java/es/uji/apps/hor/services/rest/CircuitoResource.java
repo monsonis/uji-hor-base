@@ -7,6 +7,7 @@ import java.util.List;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -15,8 +16,6 @@ import javax.ws.rs.core.MediaType;
 
 import com.sun.jersey.api.core.InjectParam;
 
-import es.uji.apps.hor.AulaYaAsignadaAEstudioException;
-import es.uji.apps.hor.model.AulaPlanificacion;
 import es.uji.apps.hor.model.Circuito;
 import es.uji.apps.hor.services.CircuitoService;
 import es.uji.commons.rest.CoreBaseService;
@@ -75,19 +74,44 @@ public class CircuitoResource extends CoreBaseService
         ParamUtils.checkNotNull(estudioId, semestreId, grupoId, nombre, plazas);
 
         Circuito circuito = circuitoService.insertaCircuito(ParamUtils.parseLong(estudioId),
-                ParamUtils.parseLong(semestreId), grupoId, nombre, ParamUtils.parseLong(plazas), connectedUserId);
+                ParamUtils.parseLong(semestreId), grupoId, nombre, ParamUtils.parseLong(plazas),
+                connectedUserId);
+
+        return Collections.singletonList(UIEntity.toUI(circuito));
+    }
+
+    @PUT
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<UIEntity> updateCircuito(@PathParam("id") String circuitoId,
+            @PathParam("estudioId") String estudioId, UIEntity entity)
+            throws RegistroNoEncontradoException, UnauthorizedUserException
+    {
+        Long connectedUserId = AccessManager.getConnectedUserId(request);
+        String semestreId = entity.get("semestreId");
+        String nombre = entity.get("nombre");
+        String plazas = entity.get("plazas");
+
+        ParamUtils.checkNotNull(circuitoId, nombre, plazas, semestreId, estudioId);
+
+        Circuito circuito = circuitoService.updateCircuito(ParamUtils.parseLong(circuitoId),
+                ParamUtils.parseLong(estudioId), ParamUtils.parseLong(semestreId), nombre,
+                ParamUtils.parseLong(plazas), connectedUserId);
 
         return Collections.singletonList(UIEntity.toUI(circuito));
     }
 
     @DELETE
-    @Path("estudio/{id}")
-    public void deleteAulaAsignadaToEstudio(@PathParam("id") String circuitoId, @PathParam("estudioId") String estudioId) throws RegistroNoEncontradoException, RegistroConHijosException, UnauthorizedUserException
+    @Path("{id}")
+    public void deleteAulaAsignadaToEstudio(@PathParam("id") String circuitoId,
+            @PathParam("estudioId") String estudioId) throws RegistroNoEncontradoException,
+            RegistroConHijosException, UnauthorizedUserException
     {
         Long connectedUserId = AccessManager.getConnectedUserId(request);
-        
+
         ParamUtils.checkNotNull(circuitoId, estudioId);
-        circuitoService.borraCircuito(ParamUtils.parseLong(circuitoId), ParamUtils.parseLong(estudioId), connectedUserId);
+        circuitoService.borraCircuito(ParamUtils.parseLong(circuitoId),
+                ParamUtils.parseLong(estudioId), connectedUserId);
 
     }
 
