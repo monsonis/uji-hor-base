@@ -1,6 +1,8 @@
 package es.uji.apps.hor.dao;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
@@ -16,6 +18,10 @@ import es.uji.commons.rest.exceptions.RegistroNoEncontradoException;
 public class CalendarioAcademicoDAODatabaseImpl extends BaseDAODatabaseImpl implements
         CalendarioAcademicoDAO
 {
+    private static final long DIA_SEMANA_DOMINGO = 7L;
+    private static final long DIA_SEMANA_SABADO = 6L;
+    private static final String TIPO_DIA_LECTIVO = "L";
+
     @Override
     public CalendarioAcademico getCalendarioAcademicoByFecha(Date fecha)
             throws RegistroNoEncontradoException
@@ -48,5 +54,44 @@ public class CalendarioAcademicoDAODatabaseImpl extends BaseDAODatabaseImpl impl
         calendario.setVacaciones(calendarioDTO.getVacaciones());
 
         return calendario;
+    }
+
+    @Override
+    public List<CalendarioAcademico> getCalendarioAcademicoNoLectivos(Date fechaInicio,
+            Date fechaFin)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        QCalendarioDTO qCalendarioDTO = QCalendarioDTO.calendarioDTO;
+
+        query.from(qCalendarioDTO).where(
+                qCalendarioDTO.tipoDia
+                        .ne(TIPO_DIA_LECTIVO)
+                        .and(qCalendarioDTO.diaSemanaId
+                                .notIn(DIA_SEMANA_SABADO, DIA_SEMANA_DOMINGO))
+                        .and(qCalendarioDTO.fecha.between(fechaInicio, fechaFin)));
+
+        List<CalendarioAcademico> listaCalendarioAcademico = new ArrayList<CalendarioAcademico>();
+        for (CalendarioDTO calendario : query.list(qCalendarioDTO))
+        {
+            listaCalendarioAcademico.add(creaCalendarioAcademicoDesdeCalendarioDTO(calendario));
+        }
+
+        return listaCalendarioAcademico;
+    }
+
+    private CalendarioAcademico creaCalendarioAcademicoDesdeCalendarioDTO(CalendarioDTO calendario)
+    {
+        CalendarioAcademico calendarioAcademico = new CalendarioAcademico();
+        calendarioAcademico.setAnyo(calendario.getAño());
+        calendarioAcademico.setDia(calendario.getDia());
+        calendarioAcademico.setDiaSemana(calendario.getDiaSemana());
+        calendarioAcademico.setDiaSemanaId(calendario.getDiaSemanaId());
+        calendarioAcademico.setFecha(calendario.getFecha());
+        calendarioAcademico.setId(calendario.getId());
+        calendarioAcademico.setMes(calendario.getMes());
+        calendarioAcademico.setTipoDia(calendario.getTipoDia());
+        calendarioAcademico.setVacaciones(calendario.getVacaciones());
+
+        return calendarioAcademico;
     }
 }

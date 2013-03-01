@@ -4,10 +4,7 @@ Ext.define('HOR.view.semestres.GridSemestres',
     requires : [],
     store : 'StoreSemestreDetalles',
     alias : 'widget.gridSemestres',
-
-    disableSelection : true,
     sortableColumns : false,
-
     columns : [
     {
         text : 'Tipo estudio',
@@ -56,5 +53,4 @@ Ext.define('HOR.view.semestres.GridSemestres',
             return Ext.Date.format(value, "d/m/Y");
         }
     } ]
-
 });
